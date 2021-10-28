@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "room-reservation-platinum-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/roomReservationPlatinum/RoomReservationPlatinumWebPart.js",
+          "manifest": "./src/webparts/roomReservationPlatinum/RoomReservationPlatinumWebPart.manifest.json"
+        }
+      ]
+    },
+    "asset-reservation-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/assetReservation/AssetReservationWebPart.js",
+          "manifest": "./src/webparts/assetReservation/AssetReservationWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "RoomReservationPlatinumWebPartStrings": "lib/webparts/roomReservationPlatinum/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js",
+    "AssetReservationWebPartStrings": "lib/webparts/assetReservation/loc/{locale}.js"
+  }
+}
