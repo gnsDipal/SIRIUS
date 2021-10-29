@@ -30,7 +30,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
     }
 
     private _getLocation = () => {
-        this.spRoomService.getRoomLocation(this.props.siteUrl, this.props.locationListName).then(res=>{
+        this.spRoomService.getLocations(this.props.siteUrl, this.props.locationListName).then(res=>{
             this.setState({
                 locations : res,
             });
@@ -50,7 +50,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
             selectedSizeKey : 0,
         });
 
-        this.spRoomService.getRoomAreaByLocation(this.props.siteUrl, this.props.areaListName, obj.key).then(res=>{
+        this.spRoomService.getAreaBySelectedLocation(this.props.siteUrl, this.props.areaListName, this.props.locationListName, obj.key).then(res=>{
             this.setState({
                 selectedLocationKey: obj.key,
                 areas : res
@@ -74,8 +74,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
             size : [],
             selectedSizeKey : 0,
         });
-
-        this.spRoomService.getRoomBuildingByArea(this.props.siteUrl, this.props.categoryListName, obj.key).then(res=>{
+        this.spRoomService.getDataBySelectedArea(this.props.siteUrl, this.props.categoryListName, this.props.areaListName, obj.key).then(res=>{
             this.setState({
                 selectedAreaKey: obj.key,
                 buildings : res
@@ -96,8 +95,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
             size : [],
             selectedSizeKey : 0,
         });
-
-        this.spRoomService.getRoomSizeByBuilding(this.props.siteUrl, this.props.masterListName, obj.key).then(res=>{
+        this.spRoomService.getMasterDataBySelectedCategory(this.props.siteUrl, this.props.masterListName, this.props.categoryListName, obj.key).then(res=>{
            this.setState({
                selectedBuildingKey: obj.key,
                size : res

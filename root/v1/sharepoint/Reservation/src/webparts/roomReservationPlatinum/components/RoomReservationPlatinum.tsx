@@ -16,13 +16,13 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
       locationId: 0,
       areaId:0,
       buildingId: 0,
-      sizeId: 0,
+      sizeId: 0
     };
     this.EventKeySelectionHandler = this.EventKeySelectionHandler.bind(this);
   }
 
-   // Get event once the all drop boxes have been selected. Get keys for all drop down here :)
-   private EventKeySelectionHandler(locationId: number, areaId: number, buildingId:number, sizeId:number) {
+     // Get event once the all drop boxes have been selected. Get keys for all drop down here :)
+    private EventKeySelectionHandler(locationId: number, areaId: number, buildingId:number, sizeId:number) {
     this.setState ({
       locationId: locationId,
       areaId: areaId,
@@ -59,11 +59,9 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
                 <FilterImage
                   siteUrl= {this.props.siteUrl}
                   context={this.props.context}
-                  locationId = {this.state.locationId}
-                  areaId = {this.state.areaId}
-                  buildingId = {this.state.buildingId}
+                  masterListName={this.props.masterListName}
                   sizeId = {this.state.sizeId}
-                  ></FilterImage>
+                ></FilterImage>
                 }
             </div>
           </div>

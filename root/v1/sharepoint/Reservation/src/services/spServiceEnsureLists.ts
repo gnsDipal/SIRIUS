@@ -230,12 +230,12 @@ export default class spServiceEnsureLists {
     * IsActive - Boolean 
     * AssetMaster - Lookup list from AssetMaster
     */
-    public async ensureCalendarListFields(siteUrl: string, listInfo:IListInfo, lookUpList:IListInfo): Promise<boolean> {
+    public async ensureCalendarListFields(siteUrl: string, listInfo:IListInfo): Promise<boolean> {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            // TODO: DIPAL - CLEAR ALL CHOICE FIELDS
+            // TODO: DIPAL - CLEAR the CHOICE FIELD
             await this.updateCalendarChoiceFieldOptions(siteUrl, listInfo.ListName, 'Choices', []);
         } catch (error) {
             listInfo.ListError = error;
@@ -250,7 +250,7 @@ export default class spServiceEnsureLists {
     * IsActive - Boolean 
     * AssetMaster - Lookup list from AssetMaster
     */
-    public async ensureRoomCalendarListFields(siteUrl: string, listInfo:IListInfo, lookUpList:IListInfo): Promise<boolean> {
+    public async ensureRoomCalendarListFields(siteUrl: string, listInfo:IListInfo): Promise<boolean> {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);

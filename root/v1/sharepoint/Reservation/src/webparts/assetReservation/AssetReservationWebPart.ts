@@ -347,7 +347,7 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     let res = await this.spEnsureListsService.ensureListByListInfo(this.properties.siteUrl, listInfo);
     if(res.IsListCreated) {
       lookUpListInfo.ListName = this.properties.masterListName;
-      let fieldRes = await this.spEnsureListsService.ensureCalendarListFields(this.properties.siteUrl, listInfo, lookUpListInfo);
+      let fieldRes = await this.spEnsureListsService.ensureCalendarListFields(this.properties.siteUrl, listInfo);
       Logger.write("List " + listInfo.ListName + " Fileds have been created" , LogLevel.Info);
       this.isCalendarListAvailable = true;
       this.context.propertyPane.refresh();

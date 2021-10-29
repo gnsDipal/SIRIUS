@@ -9,23 +9,28 @@ export default class FilterImage extends React.Component<IFilterImageProps, IFil
     constructor(props:IFilterImageProps, state:IFilterImageStates) { 
         super(props);
         this.state = {
+            isLoading:true,
             selectedImage: '',
-            imagePaths: [],
-            errorMessage : ""
+            errorMessage : ''
         };
         this.spRoomService = new spRoomService(this.props.context);
     }
 
     public componentDidMount() : void {
-        this. _getRoomPhotoByPara(this.props.locationId, this.props.areaId, this.props.buildingId, this.props.sizeId);
+        this. _getRoomPhotoByPara(this.props.sizeId);
     }
 
-    private _getRoomPhotoByPara(locationId:number, areaId:number, buildingId:number, sizeId:number) {
-        this.spRoomService.getRoomImagesBySize(this.props.siteUrl, sizeId).then(res=>{
+    private _getRoomPhotoByPara(sizeId:number) {
+        debugger;
+        this.spRoomService.getImageBySelectedMaster(this.props.siteUrl, this.props.masterListName, sizeId).then(res=>{
             this.setState({
-                imagePaths : res,
+                selectedImage : res,
+                isLoading:false
             });
          }).catch((error)=>{
+            this.setState({
+                isLoading:false
+            });
             console.log("Error getting results from Asset Photo - " + error);
          });
     }
@@ -36,9 +41,7 @@ export default class FilterImage extends React.Component<IFilterImageProps, IFil
                 <div className="ms-Grid" dir="ltr">
                     <div className="ms-Grid-row">
                         <div className="ms-Grid-col ms-u-sm12 block">
-                            {this.state.imagePaths.map(img => {
-                                return <img src={`${img}`} height="100%" width="100%" className={this.state.selectedImage == img ? styles.selected:''} margin-top="15px"/>;
-                            })}
+                            <img src={`${this.state.selectedImage}`} height="100%" width="100%" margin-top="15px"/>;
                         </div>
                     </div>
                 </div>

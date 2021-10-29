@@ -1,6 +1,6 @@
 
 export interface IFilterImageStates {
+    isLoading: boolean;
     selectedImage: string;
-    imagePaths: string[];
     errorMessage: string;
 }

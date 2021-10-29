@@ -1,8 +1,6 @@
 export interface IFilterImageProps { 
     context:any;
     siteUrl: string;
-    locationId: number;
-    areaId:number;
-    buildingId: number;
+    masterListName: string;
     sizeId: number;
 }

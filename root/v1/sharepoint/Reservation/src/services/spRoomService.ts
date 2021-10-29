@@ -1,7 +1,6 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { graph } from "@pnp/graph";
 import { sp, Web} from '@pnp/sp/presets/all';
-import { IAssetInfo } from '../models/IAssetInfo';
 
 export default class spRoomService {
     constructor(private context: WebPartContext) {
@@ -15,7 +14,7 @@ export default class spRoomService {
       });
     }
 
-    public async getRoomLocation(siteUrl, listName) : Promise<{ key: string, text: string }[]> {
+    public async getLocations(siteUrl, listName) : Promise<{ key: string, text: string }[]> {
         let listData: { key: string, text: string }[] = [];
         listData.push({
             key: "0",
@@ -40,7 +39,7 @@ export default class spRoomService {
         return listData;
     }
 
-    public async getRoomAreaByLocation(siteUrl: string, listName:string, location:string) : Promise<{ key: string, text: string }[]> {
+    public async getAreaBySelectedLocation(siteUrl: string, listName:string, lookupList:string, locationId:string) : Promise<{ key: string, text: string }[]> {
         let listData: { key: string, text: string }[] = [];
         listData.push({
             key: "0",
@@ -48,7 +47,7 @@ export default class spRoomService {
           });
         try {
           const web = Web(siteUrl);
-          const results = await web.lists.getByTitle(listName).items.filter("ID eq " + location)
+          const results = await web.lists.getByTitle(listName).items.filter(lookupList + "/ID eq " + locationId)
             .select("ID","Title")
             .getAll();
             if(results.length > 0) {
@@ -65,7 +64,7 @@ export default class spRoomService {
         return listData;
     }
 
-    public async getRoomBuildingByArea(siteUrl: string, listName:string, area:string) : Promise<{ key: string, text: string }[]> {
+    public async getDataBySelectedArea(siteUrl: string, listName:string, lookupList:string, areaId:string) : Promise<{ key: string, text: string }[]> {
         let listData: { key: string, text: string }[] = [];
         listData.push({
             key: "0",
@@ -73,7 +72,7 @@ export default class spRoomService {
           });
         try {
           const web = Web(siteUrl);
-          const results = await web.lists.getByTitle('RoomBuildingFloor').items.filter("ID eq " + area)
+          const results = await web.lists.getByTitle(listName).items.filter(lookupList + "/ID eq " + areaId)
             .select("ID","Title")
             .getAll();
             if(results.length > 0) {
@@ -90,7 +89,7 @@ export default class spRoomService {
         return listData;
     }
 
-    public async getRoomSizeByBuilding(siteUrl: string, listName:string, building:string) : Promise<{ key: string, text: string }[]> {
+    public async getMasterDataBySelectedCategory(siteUrl: string, listName:string, lookupList:string, categoryId:string) : Promise<{ key: string, text: string }[]> {
         let listData: { key: string, text: string }[] = [];
         listData.push({
             key: "0",
@@ -98,7 +97,7 @@ export default class spRoomService {
           });
         try {
           const web = Web(siteUrl);
-          const results = await web.lists.getByTitle(listName).items.filter("ID eq " + building)
+          const results = await web.lists.getByTitle(listName).items.filter(lookupList + "/ID eq " + categoryId)
             .select("ID","Title")
             .getAll();
             if(results.length > 0) {
@@ -115,48 +114,21 @@ export default class spRoomService {
         return listData;
     }
 
-    public async getRoomImagesBySize(siteUrl, roomSize) :Promise<string[]> {
-        let imagePathes : string[] = [];
-        // imagePathes.push(siteUrl + "/RoomPicture/MeetingRoom1.jpg");
-        imagePathes.push(siteUrl + "/RoomPicture/MR13.jpg");
-        /*try {
-            const web = Web(siteUrl);
-            const results = await web.lists.getByTitle('RoomPicture').items.filter("ID eq " + roomSize)
-              .select("ID","Title")
+    public async getImageBySelectedMaster(siteUrl:string, listName:string, id?:number) :Promise<string> {
+        let imagePath : string = "https://gns11.sharepoint.com/sites/SiriusTeams/My%20Library%2FImageNotFound.png";
+        try {
+          const web = Web(siteUrl);
+          const results = await web.lists.getByTitle(listName).items.filter("ID eq " + id)
+              .select("Image")
               .getAll();
               if(results.length > 0) {
-                  for (const option of results) {
-                    // imagePathes.push({
-                    //     text: option.Title
-                    //   });
-                  }
+                imagePath = results[0].Image.Url;
               }
-        } catch (error) {
-            return Promise.reject(error);
-        }*/
-        return imagePathes;
-    }
 
-    public async getAssetInfo(siteUrl) : Promise<IAssetInfo[]> {
-      let listData: IAssetInfo[] = [];
-      try {
-        const web = Web(siteUrl);
-        const results = await web.lists.getByTitle('AssetType').items
-          .select("ID","Title", "AssetCount", "AssetImage")
-          .get();
-          if(results.length > 0) {
-              for (const option of results) {
-                  listData.push({
-                    Id: option.ID,
-                    Title: option.Title,
-                    AssetImage: option.AssetImage,
-                    AssetCount: option.AssetCount
-                  });
-              }
-          }
-      } catch (error) {
-        return Promise.reject(error);
-      }
-      return listData;
-  }
+        }
+        catch (error){
+          return Promise.reject(error);
+        }
+        return imagePath;
+    }
 }

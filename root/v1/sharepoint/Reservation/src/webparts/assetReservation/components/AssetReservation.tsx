@@ -56,14 +56,15 @@ export default class AssetReservation extends React.Component<IAssetReservationP
                 />
             </div>
             <div className="ms-Grid-col ms-u-sm6 block">
-            <FilterImage
+              {this.state.sizeId <= 0 && <div>Image will be loaded for the selected options</div>}
+              {this.state.sizeId > 0 &&
+                <FilterImage
                   siteUrl= {this.props.siteUrl}
                   context={this.props.context}
-                  locationId = {this.state.locationId}
-                  areaId = {this.state.areaId}
-                  buildingId = {this.state.buildingId}
+                  masterListName={this.props.masterListName}
                   sizeId = {this.state.sizeId}
-                ></FilterImage> 
+                ></FilterImage>
+                }
             </div>
           </div>
         </div>
