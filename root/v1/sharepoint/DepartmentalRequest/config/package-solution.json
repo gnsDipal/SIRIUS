@@ -1,0 +1,59 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "departmental-request-client-side-solution",
+    "id": "4730f329-7ca3-47b1-b33f-d215a2029977",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "webApiPermissionRequests": [
+      {
+        "resource": "Microsoft Graph",
+        "scope": "ChatMessage.Send"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Chat.Create"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Chat.ReadWrite"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.Read"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.Read.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Directory.ReadWrite.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "User.ReadBasic.All"
+      },
+      {
+        "resource": "Microsoft Graph",
+        "scope": "Mail.Send"
+      }
+    ],
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    }
+  },
+  "paths": {
+    "zippedPackage": "solution/departmental-request.sppkg"
+  }
+}
