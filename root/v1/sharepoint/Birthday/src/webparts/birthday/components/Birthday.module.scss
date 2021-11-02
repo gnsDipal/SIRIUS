@@ -1,0 +1,234 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+
+.birthday {
+  .container {
+    max-width: 700px;
+    margin: 0px auto;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .ms-Callout-main .calloutMain-232{
+    overflow: inherit!important;
+  }
+
+  .row {
+    @include ms-Grid-row;
+    @include ms-fontColor-black;
+    background-color: $ms-color-white;
+    padding: 20px;
+  }
+
+  .birthdayIcon{
+    padding-right: 7px;
+    font-size: xx-large;
+  }
+
+  .column {
+    @include ms-Grid-col;
+    @include ms-lg10;
+    @include ms-xl8;
+    @include ms-xlPush2;
+    @include ms-lgPush1;
+  }
+
+ 
+  .title {
+    @include ms-font-xl;
+    @include ms-fontColor-white;
+  }
+
+  .subTitle {
+    @include ms-font-l;
+    @include ms-fontColor-white;
+  }
+
+  .description {
+    @include ms-Grid-row;
+    @include ms-fontColor-white;
+    margin: 0 -8px;
+    box-sizing: border-box;
+    zoom: 1;
+    //color: rgb(239, 135, 0);    
+    color: rgb(0,120,212);
+    padding: 11px 12px;
+    font-size: 12px;
+    margin: 0!important;
+    border-bottom: 1px solid #cacaca;
+    word-wrap: break-word;
+  }
+
+  .teamsSettings {
+    font-size: 20px;
+    //font-weight: bold;
+    cursor: pointer;
+    float: right;
+    margin-top:11px;
+  }
+ 
+  .teamsSettings i{
+    font-weight: bold;
+  }
+  
+  .adminSettings{    
+    font-size: 20px;
+    cursor: pointer;
+    float: right;
+    margin-top:11px;
+  }
+  
+  .adminSettings i{
+    font-weight: bold;
+  }
+  
+  .callout {
+    display: hidden;
+  }
+  .calloutShow {
+    display: block;
+  }
+
+  .calloutCard{
+    padding: 1rem;
+    h1{
+      //border-bottom: 1px solid $neutralLight;
+      border-bottom: 2px solid #005a9e;
+      margin: 0;
+      margin-bottom: .5rem; 
+      padding-bottom: 1rem;
+    } 
+  }
+
+  .persona_card{
+    align-items: center;
+    border: 1px solid #cacaca;
+    box-shadow: 1px 1px 1px #efefef;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    position: relative;
+    @media (min-width: $ms-screen-min-lg){
+      max-width: 50%;
+    }
+    .persona{
+      align-items: center;
+      display: block;
+      height: 1.4rem;
+      justify-content: center;
+      position: relative;
+      right: 1rem;
+      width: 1.4rem;
+      i{
+        color: rgb(0,120,212);
+        cursor: pointer;
+        font-size: 1.4rem;
+      }       
+    }  
+  }
+  
+
+    .button {
+    // Our button
+    text-decoration: none;
+    height: 32px;
+
+    // Primary Button
+    min-width: 80px;
+    background-color: $ms-color-themePrimary;
+    border-color: $ms-color-themePrimary;
+    color: $ms-color-white;
+
+    // Basic Button
+    outline: transparent;
+    position: relative;
+    font-family: "Segoe UI WestEuropean","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: $ms-font-size-m;
+    font-weight: $ms-font-weight-regular;
+    border-width: 0;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 16px;
+
+    .label {
+      font-weight: $ms-font-weight-semibold;
+      font-size: $ms-font-size-m;
+      height: 32px;
+      line-height: 32px;
+      margin: 0 4px;
+      vertical-align: top;
+      display: inline-block;
+    }
+  }
+}
+
+.SetDisplay{
+  display: flex;
+  margin-bottom: 1px;
+  margin-top:0px;
+  flex-wrap: wrap;
+}
+.SendEmailh3 {
+  border-bottom: 2px solid rgb(0,120,212);
+  padding-bottom: 10px;
+}
+.emailMainContent{  
+  padding:15px 15px!important;
+  background: #54a0e233;
+  border: 1px solid #ddd;
+  width: 300px !important;
+
+  .ms-Callout-main{
+    overflow: inherit !important;
+  }
+}
+
+.removeHidden{
+  overflow: inherit !important;
+  .ms-Callout-main{
+    overflow: inherit !important;
+  }
+}
+
+.emailTextarea{
+  width: 100% !important;
+}
+.mt10{
+  margin-top: 10px;
+}
+.beak-180{
+  background: #54a0e233!important;
+}
+@media (max-width: 768px) {
+  .emailMainContent {
+    width: 100%;
+  }
+}
+.selected{
+  border:3px 3px solid rgb(0,120,212);
+}
+
+.SetSaveBtn{
+  padding-top: 20px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.SetLabelWeight{
+  font-weight: 600!important;
+}
+
+.birthTabBtn
+{
+  border: 1px solid rgb(0,120,212);
+  padding: 18px 40px;
+  outline: none;
+}
+
+.react-emoji-picker--container {
+  position: fixed !important;
+  top: 88px !important;
+  width: 100%;
+  z-index: 9999;
+}
