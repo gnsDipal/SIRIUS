@@ -21,7 +21,7 @@
     "description": { "default": "DepartmentalRequest description" },
     "officeFabricIconFontName": "Page",
     "properties": {
-      "description": "DepartmentalRequest",
+      "description": "description",
       "emailType":0
     }
   }]

@@ -532,12 +532,72 @@ var pickerGroupNames:(IPersonaProps)[]=[];
 
   _sendMessage = async(ToEmailId: string,raisedBy) =>
   { 
-    let eMailTest = 'vrushali@gns11.onmicrosoft.com';
-    let message = `A new Request created by ${raisedBy}  has been assigned to you .`;
+    // let message = `A new Request created by ${raisedBy}  has been assigned to you .`;
+
+    if(this.props.webPartContext.sdks.microsoftTeams) 
+    {
     let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
     let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
-    await this.state.msGraphProvider.sendMessage(chatOfUser, message)
+
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${this.props.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}`)
+
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">A new Request created by ${raisedBy}  has been assigned to you</a>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
+    .then(
+      (result: any[]): void => {
+      console.log(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });   
+    }    
+    
+    else{
+
+    // let message =`Notification from Departmental Request Application: ${this.props.loggedInUserName} has raised a new Request.`;
+    let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
+    let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
+    let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+
+    let url = `${this.props.webUrl}`
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">A new Request created by ${raisedBy}  has been assigned to you</a>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+    
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
     .then(
       (result: any[]): void => {
       console.log(result);
@@ -545,6 +605,9 @@ var pickerGroupNames:(IPersonaProps)[]=[];
     .catch(error => {
       console.log(error);
     });    
+  }
+
+      
 } 
 
 

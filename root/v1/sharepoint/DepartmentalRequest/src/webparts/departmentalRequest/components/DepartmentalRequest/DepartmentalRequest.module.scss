@@ -51,6 +51,18 @@
     color: red;
   }
 
+  .teamsSettings {
+    font-size: 20px;
+    //font-weight: bold;
+    cursor: pointer;
+    float: right;
+    margin-top:11px;
+  }
+
+  .teamsSettings i{
+    font-weight: bold;
+  }
+
  .gridCallOut{
    @include ms-Grid-col; 
    @include ms-lg6;

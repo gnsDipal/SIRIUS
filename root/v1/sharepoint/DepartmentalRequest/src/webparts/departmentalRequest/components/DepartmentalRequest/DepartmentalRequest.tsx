@@ -62,20 +62,22 @@ import 'filepond/dist/filepond.min.css';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import useMsGraphProvider, { IMSGraphInterface } from "../../../../services/msGraphProvider";
 import { TooltipHost, ITooltipHostStyles } from '@fluentui/react/lib/Tooltip';
-import {IConversationService} from './IDepartmentalRequestProps'
+import {IConversationService} from './IDepartmentalRequestProps';
+import PanelSettings from '../PanelSettings/PanelSettings'
 import * as microsoftTeams from "@microsoft/teams-js";  
-
-
-
-
+import {Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
+import { SPPermission } from '@microsoft/sp-page-context';
+import spservices from '../../../../services/spservices'
+import { MSGraphClientFactory } from "@microsoft/sp-http";
+// import {BrowserRouter as Router,Switch,Route,HashRouter,Link} from "react-router-dom";
 
 
 const stackTokens = { childrenGap: 50  };
 const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
-const columnProps: Partial<IStackProps> = {
-  tokens: { childrenGap: 10 },
-  styles: { root: { width: 125, textAlign: "Center"  } },
-};
+// const columnProps: Partial<IStackProps> = {
+//   tokens: { childrenGap: 10 },
+//   styles: { root: { width: 125, textAlign: "Center"  } },
+// };
 
 //Dropdown options
 const dropdownStyles: Partial<IDropdownStyles> = {
@@ -92,15 +94,21 @@ var myIssueCount:number = 0;
 var textbody,EmailSubject, Guid:string;
 var SPDispatcherGroupList = new Array();
 var SPSupportGroupList = new Array();
-const raiseRequestIcon:string = require('../../../../../sharepoint/assets/raiseRequestIcon.png')
-
-const managerViewIcon:string = require('../../../../../sharepoint/assets/manager.png');
 
 var conversationService: IConversationService;
 var itemId;
- 
+
+export interface IUserPermissions {
+  hasPermissionAdd: boolean;
+  hasPermissionEdit: boolean;
+  hasPermissionDelete: boolean;
+  hasPermissionView: boolean;
+}
+
 debugger;
 export default class DepartmentalRequest extends React.Component<IDepartmentalRequestProps, IDepartmentalRequestState> {
+  private spService: spservices = null;
+  private permissionPass = undefined;
   private appListner: AppListener = new AppListener();
   constructor(props:any){
     super(props);
@@ -138,11 +146,13 @@ export default class DepartmentalRequest extends React.Component<IDepartmentalRe
       raisedDispatcherGroupMembersEmailIds:[],
       dispatcherShow:false,
       assignedShow:false,
+      isSettingsPanelOpen:false,
     }
     this.handleChange = this.handleChange.bind(this);
     this.onChangeDeptHandle = this.onChangeDeptHandle.bind(this);
     this.fetchMsGraphProvider = this.fetchMsGraphProvider.bind(this);
     microsoftTeams.initialize();  
+    this.spService = new spservices(this.props.webPartContext);
 
     // registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview)
   }
@@ -154,9 +164,282 @@ export default class DepartmentalRequest extends React.Component<IDepartmentalRe
     microsoftTeams.getContext(teamsContext => {  
       itemId = teamsContext.entityId;  
       });
-      
-    // this.idTestCode();
-    //this. getUserId (loggedInUserEmail);    
+      this.getUserPermissions(this.props.webUrl,this.props.loggedInUserName)
+      this.checkLoggedInUserAsAdmin();
+      // this.redirect();
+      // this.checkTeamCreatedBefore();
+  }
+
+  // public async checkAdmin(){
+  //   this.permissionPass = await this.spService.checkLoggedInUserAsAdmin(); 
+  // }
+  checkLoggedInUserAsAdmin() {
+    const headers: HeadersInit = new Headers();
+    // suppress metadata to minimize the amount of data loaded from SharePoint
+    headers.append("accept", "application/json;odata.metadata=none");
+    this.props.spHttpClient
+      .get(`${this.props.webUrl}/_api/web/currentuser/issiteadmin`,
+      SPHttpClient.configurations.v1, {
+        headers: headers
+      })
+      .then((res: SPHttpClientResponse): Promise<any> => {
+        return res.json();
+      })
+      .then((res: any): void => {
+          if(res){
+            console.log('res = ' + res);
+          }
+          else{
+            console.log('res = ' + res);
+          }
+          // return res.value;
+        })        
+  }
+
+  redirect = async() =>
+  {    
+    // alert("In redirect"); 
+    let entityId = this.props.webPartContext.sdks.microsoftTeams.context.entityId;
+    alert(entityId);
+    let teamId = this.props.webPartContext.sdks.microsoftTeams.context.teamId;
+    let channelId = this.props.webPartContext.sdks.microsoftTeams.context.channelId;
+    const msGraphClient = await this.props.webPartContext.msGraphClientFactory.getClient();
+    let body = {
+      "body": {
+        "name": "Teams.rocks",
+        "teamsAppId": "com.microsoft.teamspace.tab.web",
+        "configuration": {
+          "entityId": entityId,
+          "contentUrl": "https://Teams.rocks",
+          "websiteUrl": "https://Teams.rocks",
+          "removeUrl": ""
+        }
+      }
+    }; 
+    
+    let result = await msGraphClient.api(`teams/${teamId}/channels/${channelId}/tabs`).version("beta").post(body);
+  }
+
+  // createTeam = async() =>
+  // {
+  //   //const msGraphClient: MSGraphClient = this.props.webPartContext.msGraphClientFactory.getClient();
+
+  //   let body: any = {      
+  //       "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
+  //       "displayName": "CheckTeams",
+  //       "description": "The team for those in architecture design."       
+  //   };
+  //   //let resultGraph = await msGraphClient.api(`teams`).version("v1.0").post(body);
+
+
+  //   this.props.webPartContext.msGraphClientFactory
+  //     .getClient()
+  //     .then((client: MSGraphClient): void => {
+  //       // get information about the current user from the Microsoft Graph
+  //       client
+  //         .api(`teams`)
+  //         .version("v1.0")
+  //         .post(body);
+  //     });
+  //     this.checkAdminTeamsCreated();
+  // }
+
+  checkTeamCreatedBefore = async() =>{
+
+   await this.props.webPartContext.msGraphClientFactory
+    .getClient()
+    .then((client: MSGraphClient): void => {        
+      client
+        .api(`me/joinedTeams`)
+        .version("beta")
+        .get().then((res)=>{
+          // console.log("Inside get teams");
+          // console.log("res:" + res);
+          let teamPresent:Boolean = false;
+          for(let i:number =0; i<res.value.length; ++i)
+          {
+            if(res.value[i].displayName === "DepartmentalRequestAdmin")
+            {
+              teamPresent = true;
+            }
+          }
+          if(teamPresent === false){
+            this.createTeam();
+          }
+          
+        });
+    }); 
+}
+
+  createTeam = async() =>
+  {
+    let body: any = {      
+        "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
+        "displayName": "DepartmentalRequestAdmin",
+        "description": "The team for those in architecture design."       
+    };
+    
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams`)
+          .version("v1.0")
+          .post(body).then(()=>{
+            // console.log("Inside post");
+            this.GetTeams();
+          });
+      });
+  }
+
+  GetTeams = async() =>
+  {
+   await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`me/joinedTeams`)
+          .version("beta")
+          .get().then((res)=>{
+            // console.log("Inside get teams");
+            // console.log("res:" + res);
+            let teamId ='';
+            for(let i:number =0; i<res.value.length; ++i)
+            {
+              if(res.value[i].displayName === "DepartmentalRequestAdmin")
+              {
+                teamId = res.value[i].id;
+              }
+            }
+            if(teamId != '')
+            this.GetChannelId(teamId);
+          });
+      }); 
+  }
+
+  GetChannelId = async(teamId) =>
+  {
+   await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels`)
+          .version("beta")
+          .get().then((res)=>{
+            // console.log("Inside get channels");
+            // console.log("res:" + res);
+            let channelId = res.value[0].id;           
+            this.createTab1(teamId,channelId);
+            this.createTab2(teamId,channelId);
+            this.createTab3(teamId,channelId);
+          });
+      });
+  }
+
+  createTabGeneralPost = async(teamId,channelId,body) =>{
+    await this.props.webPartContext.msGraphClientFactory
+    .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels/${channelId}/tabs`)
+          .version("beta")
+          .post(body).then(()=>{
+            // console.log("Inside create tab");  
+          });
+      });
+  }
+
+  createTab1 = async(teamId,channelId) =>
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/_layouts/15/groups.aspx`
+    let body: any = {      
+      "displayName": "PeopleAndGroup",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }    
+
+    };
+    this.createTabGeneralPost(teamId,channelId,body);
+ 
+  } 
+
+  createTab2 = async(teamId,channelId) =>
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/Lists/Dept/AllItems.aspx`
+    let body: any = {      
+      "displayName": "Dept",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }       
+    };
+    this.createTabGeneralPost(teamId,channelId,body);
+  } 
+
+  createTab3 = async(teamId,channelId) =>
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/Lists/DeptCateg/AllItems.aspx`
+    let body: any = {      
+      "displayName": "DeptCateg",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }       
+    };
+    this.createTabGeneralPost(teamId,channelId,body);
+  }
+
+  checkAdminTeamsCreated = async () => {
+    const msGraphClient = await this.props.webPartContext.msGraphClientFactory.getClient();
+    let resultGraph = await msGraphClient.api(`teams`).get();
+        return resultGraph.id;
+  }
+
+  public async getUserPermissions(siteUrl: string, listId: string): Promise<IUserPermissions> {
+    let hasPermissionAdd: boolean = false;
+    let hasPermissionEdit: boolean = false;
+    let hasPermissionDelete: boolean = false;
+    let hasPermissionView: boolean = false;
+    let userPermissions: IUserPermissions = undefined;
+    try {
+      const web = Web(siteUrl);
+      // const test = await sp.web.getUserEffectivePermissions(this.props.loggedInUserEmail);
+      // console.log('test = ' + test);
+      const newTest = this.props.webPartContext.pageContext.web.permissions.value;
+      console.log('newTest = ' + newTest);
+      let permission = new SPPermission(this.props.webPartContext.pageContext.web.permissions.value);
+      let randomTest1 = sp.web.roleAssignments;
+      const perms2 = await sp.web.getCurrentUserEffectivePermissions();
+      console.log('perm2 = ' + perms2)
+      let canEdit = permission.hasPermission(SPPermission.manageWeb);
+      const perms3 = await sp.web.currentUserHasPermissions(PermissionKind.ApproveItems);
+      console.log(perms3);
+      console.log(perms3);
+      let test3 = await sp.web.siteUserInfoList();
+      console.log('test3 = ' + test3);
+      const userEffectivePermissions = await web.lists.getById(this.props.loggedInUserName).effectiveBasePermissions.get();
+      hasPermissionAdd = sp.web.lists.getByTitle(listId).hasPermissions(userEffectivePermissions, PermissionKind.AddListItems);
+      hasPermissionDelete = sp.web.lists.getByTitle(listId).hasPermissions(userEffectivePermissions, PermissionKind.DeleteListItems);
+      hasPermissionEdit = sp.web.lists.getByTitle(listId).hasPermissions(userEffectivePermissions, PermissionKind.EditListItems);
+      hasPermissionView = sp.web.lists.getByTitle(listId).hasPermissions(userEffectivePermissions, PermissionKind.ViewListItems);
+      userPermissions = { hasPermissionAdd: hasPermissionAdd, hasPermissionEdit: hasPermissionEdit, hasPermissionDelete: hasPermissionDelete, hasPermissionView: hasPermissionView };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+    return userPermissions;
   }
 
   fetchMsGraphProvider = async () => {
@@ -173,6 +456,13 @@ export default class DepartmentalRequest extends React.Component<IDepartmentalRe
 
   private testContext(){
     var t = this.props.webPartContext.sdks.microsoftTeams.context
+  }
+
+  private setIsSettingsPanelOpen()
+  {
+    this.setState({
+      isSettingsPanelOpen: !this.state.isSettingsPanelOpen
+    });
   }
 
   private loadDepartmentOptions():void{
@@ -977,7 +1267,7 @@ async onChangeRequestDescriptionHandle(requestDescription:any){
         //     }
         // };
 
-          this._sendMessage1('sourabhk@gns11.onmicrosoft.com','chatMessage')
+          // this._sendMessage1('sourabhk@gns11.onmicrosoft.com','chatMessage')
           // this.createChatThread()
 
           // conversationService
@@ -1340,14 +1630,70 @@ async onChangeRequestDescriptionHandle(requestDescription:any){
 
     _sendMessage = async(ToEmailId: string, name:string) =>
   { 
-    // let eMailTest = 'vrushali@gns11.onmicrosoft.com';
-    let firstHalfMessage = <b>`From Departmental Request Application:`</b>;
-    let testMessage = `${firstHalfMessage} Raised a new request`
-    let message =`Notification from Departmental Request Application: ${this.props.loggedInUserName} has raised a new Request.`;
+    if(this.props.webPartContext.sdks.microsoftTeams) 
+    {
     let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
     let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
-    await this.state.msGraphProvider.sendMessage(chatOfUser, message)
+
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${this.props.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}&path=dispatcher/tickets`)
+
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">New Ticket</a>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
+    .then(
+      (result: any[]): void => {
+      console.log(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });   
+    }    
+    
+    else{
+
+    // let message =`Notification from Departmental Request Application: ${this.props.loggedInUserName} has raised a new Request.`;
+    let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
+    let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
+    let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+
+    let url = `${this.props.webUrl}`
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">New Ticket</a>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+    
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
     .then(
       (result: any[]): void => {
       console.log(result);
@@ -1355,15 +1701,34 @@ async onChangeRequestDescriptionHandle(requestDescription:any){
     .catch(error => {
       console.log(error);
     });    
+  }
 } 
 
   public render(): React.ReactElement<IDepartmentalRequestProps> {
     return (
       <div className={ styles.departmentalRequest }>
-
-        {(this.state.count === 0) && (this.state.myIssueUnlock === 0)&& (this.state.dispatcherViewUnlock === 0) && (this.state.assignedToViewUnlock === 0) && (this.state.managerViewUnlock === 0) &&
+        {
+          (this.state.count === 0) && (this.state.myIssueUnlock === 0)&& (this.state.dispatcherViewUnlock === 0) && (this.state.assignedToViewUnlock === 0) && (this.state.managerViewUnlock === 0) &&
           <div className="ms-Grid" dir="ltr">
-            <h1>Welcome to Departmental Request Facility!!</h1>
+            <div className="ms-Grid-row">
+              <div className="ms-Grid-col" ms-lg8 ms-md8 ms-sm8>
+                <h1>Welcome to Departmental Request Facility!!</h1>
+              </div>
+              {
+                (this.props.webPartContext.sdks.microsoftTeams) &&
+              <div className="ms-Grid-col" ms-lg2 ms-md2 ms-sm2>
+                <div style={{margin:'0', float:'right'}}>
+                    <Icon onClick={()=> this.setIsSettingsPanelOpen()} className={styles.teamsSettings} iconName="Settings"></Icon>                  
+                </div>
+              </div>
+              }
+            </div>
+            <div>
+              {
+                (this.state.isSettingsPanelOpen) && 
+                <PanelSettings webPartContext={this.props.webPartContext} onClosePanel = {()=> this.setIsSettingsPanelOpen()} />
+              }
+            </div>
             <div className="ms-Grid-row" style={{marginTop:'50px'}}>
               <div className={(this.state.dispatcherShow === true)?((this.state.assignedShow === true)? styles.upperAllThree: styles.upperTwo):(this.state.assignedShow === true?styles.upperTwo:styles.upperOnlyOne)}>
                 <CompoundButton styles={{label:{textAlign:'center'}}} style={{width:'100%',marginBottom:'15px',maxWidth:'100%', borderRadius:'10px', padding:'65px', height:'150px',fontSize:'20px',backgroundColor:'rgb(111 98 137)',color:'white'}} onClick={this.myIssueClick} >Requested Issues</CompoundButton>
@@ -1416,11 +1781,13 @@ async onChangeRequestDescriptionHandle(requestDescription:any){
               // console.log('object')     
               Logger.writeJSON("Raised a new request",LogLevel.Info)
               
-            }
+            }             
           </div>
         }
+         
          {/* Display raise request data filling operation */}
-          {(this.state.count === 1) &&
+          {
+            (this.state.count === 1) &&
             <div className="ms-Grid" dir="ltr">
                <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
                 <div className="ms-Grid-col ms-lg12 ms-md12 ms-sm12" onKeyDown={(e)=>this.onKeyDownPress(e)} tabIndex={40}>
@@ -1497,9 +1864,8 @@ async onChangeRequestDescriptionHandle(requestDescription:any){
                 <ToastContainer/>
               </div>
              </div>
-            </div>                
-              }
-
+            </div> 
+              } 
           {
             (this.state.myIssueUnlock === 1) &&
               <MyRequestedSelect webPartContext={this.props.webPartContext} msGraphClientFactory={this.props.msGraphClientFactory} emailType={this.props.emailType} description={this.props.description} loggedInUserEmail={this.props.loggedInUserEmail} loggedInUserName={this.props.loggedInUserName} spHttpClient={this.props.spHttpClient} webUrl={this.props.webUrl} currentUserId={this.props.currentUserId}/>

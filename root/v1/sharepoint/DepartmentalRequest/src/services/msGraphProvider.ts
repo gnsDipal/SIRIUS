@@ -4,7 +4,7 @@ export interface IMSGraphInterface {
     getCurrentUserId(): Promise<any>;
     getUserId(userEmail: string): Promise<any>;
     createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>;
-    sendMessage(chatId: string, chatMessage: string): Promise<any>;
+    sendMessage(chatId: string, chatMessage: any): Promise<any>;
 }
 // debugger;
 export default async function msGraphProvider(msGraphClientFactory: MSGraphClientFactory): Promise<IMSGraphInterface> {

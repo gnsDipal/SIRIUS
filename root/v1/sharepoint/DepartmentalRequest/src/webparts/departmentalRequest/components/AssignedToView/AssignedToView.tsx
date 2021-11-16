@@ -26,6 +26,7 @@ import {IAssignedList} from '../DepartmentalRequest/IDepartmentList'
 import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLevel} from "@pnp/logging";
 import { ToastContainer, toast } from 'react-toastify';
 import useMsGraphProvider, { IMSGraphInterface } from "../../../../services/msGraphProvider";
+import AssignedToViewSelect from '../AssignedToViewSelect/AssignedToViewSelect'
 
 
 const calloutProps = { gapSpace: 0 };
@@ -297,7 +298,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
             this.setState({
               assignedNotification:1
             })
-            this.addReAssignedToData(assignedToUser,idRequest,commentData);
+            this.addReAssignedToData(assignedToUser,idRequest,commentData,ticketNumberCheck);
           }
           if(assignedToUser.text === '' && (this.state.statusCompletedCheck === 2) ){
             this._sendCompletedStatusTeamsMessage(this.state.eMailId,ticketNumberCheck);
@@ -312,7 +313,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 
 
 
-  addReAssignedToData(newReAssignedToUser:any,idRequest:number,commentData:string){
+  addReAssignedToData(newReAssignedToUser:any,idRequest:number,commentData:string, ticketNumber:string){
       console.log("newReAssignedToUser = " + newReAssignedToUser + idRequest);
       console.log("newReAssignedToUser = " + newReAssignedToUser);
       this.getEmail(newReAssignedToUser.id);
@@ -372,7 +373,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
               })
                 .then((responseJSON: any) => {
                   var items = this.state.deptDetails.filter(item=> item.dataId !==idRequest);
-                  this._sendReAssignedTeamsMessage(this.state.eMailId);
+                  this._sendReAssignedTeamsMessage(this.state.eMailId,ticketNumber);
                   this.setState({
                     deptDetails:items,
                     deptListDropDown:[],
@@ -405,13 +406,70 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
       });
   }
 
-  _sendReAssignedTeamsMessage=async(ToEmailId: string)=>{
-    let eMailTest = 'vrushali@gns11.onmicrosoft.com';
-    let message = 'Ticket has been reassigned to you!';
+  _sendReAssignedTeamsMessage=async(ToEmailId: string, ticketNumber:string)=>{
+
+    if(this.props.webPartContext.sdks.microsoftTeams) 
+    {
     let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
     let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
-    await this.state.msGraphProvider.sendMessage(chatOfUser, message)
+
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${this.props.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}`)
+
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">Ticket number: ${ticketNumber} has been reassigned to you</a>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
+    .then(
+      (result: any[]): void => {
+      console.log(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });   
+    }    
+    
+    else{
+    let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
+    let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
+    let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+
+    let url = `${this.props.webUrl}`
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">Ticket number: ${ticketNumber} has been reassigned to you</a>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+    
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
     .then(
       (result: any[]): void => {
       console.log(result);
@@ -419,15 +477,49 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     .catch(error => {
       console.log(error);
     });    
+  }    
   }
 
-  _sendCompletedStatusTeamsMessage=async(ToEmailId: string,ticketNumberCheck)=>{
-    let eMailTest = 'vrushali@gns11.onmicrosoft.com';
-    let message = `Notification from Departmental Request Application:   The request <${ticketNumberCheck}> you created has been marked as complete.`;
+  _sendCompletedStatusTeamsMessage=async(ToEmailId: string,ticketNumber:string)=>{
+    // let eMailTest = 'vrushali@gns11.onmicrosoft.com';
+    // let message = `Notification from Departmental Request Application:   The request <${ticketNumberCheck}> you created has been marked as complete.`;
+    // let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
+    // let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
+    // let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+    // await this.state.msGraphProvider.sendMessage(chatOfUser, message)
+    // .then(
+    //   (result: any[]): void => {
+    //   console.log(result);
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // });    
+
     let currentUserId = await this.state.msGraphProvider.getCurrentUserId(); 
     let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
-    await this.state.msGraphProvider.sendMessage(chatOfUser, message)
+
+    let url = `${this.props.webUrl}`
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <span>The request ${ticketNumber} you created has been marked as complete.</span>
+    </div>
+    </div><br />
+    `
+    ;
+
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };
+    
+
+    await this.state.msGraphProvider.sendMessage(chatOfUser, chatMessage)
     .then(
       (result: any[]): void => {
       console.log(result);
@@ -436,6 +528,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
       console.log(error);
     });    
   }
+  
 
   loadCompletedWithStatusUpdate(idRequest:number,commentData:string){
     console.log("newReAssignedToUser =  " + idRequest);
@@ -705,7 +798,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
       <div className="ms-Grid">
         <div className="ms-Grid-row">
           <div className="ms-Grid-col ms-lg4 ms-sm4">
-             <Icon iconName='Home' style={{fontSize:'25px', cursor:'pointer'}} onClick={()=>this.homeButtonClick()} ></Icon>
+             <Icon iconName='NavigateBack' style={{fontSize:'25px', cursor:'pointer'}} onClick={()=>this.homeButtonClick()} ></Icon>
           </div>
           <div className="ms-Grid-col ms-lg4 ms-sm4">
           <TooltipHost
@@ -720,7 +813,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
           </TooltipHost>
           </div>
         </div>
-      { (this.state.assignedIssuesButton === 1) && (this.state.allIssuesButton === 0) && (this.state.noDataUnlock === 0) &&
+      { (this.state.assignedIssuesButton === 1) && (this.state.allIssuesButton === 0) && (this.state.noDataUnlock === 0) && (this.props.passedStatus === 'In Process') &&
       <div className="ms-Grid-row">
       <div className="ms-Grid-col ms-lg12 ms-sm12">
       <div style={{overflowX:'auto'}}>
@@ -863,6 +956,75 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
       </div> 
       }
 
+      {
+        (this.state.assignedIssuesButton === 1) && (this.state.allIssuesButton === 0) && (this.state.noDataUnlock === 0) && (this.props.passedStatus === 'Completed') &&
+        <div className="ms-Grid-row">
+        <div className="ms-Grid-col ms-lg12 ms-sm12">
+        <div style={{overflowX:'auto'}}>
+        <table className={styles.tableSet} >
+            <thead>
+              <tr>
+                <th>Ticket Number</th>
+                <th>Raised By</th>
+                <th>Issue Date</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Attachment from Requester</th>
+                <th>Attachment from Dispatcher</th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+               this.state.deptDetails.map((res,index)=>{
+               var issuedDate = new Date(res.issueDate).toLocaleDateString();
+                  return(
+                    <tr>
+                      <td>{res.ticketNumber}</td>
+                      <td>{res.raisedBy}</td>
+                      <td>{issuedDate}</td>
+                      <td>{res.description}</td>
+                      <td>{res.category}</td>
+                      <td>
+                        {
+                          res.attachmentFileName.map((r,i)=>{
+                            if(r.FileName.substring(0,3) === "REQ"){
+                            return(
+                              <a href={r.ServerRelativeUrl}> {r.FileName}</a>
+                            )
+                            }
+                          })
+                        
+                        }
+                      </td>
+          
+                      <td>
+                      {
+                          res.attachmentFileName.map((r,i)=>{
+                            if(r.FileName.substring(0,4) === "DISP"){
+                            return(
+                              <a href={r.ServerRelativeUrl}> {r.FileName}</a>
+                            )
+                            }
+                          })
+                        
+                        }
+                      </td>
+                    </tr>
+                  )
+                })
+              }
+            </tbody>
+            </table>
+           </div>
+          </div>
+          <ToastContainer/>
+        {
+          (this.state.assignedNotification === 1) &&
+          Logger.writeJSON("Ticket assigned",LogLevel.Info)
+        } 
+        </div>
+      }
+
       {(this.state.assignedIssuesButton === 1) && (this.state.allIssuesButton === 0) && (this.state.noDataUnlock === 1) &&
         <div className="ms-Grid">
          <div className="ms-Grid-row">
@@ -905,7 +1067,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
   } */}
 
   {(this.state.homeButton === 1) &&
-              <DepartmentalRequest webPartContext={this.props.webPartContext} msGraphClientFactory={this.props.msGraphClientFactory} emailType={this.props.emailType} description={this.props.description} loggedInUserEmail={this.props.loggedInUserEmail} loggedInUserName={this.props.loggedInUserName} spHttpClient={this.props.spHttpClient} webUrl={this.props.webUrl}  currentUserId={this.props.currentUserId}/>
+           <AssignedToViewSelect webPartContext={this.props.webPartContext} msGraphClientFactory={this.props.msGraphClientFactory} currentUserId={this.props.currentUserId} loggedInUserEmail={this.props.loggedInUserEmail} loggedInUserName={this.props.loggedInUserName} spHttpClient={this.props.spHttpClient} webUrl={this.props.webUrl} emailType={this.props.emailType} description={this.props.description}/>
   }
     </div>
   );

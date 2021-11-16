@@ -38,6 +38,7 @@ export interface IDepartmentalRequestState {
     raisedDispatcherGroupMembersEmailIds:number[];
     dispatcherShow:boolean;
     assignedShow:boolean;
+    isSettingsPanelOpen:boolean,
     // conversationService: IConversationService;
     
 

@@ -5,7 +5,8 @@ import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
   PropertyPaneDropdown,
-  PropertyPaneLink
+  PropertyPaneLink,
+  PropertyPaneLabel
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 
@@ -23,6 +24,7 @@ import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLe
 import AppListener from '../../services/appListener';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Web } from 'sp-pnp-js';
 
 
 export interface IDepartmentalRequestWebPartProps {
@@ -30,7 +32,7 @@ export interface IDepartmentalRequestWebPartProps {
   emailType:number;
   webPartContext: WebPartContext;
   msGraphClientFactory : any;
-  
+  webUrl: any;
 }
 debugger;
 var departmentListId;
@@ -231,44 +233,60 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription
+            // description: strings.PropertyPaneDescription
+            description: `Departmental Request admin setup steps:`
+
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              // groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                }),
-                PropertyPaneDropdown('emailType',{
-                  label:"Select the email facility",options:[
-                    {
-                      key:0,
-                      text: "Normal EMail",
-                    },
-                    {
-                      key:1,
-                      text:"Power Automate"
-                    }
-                  ],
-                  selectedKey:0
+                PropertyPaneLabel('label',{
+                  text:`Create new respective Departmental "Dispatcher groups and Support groups from the link below. \n 
+                  Add users for each groups respectively"`,required:true
                 }),
                 PropertyPaneLink('', {
-                  href: 'https://gns11.sharepoint.com/sites/SiriusTeams/Lists/Dept/AllItems.aspx',
-                  text: 'Department Data',
-                  // target: '_blank',
-                  // popupWindowProps: {
-                  //   height: 500,
-                  //   width: 500,
-                  //   positionWindowPosition: 2,
-                  //   title: 'COB blog'
-                  // }
-              })
+                  href: `${this.context.pageContext.web.absoluteUrl}/_layouts/15/groups.aspx`,
+                  text: 'Create groups',
+                  target: '_blank',
+              }),
+              PropertyPaneLabel('label',{
+                text:`Add the Departments, Managers, Dispatcher and Support group names in the list through the link below."`,required:true
+              }),
+              PropertyPaneLink('', {
+                href: `${this.context.pageContext.web.absoluteUrl}/Lists/Dept/AllItems.aspx`,
+                text: 'Department List',
+                target: '_blank',
+            }),
+            PropertyPaneLabel('label',{
+              text:`Add the Departmental categories along with their corresponding Department's names through the link below."`,required:true
+            }),
+            PropertyPaneLink('', {
+              href: `${this.context.pageContext.web.absoluteUrl}/Lists/DeptCateg/AllItems.aspx`,
+              text: 'Departmental Category List',
+              target: '_blank',
+          }),
+          PropertyPaneDropdown('emailType',{
+            label:"Select the email facility",options:[
+              {
+                key:0,
+                text: "Normal EMail",
+              },
+              {
+                key:1,
+                text:"Power Automate"
+              }
+            ],
+            selectedKey:0
+          })
               ]
             }
           ]
+          
         }
       ]
     };
   }
 }
+
+// https://gns11.sharepoint.com/sites/SiriusTeams/Lists/Dept/AllItems.aspx
