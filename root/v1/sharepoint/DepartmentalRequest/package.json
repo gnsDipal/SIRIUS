@@ -26,9 +26,12 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-filepond": "^7.1.1",
+    "react-router": "^5.2.1",
+    "react-router-dom": "^5.3.0",
     "react-toast-notifications": "^2.5.1",
     "react-toastify": "^8.0.3",
-    "sp-pnp-js": "^3.0.10"
+    "sp-pnp-js": "^3.0.10",
+    "styled-components": "^5.3.3"
   },
   "devDependencies": {
     "@types/react": "16.9.36",

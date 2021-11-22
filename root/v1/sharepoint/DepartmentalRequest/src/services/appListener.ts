@@ -11,7 +11,7 @@ import {
 
 
   
-debugger;
+// debugger;
   export default class AppListener implements ILogListener {
     
     public async setAppLogger() {

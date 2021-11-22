@@ -1,0 +1,213 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+@import '~office-ui-fabric-react/dist/css/fabric.css';
+
+.assignedTab {
+    .container {
+        max-width: 700px;
+        margin: 0px auto;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+    
+      .row {
+        @include ms-Grid-row;
+        @include ms-fontColor-white;
+        //background-color: $ms-color-themeDark;
+        background-color: $ms-color-themePrimary;
+        padding: 20px;
+      }
+    
+      .column {
+        @include ms-Grid-col;
+        @include ms-lg10;
+        @include ms-xl8;
+        @include ms-xlPush2;
+        @include ms-lgPush1;
+        @include ms-xxxl4;
+      }
+    
+      .title {
+        @include ms-font-l;
+        @include ms-fontColor-black;
+        border-bottom: 1px solid gray;
+      }
+    
+      .subTitle {
+        @include ms-font-l;
+        @include ms-fontColor-white;
+      }
+    .topMarginMainPage50{
+        margin-top:'50px';
+        @include ms-Grid-row;
+    }
+    .topLevelColumn{
+      @include ms-Grid-col;
+      @include ms-lg4;
+      @include ms-md4;
+      @include ms-sm12;
+    }
+
+    .SetDisplay{
+        display: flex;
+        //margin-bottom: 5px;
+      }
+    
+      .dropdownStyle{
+        font-size: large;
+        color: red;
+      }
+    
+      .smallBox {
+        border-radius: 2px;
+        position: relative;
+        display: block;
+        margin-bottom: 20px;
+        // box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+      }
+    
+      .setMainBox {
+        border: 1px solid #ddd;
+        background: #fff;
+      }
+    
+      .SetMainTitle {
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+    
+    .nav>li>a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+    }
+    
+    .nav>li:hover{
+      background-color: rgba(226, 221, 221, 0.966);
+    }
+    .nav>li>a:hover {
+      cursor: pointer;
+    }
+    
+    .bg-red, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #dd4b39 !important;
+    }
+    
+    .bg-orange, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #f39c12 !important;
+    }
+    
+    .bg-green, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #00a65a !important;
+    }
+    
+    .bg-blue, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #00c0ef !important;
+    }
+    
+    .badge {
+        display: inline-block;
+        min-width: 10px;
+        padding: 3px 7px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        background-color: #777;
+        border-radius: 10px;
+    }
+    
+    .pull-right {
+        float: right!important;
+    }
+     
+    
+      .block {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border: 1px black solid;
+        text-align: center;
+        color:white;
+        background-color: gray;
+      }
+
+    .teamsSettings {
+      font-size: 20px;
+      //font-weight: bold;
+      cursor: pointer;
+      float: right;
+      margin-top:11px;
+    }
+  
+    .teamsSettings i{
+      font-weight: bold;
+    }
+
+    .upperAllThree{
+        @include ms-Grid-col;
+        @include ms-lg4;
+        @include ms-md4;
+        @include ms-sm12;
+       }
+      
+       .upperTwo{
+        @include ms-Grid-col;
+        @include ms-lg6;
+        @include ms-md6;
+        @include ms-sm12;
+       }
+      
+       .upperOnlyOne{
+        @include ms-Grid-col;
+        @include ms-lg12;
+        @include ms-md12;
+        @include ms-sm12;
+       }
+
+    .raisedRequestButton{
+        .label{text-align:center};
+        background-color:#2f4b7c;
+        margin-right:'';
+        padding:10px;
+        border-radius:5px;
+        color:white;
+        text-align:center
+    }
+  
+
+    .belowButtonsColumsAdjust{
+        @include ms-Grid-col;
+        @include ms-xxxl6;
+        @include ms-xxl6;
+        @include ms-xl6;
+        @include ms-lg6;
+        @include ms-md6;
+        @include ms-sm12;
+    }
+
+    .managerViewButton{
+        background-color:#ff7c43;
+        margin-right:'';
+        padding:10px;
+        border-radius:5px;
+        color:white
+    }
+    .lowerImagesIconClass{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+       //  height: 250px;
+      }
+      .lowerImagesIconClass:hover{
+        cursor: pointer;
+        
+      }
+
+}

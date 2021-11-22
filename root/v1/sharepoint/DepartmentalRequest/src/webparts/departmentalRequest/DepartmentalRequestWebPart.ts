@@ -12,6 +12,7 @@ import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-bas
 
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import DepartmentalRequest from './components/DepartmentalRequest/DepartmentalRequest';
+import Home from './components/Home/Home'
 import { IDepartmentalRequestProps } from './components/DepartmentalRequest/IDepartmentalRequestProps';
 import { sp } from '@pnp/sp';
 import "@pnp/sp/webs";
@@ -25,6 +26,7 @@ import AppListener from '../../services/appListener';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Web } from 'sp-pnp-js';
+import Main from './components/Main/Main';
 
 
 export interface IDepartmentalRequestWebPartProps {
@@ -51,7 +53,7 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
 
   public render(): void {
     const element: React.ReactElement<IDepartmentalRequestProps> = React.createElement(
-      DepartmentalRequest,
+      Main,
       {
         description: this.properties.description,
         webUrl: this.context.pageContext.web.absoluteUrl,
