@@ -1,0 +1,21 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "objectives-goals-client-side-solution",
+    "id": "c9358b64-f8f2-4acd-863f-ce031604f951",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.13.0"
+    }
+  },
+  "paths": {
+    "zippedPackage": "solution/objectives-goals.sppkg"
+  }
+}
