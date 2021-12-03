@@ -46,7 +46,7 @@
       @include ms-sm12;
     }
     .myIssuesButton{
-        .label{text-align:center};
+        .ms-Button-label{text-align:center};
         width:100%;
         margin-bottom:15px;
         max-width:100%;

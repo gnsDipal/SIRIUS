@@ -1,0 +1,175 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+@import '~office-ui-fabric-react/dist/css/fabric.css';
+
+.raiseRequestTab {
+  .container {
+    max-width: 700px;
+    margin: 0px auto;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+  }
+
+  .row {
+    @include ms-Grid-row;
+    @include ms-fontColor-white;
+    //background-color: $ms-color-themeDark;
+    background-color: $ms-color-themePrimary;
+    padding: 20px;
+  }
+
+  .column {
+    @include ms-Grid-col;
+    @include ms-lg10;
+    @include ms-xl8;
+    @include ms-xlPush2;
+    @include ms-lgPush1;
+    @include ms-xxxl4;
+  }
+
+  .title {
+    @include ms-font-l;
+    @include ms-fontColor-black;
+    border-bottom: 1px solid gray;
+  }
+
+  .subTitle {
+    @include ms-font-l;
+    @include ms-fontColor-white;
+  }
+
+  .description {
+    @include ms-font-l;
+    @include ms-fontColor-black;
+  }
+
+  .SetDisplay{
+    display: flex;
+    //margin-bottom: 5px;
+  }
+
+  .dropdownStyle{
+    font-size: large;
+    color: red;
+  }
+
+  .teamsSettings {
+    font-size: 20px;
+    //font-weight: bold;
+    cursor: pointer;
+    float: right;
+    margin-top:11px;
+  }
+
+  .teamsSettings i{
+    font-weight: bold;
+  }
+
+ .gridCallOut{
+   @include ms-Grid-col; 
+   @include ms-lg6;
+   @include ms-md6;
+   @include ms-sm12;
+ }
+
+ .gridCompleteCallOut{
+   @include ms-Grid-col;
+   @include ms-lg12;
+   @include ms-md12;
+   @include ms-sm12;
+   
+ }
+
+ .lowerImagesIconClass{
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+  //  height: 250px;
+ }
+ .lowerImagesIconClass:hover{
+   cursor: pointer;
+   
+ }
+
+ .upperAllThree{
+  @include ms-Grid-col;
+  @include ms-lg4;
+  @include ms-md4;
+  @include ms-sm12;
+ }
+
+ .upperTwo{
+  @include ms-Grid-col;
+  @include ms-lg6;
+  @include ms-md6;
+  @include ms-sm12;
+ }
+
+ .upperOnlyOne{
+  @include ms-Grid-col;
+  @include ms-lg12;
+  @include ms-md12;
+  @include ms-sm12;
+ }
+
+ .managerPresentStyle{
+  height: 250px;
+ }
+
+  .block {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: 1px black solid;
+    text-align: center;
+    color:white;
+    background-color: gray;
+  }
+
+  .saveButtonStyle{
+    background-color: #ef8700;
+    color: white;
+    border: 1px solid #ddd;
+    top: 8px;
+    margin-bottom: 20px;
+  }
+
+  .button {
+    // Our button
+    text-decoration: none;
+    height: 32px;
+
+    // Primary Button
+    min-width: 80px;
+    background-color: $ms-color-themePrimary;
+    border-color: $ms-color-themePrimary;
+    color: $ms-color-white;
+
+    // Basic Button
+    outline: transparent;
+    position: relative;
+    font-family: "Segoe UI WestEuropean","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+    -webkit-font-smoothing: antialiased;
+    font-size: $ms-font-size-m;
+    font-weight: $ms-font-weight-regular;
+    border-width: 0;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    padding: 0 16px;
+
+    .label {
+      font-weight: $ms-font-weight-semibold;
+      font-size: $ms-font-size-m;
+      height: 32px;
+      line-height: 32px;
+      margin: 0 4px;
+      vertical-align: top;
+      display: inline-block;
+      color: white;
+    }
+  }
+}
+.raisebtn .ms-Button-textContainer{
+  text-align: center!important;
+}
+
+
+

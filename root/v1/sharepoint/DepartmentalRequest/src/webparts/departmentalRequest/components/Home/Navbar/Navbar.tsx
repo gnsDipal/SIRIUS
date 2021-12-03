@@ -28,7 +28,7 @@ const Navbar = () => {
                 <div className="ms-Grid-col">
                   <div className="ms-u-sm12 ms-u-md4 ms-u-lg4 block">
                   <Link to="/requested">
-                  <CompoundButton className={styles.myIssuesButton}>{strings.RequestedIssuesLabel}</CompoundButton>
+                  <CompoundButton styles={{label:{textAlign:'center'}}} className={styles.myIssuesButton}>{strings.RequestedIssuesLabel}</CompoundButton>
                   </Link>
                   </div>
                 </div>

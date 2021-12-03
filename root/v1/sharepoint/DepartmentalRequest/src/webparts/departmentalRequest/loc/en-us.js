@@ -9,7 +9,22 @@ define([], function() {
     "DispatcherViewLabel":"Dispatcher View",
     "NewTicketLabel":"Raise a new request",
     "ManagerViewLabel":"Manager View",
-    "WelcomeLabel":"Welcome to Departmental Request Facility!!"
-    
+    "WelcomeLabel":"Welcome to Departmental Request Facility!!",
+    "AssignedTicketsLabel":"Assigned Tickets",
+    "DepartmentBasedCardLabel":"Department based cards",
+    "InProcessLabel":"In Process",
+    "ClosedLabel":"Closed",
+    "TotalLabel":"Total",
+    "SubmitButtonLabel":"Submit",
+    "TicketNumberLabel":"Ticket Number",
+    "RaisedByLabel":"Raised By",
+    "IssueDateLabel":"Issue Date",
+    "DescriptionLabel":"Description",
+    "CategoryLabel":"Category",
+    "CommentLabel":"Comment",
+    "ActionLabel":"Action",
+    "AttachmentFromRequesterLabel":"Attachment From Requester",
+    "AttachmentFromDispatcherLabel":"Attachment From Dispatcher",
+    "AddFileLabel":"Add file, if any",
   }
 });

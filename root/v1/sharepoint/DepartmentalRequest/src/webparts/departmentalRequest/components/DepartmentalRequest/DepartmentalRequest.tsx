@@ -1089,7 +1089,7 @@ private loadSelectedDispatcherGroupPeople(selectedDept):void{
         console.log(data);
         this.setState({
           raisedDispatcherGroupMembersEmailIds:data
-        },()=>console.log('this.state.raisedDispatcherGroupMembersEmailIds[0] = ' + this.state.raisedDispatcherGroupMembersEmailIds[0]))
+        })
     }
   )
  }

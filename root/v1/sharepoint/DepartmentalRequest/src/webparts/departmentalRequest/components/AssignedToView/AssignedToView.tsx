@@ -289,10 +289,6 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
   }
 
    onSubmitDropDownHandle(commentData:string,idRequest:number,assignedToUser,ticketNumberCheck){
-  //  await this.setState({
-  //     newPeoplePickerUser: newPeoplePicker[0].text
-  //     //loadPeoplePicker:0
-  //       },()=> this.addReAssignedToData(this.state.newPeoplePickerUser,idRequest))
         if(this.state.deleteSelectedTicket === ticketNumberCheck){
           if(assignedToUser.text != ''){
             this.setState({
@@ -414,7 +410,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     let userIdToSendMessage = await this.state.msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await this.state.msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${this.props.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}`)
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/assigned/HR/${this.props.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}} path="assigned/HR"`)
 
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
@@ -789,7 +785,7 @@ const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     this.setState({
       indexSelect:ticketNumber
     })
-  }
+  }  
 
   public render(): React.ReactElement<IAssignProps> {
   return (

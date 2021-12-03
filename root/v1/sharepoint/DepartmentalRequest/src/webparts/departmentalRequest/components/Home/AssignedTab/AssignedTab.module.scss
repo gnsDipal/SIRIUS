@@ -210,4 +210,29 @@
         
       }
 
+      /*
+          For AssignedTicketView Child Component
+      */
+      .tableSet {
+        border-collapse: collapse;
+        width: 100%;
+       }
+       
+       .tableSet td, .tableSet th {
+        border: 1px solid #ddd;
+        padding: 8px;
+       }
+       .tableSet tr:nth-child(odd){background-color: #e7b510;}
+       .tableSet tr:nth-child(even){background-color: #e7b510;}
+       
+       .tableSet tr:hover {background-color: #af9500;}
+       
+       .tableSet th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #725dbe;
+        color: white;
+       }
+
 }

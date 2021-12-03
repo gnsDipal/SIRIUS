@@ -12,10 +12,14 @@ import RaiseRequestTab from './RaiseRequestTab/RaiseRequestTab';
 import ManagerTab from './ManagerTab/ManagerTab';
 import Main from '../Main/Main'
 import Navbar from './Navbar/Navbar';
-
+import * as microsoftTeams from '@microsoft/teams-js';
 
 // debugger;
 const Home = (props)=> {
+    
+   //Initialize Microsoft Teams SDK
+   microsoftTeams.initialize();
+
     return (
         <div className={styles.home}>
               <Switch>
