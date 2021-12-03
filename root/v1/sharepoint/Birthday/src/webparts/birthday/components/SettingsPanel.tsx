@@ -7,14 +7,20 @@ import { DialogFooter } from '@fluentui/react/lib/Dialog';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { ISettingsPanelProps } from './ISettingsPanelProps';
 import { Toggle } from '@fluentui/react/lib/Toggle';
+import styles from './Birthday.module.scss';
+//import { Text } from '@fluentui/react/lib/Text';
+import { Link } from '@fluentui/react/lib/Link';
+import { MSGraphClient } from '@microsoft/sp-http';
 
 export interface ISettingsPanelstate {
   dropdown: string;
   externalAPI: string;
   IsTeamsIcon: boolean;
   errorMessage: string;
+  webURL: string;
 }
 
+let teamExist: boolean = false;
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
 
@@ -27,13 +33,153 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
       dropdown: '',
       externalAPI: '',
       IsTeamsIcon: false ,
-      errorMessage:''           
+      errorMessage:'',
+      webURL: ''           
     });
   }
 
   componentDidMount()
   {
+    this.checkIfTeamExist();
     this.GetupdateDataSource();
+  }
+
+  checkIfTeamExist = async() =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`me/joinedTeams`)
+          .version("beta")
+          .get().then((res)=>{
+            
+            for(let i:number =0; i<res.value.length; ++i)
+            {
+              if(res.value[i].displayName === "Birthday/Anniversary Admin")
+              {
+                teamExist = true;
+              }
+            }
+            if(teamExist === false)
+              this.createTeam();
+            else
+              this.GetTeams();
+          });
+      });  
+  }
+
+  createTeam = async() =>
+  {
+    let body: any = {      
+        "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
+        "displayName": "Birthday/Anniversary Admin",
+        "description": "The team for those in architecture design."       
+    };
+    
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams`)
+          .version("v1.0")
+          .post(body).then(()=>{
+            this.GetTeams();
+          });
+      });
+  }
+
+  GetTeams = async() =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`me/joinedTeams`)
+          .version("beta")
+          .get().then((res)=>{
+            let teamId: string = "";
+            for(let i:number =0; i<res.value.length; ++i)
+            {
+              if(res.value[i].displayName === "Birthday/Anniversary Admin")
+              {
+                teamId = res.value[i].id;
+              }
+            }
+            if(teamId !== "")
+              this.GetChannelId(teamId);
+          });
+      }); 
+  }
+
+  GetChannelId = async(teamId: string) =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels`)
+          .version("beta")
+          .get().then((res)=>{
+            this.setState({
+              webURL:res.value[0].webUrl
+            });            
+            //console.log("web url: " + webURL);
+            let channelId = res.value[0].id; 
+            if(teamExist === false)
+            {
+              this.createImagesTab(teamId,channelId);
+              this.createUsersTab(teamId,channelId);
+            }
+          });
+      });
+  }
+
+  private createImagesTab(teamId: string, channelId: string)
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/BirthdayAnniversaryImages/Forms/Thumbnails.aspx`
+    let body: any = {      
+      "displayName": "BirthdayAnniversaryImages",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }       
+    };
+    this.createTab(teamId, channelId, body);
+  }
+
+  private createUsersTab(teamId: string, channelId: string)
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/Lists/UserBirthAnniversaryDetails/AllItems.aspx`
+    let body: any = {      
+      "displayName": "UserBirthAnniversaryDetails",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }       
+    }; 
+    this.createTab(teamId, channelId, body);
+  }
+
+  createTab = async(teamId: string, channelId: string, body: string) =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+    .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels/${channelId}/tabs`)
+          .version("beta")
+          .post(body).then(()=>{            
+          });
+      });
   }
 
   GetupdateDataSource()
@@ -80,12 +226,14 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
       if(jsonresult.value.length > 0)
       {
         this.updateItemInList(jsonresult.value[0].ID);
-        this.props.onClosePanel();
+        if(this.state.errorMessage === "")
+          this.props.onClosePanel();
       } 
       else      
       {
         this.createItemInList();
-        this.props.onClosePanel();
+        if(this.state.errorMessage === "")
+          this.props.onClosePanel();
       }
     }, (error: any): void => {      
       console.log(error);
@@ -97,21 +245,32 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
 
   private updateItemInList(ItemID)
   {
-    if(this.state.dropdown === "API" && this.state.externalAPI === "")
+    if(this.state.dropdown === "API" && (this.state.externalAPI === undefined || this.state.externalAPI === ""))
     {
       this.setState({
-        errorMessage: 'Provide a external API URL'
+        errorMessage: 'Provide an external API URL.'
       })
     }
     else
     {
       let settings: string = '{"DataSource":"' + this.state.dropdown + '"}';
-      
-      const JsonData: string = JSON.stringify({      
-        'Settings': settings,
-        'ExternalAPI': this.state.externalAPI,
-        'IsTeamsIcon': this.state.IsTeamsIcon  
-      });
+      let JsonData: string;
+      if(this.state.dropdown === "API")
+      {
+        JsonData = JSON.stringify({      
+          'Settings': settings,
+          'ExternalAPI': this.state.externalAPI,
+          'IsTeamsIcon': this.state.IsTeamsIcon  
+        });
+      }
+      else
+      {
+        JsonData = JSON.stringify({      
+          'Settings': settings,
+          'ExternalAPI': "",
+          'IsTeamsIcon': false 
+        });
+      }
       this.props.webPartContext.spHttpClient.post(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('ConfigurationSettings')/items(${ItemID})`, SPHttpClient.configurations.v1,  
       {  
         headers: {  
@@ -128,6 +287,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
       })  
       .then((item: any): void => {  
           console.log('Item has been updated.');
+          //this.props.onClosePanel();
       }, (error: any): void => {  
           console.log('Error while updating an item: ' + error);
       });
@@ -136,10 +296,10 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
 
   private createItemInList()
   {
-    if(this.state.dropdown === "API" && this.state.externalAPI === "")
+    if(this.state.dropdown === "API" && (this.state.externalAPI === undefined || this.state.externalAPI === ""))
     {
       this.setState({
-        errorMessage: 'Provide a external API URL'
+        errorMessage: 'Provide an external API URL.'
       })
     }
     else
@@ -166,6 +326,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
       })  
       .then((item: any): void => {  
           console.log('Item has been created.');
+          //this.props.onClosePanel();
       }, (error: any): void => {  
           console.log('Error while creating the item: ' + error);
       }); 
@@ -300,7 +461,8 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
   handleChange = async(URL: string) =>
   {
     await this.setState({
-      externalAPI: URL
+      externalAPI: URL,
+      errorMessage: ""
     })  
   }
 
@@ -314,10 +476,14 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
   public render(): React.ReactElement<ISettingsPanelProps> {
     return (        
         <Panel
-        headerText="Birthday/Anniversary Web Part Settings"
+        headerText="Birthday"
         isOpen={true}
         onDismiss={() => this.cancel()}        
-        >     
+        >  
+        <br></br>
+          <label style={{fontSize:"16px"}}>Birthday/Anniversary Web Part Settings</label>
+          <br></br>
+          <br></br>
           <Dropdown 
             label="Select the source from where data to be fetched for users"
             options={[
@@ -353,6 +519,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
               <div>
                 <TextField label="Enter API/Webservice URL" onChange={e => this.handleChange(e.currentTarget.value)} value={this.state.externalAPI}></TextField>
               </div>
+              <br></br>
               <div>
                 <Toggle label="Show Teams Icon" onText="On" offText="Off" onChange={this._onChange} defaultChecked={this.state.IsTeamsIcon}/>
               </div>
@@ -369,10 +536,21 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
               onClick={() => this.cancel()} 
               text="Cancel" 
             />
-          </DialogFooter> 
-
-           <label>Admin Settings</label>
-           
+          </DialogFooter>
+          <br></br>
+          <br></br>
+          <div>
+            <div>
+              <label style={{fontSize:"16px"}}>Admin Settings</label>
+            </div> 
+            <div>
+              
+                <Link href={this.state.webURL} target="_blank" underline>
+                  Go to admin settings
+                </Link>          
+              
+            </div>
+          </div>
         </Panel>      
     );  
   }

@@ -3,6 +3,7 @@
 .birthday {
   .container {
     max-width: 700px;
+    //max-height: 700px;
     margin: 0px auto;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
   }
@@ -68,12 +69,21 @@
   .teamsSettings i{
     font-weight: bold;
   }
-  
-  .adminSettings{    
+
+  .helpSettings {
     font-size: 20px;
+    //font-weight: bold;
     cursor: pointer;
     float: right;
     margin-top:11px;
+  }
+  .helpSettings i{
+    font-weight: bold;
+  }
+  
+  .adminSettings{    
+    font-size: 22px;
+    font-weight: 600;
   }
   
   .adminSettings i{

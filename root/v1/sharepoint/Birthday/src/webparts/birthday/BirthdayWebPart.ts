@@ -6,7 +6,8 @@ import {
   PropertyPaneButton,
   PropertyPaneButtonType,
   PropertyPaneTextField,
-  PropertyPaneToggle
+  PropertyPaneToggle,
+  PropertyPaneLink
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
@@ -306,6 +307,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         let hireDate = new Date(UserList[i].HireDate);
         let hireDateFinal = new Date(hireDate.getTime() - (hireDate.getTimezoneOffset() * 60000));
         const requestlistItem: string = JSON.stringify({
+          'Title': "Birthday/Anniversary",
           'name': UserList[i].Name,
           'firstName': UserList[i].FirstName,
           'lastName': UserList[i].LastName,
@@ -400,7 +402,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         {          
           groups: [
             {
-              groupName: "",
+              groupName: "Birthday/Anniversary Web Part Settings",
               groupFields: [                               
                 new PropertyPaneDropdown('dropdown', {
                   label: 'Select the source from where data to be fetched for users.',
@@ -413,8 +415,19 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
                 externalAPI,
                 IsTeamsIcon                                
               ]
+            },
+            {
+              groupName: "Admin Settings",
+              groupFields: [                               
+                PropertyPaneLink('link', {
+                  href: "https://gns11.sharepoint.com/sites/SiriusTeams/BirthdayAnniversaryImages/Forms/Thumbnails.aspx",
+                  text: "Add Birthday and Anniversary Images",
+                  target: "_blank" 
+                })                               
+              ]
             }
-          ]
+          ],
+          
         }
       ]
     };    

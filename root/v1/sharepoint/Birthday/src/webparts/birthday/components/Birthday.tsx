@@ -16,11 +16,12 @@ import SettingsPanel from './SettingsPanel';
 import { TooltipHost } from '@fluentui/react/lib/Tooltip';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { Stack } from '@fluentui/react/lib/Stack';
+import { MSGraphClient, MSGraphClientFactory } from '@microsoft/sp-http';
 
 initializeIcons();
 const MyBirthdayIcon = () => <Icon iconName="BirthdayCake" className = {styles.birthdayIcon} />;
 const TeamsSettingsIcon = () => <Icon iconName="Settings" />
-const AdminSettings = () => <Icon iconName="AdminALogoInverse32" />
+const Help = () => <Icon iconName="Help" />
 
 const stackTokens = { childrenGap: 50  };
 
@@ -59,19 +60,151 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
 
   componentDidMount() 
   {  
-    // if(this.props.webPartContext.sdks.microsoftTeams)
-    // {
-    //   this.loadSettingsForTeams(); 
-    // } 
-    // else
-    // {
-    //   this.CheckBirthdayDataSource();
-    // }  
-    this.loadSettingsForTeams();  
+    if(this.props.webPartContext.sdks.microsoftTeams)
+    {
+      this.loadSettingsForTeams(); 
+    } 
+    else
+    {     
+      this.CheckBirthdayDataSource();
+    } 
+    //this.checkIfTeamExist();    
   }
+
+  checkIfTeamExist = async() =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`me/joinedTeams`)
+          .version("beta")
+          .get().then((res)=>{
+            let teamExist: boolean = false;
+            for(let i:number =0; i<res.value.length; ++i)
+            {
+              if(res.value[i].displayName === "Birthday/Anniversary Admin")
+              {
+                teamExist = true;
+              }
+            }
+            if(teamExist === false)
+              this.createTeam();
+          });
+      });  
+  }
+
+  createTeam = async() =>
+  {
+    let body: any = {      
+        "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
+        "displayName": "Birthday/Anniversary Admin",
+        "description": "The team for those in architecture design."       
+    };
+    
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams`)
+          .version("v1.0")
+          .post(body).then(()=>{
+            this.GetTeams();
+          });
+      });
+  }
+
+  GetTeams = async() =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`me/joinedTeams`)
+          .version("beta")
+          .get().then((res)=>{
+            let teamId: string = "";
+            for(let i:number =0; i<res.value.length; ++i)
+            {
+              if(res.value[i].displayName === "Birthday/Anniversary Admin")
+              {
+                teamId = res.value[i].id;
+              }
+            }
+            if(teamId !== "")
+              this.GetChannelId(teamId);
+          });
+      }); 
+  }
+
+  GetChannelId = async(teamId: string) =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+      .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels`)
+          .version("beta")
+          .get().then((res)=>{
+            let webURL: string = res.value[0].webUrl;
+            console.log("web url: " + webURL);
+            let channelId = res.value[0].id;           
+            this.createImagesTab(teamId,channelId);
+            this.createUsersTab(teamId,channelId);
+          });
+      });
+  }
+
+  private createImagesTab(teamId: string, channelId: string)
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/BirthdayAnniversaryImages/Forms/Thumbnails.aspx`
+    let body: any = {      
+      "displayName": "BirthdayAnniversaryImages",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }       
+    };
+    this.createTab(teamId, channelId, body);
+  }
+
+  private createUsersTab(teamId: string, channelId: string)
+  {
+    let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/Lists/UserBirthAnniversaryDetails/AllItems.aspx`
+    let body: any = {      
+      "displayName": "UserBirthAnniversaryDetails",
+      "teamsAppId": null,
+      "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
+      "configuration": {
+          "entityId": null,
+          "contentUrl": contentURL,
+          "removeUrl": null,
+          "websiteUrl": null
+        }       
+    }; 
+    this.createTab(teamId, channelId, body);
+  }
+
+  createTab = async(teamId: string, channelId: string, body: string) =>
+  {
+    await this.props.webPartContext.msGraphClientFactory
+    .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels/${channelId}/tabs`)
+          .version("beta")
+          .post(body).then(()=>{            
+          });
+      });
+  } 
 
   loadSettingsForTeams = async() =>
   {
+    
     await this.props.webPartContext.spHttpClient        
       .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('ConfigurationSettings')/items?$filter=Key eq 'Birthday'`, SPHttpClient.configurations.v1, {
         headers: headers
@@ -131,116 +264,13 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
     {dataSource === 'API' && 
       this._getThirdPartyBirthdayAPI();      
     }
-  }
-
-  // private getLogUserDepartment()
-  // {
-  //   if(this.props.webPartContext.sdks.microsoftTeams)
-  //   {
-  //     {this.state.datasource === 'Azure' &&
-  //     this.getLoggedInUserDeptAzure();
-  //     }
-  //     {this.state.datasource === 'Internal' &&
-  //       this.getLoggedInUserDeptInternal();  
-  //     }
-  //     {this.state.datasource === 'API' &&
-  //       this.getLoggedInUserDeptExternal();  
-  //     }
-  //   }
-  //   else
-  //   {
-  //     {this.props.dropdown === 'Azure' &&
-  //       this.getLoggedInUserDeptAzure();
-  //     }
-  //     {this.props.dropdown === 'Internal' &&
-  //       this.getLoggedInUserDeptInternal();  
-  //     }
-  //     {this.props.dropdown === 'API' &&
-  //       this.getLoggedInUserDeptExternal();  
-  //     }
-  //   }             
-  // }
-
-  // private getLoggedInUserDeptAzure()
-  // {
-  //   let userEmail = this.props.webPartContext.pageContext.user.email;
-  //   this.props.webPartContext.spHttpClient
-  //   .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,Department'&refinementfilters='WorkEmail:(${userEmail})'`, SPHttpClient.configurations.v1, {
-  //     headers: headers
-  //   })
-  //   .then((res: SPHttpClientResponse): Promise<IBirthdayResults> => {          
-  //     return res.json();
-  //   })
-  //   .then((res: IBirthdayResults): void => {   
-  //     let department: string = this._getValueFromSearchResult('Department', res.PrimaryQueryResult.RelevantResults.Table.Rows[0].Cells);
-  //     this.setState({
-  //       userDepartment: department
-  //     });
-  //   },(error: any): void => {      
-  
-  //   })
-  //   .catch((error: any): void => {
-  
-  //   });
-  // }
-
-  // private getLoggedInUserDeptInternal()
-  // {
-  //   let userEmail = this.props.webPartContext.pageContext.user.email;
-  //   this.props.webPartContext.spHttpClient
-  //   .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items?select=department&$filter=email eq '${userEmail}'`, SPHttpClient.configurations.v1, {
-  //     headers: headers
-  //   })
-  //   .then((res: SPHttpClientResponse): Promise<any> => {          
-  //     return res.json();
-  //   })
-  //   .then((res: any): void => { 
-  //     console.log("response: "+res.value[0].department);      
-  //     this.setState({
-  //       userDepartment: res.value[0].department
-  //     });
-  //   },(error: any): void => {      
-  
-  //   })
-  //   .catch((error: any): void => {
-  
-  //   });
-  // }
-
-  // private getLoggedInUserDeptExternal()
-  // {
-  //   let userEmail = this.props.webPartContext.pageContext.user.email;
-  //   this.props.webPartContext.httpClient.get(`${this.props.externalAPI}`, HttpClient.configurations.v1, {
-  //     headers: headers
-  //   })
-  //   .then((response: HttpClientResponse) => {  
-  //     return response.json();  
-  //   })
-  //   .then((jsonresult): void => { 
-  //     for(let i: number = 0; i<jsonresult.length; ++i)
-  //     {
-  //       if(jsonresult[i].email === userEmail)
-  //       {
-  //         this.setState({
-  //           userDepartment: jsonresult[i].department
-  //         });
-  //       } 
-  //     }
-           
-  //   }, (error: any): void => {      
-     
-  //   })
-  //   .catch((error: any): void => {
-      
-  //   });    
-  // }
+  } 
 
   componentDidUpdate(prevProps: IBirthdayProps) : void
   {
     //check if properties has been changed
     if(this.props !== prevProps)
     {
-      //this.getLogUserDepartment();
       if(this.state.count === 1)
         this.CheckBirthdayDataSource();
       else if(this.state.count === 2)
@@ -382,16 +412,9 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
 
   private LoadInternalDetails()
   {
-    // let query: string;
-    // if(this.state.selectedCategory === 'Department')      
-    //   {query = `/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items?select=*&$filter=department eq '${this.state.userDepartment}'`;}
-    // else
-    //   {query = `/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`;}
-
     this.props.webPartContext.spHttpClient
         //.get(`${this.props.siteurl}/_vti_bin/listdata.svc/TestUserList?$filter=month(BirthDate) eq ${currentMonth} or month(HireDate) eq ${currentMonth}`, SPHttpClient.configurations.v1, {
         .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`, SPHttpClient.configurations.v1, {
-          // .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}${query}`, SPHttpClient.configurations.v1, {
           headers: headers
         })
         .then((result: SPHttpClientResponse) => {          
@@ -475,15 +498,8 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
         errorMessage:null,       
       });
 
-      // let query: string;
-      // if(this.state.selectedCategory === 'Department')      
-      //   {query = `/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='and(RefinableDate00:range(datetime(${this.state.StartDate}), datetime(${this.state.EndDate})), Department:(${this.state.userDepartment}))'`;}
-      // else
-      //   {query = `/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='RefinableDate00:range(datetime(${this.state.StartDate}), datetime(${this.state.EndDate}))'`;}
-
       this.props.webPartContext.spHttpClient
         .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='RefinableDate00:range(datetime(${this.state.StartDate}), datetime(${this.state.EndDate}))'`, SPHttpClient.configurations.v1, {
-          //.get(`${this.props.webPartContext.pageContext.web.absoluteUrl}${query}`, SPHttpClient.configurations.v1, {
           headers: headers
         })
         .then((res: SPHttpClientResponse): Promise<IBirthdayResults> => {          
@@ -687,15 +703,8 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
     // suppress metadata to minimize the amount of data loaded from SharePoint
     headers.append("accept", "application/json;odata.metadata=none");
 
-    // let query: string;
-    // if(this.state.selectedCategory === 'Department')      
-    //   {query = `/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'&refinementfilters='Department:(${this.state.userDepartment})'`;}
-    // else
-    //   {query = `/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'`;}
-  
       this.props.webPartContext.spHttpClient
         .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'`, SPHttpClient.configurations.v1, {
-          //.get(`${this.props.webPartContext.pageContext.web.absoluteUrl}${query}`, SPHttpClient.configurations.v1, {
           headers: headers
         })
         .then((res: SPHttpClientResponse): Promise<IBirthdayResults> => {          
@@ -791,11 +800,6 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
     });
   }
 
-  // private settings()
-  // {
-
-  // }
-
   private _getBirthdayForSorting(people: IBirthday[])
   {
     let currentMonth = new Date().getMonth() + 1;
@@ -813,6 +817,7 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
       }            
     } 
     return currentMonthPeople;
+   
   }
 
   async onChangeDeptCategoryHandle (selectedCategory:any) {
@@ -842,6 +847,11 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
     }
   }
 
+  private HelpOpen()
+  {
+    alert("In Help");
+  }
+
   public render(): React.ReactElement<IBirthdayProps> {    
     return(
       <div className={styles.birthday} >
@@ -853,10 +863,13 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
               <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
                 <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
               </div >
-            } */}
+            }  */}
+            <div onClick={() => window.open('https://www.google.com', '_blank')} className={styles.helpSettings}>
+                <TooltipHost content="User Help"><Help /></TooltipHost>
+              </div >
             <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
-              <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
-            </div >
+                <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
+              </div >           
             {/* <div className={styles.adminSettings} onClick={() => { this.settings(); }}>
               <TooltipHost content="Admin settings"><AdminSettings /></TooltipHost>
             </div>             */}
