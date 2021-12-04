@@ -11,7 +11,7 @@ import SPDepartmentalService from '../../../../../services/SPDepartmentalService
 import Main from '../../Main/Main';
 import { UserContext } from '../../Main/Main';
 import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
-import { MyRequestedEachPlateData } from '../../../../../modal/MyRequestedEachPlateData';
+import { MyRequestedEachPlateData } from '../../../../../model/MyRequestedEachPlateData';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
 

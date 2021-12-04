@@ -8,10 +8,9 @@ import { graph } from "@pnp/graph";
 import * as moment from 'moment';
 import { Logger, LogLevel} from "@pnp/logging";
 import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
-import {AssignedTicketData, MyRequestedEachPlateData} from '../modal/MyRequestedEachPlateData';
+import {AssignedTicketData, MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { IOptionWithKey } from '../modal/RaiseRequest';
-import { IDepartmentList } from '../modal/RaiseRequest';
+import { IDispatcherList, reAssignedUser, fileElements } from '../model/IDispatcher';
   debugger;
   let spfxContext = null;
 
@@ -35,11 +34,7 @@ export default class SPDispatcherService{
        this.web = Web(this.webUrl);
      }
 
-/* Dispatcher related calls */
-
-   public async getUserDispatcherGrps(){
-
-}
+/* DispatcherTab related calls */
 
 public async getDepartmentsDetails():Promise<{}>{  
  let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
@@ -79,7 +74,6 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
      }
 
      return (SPGroupList);
-        // this.loadAssignedTask(obj,SPGroupList);
 }
 
     public async loadAssignedTask(SPGroupList){
@@ -113,7 +107,91 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
         else{
 
         }
-      }    
+      }   
+      
+      /* DispatcherTicketView related calls */
+
+  public async loadDispatcherListInfo(passedDeptName):Promise<IDispatcherList[]>{
+      try{
+          let result = await this.web.lists.getByTitle('EmpReq').items.select("*","Author/Title","AttachmentFiles").expand("Author","AttachmentFiles").filter(`Department eq '${passedDeptName}' and Status eq 'Pending'`).orderBy("ID",false).get();
+
+             let dispatcherDetails:IDispatcherList[] = result.map((r,index)=>{
+                return{
+                  ticketNumber:`INC_${r.Department}_000${r.ID}`,
+                  supportDeptName:r.DepartmentGroup,
+                  raisedBy:r.Author.Title,
+                  issueDate:r.Created,
+                  description:r.Description,
+                  category:r.Category,
+                  department:r.Department,
+                  status:r.Status,
+                  dispatcherDeptName:r.AssignedTo,
+                  reAssignedTo:r.ReAssignTo,
+                  dataId:r.ID,
+                  attachmentFileName:r.AttachmentFiles.map((r,i)=>{
+                    return{
+                    FileName:r.FileName,
+                    ServerRelativeUrl:r.ServerRelativeUrl
+                    }
+                  }),
+                  getAttachmentData:r.AttachmentFiles.length?r.AttachmentFiles[0].ServerRelativeUrl:'',
+                  requesterAttachmentCheck:r.AttachmentFiles.length
+                }
+              });
+          return Promise.resolve(dispatcherDetails);
+        }catch(error){
+            return Promise.reject(error);
+      }
+   }
+
+   public async loadDepartmentOptionsByGroupName(groupName):Promise<IDropdownOption[]>{
+     try{
+        let result = await this.web.siteGroups.getByName(groupName).users();   
+        let groupUser:IDropdownOption[]=result.map((r,index)=>{
+          return{
+            key:r.Id,
+            text:r.Title,
+            }
+          })
+      return Promise.resolve(groupUser);
+     }catch(error){
+        return Promise.reject(error);
+     }      
+   }
+
+  public async loadMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition):Promise<{}>{
+    let list: IList = null;
+    let fileInfos: IAttachmentFileInfo[] = [];
+    if(dispatcherFileAddition != null){
+    let file = dispatcherFileAddition;
+      for(let i=0;i<file.length;++i){
+        let fileName = `DISP_${file[i].name}`;
+        fileInfos.push({
+          name: fileName,
+          content: "Dispatcher attachment"
+      });
+      }
+      await Promise.all(fileInfos)
+      .then(res=>{
+       list = this.web.lists.getByTitle("EmpReq").items.getById(requestedId).attachmentFiles.addMultiple(res);
+      })
+      return await Promise.resolve(list);
+   }
+  }
+  // newReAssignedToUser
+
+  public async loadAddingReAssignedToData(newUser:any,idRequest:number,raisedBy):Promise<{}>{
+    // this.getEmail(newReAssignedToUser.id);
+    let newItem:any = {
+      Status: "In Process",
+      ReAssignToId: newUser.key,
+    }
+
+       let result = await this.web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
+        return result
+        
+}
+      
 } //End of Main class
 
 

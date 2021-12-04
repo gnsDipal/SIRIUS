@@ -16,22 +16,21 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 import AssignedTicketsView from '../Home/AssignedTab/AssignedTicketsView/AssignedTicketsView';
 import AssignedClosedTicketsView from '../Home/AssignedTab/AssignedClosedTicketsView/AssignedClosedTicketsView';
 import {ConnectionString} from 'connection-string';
+import DispatcherTicketsView from '../Home/DispatcherTab/DispatcherTicketsView/DispatcherTicketsView';
 export const UserContext = React.createContext(null);
 // debugger;
 const Main = (props) => {
-  // let {dept} = useParams();
     return (
         <div>
             <HashRouter>
                 <UserContext.Provider value={props.webPartContext}>
               <Switch>
                 <Route exact path="/requested" component={(props)=><MyRequestTab {...props}/>}/>
-                <Route exact path="/assigned">
-                    <Route exact path="/assigned" component={()=><AssignedTab />}/>   
-                </Route>
+                <Route exact path="/assigned" component={()=><AssignedTab />}/>                  
                 <Route exact path = "/assigned/:Inprocess/:dept" component={(props)=><AssignedTicketsView {...props}/>}/>
                 <Route exact path = "/assigned/set/:Closed/:dept" component={(props)=><AssignedClosedTicketsView />}/>
                 <Route exact path="/dispatcher" component={(props)=><DispatcherTab {...props}/>}/>
+                <Route exact path="/dispatcher/:open/:dept" component={()=><DispatcherTicketsView />}/>
                 <Route exact path="/raise" component={(props)=><RaiseRequestTab {...props}/>}/>
                 <Route exact path="/manager" component={(props)=><ManagerTab {...props}/>}/>
                 <Route exact path="">

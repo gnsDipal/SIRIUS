@@ -16,7 +16,7 @@ import { TooltipHost, ITooltipHostStyles } from '@fluentui/react/lib/Tooltip';
 import AssignedTab from '../AssignedTab';
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
-import { passUser } from '../../../../../../modal/MyRequestedEachPlateData';
+import { passUser } from '../../../../../../model/MyRequestedEachPlateData';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
 import * as microsoftTeams from '@microsoft/teams-js';
 

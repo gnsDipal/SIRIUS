@@ -5,18 +5,23 @@ import { useEffect, useContext, useState } from 'react';
 import { UserContext } from '../../Main/Main';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route,HashRouter,Link,useParams} from "react-router-dom";
 import Navbar from '../Navbar/Navbar'
 import Home from '../Home'
 import SPDispatcherService from '../../../../../services/SPDispatcherService';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
+import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView';
 
-let spDispatcherServiceData: SPDepartmentalServiceData = null;
 debugger;
+let spDispatcherServiceData: SPDepartmentalServiceData = null;
+const OpenRequests:string = "Open Requests";    
+
 const DispatcherTab = (props) => {
     const mainContext = useContext(UserContext);
+    const {open,dept} = useParams();
+
     const [dispatcherCountData, setDispatcherCountData] = useState(null);
-    const [UnlockDispatcherCard, setUnlockDispatcherCard] = useState(0)
+    const [unlockDispatcherCard, setUnlockDispatcherCard] = useState(0)
     useEffect(() => {  
          init();              
     },[]);
@@ -26,7 +31,7 @@ const DispatcherTab = (props) => {
       spDispatcherServiceData.getDispatcherPlates()
       .then((res)=>{
         setDispatcherCountData(res);
-        setUnlockDispatcherCard(1);
+        setUnlockDispatcherCard(1); // For rendering once thedata is set
       })
     }
     // style={{fontSize:'25px', cursor:'pointer'}}
@@ -45,7 +50,7 @@ const DispatcherTab = (props) => {
                  <div className="ms-Grid-row ms-lg12 ms-sm12">               
                  <h4>{strings.DepartmentBasedCardLabel}</h4>
                 {   
-                  (UnlockDispatcherCard !== 0) &&
+                  (unlockDispatcherCard !== 0) &&
                   dispatcherCountData.map((res,index)=>{
                     return(
                   <div className="ms-Grid-col ms-lg4 ms-sm4">
@@ -54,10 +59,10 @@ const DispatcherTab = (props) => {
                       <h4>{res.deptName}</h4>
                     </div>
                     <ul className={styles.nav}>
-                      <li>
-                        <a>{strings.InProcessLabel}
+                      <li><Link to={`/dispatcher/${strings.PendingLabel}/${res.deptName}`}>
+                        <a>{strings.OpenRequestsLabel}
                           <span className={`${styles['bg-red']} ${styles['pull-right']} ${styles.badge}`}>{res.thisCount}</span>
-                        </a>
+                        </a></Link>
                       </li>
                     </ul>
                  </div>
@@ -69,6 +74,8 @@ const DispatcherTab = (props) => {
              </div>
            </div>
             <Switch>
+                <Route exact path={`/dispatcher/:open/:dept`} component={()=><DispatcherTicketsView />}>
+                </Route>
                 <Route exact path="/nav">
                     <div>
                         <Navbar {...props}/>

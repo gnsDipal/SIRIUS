@@ -8,10 +8,11 @@ import { Logger, LogLevel} from "@pnp/logging";
 import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import SPDepartmentalService from './SPDepartmentalService';
 import SPDispatcherService from './SPDispatcherService';
-import {MyRequestedEachPlateData} from '../modal/MyRequestedEachPlateData';
-import {AssignedTicketData} from '../modal/MyRequestedEachPlateData';
+import {MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
+import {AssignedTicketData} from '../model/MyRequestedEachPlateData';
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { IOptionWithKey, IDepartmentList } from '../modal/RaiseRequest';
+import { IOptionWithKey, IDepartmentList } from '../model/RaiseRequest';
+import { IDispatcherList } from '../model/IDispatcher';
 
   debugger;
   let uniqueDeptList = [];
@@ -73,6 +74,21 @@ import { IOptionWithKey, IDepartmentList } from '../modal/RaiseRequest';
       getDispatcherPlates():Promise<{}>{
        return this.dispatcherService.getDepartmentsDetails();
       }
-    }
+      getDispatcherTicketData(passedDeptName):Promise<IDispatcherList[]>{
+        return this.dispatcherService.loadDispatcherListInfo(passedDeptName);
+      }
+      getDepartmentOptionsByGroupName(department):Promise<IDropdownOption[]>{
+        return this.dispatcherService.loadDepartmentOptionsByGroupName(department);
+      }
+      async addMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition):Promise<{}>{
+       return this.dispatcherService.loadMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition);
+      }
+      addDispatcherReAssign(assignedToUser,idRequest,raisedBy):Promise<{}>{
+        return this.dispatcherService.loadAddingReAssignedToData(assignedToUser,idRequest,raisedBy);
+      }
+
+
+    } //End of Main Class
       
   
+ 

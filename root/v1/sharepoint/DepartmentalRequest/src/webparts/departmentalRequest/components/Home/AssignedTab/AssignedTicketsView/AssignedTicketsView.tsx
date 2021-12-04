@@ -18,7 +18,7 @@ import { TooltipHost, ITooltipHostStyles } from '@fluentui/react/lib/Tooltip';
 import AssignedTab from '../AssignedTab';
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
-import { passUser } from '../../../../../../modal/MyRequestedEachPlateData';
+import { passUser } from '../../../../../../model/MyRequestedEachPlateData';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
 import * as microsoftTeams from '@microsoft/teams-js';
 
@@ -324,25 +324,25 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             <div className="ms-Grid" dir="ltr"> 
               <div className="ms-Grid-row">
                 <div className="ms-Grid-col ms-lg4 ms-sm4">
-                <Link to="/assigned"><Icon iconName='NavigateBack' style={{fontSize:'25px', cursor:'pointer'}}></Icon></Link>
+                <Link to="/assigned"><Icon iconName='NavigateBack' className={styles.iconSize}></Icon></Link>
                 </div>
                     <div className="ms-Grid-col ms-lg4 ms-sm4">
                       <TooltipHost
                          content="Tickets"
-                      ><Icon iconName='Assign' style={{fontSize:'25px', cursor:'pointer'}} ></Icon>
+                      ><Icon iconName='Assign' className={styles.iconSize} ></Icon>
                       </TooltipHost>             
                     </div>
                     <div className="ms-Grid-col ms-lg4 ms-sm4">
                       <TooltipHost
                          content="All"
-                      ><Icon iconName='ViewAll' style={{fontSize:'25px', cursor:'pointer'}} ></Icon>
+                      ><Icon iconName='ViewAll' className={styles.iconSize} ></Icon>
                       </TooltipHost>
                     </div>
               </div>
 
-        <div className="ms-Grid-row">
+      <div className="ms-Grid-row">
       <div className="ms-Grid-col ms-lg12 ms-sm12">
-      <div style={{overflowX:'auto'}}>
+      <div className={styles.tableAutoFlow}>
       <table className={styles.tableSet} >
           <thead>
             <tr>
@@ -430,7 +430,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                       }
                     </td>
                     <td>
-                    <Icon iconName="Save" style={{fontSize:'20px', cursor:'pointer'}} onClick={(e)=>onSubmitDropDownHandle(CommentData,res.dataId,PassAssignedToUser,res.ticketNumber,res.department)}></Icon>
+                    <Icon iconName="Save" className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(CommentData,res.dataId,PassAssignedToUser,res.ticketNumber,res.department)}></Icon>
                     </td>
                   </tr>
                 )

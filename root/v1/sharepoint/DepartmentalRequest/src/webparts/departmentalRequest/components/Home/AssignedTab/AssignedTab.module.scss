@@ -192,6 +192,20 @@
         @include ms-sm12;
     }
 
+    .iconSize{
+      font-size:25px;
+      cursor: pointer;
+    }
+
+    .saveIcon{
+      font-size:20px;
+      cursor: pointer;
+    }
+
+    .tableAutoFlow{
+      overflow-x:auto
+    }
+
     .managerViewButton{
         background-color:#ff7c43;
         margin-right:'';

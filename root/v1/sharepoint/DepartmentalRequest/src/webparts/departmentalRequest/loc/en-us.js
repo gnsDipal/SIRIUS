@@ -13,6 +13,8 @@ define([], function() {
     "AssignedTicketsLabel":"Assigned Tickets",
     "DepartmentBasedCardLabel":"Department based cards",
     "InProcessLabel":"In Process",
+    "OpenRequestsLabel":"Open Requests",
+    "PendingLabel":"Pending",
     "ClosedLabel":"Closed",
     "TotalLabel":"Total",
     "SubmitButtonLabel":"Submit",
@@ -26,5 +28,7 @@ define([], function() {
     "AttachmentFromRequesterLabel":"Attachment From Requester",
     "AttachmentFromDispatcherLabel":"Attachment From Dispatcher",
     "AddFileLabel":"Add file, if any",
+    "AssignToLabel":"Assign To",
+    "UpdateLabel":"Update",
   }
 });

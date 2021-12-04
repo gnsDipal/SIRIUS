@@ -22,7 +22,7 @@ import { UserContext } from '../../Main/Main';
 import Navbar from '../Navbar/Navbar';
 import Home from '../Home';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
-import { IDepartmentList } from '../../../../../modal/RaiseRequest';
+import { IDepartmentList } from '../../../../../model/RaiseRequest';
 import { ToastContainer, toast } from 'react-toastify';
 
 

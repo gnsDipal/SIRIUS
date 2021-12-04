@@ -123,6 +123,21 @@
    cursor: pointer;
 }
 
+.tableOverFlow{
+  overflow-x:auto;
+}
+
+.saveIcon{
+  font-size:20px;
+  cursor: pointer;
+}
+
+.dispatcherAttachmentInput{
+  border:1px solid #ddd;
+  padding-top:10px;
+  padding-bottom:10px;
+}
+
 .badge {
     display: inline-block;
     min-width: 10px;

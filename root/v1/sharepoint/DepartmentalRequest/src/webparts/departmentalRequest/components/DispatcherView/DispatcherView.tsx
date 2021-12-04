@@ -103,7 +103,7 @@ var pickerGroupNames:(IPersonaProps)[]=[];
     });
   }
 
-//TODO: REMOVE THIS METHOD AFTER TSTING
+//TODO: REMOVE THIS METHOD AFTER TESTING
   private loadDepartmentOptions():void{
     const headers: HeadersInit = new Headers();
     // suppress metadata to minimize the amount of data loaded from SharePoint
@@ -279,13 +279,7 @@ var pickerGroupNames:(IPersonaProps)[]=[];
      this.loadDepartmentOptions();
     console.log("object = " + this.state.deptDetails[indexId].reAssignedTo);
    }
-
-
-
-
-
-  
-
+ 
    onSubmitDropDownHandle(newPeoplePicker:any,idRequest:number,assignedToUser,ticketNumberCheck,raisedBy){
   //  await this.setState({
   //     newPeoplePickerUser: newPeoplePicker[0].text
@@ -621,7 +615,7 @@ var pickerGroupNames:(IPersonaProps)[]=[];
           this.setState({
             deptListDropDown:data,
             idSelect:idNumber
-          },()=>console.log(this.state.deptListDropDown[0].id))
+          })
       }
     )
   

@@ -45,26 +45,42 @@
       @include ms-md4;
       @include ms-sm12;
     }
+
+    .ms-Button--compound{
+      text-align: center;
+    }
+
     .myIssuesButton{
-        .ms-Button-label{text-align:center};
+         // .ms-Button-label{text-align:center};
+        // display: contents;
+        > span{
+          display: contents;
+        }
         width:100%;
         margin-bottom:15px;
         max-width:100%;
         border-radius:10px;
-        // padding:65px;
+        padding:65px;
         height:150px;
         font-size:20px;
         // background-color: rgb(111 98 137);
         background-color: rgb(111, 98, 137);
         color:white;
     }
+
+    .ms-Button-flexContainer{
+      span{
+        display: contents;
+      }
+    }
+
     .assignedIssuesButton{
         .label{text-align:center};
         width:95%;
         margin-bottom:15px;
         max-width:100%;
         border-radius:10px;
-        // padding:65px;
+        padding:65px;
         height:150px;
         font-size:20px;
         background-color:rgb(242, 117, 127);
@@ -77,7 +93,7 @@
         margin-bottom:15px;
         max-width:100%;
         border-radius:10px;
-        // padding:65px;
+        padding:65px;
         height:150px;
         font-size:20px;
         background-color:#ffa600;
@@ -118,7 +134,7 @@
        }
 
     .raisedRequestButton{
-        .label{text-align:center};
+        // .label{text-align:center};
         background-color:#2f4b7c;
         margin-right:'';
         padding:10px;

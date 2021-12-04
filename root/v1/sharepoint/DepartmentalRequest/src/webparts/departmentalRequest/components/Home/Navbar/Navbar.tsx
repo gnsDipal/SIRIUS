@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
+import { DefaultButton, PrimaryButton, CompoundButton, IButtonStyles } from '@fluentui/react/lib/Button';
 import styles from '../Home.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
@@ -28,7 +28,7 @@ const Navbar = () => {
                 <div className="ms-Grid-col">
                   <div className="ms-u-sm12 ms-u-md4 ms-u-lg4 block">
                   <Link to="/requested">
-                  <CompoundButton styles={{label:{textAlign:'center'}}} className={styles.myIssuesButton}>{strings.RequestedIssuesLabel}</CompoundButton>
+                  <CompoundButton className={styles.myIssuesButton}>{strings.RequestedIssuesLabel}</CompoundButton>
                   </Link>
                   </div>
                 </div>
