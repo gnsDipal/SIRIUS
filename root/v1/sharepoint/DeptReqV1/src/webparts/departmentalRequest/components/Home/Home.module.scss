@@ -1,0 +1,175 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+@import '~office-ui-fabric-react/dist/css/fabric.css';
+
+.home {
+    .container {
+        max-width: 700px;
+        margin: 0px auto;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+    
+      .row {
+        @include ms-Grid-row;
+        @include ms-fontColor-white;
+        //background-color: $ms-color-themeDark;
+        background-color: $ms-color-themePrimary;
+        padding: 20px;
+      }
+    
+      .column {
+        @include ms-Grid-col;
+        @include ms-lg10;
+        @include ms-xl8;
+        @include ms-xlPush2;
+        @include ms-lgPush1;
+        @include ms-xxxl4;
+      }
+    
+      .title {
+        @include ms-font-l;
+        @include ms-fontColor-black;
+        border-bottom: 1px solid gray;
+      }
+    
+      .subTitle {
+        @include ms-font-l;
+        @include ms-fontColor-white;
+      }
+    .topMarginMainPage50{
+        margin-top:'50px';
+        @include ms-Grid-row;
+    }
+    .topLevelColumn{
+      @include ms-Grid-col;
+      @include ms-lg4;
+      @include ms-md4;
+      @include ms-sm12;
+    }
+
+    // .ms-Button--compound{
+    //   text-align: center;
+    // }
+
+    .myIssuesButton{
+         // .ms-Button-label{text-align:center};
+        // display: contents;
+        > span{
+          display: contents;
+        }
+        width:100%;
+        margin-bottom:15px;
+        max-width:100%;
+        border-radius:10px;
+        // padding:65px;
+        height:150px;
+        font-size:20px;
+        // background-color: rgb(111 98 137);
+        background-color: rgb(111, 98, 137);
+        color:white;
+    }
+
+    // .ms-Button-flexContainer{
+    //   span{
+    //     display: contents;
+    //   }
+    // }
+
+    .assignedIssuesButton{
+        // .label{text-align:center};
+        width:95%;
+        margin-bottom:15px;
+        max-width:100%;
+        border-radius:10px;
+        padding:65px;
+        height:150px;
+        font-size:20px;
+        background-color:rgb(242, 117, 127);
+        color:white;
+    }
+
+    .dispatcherViewButton{
+        // .label{text-align:center};
+        width:100%;
+        margin-bottom:15px;
+        max-width:100%;
+        border-radius:10px;
+        // padding:65px;
+        height:150px;
+        font-size:20px;
+        background-color:#ffa600;
+        color:white
+    }
+
+    .teamsSettings {
+      font-size: 20px;
+      //font-weight: bold;
+      cursor: pointer;
+      float: right;
+      margin-top:11px;
+    }
+  
+    .teamsSettings i{
+      font-weight: bold;
+    }
+
+    .upperAllThree{
+        @include ms-Grid-col;
+        @include ms-lg4;
+        @include ms-md4;
+        @include ms-sm12;
+       }
+      
+       .upperTwo{
+        @include ms-Grid-col;
+        @include ms-lg6;
+        @include ms-md6;
+        @include ms-sm12;
+       }
+      
+       .upperOnlyOne{
+        @include ms-Grid-col;
+        @include ms-lg12;
+        @include ms-md12;
+        @include ms-sm12;
+       }
+
+    .raisedRequestButton{
+        // .label{text-align:center};
+        background-color:#2f4b7c;
+        margin-right:'';
+        padding:10px;
+        border-radius:5px;
+        color:white;
+        text-align:center
+    }
+  
+
+    .belowButtonsColumsAdjust{
+        @include ms-Grid-col;
+        @include ms-xxxl6;
+        @include ms-xxl6;
+        @include ms-xl6;
+        @include ms-lg6;
+        @include ms-md6;
+        @include ms-sm12;
+    }
+
+    .managerViewButton{
+        background-color:#ff7c43;
+        margin-right:'';
+        padding:10px;
+        border-radius:5px;
+        color:white
+    }
+    .lowerImagesIconClass{
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+       //  height: 250px;
+      }
+      .lowerImagesIconClass:hover{
+        cursor: pointer;
+        
+      }
+
+}
