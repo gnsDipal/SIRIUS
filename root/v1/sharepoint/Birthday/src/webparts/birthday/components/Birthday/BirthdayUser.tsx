@@ -17,11 +17,11 @@ import {
   PersonaSize
 } from 'office-ui-fabric-react/lib/Persona';
 
+
 initializeIcons();
 const MyMailIcon = () => <Icon iconName="Mail" />;
 const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
 
-debugger;
 let Images: string[] = [];
 export default class BirthdayUser extends React.Component<IBirthdayUserListProps, IBirthdayUserListState> {
 
@@ -70,7 +70,7 @@ _getBirthdayImages = async () =>
       .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('BirthdayAnniversaryImages')/items?$select=ID,Title,FileLeafRef,ImageWidth,ImageHeight,AuthorId&$filter=Category eq 'Birthday'`, SPHttpClient.configurations.v1, {
         headers: headers
       })
-      .then((result: SPHttpClientResponse) => {          
+      .then((result: SPHttpClientResponse) => {
         return result.json();
       })
       .then((jsonresult) => {

@@ -72,7 +72,7 @@ export default class AnniversaryUser extends React.Component<IAnniversaryUserLis
         .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('BirthdayAnniversaryImages')/items?$select=ID,Title,FileLeafRef,ImageWidth,ImageHeight,AuthorId&$filter=Category eq 'Anniversary'`, SPHttpClient.configurations.v1, {
           headers: headers
         })
-        .then((result: SPHttpClientResponse) => {          
+        .then((result: SPHttpClientResponse) => {
           return result.json();
         })
         .then((jsonresult) => {

@@ -16,6 +16,8 @@ import { update, get } from '@microsoft/sp-lodash-subset';
 import { PropertyPaneDropdown } from '../../controls/PropertyPaneDropdown/components/PropertyPaneDropdown';
 import Birthday from './components/Birthday';
 import { IBirthdayProps } from './components/IBirthdayProps';
+import { IBirthday } from "../../Models/IBirthday";
+import { IAnniversary } from "../../Models/IAnniversary";
 import { PropertyFieldFilePicker, IFilePickerResult } from "@pnp/spfx-property-controls/lib/PropertyFieldFilePicker";
 import { sp } from '@pnp/sp';
 import "@pnp/sp/webs";
@@ -28,8 +30,11 @@ export interface IBirthdayWebPartProps {
   description: string;
   webPartContext: WebPartContext;  
   dropdown: string;
+  BirthPeople: IBirthday[];
+  AnniPeople: IAnniversary[];
   externalAPI: string;
   IsTeamsIcon: boolean;
+  dataSource: string;
   filePickerResult: IFilePickerResult;
 }
 
@@ -50,8 +55,11 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         description: this.properties.description,
         webPartContext: this.context,       
         dropdown: this.properties.dropdown,
+        BirthPeople: this.properties.BirthPeople,
+        AnniPeople: this.properties.AnniPeople,
         externalAPI: this.properties.externalAPI,
-        IsTeamsIcon: this.properties.IsTeamsIcon                     
+        IsTeamsIcon: this.properties.IsTeamsIcon,
+        dataSource: this.properties.dataSource                     
       } 
     );
     if(this.context.sdks.microsoftTeams)
@@ -87,8 +95,8 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
   private createListsUsingPNP()
   {
     this.createLibrary();
-    this.createListUsers();
-    this.createListEmail();
+    //this.createListUsers();
+    //this.createListEmail();
   }  
 
   createLibrary = async() =>
@@ -99,7 +107,6 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     // check if the list was created, or if it already existed:
     if (listEnsureResult.created) 
     {
-      //alert("My Library is created!");
       const batch = sp.web.createBatch();
       listEnsureResult.list.fields.inBatch(batch).addChoice("Category", ["Birthday", "Anniversary"], ChoiceFieldFormatType.Dropdown);     
       await batch.execute();
@@ -107,13 +114,13 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     } 
     else 
     {
-      //alert("My Library is already existed!");
+      console.log("My Library is already existed!");
     }
     // work on the created/updated list
     const r = await listEnsureResult.list.select("Id")();
-
-    // log the Id
-    console.log(r.Id);
+    if(r.Id){
+      this.createListUsers();
+    }
   }
 
   createListUsers = async() =>
@@ -121,7 +128,6 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     const listEnsureResult = await sp.web.lists.ensure("UserBirthAnniversaryDetails", "Users details list", 100);
     if (listEnsureResult.created)    
     {
-      //alert("My User List is created!");
       const batch = sp.web.createBatch(); 
       listEnsureResult.list.fields.inBatch(batch).addText("name");
       listEnsureResult.list.fields.inBatch(batch).addText("firstName");
@@ -141,10 +147,12 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     } 
     else 
     {
-      //alert("My User List is already existed!");
+      console.log("My User List is already existed!");
     }
     const r = await listEnsureResult.list.select("Id")();
-    console.log(r.Id);
+    if(r.Id){
+      this.createListEmail();
+    }
   }
 
   createListEmail = async() =>
@@ -152,7 +160,6 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     const listEnsureResult = await sp.web.lists.ensure("EmailSender", "Email sending list", 100);
     if (listEnsureResult.created) 
     {
-      //alert("My Email List is created!");
       const batch = sp.web.createBatch();
       listEnsureResult.list.fields.inBatch(batch).addText("EmailSubject"); 
       listEnsureResult.list.fields.inBatch(batch).addMultilineText("EmailBody",3,true);
@@ -170,7 +177,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     } 
     else 
     {
-      //alert("My Email List is already existed!");
+      console.log("My Email List is already existed!");
     }
     const r = await listEnsureResult.list.select("Id")();
     console.log(r.Id);
@@ -332,7 +339,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       },  
       body: JsonData  
     }) 
-    .then((response: SPHttpClientResponse): Promise<void> => {  
+    .then((response: SPHttpClientResponse): Promise<void> => {
         return response.json();  
     })  
     .then((item: any): void => {  
