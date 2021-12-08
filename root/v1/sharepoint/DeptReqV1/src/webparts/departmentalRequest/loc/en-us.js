@@ -16,6 +16,7 @@ define([], function() {
     "OpenRequestsLabel":"Open Requests",
     "PendingLabel":"Pending",
     "ClosedLabel":"Closed",
+    "CompletedLabel":"Completed",
     "TotalLabel":"Total",
     "SubmitButtonLabel":"Submit",
     "TicketNumberLabel":"Ticket Number",
@@ -30,5 +31,12 @@ define([], function() {
     "AddFileLabel":"Add file, if any",
     "AssignToLabel":"Assign To",
     "UpdateLabel":"Update",
+    "DepartmentLabel":"Department",
+    "StatusLabel":"Status",
+    "DispatcherGroupLabel":"Dispatcher Group",
+    "ReAssignToLabel":"ReAssign To",
+    "AttachLabel":"Attach",
+    "HomeLabel":"Home",
+    "NavigateBackLabel":"NavigateBack"
   }
 });

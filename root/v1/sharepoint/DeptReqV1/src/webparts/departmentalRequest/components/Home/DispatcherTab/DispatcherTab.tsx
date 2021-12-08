@@ -12,7 +12,6 @@ import SPDispatcherService from '../../../../../services/SPDispatcherService';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView';
 
-debugger;
 let spDispatcherServiceData: SPDepartmentalServiceData = null;
 const OpenRequests:string = "Open Requests";    
 

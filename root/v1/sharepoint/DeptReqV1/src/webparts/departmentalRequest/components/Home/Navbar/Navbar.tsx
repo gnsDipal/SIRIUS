@@ -1,11 +1,32 @@
-import * as React from 'react'
+import * as React from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { DefaultButton, PrimaryButton, CompoundButton, IButtonStyles } from '@fluentui/react/lib/Button';
 import styles from '../Home.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router,Switch,Route,HashRouter,Link,NavLink,PrivateRoute,useHistory, useLocation,useParams } from "react-router-dom";
-
+import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
+import { UserContext } from '../../Main/Main';
+import { initial } from 'lodash';
+debugger;
+let spPermissionDataService:SPDepartmentalServiceData = null;
 const Navbar = () => {
+    const mainContext = useContext(UserContext);
+    //state variable
+    const [dispatcherPermit, setDispatcherPermit] = useState(false)
+    useEffect(() => { 
+      init();              
+    },[]);
+    //initialization
+    const init = ()=>{
+      spPermissionDataService = new SPDepartmentalServiceData(mainContext);
+      spPermissionDataService.getDispatcherPermissionHandle()
+      .then(r=>{
+        setDispatcherPermit(r);
+        console.log("dispatcherPermit = " + dispatcherPermit);
+      })
+    }
+
     return (
         <div className={styles.home}>
         {

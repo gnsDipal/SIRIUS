@@ -1,0 +1,199 @@
+@import '~office-ui-fabric-react/dist/sass/References.scss';
+
+.myRequestTab{
+    .container {
+        max-width: 700px;
+        margin: 0px auto;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+      }
+    
+      .row {
+        @include ms-Grid-row;
+        @include ms-fontColor-white;
+        //background-color: $ms-color-themeDark;
+        background-color: $ms-color-themePrimary;
+        padding: 20px;
+      }
+    
+      .column {
+        @include ms-Grid-col;
+        @include ms-lg10;
+        @include ms-xl8;
+        @include ms-xlPush2;
+        @include ms-lgPush1;
+      }
+    
+      .title {
+        @include ms-font-l;
+        @include ms-fontColor-black;
+        border-bottom: 1px solid gray;
+      }
+    
+      .subTitle {
+        @include ms-font-l;
+        @include ms-fontColor-white;
+      }
+    
+      .description {
+        @include ms-font-l;
+        @include ms-fontColor-black;
+      }
+    
+      .SetDisplay{
+        display: flex;
+        //margin-bottom: 5px;
+      }
+    
+      .dropdownStyle{
+        font-size: large;
+        color: red;
+      }
+    
+      .smallBox {
+        border-radius: 2px;
+        position: relative;
+        display: block;
+        margin-bottom: 20px;
+        // box-shadow: 0 1px 1px rgb(0 0 0 / 10%);
+      }
+    
+      .setMainBox {
+        border: 1px solid #ddd;
+        background: #fff;
+      }
+    
+      .SetMainTitle {
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .nav {
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+    }
+    
+    .nav>li>a {
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+    }
+    
+    .nav>li:hover{
+      background-color: rgba(226, 221, 221, 0.966);
+    }
+    .nav>li>a:hover {
+      cursor: pointer;
+    }
+    
+    .bg-red, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #dd4b39 !important;
+    }
+    
+    .bg-orange, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #f39c12 !important;
+    }
+    
+    .bg-green, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #00a65a !important;
+    }
+    
+    .bg-blue, .callout.callout-danger, .alert-danger, .alert-error, .label-danger, .modal-danger .modal-body {
+        background-color: #00c0ef !important;
+    }
+    
+    .badge {
+        display: inline-block;
+        min-width: 10px;
+        padding: 3px 7px;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        color: #fff;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        background-color: #777;
+        border-radius: 10px;
+    }
+    
+    .pull-right {
+        float: right!important;
+    }
+     
+    .iconSize{
+        font-size:25px;
+         cursor: pointer;
+      }
+
+      .tableSet {
+        border-collapse: collapse;
+        width: 100%;
+       }
+    
+       .tableSet td, .tableSet th {
+        border: 1px solid #ddd;
+        padding: 8px;
+       }
+       .tableSet tr:nth-child(odd){background-color: #e7b510;}
+       .tableSet tr:nth-child(even){background-color: #e7b510;}
+       
+       .tableSet tr:hover {background-color: #af9500;}
+       
+       .tableSet th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #725dbe;
+        color: white;
+       }
+
+       .attachIcon{
+         font-size: 25px;
+       }
+      
+      .block {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border: 1px black solid;
+        text-align: center;
+        color:white;
+        background-color: gray;
+      }
+    
+      .button {
+        // Our button
+        text-decoration: none;
+        height: 32px;
+    
+        // Primary Button
+        min-width: 80px;
+        background-color: $ms-color-themePrimary;
+        border-color: $ms-color-themePrimary;
+        color: $ms-color-white;
+    
+        // Basic Button
+        outline: transparent;
+        position: relative;
+        font-family: "Segoe UI WestEuropean","Segoe UI",-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: $ms-font-size-m;
+        font-weight: $ms-font-weight-regular;
+        border-width: 0;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block;
+        padding: 0 16px;
+    
+        .label {
+          font-weight: $ms-font-weight-semibold;
+          font-size: $ms-font-size-m;
+          height: 32px;
+          line-height: 32px;
+          margin: 0 4px;
+          vertical-align: top;
+          display: inline-block;
+          color: white;
+        }
+      }
+}

@@ -15,6 +15,7 @@ declare interface IDepartmentalRequestWebPartStrings {
   PendingLabel:string;
   InProcessLabel:string;
   ClosedLabel:string;
+  CompletedLabel:string;
   TotalLabel:string;
   SubmitButtonLabel:string;
   TicketNumberLabel:string;
@@ -29,6 +30,13 @@ declare interface IDepartmentalRequestWebPartStrings {
   AddFileLabel:string;
   AssignToLabel:string;
   UpdateLabel:string;
+  DepartmentLabel:string;
+  StatusLabel:string;
+  DispatcherGroupLabel:string;
+  ReAssignToLabel:string;
+  AttachLabel:string;
+  HomeLabel:string;
+  NavigateBackLabel:string;
 }
 
 declare module 'DepartmentalRequestWebPartStrings' {

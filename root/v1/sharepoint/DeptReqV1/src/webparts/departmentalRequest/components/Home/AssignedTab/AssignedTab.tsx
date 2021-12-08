@@ -11,7 +11,7 @@ import SPDepartmentalService from '../../../../../services/SPDepartmentalService
 import Main from '../../Main/Main';
 import { UserContext } from '../../Main/Main';
 import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
-import { MyRequestedEachPlateData } from '../../../../../model/MyRequestedEachPlateData';
+import { MyAssignedEachPlateData } from '../../../../../model/MyRequestedEachPlateData';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
 
@@ -19,7 +19,7 @@ import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClose
 let myRequestedEachPlateData = [];   
 const InProcess:string = "In Process";    
 const Completed:string = "Completed";    
-let DepartmentalCountData:MyRequestedEachPlateData[] = [];
+let DepartmentalCountData:MyAssignedEachPlateData[] = [];
 let spAssignedService: SPDepartmentalService = null;
 let spAssignedServiceData: SPDepartmentalServiceData = null;
 

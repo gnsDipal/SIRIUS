@@ -9,7 +9,7 @@ import { graph } from "@pnp/graph";
 // import * as moment from 'moment';
 import { Logger, LogLevel} from "@pnp/logging";
 import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
-import {AssignedTicketData, MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
+import {AssignedTicketData, MyAssignedEachPlateData} from '../model/MyRequestedEachPlateData';
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
 import { IOptionWithKey } from '../model/RaiseRequest';
 import { IDepartmentList } from '../model/RaiseRequest';
@@ -59,7 +59,8 @@ import { IDepartmentList } from '../model/RaiseRequest';
         const x = acc.find(item => item.Department === current.Department);
         if (!x) {
           return acc.concat([current]);
-        } else {
+        } 
+        else {
           return acc;
         }
       }, []);
@@ -204,8 +205,8 @@ import { IDepartmentList } from '../model/RaiseRequest';
    /* 
       get the array containing the InProcess and Closed count for Assigned Tickets 
    */ 
-   async getAssignedViewCount():Promise<MyRequestedEachPlateData[]>{
-      let myRequestedDepartmentsCount:MyRequestedEachPlateData[] = [];
+   async getAssignedViewCount():Promise<MyAssignedEachPlateData[]>{
+      let myRequestedDepartmentsCount:MyAssignedEachPlateData[] = [];
         const web = Web(this.webUrl);
         let result = await web.lists.getByTitle('EmpReq').items.select('*').filter(`ReAssignToId eq ${this.loggedInUserId}`).get();
         console.log('result = ' + result);
@@ -218,7 +219,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
            return tempArr.indexOf(elem)  === index;
          });
          if(uniqueDeptList.length >0){
-          let data:MyRequestedEachPlateData;
+          let data:MyAssignedEachPlateData;
           uniqueDeptList.map((r,index)=>{
             myRequestedDepartmentsCount.push(
              data = {

@@ -20,7 +20,7 @@ import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../service
 import * as microsoftTeams from '@microsoft/teams-js';
 import DispatcherTab from '../DispatcherTab';
 import { IDispatcherList, passUser } from '../../../../../../model/IDispatcher';
-debugger;
+
 const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 let spDispatcherServiceData:SPDepartmentalServiceData = null;
 const DispatcherTicketsView = () => {

@@ -17,6 +17,8 @@ import AssignedTicketsView from '../Home/AssignedTab/AssignedTicketsView/Assigne
 import AssignedClosedTicketsView from '../Home/AssignedTab/AssignedClosedTicketsView/AssignedClosedTicketsView';
 import {ConnectionString} from 'connection-string';
 import DispatcherTicketsView from '../Home/DispatcherTab/DispatcherTicketsView/DispatcherTicketsView';
+import MyRequestTicketsView from '../Home/MyRequestTab/MyRequestTicketsView/MyRequestTicketsView';
+import ManagerTicketsView from '../Home/ManagerTab/ManagerTicketsView/ManagerTicketsView';
 export const UserContext = React.createContext(null);
 // debugger;
 const Main = (props) => {
@@ -26,6 +28,7 @@ const Main = (props) => {
                 <UserContext.Provider value={props.webPartContext}>
               <Switch>
                 <Route exact path="/requested" component={(props)=><MyRequestTab {...props}/>}/>
+                <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
                 <Route exact path="/assigned" component={()=><AssignedTab />}/>                  
                 <Route exact path = "/assigned/:Inprocess/:dept" component={(props)=><AssignedTicketsView {...props}/>}/>
                 <Route exact path = "/assigned/set/:Closed/:dept" component={(props)=><AssignedClosedTicketsView />}/>
@@ -33,6 +36,7 @@ const Main = (props) => {
                 <Route exact path="/dispatcher/:open/:dept" component={()=><DispatcherTicketsView />}/>
                 <Route exact path="/raise" component={(props)=><RaiseRequestTab {...props}/>}/>
                 <Route exact path="/manager" component={(props)=><ManagerTab {...props}/>}/>
+                <Route exact path="/manager/:myReqStatus/:dept" component={()=>< ManagerTicketsView />}/>
                 <Route exact path="">
                   <div>
                     <Navbar {...props}/>
