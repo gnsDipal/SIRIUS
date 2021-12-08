@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Save" xml:space="preserve">
+    <value>Save</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which saves the page.</comment>
+  </data>
+  <data name="SaveAltText" xml:space="preserve">
+    <value>Use to save the current workbench state.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which saves the page.</comment>
+  </data>
+  <data name="Discard" xml:space="preserve">
+    <value>Discard</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which discards chagnes to the page.</comment>
+  </data>
+  <data name="DiscardAltText" xml:space="preserve">
+    <value>Use to discard the current workbench state.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which discards chagnes to the page.</comment>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobile</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which opens up the page in a phone-sized frame.</comment>
+  </data>
+  <data name="MobleAltText" xml:space="preserve">
+    <value>Use to open the mobile preview tool for a cell phone.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which opens up the page in a phone-sized frame.</comment>
+  </data>
+  <data name="Tablet" xml:space="preserve">
+    <value>Tablet</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which opens up the page in a tablet-sized frame.</comment>
+  </data>
+  <data name="TabletAltText" xml:space="preserve">
+    <value>Use to open the mobile preview tool for a tablet.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which opens up the page in a tablet-sized frame.</comment>
+  </data>
+  <data name="Preview" xml:space="preserve">
+    <value>Preview</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which exits edit mode.</comment>
+  </data>
+  <data name="PreviewAltText" xml:space="preserve">
+    <value>Use to switch from edit mode to preview mode.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which exits edit mode.</comment>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which enters edit mode.</comment>
+  </data>
+  <data name="EditAltText" xml:space="preserve">
+    <value>Use to switch to edit mode.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which enters edit mode.</comment>
+  </data>
+  <data name="WebPartData" xml:space="preserve">
+    <value>Web part data</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text on button which displays serialized Web Part data.</comment>
+  </data>
+  <data name="WebPartDataAltText" xml:space="preserve">
+    <value>Display the serialized web part data.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Alt and accessability text on button which displays serialized data.</comment>
+  </data>
+</root>

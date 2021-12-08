@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="WebPartData" xml:space="preserve">
+    <value>Web Part Data</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Title of the dialog that displays serialized Web Part data.</comment>
+  </data>
+  <data name="ClassicPages" xml:space="preserve">
+    <value>Classic Pages</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Title of pivot table to see serialized data for use in classic pages.</comment>
+  </data>
+  <data name="ModernPages" xml:space="preserve">
+    <value>Modern Pages</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Title of pivot table to see serialized data for use in modern pages.</comment>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Title of the button to close the serialize Web Part dialog.</comment>
+  </data>
+  <data name="WebPartDataHelpInfoLink" xml:space="preserve">
+    <value>Learn about provisioning SharePoint assets from your SharePoint client-side web part</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] A helper link to know more about how to provision SharePoint assets from your SharePoint client-side web part.</comment>
+  </data>
+</root>

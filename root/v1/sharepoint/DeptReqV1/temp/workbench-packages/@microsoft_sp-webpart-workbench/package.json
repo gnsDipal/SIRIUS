@@ -1,0 +1,79 @@
+{
+  "_from": "@microsoft/sp-webpart-workbench@1.12.1",
+  "_id": "@microsoft/sp-webpart-workbench@1.12.1",
+  "_inBundle": false,
+  "_integrity": "sha512-o8a1m1+MZZuJvOMvddHFbugItjh+7TN6Ar9vGjHvVHA3q+fatA/Me4RpkbAQyDmXZU/eXi2M1E0/U5T/etEzKw==",
+  "_location": "/@microsoft/sp-webpart-workbench",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "@microsoft/sp-webpart-workbench@1.12.1",
+    "name": "@microsoft/sp-webpart-workbench",
+    "escapedName": "@microsoft%2fsp-webpart-workbench",
+    "scope": "@microsoft",
+    "rawSpec": "1.12.1",
+    "saveSpec": null,
+    "fetchSpec": "1.12.1"
+  },
+  "_requiredBy": [
+    "#DEV:/",
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/@microsoft/sp-webpart-workbench/-/sp-webpart-workbench-1.12.1.tgz",
+  "_shasum": "9af208c27b24e6a8da8bc77c12ccbc79f5bd261a",
+  "_spec": "@microsoft/sp-webpart-workbench@1.12.1",
+  "_where": "D:\\SIRIUS\\root\\v1\\sharepoint\\DeptReqV1",
+  "bundleDependencies": false,
+  "dependencies": {
+    "@microsoft/gulp-core-build-serve": "3.8.46",
+    "@microsoft/office-ui-fabric-react-bundle": "1.12.1",
+    "@microsoft/sp-application-base": "1.12.1",
+    "@microsoft/sp-core-library": "1.12.1",
+    "@microsoft/sp-loader": "1.12.1",
+    "@microsoft/sp-module-interfaces": "1.12.1",
+    "@microsoft/sp-webpart-base": "1.12.1",
+    "@rushstack/node-core-library": "3.35.2",
+    "office-ui-fabric-react": "7.156.0",
+    "prop-types": "15.7.2",
+    "react": "16.9.0",
+    "react-dom": "16.9.0",
+    "tslib": "~1.10.0"
+  },
+  "deprecated": false,
+  "description": "The SharePoint Workbench",
+  "devDependencies": {
+    "@microsoft/spfx-heft-plugins": "1.12.1",
+    "@ms/odsp-utilities-bundle": "5.3.140",
+    "@ms/sp-a11y": "0.7.17",
+    "@ms/sp-build-compiler-3.7": "1.11.0-dev.27",
+    "@ms/sp-build-internal-web": "0.31.174",
+    "@ms/sp-canvas": "2.5.0",
+    "@ms/sp-canvas-read": "0.1.0",
+    "@ms/sp-tab-tasklib": "0.0.4",
+    "@ms/sp-telemetry": "0.19.2",
+    "@ms/spfx-internal-web-build-rig": "0.1.0",
+    "@rushstack/heft": "0.24.1",
+    "@types/react": "16.9.36",
+    "@types/react-dom": "16.9.8",
+    "gulp": "~4.0.2",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "~25.1.0",
+    "ts-jest": "~25.2.0"
+  },
+  "engines": {
+    "node": ">=12.13.0 <13.0.0 || >=14.15.0 <15.0.0"
+  },
+  "homepage": "http://aka.ms/spfx",
+  "license": "SEE LICENSE IN \"EULA\" FOLDER",
+  "main": "lib/spWebpartWorkbench.js",
+  "name": "@microsoft/sp-webpart-workbench",
+  "scripts": {
+    "build": "heft test --clean --max-old-space-size 4096",
+    "clean": "heft clean",
+    "deploy": "heft dev-deploy",
+    "start": "heft start --clean",
+    "test": "heft test --no-build"
+  },
+  "version": "1.12.1"
+}

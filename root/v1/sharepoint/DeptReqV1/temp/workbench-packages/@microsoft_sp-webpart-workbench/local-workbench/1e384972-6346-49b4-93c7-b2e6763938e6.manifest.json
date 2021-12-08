@@ -1,0 +1,19 @@
+{
+  "id": "1e384972-6346-49b4-93c7-b2e6763938e6",
+  "alias": "sp-polyfills",
+  "componentType": "Library",
+  "version": "1.12.1",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "http://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-polyfills",
+    "scriptResources": {
+      "sp-polyfills": {
+        "type": "path",
+        "path": "sp-polyfills_none.js"
+      }
+    }
+  }
+}

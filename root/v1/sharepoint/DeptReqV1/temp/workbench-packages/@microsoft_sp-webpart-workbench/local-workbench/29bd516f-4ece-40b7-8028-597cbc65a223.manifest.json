@@ -1,0 +1,24 @@
+{
+  "id": "29bd516f-4ece-40b7-8028-597cbc65a223",
+  "alias": "SpOfficeUIFabricCore",
+  "componentType": "Library",
+  "version": "1.12.1",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "http://localhost:4321/dist/"
+    ],
+    "entryModuleId": "office-ui-fabric-core",
+    "scriptResources": {
+      "office-ui-fabric-core": {
+        "type": "path",
+        "path": "office-ui-fabric-core_none.js"
+      },
+      "@microsoft/load-themed-styles": {
+        "type": "component",
+        "id": "229b8d08-79f3-438b-8c21-4613fc877abd",
+        "version": "0.1.2"
+      }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "id": "467dc675-7cc5-4709-8aac-78e3b71bd2f6",
+  "alias": "SPComponentBase",
+  "componentType": "Library",
+  "version": "1.12.1",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-component-base",
+    "scriptResources": {
+      "sp-component-base": {
+        "type": "localizedPath",
+        "paths": {
+          "default": "sp-component-base_default.js",
+          "en-US": "sp-component-base_en-us.js",
+          "qps-ploca": "sp-component-base_qps-ploca.js",
+          "qps-ploc": "sp-component-base_qps-ploc.js",
+          "en-GB": "sp-component-base_en-us.js",
+          "en-NZ": "sp-component-base_en-us.js",
+          "en-IE": "sp-component-base_en-us.js",
+          "en-AU": "sp-component-base_en-us.js",
+          "bn": "sp-component-base_en-us.js",
+          "chr": "sp-component-base_en-us.js",
+          "dv": "sp-component-base_en-us.js",
+          "div": "sp-component-base_en-us.js",
+          "en": "sp-component-base_en-us.js",
+          "fil": "sp-component-base_en-us.js",
+          "haw": "sp-component-base_en-us.js",
+          "iu": "sp-component-base_en-us.js",
+          "lo": "sp-component-base_en-us.js",
+          "moh": "sp-component-base_en-us.js",
+          "sq": "sp-component-base_en-us.js",
+          "am": "sp-component-base_en-us.js",
+          "hy": "sp-component-base_en-us.js",
+          "mk": "sp-component-base_en-us.js",
+          "bs": "sp-component-base_en-us.js",
+          "my": "sp-component-base_en-us.js",
+          "dz": "sp-component-base_en-us.js",
+          "en-CY": "sp-component-base_en-us.js",
+          "en-EG": "sp-component-base_en-us.js",
+          "en-IL": "sp-component-base_en-us.js",
+          "en-IS": "sp-component-base_en-us.js",
+          "en-JO": "sp-component-base_en-us.js",
+          "en-KE": "sp-component-base_en-us.js",
+          "en-KW": "sp-component-base_en-us.js",
+          "en-MK": "sp-component-base_en-us.js",
+          "en-MT": "sp-component-base_en-us.js",
+          "en-PK": "sp-component-base_en-us.js",
+          "en-QA": "sp-component-base_en-us.js",
+          "en-SA": "sp-component-base_en-us.js",
+          "en-LK": "sp-component-base_en-us.js",
+          "en-AE": "sp-component-base_en-us.js",
+          "en-VN": "sp-component-base_en-us.js",
+          "is": "sp-component-base_en-us.js",
+          "km": "sp-component-base_en-us.js",
+          "kh": "sp-component-base_en-us.js",
+          "mt": "sp-component-base_en-us.js",
+          "fa": "sp-component-base_en-us.js",
+          "gd": "sp-component-base_en-us.js",
+          "sr-Cyrl-BA": "sp-component-base_en-us.js",
+          "sr-Latn-BA": "sp-component-base_en-us.js",
+          "sd": "sp-component-base_en-us.js",
+          "si": "sp-component-base_en-us.js",
+          "so": "sp-component-base_en-us.js",
+          "ti-ET": "sp-component-base_en-us.js",
+          "uz": "sp-component-base_en-us.js",
+          "en-SG": "sp-component-base_en-us.js",
+          "en-HK": "sp-component-base_en-us.js",
+          "en-MY": "sp-component-base_en-us.js",
+          "en-PH": "sp-component-base_en-us.js",
+          "en-TT": "sp-component-base_en-us.js",
+          "en-AZ": "sp-component-base_en-us.js",
+          "en-BH": "sp-component-base_en-us.js",
+          "en-BN": "sp-component-base_en-us.js",
+          "en-ID": "sp-component-base_en-us.js",
+          "mi": "sp-component-base_en-us.js"
+        },
+        "defaultPath": "sp-component-base_default.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      },
+      "@microsoft/sp-dynamic-data": {
+        "type": "component",
+        "id": "e40f8203-b39d-425a-a957-714852e33b79",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-lodash-subset": {
+        "type": "component",
+        "id": "73e1dc6c-8441-42cc-ad47-4bd3659f8a3a",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-page-context": {
+        "type": "component",
+        "id": "1c4541f7-5c31-41aa-9fa8-fbc9dc14c0a8",
+        "version": "1.12.1"
+      },
+      "@microsoft/load-themed-styles": {
+        "type": "component",
+        "id": "229b8d08-79f3-438b-8c21-4613fc877abd",
+        "version": "0.1.2"
+      },
+      "@microsoft/sp-diagnostics": {
+        "type": "component",
+        "id": "78359e4b-07c2-43c6-8d0b-d060b4d577e8",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-http": {
+        "type": "component",
+        "id": "c07208f0-ea3b-4c1a-9965-ac1b825211a6",
+        "version": "1.12.1"
+      }
+    }
+  }
+}
