@@ -4,29 +4,29 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router, Switch, Route,HashRouter,Link, useParams} from "react-router-dom";
 import { WebPartContext } from '@microsoft/sp-webpart-base';
 import BirthdayUsers from '../Home/Birthday/BirthdayUsers';
-
+import AnniversaryUsers from '../Home/Anniversary/AnniversaryUsers';
 
 export const UserContext = React.createContext(null);
 
-
-const Main = (props) => {
+const Birthday = (props) => {
   
     return (
         <div>
-            <HashRouter>
-                <UserContext.Provider value={props.webPartContext}>
+          <HashRouter>
+            <UserContext.Provider value={...props}>
               <Switch>
-
+                <Route exact path="/birthday" component={()=><BirthdayUsers />}/>
+                <Route exact path="/anniversary" component={()=><AnniversaryUsers />}/>
                 <Route exact path="">
                   <div>
-                    <BirthdayUsers {...props}/>
-                  </div>
+                    <BirthdayUsers/>
+                  </div>+
                 </Route>
               </Switch>
-              </UserContext.Provider>
-            </HashRouter>
+            </UserContext.Provider>
+          </HashRouter>
         </div>    
     )
 }
 
-export default Main
+export default Birthday
