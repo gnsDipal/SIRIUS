@@ -52,24 +52,20 @@ export default class SPPermissionService{
 
         public async checkForDepts(result,loggedInUserGrps):Promise<boolean>{
             let count:number = 0;
-            // for(let i=0;i<loggedInUserGrps.length;++i){
-            //     for(let j=0;j<result.length;++j){
-            //         if(loggedInUserGrps[i].Title ===result[j].GroupName.Title){
-            //             count = count + 1;
-            //             break;
-            //         }
-            //     }
-            // }
-            const set = new Set(loggedInUserGrps);
-            console.log('set = ' + set);
-            let res1 = result.filter(item => set.has(item.GroupName.Title));
-            console.log('object');
-            return true;
-            // if(count>0){
-            //     return Promise.resolve(true);
-            // }
-            // else{
-            //     return Promise.resolve(false);
-            // }
+            for(let i=0;i<loggedInUserGrps.length;++i){
+                for(let j=0;j<result.length;++j){
+                    if(loggedInUserGrps[i].Title ===result[j].GroupName.Title){
+                        count = count + 1;
+                        break;
+                    }
+                }
+            }
+          
+            if(count>0){
+                return Promise.resolve(true);
+            }
+            else{
+                return Promise.resolve(false);
+            }
         }
 }
