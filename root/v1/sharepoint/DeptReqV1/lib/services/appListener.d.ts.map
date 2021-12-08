@@ -1,1 +1,0 @@
-{"version":3,"file":"appListener.d.ts","sourceRoot":"","sources":["../../src/services/appListener.ts"],"names":[],"mappings":"AAAA,OAAO,EAGH,gBAAgB,EAChB,SAAS,EACT,YAAY,EAEb,MAAM,cAAc,CAAC;AAEtB,OAAO,uCAAuC,CAAC;AAK/C,MAAM,CAAC,OAAO,OAAO,WAAY,YAAW,YAAY;IAEzC,YAAY;IAOnB,GAAG,CAAC,KAAK,EAAE,SAAS,GAAG,IAAI;IAKhC,gBAAgB,mBAoBZ;CAEN"}

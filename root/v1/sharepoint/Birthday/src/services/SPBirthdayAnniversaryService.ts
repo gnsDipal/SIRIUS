@@ -1,18 +1,19 @@
-import * as React from 'react'
-import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
-import { IItemAddResult } from "@pnp/sp/items";
-import { IList } from "@pnp/sp/lists";
-import { graph } from "@pnp/graph";
-import {UserContext} from '../webparts/birthday/components/Main/Birthday';  
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
+//import * as React from 'react'
+//import { WebPartContext } from "@microsoft/sp-webpart-base";
+//import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
+import { Web } from '@pnp/sp/presets/all';
+//import { IItemAddResult } from "@pnp/sp/items";
+//import { IList } from "@pnp/sp/lists";
+//import { graph } from "@pnp/graph";
+//import {UserContext} from '../webparts/birthday/components/Main/Birthday';  
+//import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
 
 export default class SPBirthdayAnniversaryService{
     private webContext = null;
     private webUrl:string = null;
-    private loggedInUserId?:string = null;
-    private loggedInUserEmail?:string = "";
-    private loggedInUserName?:string = "";
+    // private loggedInUserId?:string = null;
+    // private loggedInUserEmail?:string = "";
+    // private loggedInUserName?:string = "";
     private web = null;
 
     constructor(private context) {  
@@ -33,9 +34,9 @@ export default class SPBirthdayAnniversaryService{
 
       private async onInit() {
         this.webUrl = this.webContext.pageContext.web.absoluteUrl;
-        this.loggedInUserId = this.webContext.pageContext.legacyPageContext["userId"];
-        this.loggedInUserEmail = this.webContext.pageContext.user.email;
-        this.loggedInUserName = this.webContext.pageContext.user.displayName;
+        // this.loggedInUserId = this.webContext.pageContext.legacyPageContext["userId"];
+        // this.loggedInUserEmail = this.webContext.pageContext.user.email;
+        // this.loggedInUserName = this.webContext.pageContext.user.displayName;
         this.web = Web(this.webUrl);
       }
 
