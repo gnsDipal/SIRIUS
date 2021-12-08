@@ -1,0 +1,154 @@
+{
+  "id": "1cea229f-b208-4202-8014-22503d92a019",
+  "alias": "SPDataProviders",
+  "componentType": "Library",
+  "version": "0.1.0",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-dataproviders",
+    "scriptResources": {
+      "sp-dataproviders": {
+        "type": "localizedPath",
+        "paths": {
+          "default": "sp-dataproviders_default.js",
+          "en-US": "sp-dataproviders_en-us.js",
+          "qps-ploca": "sp-dataproviders_qps-ploca.js",
+          "qps-ploc": "sp-dataproviders_qps-ploc.js",
+          "en-GB": "sp-dataproviders_en-us.js",
+          "en-NZ": "sp-dataproviders_en-us.js",
+          "en-IE": "sp-dataproviders_en-us.js",
+          "en-AU": "sp-dataproviders_en-us.js",
+          "bn": "sp-dataproviders_en-us.js",
+          "chr": "sp-dataproviders_en-us.js",
+          "dv": "sp-dataproviders_en-us.js",
+          "div": "sp-dataproviders_en-us.js",
+          "en": "sp-dataproviders_en-us.js",
+          "fil": "sp-dataproviders_en-us.js",
+          "haw": "sp-dataproviders_en-us.js",
+          "iu": "sp-dataproviders_en-us.js",
+          "lo": "sp-dataproviders_en-us.js",
+          "moh": "sp-dataproviders_en-us.js",
+          "sq": "sp-dataproviders_en-us.js",
+          "am": "sp-dataproviders_en-us.js",
+          "hy": "sp-dataproviders_en-us.js",
+          "mk": "sp-dataproviders_en-us.js",
+          "bs": "sp-dataproviders_en-us.js",
+          "my": "sp-dataproviders_en-us.js",
+          "dz": "sp-dataproviders_en-us.js",
+          "en-CY": "sp-dataproviders_en-us.js",
+          "en-EG": "sp-dataproviders_en-us.js",
+          "en-IL": "sp-dataproviders_en-us.js",
+          "en-IS": "sp-dataproviders_en-us.js",
+          "en-JO": "sp-dataproviders_en-us.js",
+          "en-KE": "sp-dataproviders_en-us.js",
+          "en-KW": "sp-dataproviders_en-us.js",
+          "en-MK": "sp-dataproviders_en-us.js",
+          "en-MT": "sp-dataproviders_en-us.js",
+          "en-PK": "sp-dataproviders_en-us.js",
+          "en-QA": "sp-dataproviders_en-us.js",
+          "en-SA": "sp-dataproviders_en-us.js",
+          "en-LK": "sp-dataproviders_en-us.js",
+          "en-AE": "sp-dataproviders_en-us.js",
+          "en-VN": "sp-dataproviders_en-us.js",
+          "is": "sp-dataproviders_en-us.js",
+          "km": "sp-dataproviders_en-us.js",
+          "kh": "sp-dataproviders_en-us.js",
+          "mt": "sp-dataproviders_en-us.js",
+          "fa": "sp-dataproviders_en-us.js",
+          "gd": "sp-dataproviders_en-us.js",
+          "sr-Cyrl-BA": "sp-dataproviders_en-us.js",
+          "sr-Latn-BA": "sp-dataproviders_en-us.js",
+          "sd": "sp-dataproviders_en-us.js",
+          "si": "sp-dataproviders_en-us.js",
+          "so": "sp-dataproviders_en-us.js",
+          "ti-ET": "sp-dataproviders_en-us.js",
+          "uz": "sp-dataproviders_en-us.js",
+          "en-SG": "sp-dataproviders_en-us.js",
+          "en-HK": "sp-dataproviders_en-us.js",
+          "en-MY": "sp-dataproviders_en-us.js",
+          "en-PH": "sp-dataproviders_en-us.js",
+          "en-TT": "sp-dataproviders_en-us.js",
+          "en-AZ": "sp-dataproviders_en-us.js",
+          "en-BH": "sp-dataproviders_en-us.js",
+          "en-BN": "sp-dataproviders_en-us.js",
+          "en-ID": "sp-dataproviders_en-us.js",
+          "mi": "sp-dataproviders_en-us.js"
+        },
+        "defaultPath": "sp-dataproviders_default.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      },
+      "@ms/sp-telemetry": {
+        "type": "component",
+        "id": "8217e442-8ed3-41fd-957d-b112e841286a",
+        "version": "0.19.2"
+      },
+      "@microsoft/sp-image-helper": {
+        "type": "component",
+        "id": "2c46c8f0-e214-4f49-951e-fd5b9d7b4ae1",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-loader": {
+        "type": "component",
+        "id": "1c6c9123-7aac-41f3-a376-3caea41ed83f",
+        "version": "1.12.1"
+      },
+      "@ms/odsp-core-bundle": {
+        "type": "component",
+        "id": "2e09fb9b-13bb-48f2-859f-97d6fff71176",
+        "version": "1.1.13"
+      },
+      "@microsoft/office-ui-fabric-react-bundle": {
+        "type": "component",
+        "id": "02a01e42-69ab-403d-8a16-acd128661f8e",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-lodash-subset": {
+        "type": "component",
+        "id": "73e1dc6c-8441-42cc-ad47-4bd3659f8a3a",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-page-context": {
+        "type": "component",
+        "id": "1c4541f7-5c31-41aa-9fa8-fbc9dc14c0a8",
+        "version": "1.12.1"
+      },
+      "@ms/i18n-utilities": {
+        "type": "component",
+        "id": "c83d5509-ccd5-4c67-919f-2440f237927a",
+        "version": "0.2.231"
+      },
+      "@ms/sp-component-utilities": {
+        "type": "component",
+        "id": "8494e7d7-6b99-47b2-a741-59873e42f16f",
+        "version": "11.10.1"
+      },
+      "@microsoft/sp-diagnostics": {
+        "type": "component",
+        "id": "78359e4b-07c2-43c6-8d0b-d060b4d577e8",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-http": {
+        "type": "component",
+        "id": "c07208f0-ea3b-4c1a-9965-ac1b825211a6",
+        "version": "1.12.1"
+      },
+      "@ms/odsp-utilities-bundle": {
+        "type": "component",
+        "id": "cc2cc925-b5be-41bb-880a-f0f8030c6aff",
+        "version": "5.3.140"
+      }
+    }
+  }
+}

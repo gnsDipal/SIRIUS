@@ -1,0 +1,134 @@
+{
+  "manifestVersion": 2,
+  "id": "099b8b60-1a4c-4493-abe7-92219fcf9875",
+  "alias": "SpCanvasDiff",
+  "componentType": "Library",
+  "version": "0.1.0",
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-canvas-diff",
+    "scriptResources": {
+      "sp-canvas-diff": {
+        "type": "localizedPath",
+        "paths": {
+          "default": "sp-canvas-diff_default.js",
+          "en-US": "sp-canvas-diff_en-us.js",
+          "qps-ploca": "sp-canvas-diff_qps-ploca.js",
+          "qps-ploc": "sp-canvas-diff_qps-ploc.js",
+          "en-GB": "sp-canvas-diff_en-us.js",
+          "en-NZ": "sp-canvas-diff_en-us.js",
+          "en-IE": "sp-canvas-diff_en-us.js",
+          "en-AU": "sp-canvas-diff_en-us.js",
+          "bn": "sp-canvas-diff_en-us.js",
+          "chr": "sp-canvas-diff_en-us.js",
+          "dv": "sp-canvas-diff_en-us.js",
+          "div": "sp-canvas-diff_en-us.js",
+          "en": "sp-canvas-diff_en-us.js",
+          "fil": "sp-canvas-diff_en-us.js",
+          "haw": "sp-canvas-diff_en-us.js",
+          "iu": "sp-canvas-diff_en-us.js",
+          "lo": "sp-canvas-diff_en-us.js",
+          "moh": "sp-canvas-diff_en-us.js",
+          "sq": "sp-canvas-diff_en-us.js",
+          "am": "sp-canvas-diff_en-us.js",
+          "hy": "sp-canvas-diff_en-us.js",
+          "mk": "sp-canvas-diff_en-us.js",
+          "bs": "sp-canvas-diff_en-us.js",
+          "my": "sp-canvas-diff_en-us.js",
+          "dz": "sp-canvas-diff_en-us.js",
+          "en-CY": "sp-canvas-diff_en-us.js",
+          "en-EG": "sp-canvas-diff_en-us.js",
+          "en-IL": "sp-canvas-diff_en-us.js",
+          "en-IS": "sp-canvas-diff_en-us.js",
+          "en-JO": "sp-canvas-diff_en-us.js",
+          "en-KE": "sp-canvas-diff_en-us.js",
+          "en-KW": "sp-canvas-diff_en-us.js",
+          "en-MK": "sp-canvas-diff_en-us.js",
+          "en-MT": "sp-canvas-diff_en-us.js",
+          "en-PK": "sp-canvas-diff_en-us.js",
+          "en-QA": "sp-canvas-diff_en-us.js",
+          "en-SA": "sp-canvas-diff_en-us.js",
+          "en-LK": "sp-canvas-diff_en-us.js",
+          "en-AE": "sp-canvas-diff_en-us.js",
+          "en-VN": "sp-canvas-diff_en-us.js",
+          "is": "sp-canvas-diff_en-us.js",
+          "km": "sp-canvas-diff_en-us.js",
+          "kh": "sp-canvas-diff_en-us.js",
+          "mt": "sp-canvas-diff_en-us.js",
+          "fa": "sp-canvas-diff_en-us.js",
+          "gd": "sp-canvas-diff_en-us.js",
+          "sr-Cyrl-BA": "sp-canvas-diff_en-us.js",
+          "sr-Latn-BA": "sp-canvas-diff_en-us.js",
+          "sd": "sp-canvas-diff_en-us.js",
+          "si": "sp-canvas-diff_en-us.js",
+          "so": "sp-canvas-diff_en-us.js",
+          "ti-ET": "sp-canvas-diff_en-us.js",
+          "uz": "sp-canvas-diff_en-us.js",
+          "en-SG": "sp-canvas-diff_en-us.js",
+          "en-HK": "sp-canvas-diff_en-us.js",
+          "en-MY": "sp-canvas-diff_en-us.js",
+          "en-PH": "sp-canvas-diff_en-us.js",
+          "en-TT": "sp-canvas-diff_en-us.js",
+          "en-AZ": "sp-canvas-diff_en-us.js",
+          "en-BH": "sp-canvas-diff_en-us.js",
+          "en-BN": "sp-canvas-diff_en-us.js",
+          "en-ID": "sp-canvas-diff_en-us.js",
+          "mi": "sp-canvas-diff_en-us.js"
+        },
+        "defaultPath": "sp-canvas-diff_default.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      },
+      "@microsoft/office-ui-fabric-react-bundle": {
+        "type": "component",
+        "id": "02a01e42-69ab-403d-8a16-acd128661f8e",
+        "version": "1.12.1"
+      },
+      "@ms/sp-safehtml": {
+        "type": "component",
+        "id": "6d3c733c-8cb7-4871-bb22-b5b37c1d518d",
+        "version": "0.2.259"
+      },
+      "@microsoft/sp-lodash-subset": {
+        "type": "component",
+        "id": "73e1dc6c-8441-42cc-ad47-4bd3659f8a3a",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-page-context": {
+        "type": "component",
+        "id": "1c4541f7-5c31-41aa-9fa8-fbc9dc14c0a8",
+        "version": "1.12.1"
+      },
+      "react": {
+        "type": "component",
+        "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+        "version": "16.9.0"
+      },
+      "@microsoft/load-themed-styles": {
+        "type": "component",
+        "id": "229b8d08-79f3-438b-8c21-4613fc877abd",
+        "version": "0.1.2"
+      },
+      "@ms/sp-canvas-read": {
+        "type": "component",
+        "id": "95273007-bacd-4c7c-a52c-fe18c3746a10",
+        "version": "0.1.0"
+      },
+      "@microsoft/sp-diagnostics": {
+        "type": "component",
+        "id": "78359e4b-07c2-43c6-8d0b-d060b4d577e8",
+        "version": "1.12.1"
+      }
+    }
+  }
+}

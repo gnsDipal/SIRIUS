@@ -1,0 +1,70 @@
+{
+  "id": "6bc42c01-5a4f-480e-bd2a-f048e32d1b5f",
+  "alias": "DepartmentalRequestWebPart",
+  "componentType": "WebPart",
+  "version": "0.0.1",
+  "manifestVersion": 2,
+  "requiresCustomScript": false,
+  "supportedHosts": [
+    "SharePointWebPart"
+  ],
+  "preconfiguredEntries": [
+    {
+      "groupId": "5c03119e-3074-46fd-976b-c60198311f70",
+      "group": {
+        "default": "Other"
+      },
+      "title": {
+        "default": "DepartmentalRequest"
+      },
+      "description": {
+        "default": "DepartmentalRequest description"
+      },
+      "officeFabricIconFontName": "Page",
+      "properties": {
+        "description": "DepartmentalRequest"
+      }
+    }
+  ],
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "<!-- PATH TO CDN -->"
+    ],
+    "entryModuleId": "departmental-request-web-part",
+    "scriptResources": {
+      "departmental-request-web-part": {
+        "type": "path",
+        "path": "departmental-request-web-part.js"
+      },
+      "@microsoft/sp-property-pane": {
+        "type": "component",
+        "id": "f9e737b7-f0df-4597-ba8c-3060f82380db",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-webpart-base": {
+        "type": "component",
+        "id": "974a7777-0990-4136-8fa6-95d80114c2e0",
+        "version": "1.12.1"
+      },
+      "react": {
+        "type": "component",
+        "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+        "version": "16.9.0"
+      },
+      "react-dom": {
+        "type": "component",
+        "id": "aa0a46ec-1505-43cd-a44a-93f3a5aa460a",
+        "version": "16.9.0"
+      },
+      "DepartmentalRequestWebPartStrings": {
+        "type": "path",
+        "path": "DepartmentalRequestWebPartStrings_en-us.js"
+      }
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "6d3c733c-8cb7-4871-bb22-b5b37c1d518d",
+  "alias": "sp-safehtml",
+  "componentType": "Library",
+  "version": "0.2.259",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-safehtml",
+    "scriptResources": {
+      "sp-safehtml": {
+        "type": "path",
+        "path": "sp-safehtml_none.js"
+      }
+    }
+  }
+}

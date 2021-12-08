@@ -1,0 +1,24 @@
+{
+  "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+  "alias": "React",
+  "componentType": "Library",
+  "version": "16.9.0",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "react-16-bundle",
+    "scriptResources": {
+      "react-16-bundle": {
+        "type": "path",
+        "path": "react-16-bundle_none.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      }
+    }
+  }
+}

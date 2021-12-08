@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="UrlTextBoxPlaceholder" xml:space="preserve">
+    <value>Enter a URL to view in Mobile Preview Tool.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Placeholder text for the URL text box in Mobile Preview Tool.</comment>
+  </data>
+  <data name="ScreenReaderMobilePreviewEntered" xml:space="preserve">
+    <value>You have entered the Mobile Preview Tool. If you want to preview a different page, enter the URL in URL text field. To close the tool and go back to Workbench, press Escape.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Screen reader alert for when the user enters Mobile Preview Tool.</comment>
+  </data>
+  <data name="ScreenReaderDevicePickerEntered" xml:space="preserve">
+    <value>Use left and right arrow keys to choose a device to change the preview screen size.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Screen reader alert for when the user enters the device selector in Mobile Preview Tool.</comment>
+  </data>
+  <data name="ScreenReaderDevicePickerSelectionChanged" xml:space="preserve">
+    <value>Press Enter to choose this device.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Screen reader alert for when the user selects a new item in the device selector in Mobile Preview Tool.</comment>
+  </data>
+  <data name="Width" xml:space="preserve">
+    <value>Width</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] The width of the mobile device shown on screen.</comment>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] The height of the mobile device shown on screen.</comment>
+  </data>
+</root>

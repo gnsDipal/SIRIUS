@@ -1,0 +1,24 @@
+{
+  "id": "d0619256-3350-4eb2-95df-31fbc25c4451",
+  "alias": "ReactDomProfiling",
+  "componentType": "Library",
+  "version": "16.9.0",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "react-dom-16-profiling-bundle",
+    "scriptResources": {
+      "react-dom-16-profiling-bundle": {
+        "type": "path",
+        "path": "react-dom-16-profiling-bundle_none.js"
+      },
+      "react": {
+        "type": "component",
+        "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+        "version": "16.9.0"
+      }
+    }
+  }
+}
