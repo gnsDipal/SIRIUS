@@ -12,6 +12,7 @@ import * as strings from 'ObjectivesGoalsWebPartStrings';
 import ObjectivesGoals from './components/ObjectivesGoals';
 import { IObjectivesGoalsProps } from './components/IObjectivesGoalsProps';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 import {
   PropertyPaneTextField,
   PropertyPaneCheckbox,
@@ -46,6 +47,7 @@ export interface IObjectivesGoalsWebPartProps {
   openAddEditForm:number;
   //isOrgnizationGoalFormDisplay: boolean;
   OrganizationTabDisplay:any;
+  webPartContext: WebPartContext;  
 }
 
 debugger;
@@ -70,6 +72,7 @@ export default class ObjectivesGoalsWebPart extends BaseClientSideWebPart<IObjec
         siteurl: this.context.pageContext.web.absoluteUrl,
         spHttpClient: this.context.spHttpClient,
         webUrl: this.context.pageContext.web.absoluteUrl,
+        webPartContext: this.context,    
         isAddOrganizationGoalButtonDisplay:this.properties.isAddOrganizationGoalButtonDisplay,
         isAddDepartmentGoalButtonDisplay:this.properties.isAddDepartmentGoalButtonDisplay,
         isAddPersonalGoalButtonDisplay:this.properties.isAddPersonalGoalButtonDisplay,
