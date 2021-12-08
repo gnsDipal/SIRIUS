@@ -8,12 +8,15 @@ import Organization from '../components/Organization/Organization';
 import Department from '../components/Department/Deparment';
 import Personal from '../components/Personal/Personal';
 import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
+import PanelSettings from './PanelSettings/PanelSettings';
+import { TooltipHost } from '@fluentui/react/lib/Tooltip';
 
 let GoalSecurityData: any = [];
 
 const stackTokens = { childrenGap: 50  };
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoals} />;
+const TeamsSettingsIcon = () => <Icon iconName="Settings" />
 
 export default class ObjectivesGoals extends React.Component<IObjectivesGoalsProps, IObjectivesGoalsState, {}> {
 
@@ -36,6 +39,7 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
       colorDepartment:"black",
       colorPersonal:"black",
       //AddGoalButtonDisplay:true,
+      isSettingsPanelOpen:false,
     };          
   }
 
@@ -44,45 +48,6 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
     //this._getGoalSecurityData();   
   } 
 
-  // _getGoalSecurityData = async () =>
-  // {    
-  //   const headers: HeadersInit = new Headers();
-  //   headers.append("accept", "application/json;odata.metadata=none");
-
-  //       await this.props.spHttpClient
-  //       .get(`${this.props.siteurl}_api/web/lists/getbytitle('GoalSecurityAddGoal')/items?$select=ID,Title,IsButtonDisplay,Members/Id,Members/Title&$expand=Members`, 
-  //         SPHttpClient.configurations.v1, {
-  //         headers: headers
-  //       })
-  //       .then((result: SPHttpClientResponse) => {          
-  //         return result.json();
-  //       })
-  //       .then((jsonresult) => {
-  //         GoalSecurityData = [];         
-  //         for(let i=0; i<jsonresult.value.length; ++i)
-  //         {
-  //           GoalSecurityData.push({             
-  //             Id:jsonresult.value[i].Id,
-  //             Title:jsonresult.value[i].Title,
-  //             IsButtonDisplay:jsonresult.value[i].IsButtonDisplay,
-  //             Members:jsonresult.value[i].Members.Title,
-  //             MembersId:jsonresult.value[i].Members.Id,                 
-  //           });
-  //           if(jsonresult.value[i].IsButtonDisplay === true){
-  //               this.setState({
-  //                 AddGoalButtonDisplay: false,
-  //                 },()=>console.log("Organization Data =>" + this.state.goalSecurityData)
-  //               )
-  //            }
-  //         }
-  //         console.log("Organization Data=>" + GoalSecurityData);
-
-  //         this.setState({
-  //           goalSecurityData: GoalSecurityData
-  //         },()=>console.log("Organization Data =>" + this.state.goalSecurityData)
-  //         )
-  //       })      
-  // } 
   
   OrganizationButtonClicked = () =>{  
     this.setState({
@@ -120,6 +85,13 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
     })
   }
 
+  private setIsSettingsPanelOpen()
+  {
+    this.setState({
+      isSettingsPanelOpen: !this.state.isSettingsPanelOpen
+    });
+  }
+
   public render(): React.ReactElement<IObjectivesGoalsProps> {
     //alert("isAddOrganizationGoalButtonDisplay"+this.props.isAddOrganizationGoalButtonDisplay );
     return (
@@ -127,6 +99,12 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
         {/* <div className={ styles.container }> */}
             <div className={styles.description}>                        
               <h1 style={{margin:'0'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
+              <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
+                <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
+              </div > 
+              {this.state.isSettingsPanelOpen &&
+              <PanelSettings webPartContext={this.props.webPartContext} onClosePanel={() => { this.setIsSettingsPanelOpen();}} />
+              }  
             </div>
             <br></br>
             {/* { (this.props.OrganizationTabDisplay === true) &&  ""  }           */}

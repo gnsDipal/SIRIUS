@@ -1,5 +1,6 @@
 import { SPHttpClient } from "@microsoft/sp-http";
 import { IDropdownOption } from "office-ui-fabric-react";
+import { WebPartContext } from "@microsoft/sp-webpart-base";
 
 export interface IObjectivesGoalsProps {
   description: string;
@@ -18,6 +19,8 @@ export interface IObjectivesGoalsProps {
   openAddEditForm:number;
   //isOrgnizationGoalFormDisplay:boolean;
   OrganizationTabDisplay:any;
+  webPartContext: WebPartContext;  
+  //IsTeamsIcon: boolean;
 }
 
 export interface IObjectivesGoalsState {
@@ -37,4 +40,5 @@ export interface IObjectivesGoalsState {
   colorDepartment:string,
   colorPersonal:string,
   //AddGoalButtonDisplay:boolean;
+  isSettingsPanelOpen:boolean;
 }
