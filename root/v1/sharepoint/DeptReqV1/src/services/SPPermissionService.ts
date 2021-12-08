@@ -61,8 +61,8 @@ export default class SPPermissionService{
             //     }
             // }
             const set = new Set(loggedInUserGrps);
-
-            result.filter(item => set.has(item.GroupName.Title));
+            console.log('set = ' + set);
+            let res1 = result.filter(item => set.has(item.GroupName.Title));
             console.log('object');
             return true;
             // if(count>0){
