@@ -11,6 +11,7 @@ import Home from '../Home'
 import SPDispatcherService from '../../../../../services/SPDispatcherService';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView';
+import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
 let spDispatcherServiceData: SPDepartmentalServiceData = null;
 const OpenRequests:string = "Open Requests";    
@@ -30,7 +31,7 @@ const DispatcherTab = (props) => {
       spDispatcherServiceData.getDispatcherPlates()
       .then((res)=>{
         setDispatcherCountData(res);
-        setUnlockDispatcherCard(1); // For rendering once thedata is set
+        setUnlockDispatcherCard(1); // For rendering once the data is set
       })
     }
     // style={{fontSize:'25px', cursor:'pointer'}}
@@ -44,6 +45,8 @@ const DispatcherTab = (props) => {
                     <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                         <h2>{strings.DispatcherViewLabel}</h2>
                     </div>
+                </div>
+                <div>{(unlockDispatcherCard === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
                 </div>
                 <div className="ms-Grid">
                  <div className="ms-Grid-row ms-lg12 ms-sm12">               

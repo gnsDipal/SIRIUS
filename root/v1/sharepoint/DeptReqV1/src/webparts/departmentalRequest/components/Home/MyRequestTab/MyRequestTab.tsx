@@ -11,6 +11,7 @@ import Main from '../../Main/Main'
 import Navbar from '../Navbar/Navbar';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main'
+import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
 let spMyRequestedServiceData:SPDepartmentalServiceData = null;
 
@@ -42,10 +43,11 @@ const MyRequestTab = (props) => {
                <Link to="/nav"><Icon iconName={strings.HomeLabel} className={styles.iconSize}></Icon></Link>
                </div>
                <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
-                    <h2>{strings.ManagerViewLabel}</h2>
+                    <h2>{strings.RequestedIssuesLabel}</h2>
                </div>
               </div>
-
+              <div>{(unlockPlate === false) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+              </div>
               <div className="ms-Grid-row ms-lg12 ms-md12 ms-sm12">
               { unlockPlate &&  
                 myRequestedPlate.map((res,index)=>{
@@ -56,17 +58,17 @@ const MyRequestTab = (props) => {
                     <h4>{res.DepartmentName}</h4>
                   </div>
                   <ul className={styles.nav}>
-                    <li><Link to={`/manager/${strings.PendingLabel}/${res.DepartmentName}`}>
+                    <li><Link to={`/requested/${strings.PendingLabel}/${res.DepartmentName}`}>
                      <a>{strings.OpenRequestsLabel}
                       <span className={`${styles['bg-red']} ${styles['pull-right']} ${styles.badge}`}>{res.Open}</span>
                      </a></Link>
                     </li>
-                    <li><Link to={`/manager/${strings.InProcessLabel}/${res.DepartmentName}`}>
+                    <li><Link to={`/requested/${strings.InProcessLabel}/${res.DepartmentName}`}>
                      <a>{strings.InProcessLabel}
                        <span className={`${styles['bg-orange']} ${styles['pull-right']} ${styles.badge}`}>{res.InProcess}</span>
                       </a></Link>
                     </li>
-                    <li><Link to={`/manager/${strings.CompletedLabel}/${res.DepartmentName}`} ><a>{strings.ClosedLabel}
+                    <li><Link to={`/requested/${strings.CompletedLabel}/${res.DepartmentName}`} ><a>{strings.ClosedLabel}
                       <span className={`${styles['bg-green']} ${styles['pull-right']} ${styles.badge}`}>{res.Closed}</span>
                       </a></Link>
                     </li>

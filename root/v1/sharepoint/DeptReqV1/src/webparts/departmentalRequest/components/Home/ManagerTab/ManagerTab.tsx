@@ -9,10 +9,11 @@ import Navbar from '../Navbar/Navbar'
 import Home from '../Home'
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main';
+import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 let spManagerServiceData:SPDepartmentalServiceData = undefined
 const ManagerTab = (props) => {
     const mainContext = useContext(UserContext);
-    const {myReqStatus,dept} = useParams(); 
+    const {managerStatus,dept} = useParams(); 
     const [managerCountPlate, setManagerCountPlate] = useState([]);
     const [unlockPlate, setUnlockPlate] = useState(false);
     useEffect(() => {  
@@ -35,10 +36,11 @@ const ManagerTab = (props) => {
                <Link to="/nav"><Icon iconName='Home' className={styles.iconSize}></Icon></Link>
                </div>
                <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
-                    <h2>{strings.RequestedIssuesLabel}</h2>
+                    <h2>{strings.ManagerViewLabel}</h2>
                </div>
               </div>
-
+              <div>{(unlockPlate === false) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+              </div>
               <div className="ms-Grid-row ms-lg12 ms-md12 ms-sm12">
               { unlockPlate &&  
                 managerCountPlate.map((res,index)=>{

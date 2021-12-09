@@ -26,7 +26,7 @@ import * as microsoftTeams from '@microsoft/teams-js';
 let spAssignedServiceData: SPDepartmentalServiceData = null;
 const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 //Main function
-const AssignedTicketsView = (props) => {
+const AssignedTicketsView = () => {
     // let loc = useLocation();
     // const urlSearchParams = new URLSearchParams(loc);
     // const params = Object.fromEntries(urlSearchParams.entries());
@@ -328,14 +328,14 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                 </div>
                     <div className="ms-Grid-col ms-lg4 ms-sm4">
                       <TooltipHost
-                         content="Tickets"
-                      ><Icon iconName='Assign' className={styles.iconSize} ></Icon>
+                         content={strings.TicketLabel}
+                      ><Icon iconName={strings.AssignLabel} className={styles.iconSize} ></Icon>
                       </TooltipHost>             
                     </div>
                     <div className="ms-Grid-col ms-lg4 ms-sm4">
                       <TooltipHost
-                         content="All"
-                      ><Icon iconName='ViewAll' className={styles.iconSize} ></Icon>
+                         content={strings.AllLabel}
+                      ><Icon iconName={strings.ViewAllLabel} className={styles.iconSize} ></Icon>
                       </TooltipHost>
                     </div>
               </div>
@@ -359,7 +359,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             </tr>
           </thead>
           <tbody>
-            { LoadData &&
+            { LoadData && // unlock data view
              AssignedListData.map((res,index)=>{
              var issuedDate = new Date(res.issueDate).toLocaleDateString();
                 return(
@@ -430,7 +430,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                       }
                     </td>
                     <td>
-                    <Icon iconName="Save" className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(CommentData,res.dataId,PassAssignedToUser,res.ticketNumber,res.department)}></Icon>
+                    <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(CommentData,res.dataId,PassAssignedToUser,res.ticketNumber,res.department)}></Icon>
                     </td>
                   </tr>
                 )

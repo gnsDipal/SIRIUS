@@ -52,20 +52,75 @@ export default class SPPermissionService{
 
         public async checkForDepts(result,loggedInUserGrps):Promise<boolean>{
             let count:number = 0;
+            outer_loop:
             for(let i=0;i<loggedInUserGrps.length;++i){
                 for(let j=0;j<result.length;++j){
                     if(loggedInUserGrps[i].Title ===result[j].GroupName.Title){
                         count = count + 1;
-                        break;
+                        break outer_loop
                     }
                 }
             }
-          
             if(count>0){
                 return Promise.resolve(true);
             }
             else{
                 return Promise.resolve(false);
             }
+        }
+
+        public async loadAssignedPermissionHandle():Promise<boolean>{
+            let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
+            let loggedInUserGrps = await this.web.currentUser.groups(); 
+            let permissionCheck = await this.checkForSupportDepts(result,loggedInUserGrps);
+            return Promise.resolve(permissionCheck);
+        }
+        public async checkForSupportDepts(result,loggedInUserGrps):Promise<boolean>{
+            let count:number = 0;
+            outer_loop: 
+            for(let i=0;i<loggedInUserGrps.length;++i){
+                for(let j=0;j<result.length;++j){
+                    if(loggedInUserGrps[i].Title === result[j].DepartmentGroup.Title){
+                        count = count + 1;
+                        break outer_loop
+                    }
+                }
+            }
+            if(count>0)
+                return Promise.resolve(true);     
+            else
+                return Promise.resolve(false);
+        }
+    
+        public async loadManagerPermissionHandle():Promise<boolean>{
+          try{
+            let permissionCheck:boolean = false;
+            let result = await this.web.lists.getByTitle('Dept').items.select("*","Manager/Title").expand("Manager").get();
+            for(let i=0;i<result.length;++i){
+                if(this.loggedInUserId === result[i].ManagerId){
+                    permissionCheck = true;
+                    break;
+                }
+            }
+                return Promise.resolve(permissionCheck);
+          }catch(error){
+                return Promise.reject(error);
+          }  
+        }
+        public async checkForManagerDepts(result,loggedInUserGrps):Promise<boolean>{
+            let count:number = 0;
+            outer_loop: 
+            for(let i=0;i<loggedInUserGrps.length;++i){
+                for(let j=0;j<result.length;++j){
+                    if(loggedInUserGrps[i].Title === result[j].Manager.Title){
+                        count = count + 1;
+                        break outer_loop
+                    }
+                }
+            }
+            if(count>0)
+                return Promise.resolve(true);     
+            else
+                return Promise.resolve(false);
         }
 }

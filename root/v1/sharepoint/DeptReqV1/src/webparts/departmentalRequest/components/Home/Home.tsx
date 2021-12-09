@@ -15,7 +15,7 @@ import Navbar from './Navbar/Navbar';
 import * as microsoftTeams from '@microsoft/teams-js';
 
 // debugger;
-const Home = (props)=> {
+const Home = ()=> {
     
    //Initialize Microsoft Teams SDK
    microsoftTeams.initialize();
@@ -23,11 +23,11 @@ const Home = (props)=> {
     return (
         <div className={styles.home}>
               <Switch>
-              <Route exact path="/requested" component={(props)=><MyRequestTab {...props}/>}/>
-              <Route exact path="/assigned" component={(props)=><AssignedTab {...props}/>}/>
-              <Route exact path="/dispatcher" component={(props)=><DispatcherTab {...props}/>}/>
-              <Route exact path="/raise" component={(props)=><RaiseRequestTab {...props}/>}/>
-              <Route exact path="/manager" component={(props)=><ManagerTab {...props}/>}/>
+              <Route exact path="/requested" component={()=><MyRequestTab />}/>
+              <Route exact path="/assigned" component={()=><AssignedTab/>}/>
+              <Route exact path="/dispatcher" component={()=><DispatcherTab/>}/>
+              <Route exact path="/raise" component={()=><RaiseRequestTab />}/>
+              <Route exact path="/manager" component={()=><ManagerTab />}/>
             </Switch>
         </div>
     )

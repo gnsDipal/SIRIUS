@@ -1,26 +1,20 @@
 import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
 import styles from './AssignedTab.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router,Switch,Route,HashRouter,Link, useParams, useLocation} from "react-router-dom";
-import Navbar from '../Navbar/Navbar'
-import Home from '../Home'
 import SPDepartmentalService from '../../../../../services/SPDepartmentalService';
-import Main from '../../Main/Main';
 import { UserContext } from '../../Main/Main';
 import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
 import { MyAssignedEachPlateData } from '../../../../../model/MyRequestedEachPlateData';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
+import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
-// debugger;
 let myRequestedEachPlateData = [];   
-const InProcess:string = "In Process";    
-const Completed:string = "Completed";    
-let DepartmentalCountData:MyAssignedEachPlateData[] = [];
-let spAssignedService: SPDepartmentalService = null;
+// const InProcess:string = "In Process";    
+// const Completed:string = "Completed";    
 let spAssignedServiceData: SPDepartmentalServiceData = null;
 
 const AssignedTab = () => {     
@@ -45,27 +39,27 @@ const AssignedTab = () => {
       spAssignedServiceData.getAssignedViewCountData()
      .then((res)=>{
       SetdeptPlate(res);
-        SetTotalRaisedData(res.length);
+        SetTotalRaisedData(res.length);  // unlock display dept data
      })
     }
-
-
     return (
         <div className={styles.assignedTab}>
          <div className="ms-Grid" dir="ltr"> 
          <div className="ms-Grid-row">
            <div className="ms-Grid-col ms-lg2 ms-md2 ms-sm2">
-               <Link to="/nav"><Icon iconName='Home' style={{fontSize:'25px', cursor:'pointer'}}></Icon></Link>
+               <Link to="/nav"><Icon iconName='Home' className={styles.iconSize}></Icon></Link>
            </div>
            <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                <h2>{strings.AssignedIssuesLabel}</h2>
            </div>
          </div>
+         <div>{(TotalRaisedData === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+          </div>
          <div className="ms-Grid">
          <div className="ms-Grid-row ms-lg12 ms-sm12">               
          <h4>{strings.DepartmentBasedCardLabel}</h4>
         {   
-          (TotalRaisedData !== 0) &&
+          (TotalRaisedData !== 0) && //unlock display card
           deptPlate.map((res,index)=>{
             return(
           <div className="ms-Grid-col ms-lg4 ms-sm4">
@@ -74,12 +68,12 @@ const AssignedTab = () => {
               <h4>{res.DepartmentName}</h4>
             </div>
             <ul className={styles.nav}>
-              <li><Link to={`/assigned/${InProcess}/${res.DepartmentName}`}>
+              <li><Link to={`/assigned/${strings.InProcessLabel}/${res.DepartmentName}`}>
                 <a>{strings.InProcessLabel}
                   <span className={`${styles['bg-orange']} ${styles['pull-right']} ${styles.badge}`}>{res.InProcess}</span>
                 </a></Link>
               </li>
-              <li><Link to={`/assigned/set/${Completed}/${res.DepartmentName}`} ><a>{strings.ClosedLabel}
+              <li><Link to={`/assigned/set/${strings.CompletedLabel}/${res.DepartmentName}`} ><a>{strings.ClosedLabel}
                   <span className={`${styles['bg-green']} ${styles['pull-right']} ${styles.badge}`}>{res.Closed}</span>
                 </a></Link>
               </li>
@@ -98,15 +92,9 @@ const AssignedTab = () => {
       </div>
             </div>
                 <Switch>
-                <Route exact path={`/assigned/:Inprocess/:dept`} component={(props)=><AssignedTicketsView {...props}/>}>
+                <Route exact path={`/assigned/:Inprocess/:dept`} component={()=><AssignedTicketsView/>}>
                 </Route>
                 <Route exact path={`/assigned/set/:Closed/:dept`} component={()=><AssignedClosedTicketsView />}>
-                </Route>
-                <Route exact path="/nav">
-                    <div>
-                        {/* <Navbar {...props}/>
-                        <Home {...props}/> */}
-                    </div>
                 </Route>
             </Switch>
         </div>

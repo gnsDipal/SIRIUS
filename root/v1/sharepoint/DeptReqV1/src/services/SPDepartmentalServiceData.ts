@@ -112,6 +112,13 @@ import SPPermissionService from './SPPermissionService';
       getDispatcherPermissionHandle():Promise<boolean>{
         return this.permissionService.loadDispatcherPermissionHandle();
       }
+      getAssignedPermissionHandle():Promise<boolean>{
+        return this.permissionService.loadAssignedPermissionHandle();
+      }
+      getManagerPermissionHandle():Promise<boolean>{
+        return this.permissionService.loadManagerPermissionHandle();
+      }
+      
 
     } //End of Main Class
       

@@ -3,6 +3,7 @@ define([], function() {
     "PropertyPaneDescription": "Description",
     "BasicGroupName": "Group Name",
     "DescriptionFieldLabel": "Description Field",
+    "LoadingLabel":"Loading",
     "MyIssuesLabel":"My Issues",
     "RequestedIssuesLabel":"Requested Issues",
     "AssignedIssuesLabel":"Assigned Issues",
@@ -37,6 +38,13 @@ define([], function() {
     "ReAssignToLabel":"ReAssign To",
     "AttachLabel":"Attach",
     "HomeLabel":"Home",
-    "NavigateBackLabel":"NavigateBack"
+    "NavigateBackLabel":"NavigateBack",
+    "ReminderPersonLabel":"ReminderPerson",
+    "SettingsLabel":"Settings",
+    "TicketLabel":"Ticket",
+    "AssignLabel":"Assign",
+    "AllLabel":"All",
+    "ViewAllLabel":"ViewAll",
+    "SaveLabel":"Save"
   }
 });

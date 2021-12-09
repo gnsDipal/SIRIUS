@@ -20,10 +20,9 @@ import * as microsoftTeams from '@microsoft/teams-js';
 
 let spManagerServiceData: SPDepartmentalServiceData = null;
 const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
-
 const ManagerTicketsView = () => {
-    const {myReqStatus,dept} = useParams();
-    const mainContext = useContext(UserContext);
+    const {managerStatus,dept} = useParams();
+    const mainContext = useContext(UserContext);  
     //State variables
     const [managerData, setManagerData] = useState([]);
     const [unlockData, setUnlockData] = useState(false);
@@ -32,7 +31,7 @@ const ManagerTicketsView = () => {
    },[]);
    const init = () => {
         spManagerServiceData = new SPDepartmentalServiceData(mainContext);
-        spManagerServiceData.getDeptListInfo(myReqStatus,dept)
+        spManagerServiceData.getDeptListInfo(managerStatus,dept)
        .then(res=>{
         setManagerData(res);
            setUnlockData(true);

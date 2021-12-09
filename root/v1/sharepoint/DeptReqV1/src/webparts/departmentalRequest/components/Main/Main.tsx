@@ -27,20 +27,20 @@ const Main = (props) => {
             <HashRouter>
                 <UserContext.Provider value={props.webPartContext}>
               <Switch>
-                <Route exact path="/requested" component={(props)=><MyRequestTab {...props}/>}/>
+                <Route exact path="/requested" component={()=><MyRequestTab />}/>
                 <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
                 <Route exact path="/assigned" component={()=><AssignedTab />}/>                  
-                <Route exact path = "/assigned/:Inprocess/:dept" component={(props)=><AssignedTicketsView {...props}/>}/>
+                <Route exact path = "/assigned/:Inprocess/:dept" component={()=><AssignedTicketsView/>}/>
                 <Route exact path = "/assigned/set/:Closed/:dept" component={(props)=><AssignedClosedTicketsView />}/>
-                <Route exact path="/dispatcher" component={(props)=><DispatcherTab {...props}/>}/>
+                <Route exact path="/dispatcher" component={()=><DispatcherTab />}/>
                 <Route exact path="/dispatcher/:open/:dept" component={()=><DispatcherTicketsView />}/>
-                <Route exact path="/raise" component={(props)=><RaiseRequestTab {...props}/>}/>
-                <Route exact path="/manager" component={(props)=><ManagerTab {...props}/>}/>
-                <Route exact path="/manager/:myReqStatus/:dept" component={()=>< ManagerTicketsView />}/>
+                <Route exact path="/raise" component={()=><RaiseRequestTab />}/>
+                <Route exact path="/manager" component={()=><ManagerTab />}/>
+                <Route exact path="/manager/:managerStatus/:dept" component={()=>< ManagerTicketsView />}/>
                 <Route exact path="">
                   <div>
-                    <Navbar {...props}/>
-                    <Home {...props}/>
+                    <Navbar/>
+                    <Home/>
                   </div>
                 </Route>
               </Switch>

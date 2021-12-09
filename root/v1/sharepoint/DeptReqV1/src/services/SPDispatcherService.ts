@@ -5,7 +5,6 @@ import { IItemAddResult } from "@pnp/sp/items";
 import { IList } from "@pnp/sp/lists";
 import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import { graph } from "@pnp/graph";
-// import * as moment from 'moment';
 import { Logger, LogLevel} from "@pnp/logging";
 import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import {AssignedTicketData, MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
@@ -186,7 +185,6 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
       Status: "In Process",
       ReAssignToId: newUser.key,
     }
-
        let result = await this.web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
         return result
         

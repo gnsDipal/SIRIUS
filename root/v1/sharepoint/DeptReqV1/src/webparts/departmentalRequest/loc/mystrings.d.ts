@@ -2,6 +2,7 @@ declare interface IDepartmentalRequestWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
+  LoadingLabel:string;
   MyIssuesLabel:string;
   RequestedIssuesLabel:string;
   AssignedIssuesLabel:string;
@@ -37,6 +38,14 @@ declare interface IDepartmentalRequestWebPartStrings {
   AttachLabel:string;
   HomeLabel:string;
   NavigateBackLabel:string;
+  ReminderPersonLabel:string;
+  RequestedLabel:string;
+  SettingsLabel:string;
+  TicketLabel:string;
+  AssignLabel:string;
+  AllLabel:string;
+  ViewAllLabel:string;
+  SaveLabel:string;
 }
 
 declare module 'DepartmentalRequestWebPartStrings' {
