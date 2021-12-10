@@ -13,18 +13,10 @@ export interface IPersonalProps {
   loggedInUserEmail: string;
   currentUserId:number;
   RequireGoalStatusId:number;
-  //openOrganizationForm:number;
   openAddEditForm:number;
 }
 
-export interface IPersonalState {
-  personalData:[{
-        Id: any;
-        Title: any;
-        Goal: any;
-        Interval: any;
-        StatusPercentage:any;       
-        }];
+export interface IPersonalState {  
   monthlyTargetData:[{
       Id: any;
       Title: any;
@@ -53,9 +45,7 @@ export interface IPersonalState {
             Interval: any;
             StatusPercentage:any;         
             }];
-  expandableOptionsData:IDropdownOption[];
   count:number,
-  //bulletPointColor:string,
   isPersonalGoalFormDisplay: boolean,
   isIntervalDataDisplay:boolean,
   GoalStatusId:number;

@@ -7,13 +7,8 @@ import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 import Organization from '../components/Organization/Organization';
 import Department from '../components/Department/Deparment';
 import Personal from '../components/Personal/Personal';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
 import PanelSettings from './PanelSettings/PanelSettings';
 import { TooltipHost } from '@fluentui/react/lib/Tooltip';
-
-let GoalSecurityData: any = [];
-
-const stackTokens = { childrenGap: 50  };
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoals} />;
 const TeamsSettingsIcon = () => <Icon iconName="Settings" />
@@ -23,13 +18,6 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
   constructor(props: IObjectivesGoalsProps, state:IObjectivesGoalsState) {
     super(props); 
     this.state = {  
-      // goalSecurityData: [{
-      //   Id:"",
-      //   Title:"",
-      //   IsButtonDisplay:true,
-      //   Members:"",
-      //   MembersId:0,       
-      // }],
       goalsOptions:"Organization",   
       bulletPointColor:"Red",
       bgColorOrganization:"#04ef00",
@@ -38,17 +26,14 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
       colorOrganization:"black",
       colorDepartment:"black",
       colorPersonal:"black",
-      //AddGoalButtonDisplay:true,
       isSettingsPanelOpen:false,
     };          
   }
 
   componentDidMount()
-  { 
-    //this._getGoalSecurityData();   
+  {    //this._getGoalSecurityData();   
   } 
 
-  
   OrganizationButtonClicked = () =>{  
     this.setState({
       goalsOptions: "Organization", 
@@ -86,19 +71,17 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
   }
 
   private setIsSettingsPanelOpen()
-  {
-    this.setState({
+  {  this.setState({
       isSettingsPanelOpen: !this.state.isSettingsPanelOpen
     });
   }
 
-  public render(): React.ReactElement<IObjectivesGoalsProps> {
-    //alert("isAddOrganizationGoalButtonDisplay"+this.props.isAddOrganizationGoalButtonDisplay );
+  public render(): React.ReactElement<IObjectivesGoalsProps> {  
     return (
       <div className={ styles.objectivesGoals }>
         {/* <div className={ styles.container }> */}
             <div className={styles.description}>                        
-              <h1 style={{margin:'0'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
+              <h1 style={{margin:'0', float:'left'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
               <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
                 <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
               </div > 
@@ -107,11 +90,10 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
               }  
             </div>
             <br></br>
-            {/* { (this.props.OrganizationTabDisplay === true) &&  ""  }           */}
             <div className={styles.SetDisplay}>   
-            <div><DefaultButton className={styles.GoalsTabBtn} style={{backgroundColor:this.state.bgColorOrganization, color:this.state.colorOrganization}} onClick={this.OrganizationButtonClicked}><h3>Organization</h3></DefaultButton></div>                                                         
-            <div><DefaultButton className={styles.GoalsTabBtn} style={{backgroundColor:this.state.bgColorDepartment, color:this.state.colorDepartment}} onClick={this.DepartmentButtonClicked}><h3>Department</h3></DefaultButton></div>
-            <div><DefaultButton className={styles.GoalsTabBtn} style={{backgroundColor:this.state.bgColorPersonal, color:this.state.colorPersonal}} onClick={this.PersonalButtonClicked}><h3>Personal</h3></DefaultButton></div>                                                          
+            <div style={{width:'33.33%'}}><DefaultButton className={styles.GoalsTabBtn} style={{backgroundColor:this.state.bgColorOrganization, color:this.state.colorOrganization}} onClick={this.OrganizationButtonClicked}><h3>Organization</h3></DefaultButton></div>                                                         
+            <div style={{width:'33.33%'}}><DefaultButton className={styles.GoalsTabBtn} style={{backgroundColor:this.state.bgColorDepartment, color:this.state.colorDepartment}} onClick={this.DepartmentButtonClicked}><h3>Department</h3></DefaultButton></div>
+            <div style={{width:'33.33%'}}><DefaultButton className={styles.GoalsTabBtn} style={{backgroundColor:this.state.bgColorPersonal, color:this.state.colorPersonal}} onClick={this.PersonalButtonClicked}><h3>Personal</h3></DefaultButton></div>                                                          
             </div> 
             {  
              ((this.state.goalsOptions === "Organization") ? 
@@ -124,11 +106,9 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
                   loggedInUserEmail= {this.props.loggedInUserEmail}
                   currentUserId={this.props.currentUserId}
                   isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
-                  isIntervalDataDisplay={this.props.isIntervalDataDisplay}
-                  //isAddOrganizationGoalButtonDisplay={this.state.AddGoalButtonDisplay}
+                  isIntervalDataDisplay={this.props.isIntervalDataDisplay}               
                   RequireGoalStatusId={this.props.RequireGoalStatusId}
-                  openAddEditForm={this.props.openAddEditForm}
-                  //isOrgnizationGoalFormDisplay={this.props.isOrgnizationGoalFormDisplay}
+                  openAddEditForm={this.props.openAddEditForm}                 
                   OrganizationTabDisplay={this.props.OrganizationTabDisplay}
                   ></Organization>
               :

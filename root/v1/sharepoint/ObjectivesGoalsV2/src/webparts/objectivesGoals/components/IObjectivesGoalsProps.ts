@@ -17,20 +17,11 @@ export interface IObjectivesGoalsProps {
   currentUserId:number;
   RequireGoalStatusId:number;
   openAddEditForm:number;
-  //isOrgnizationGoalFormDisplay:boolean;
   OrganizationTabDisplay:any;
-  webPartContext: WebPartContext;  
-  //IsTeamsIcon: boolean;
+  webPartContext: WebPartContext;   
 }
 
-export interface IObjectivesGoalsState {
-  // goalSecurityData: [{
-  //   Id:any;
-  //   Title:any;
-  //   IsButtonDisplay:any;
-  //   Members:any;
-  //   MembersId:any;       
-  // }],
+export interface IObjectivesGoalsState { 
   goalsOptions:string;
   bulletPointColor:string,
   bgColorOrganization:string,
@@ -39,6 +30,5 @@ export interface IObjectivesGoalsState {
   colorOrganization:string,
   colorDepartment:string,
   colorPersonal:string,
-  //AddGoalButtonDisplay:boolean;
   isSettingsPanelOpen:boolean;
 }

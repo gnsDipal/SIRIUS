@@ -104,6 +104,7 @@
   margin-bottom: 1px;
   margin-top:0px;
   flex-wrap: wrap;
+  width:100%
 }
 
 .GoalsTabBtn
@@ -129,9 +130,9 @@
   outline: 0;
   border: 1px solid #ddd;
   padding: 10px;
-  background: #8eade6;
-  //height: auto;
-  height: 100px;
+  background: #8eade6;  
+  //height: 100px;
+  height: 119px;
 }
 
 .IntervalButtons:hover{
@@ -152,8 +153,10 @@
   //border: 1px solid rgb(239, 135, 0);
   padding: 10px 10px;
   outline: none;
-  width:50%;
+  width:64%;
   overflow-y: scroll;
-  height: 80px;
+  //height: 80px;
+  height: 100px;
+
 }
 

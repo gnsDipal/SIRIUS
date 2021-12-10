@@ -4,21 +4,18 @@ import { IDepartmentProps, IDepartmentState } from '../Department/IDepartmentPro
 import { Icon } from '@fluentui/react/lib/Icon';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
-import {
-  PropertyPaneTextField,
-  PropertyPaneCheckbox,
-  PropertyPaneLabel,
-  PropertyPaneLink,
-  PropertyPaneSlider,
-  PropertyPaneToggle,
-  PropertyPaneDropdown
-} from '@microsoft/sp-property-pane';
+// import {
+//   PropertyPaneTextField,
+//   PropertyPaneCheckbox,
+//   PropertyPaneLabel,
+//   PropertyPaneLink,
+//   PropertyPaneSlider,
+//   PropertyPaneToggle,
+//   PropertyPaneDropdown
+// } from '@microsoft/sp-property-pane';
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
+// import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
 import AddEditDepartmentGoal from './AddEditDepartmentGoal';
-
-
-const stackTokens = { childrenGap: 50  };
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.department} />;
 
@@ -29,14 +26,6 @@ let CurrentUserDepartmentData: any =[];
 let MonthlyTargetData: any = [];
 let QuarterlyObjectivesData: any = [];
 let YearlyGoalsData: any = [];
-
-
-const expandableOptions: IDropdownOption[] = [
-  // { key: 'ExpandableOptions', text: 'Selet an Option ', itemType: DropdownMenuItemType.Header },
-  // { key: 'ExpandableOptions', text: 'Organization' },
-  // { key: 'ExpandableOptions', text: 'Department' },
-  // { key: 'ExpandableOptions', text: 'Personal' } 
-];
 
 debugger;
 export default class Department extends React.Component<IDepartmentProps, IDepartmentState, {}> {
@@ -104,7 +93,6 @@ export default class Department extends React.Component<IDepartmentProps, IDepar
 
   componentDidMount()
   { 
-    //this._getExpandableOptionsData();
     this._getDepartmentData();
     //this._monthlyTargetData();
     // this._quarterlyObjectivesData();
@@ -115,7 +103,6 @@ export default class Department extends React.Component<IDepartmentProps, IDepar
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartmentOptions')/items?$select=*,Title,Department,Members/Id,Members/Title,DeptAdmin/Id,DeptAdmin/Title&$expand=Members,DeptAdmin`, 
           SPHttpClient.configurations.v1, {
@@ -170,8 +157,7 @@ export default class Department extends React.Component<IDepartmentProps, IDepar
         })      
   }  
 
-AddDepartmentGoalButtonDisplay = () =>{
-    //console.log("AddGoal Button Display =>" + this.state.AddGoalButtonDisplay)
+AddDepartmentGoalButtonDisplay = () =>{   
     this.setState({
       AddGoalButtonDisplay:true, 
     }) 
@@ -181,7 +167,6 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/Web/SiteGroups/GetById(${departmentGroupId})/users?$select=Email,Id`, 
           SPHttpClient.configurations.v1, {
@@ -200,43 +185,38 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
             });
             if(jsonresult.value[i].Id === this.props.currentUserId)
             {
-              CurrentUserDepartmentData.push ({
-                //CurrentUserDepartment: jsonresult.value[i].Department,
-                //CurrentUserDepartmentId: jsonresult.value[i].Id,
+              CurrentUserDepartmentData.push ({               
                 CurrentUserDepartment: departmentTitle,
-                CurrentUserDepartmentId: departmentId,
-                  
+                CurrentUserDepartmentId: departmentId,                 
               });   
              }
           }         
           this.setState({           
             currentUserDepartmentData : CurrentUserDepartmentData, 
           },()=>console.log("currentUserDepartmentData =>" + this.state.currentUserDepartmentData)
-          )
-        
+          )       
         })      
   } 
 
-  MonthlyTargetClicked = () =>{
+MonthlyTargetClicked = () =>{
     this.setState({
       count: 1,        
     })
   }
 
-  QuarterlyObjectivesClicked = () =>{
+QuarterlyObjectivesClicked = () =>{
     this.setState({
       count: 2,  
     })
   }
 
-  YearlyGoalsClicked = () =>{
+YearlyGoalsClicked = () =>{
     this.setState({
       count: 3,   
     })
   }
 
-  AddDepartmentGoalClicked = () =>{
-    //alert( "Opening Add Department Goal Form");
+AddDepartmentGoalClicked = () =>{   
     this.setState({
       isDepartmentGoalFormDisplay: true,   
       isIntervalDataDisplay: false,
@@ -244,7 +224,7 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
     })
   }
 
-  editStatus= (SelectedId) =>{
+editStatus= (SelectedId) =>{
     alert( "Button clicked for Status change. Id For Goal =>" + SelectedId)
     this.setState({
       GoalStatusId: SelectedId,
@@ -254,7 +234,7 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
     })
   }
 
-  async onChangeStatusHandle(selectedId:any){
+async onChangeStatusHandle(selectedId:any){
     this.setState({
       //selectedGoal:await selectedGoal.currentTarget.value,
       GoalStatusId:await selectedId,
@@ -262,7 +242,7 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
       console.log("GoalStatusId ==> ", this.state.GoalStatusId);
    } 
   
-  _monthlyTargetData = async () =>
+_monthlyTargetData = async () =>
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
@@ -270,8 +250,7 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
     for ( let i=0; i<this.state.currentUserDepartmentData.length; ++i){
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId,Department/Id,Department/Title&$expand=Department&$filter=((Interval eq 'Monthly Target') and (DepartmentId eq ${this.state.currentUserDepartmentData[i].CurrentUserDepartmentId}))`,
-        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId&$filter=((Interval eq 'Monthly Target') and (DepartmentId eq ${this.state.CurrentUserDepartmentId}))`,
-        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage&$filter=Interval eq 'Monthly Target'`, 
+        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId&$filter=((Interval eq 'Monthly Target') and (DepartmentId eq ${this.state.CurrentUserDepartmentId}))`, 
           SPHttpClient.configurations.v1, {
           headers: headers
         })
@@ -301,18 +280,16 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
       }// for loop closed   
   }  
 
-  _quarterlyObjectivesData = async () =>
+_quarterlyObjectivesData = async () =>
   { 
     var currentUserName = this.props.loggedInUserName;
     var currentUserEmail = this.props.loggedInUserEmail;   
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
       for ( let i=0; i<this.state.currentUserDepartmentData.length; ++i){
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId,Department/Id,Department/Title&$expand=Department&$filter=((Interval eq 'Quarterly Objectives') and (DepartmentId eq ${this.state.currentUserDepartmentData[i].CurrentUserDepartmentId}))`,
-        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId&$filter=((Interval eq 'Quarterly Objectives') and (DepartmentId eq ${this.state.CurrentUserDepartmentId}))`,
-        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage&$filter=Interval eq 'Quarterly Objectives'`, 
+        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId&$filter=((Interval eq 'Quarterly Objectives') and (DepartmentId eq ${this.state.CurrentUserDepartmentId}))`, 
           SPHttpClient.configurations.v1, {
           headers: headers
         })
@@ -342,18 +319,16 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
     }// for loop closed       
   }  
    
-  _yearlyGoalsData = async () =>
+_yearlyGoalsData = async () =>
   {  
     var currentUserName = this.props.loggedInUserName;
     var currentUserEmail = this.props.loggedInUserEmail;  
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
       for ( let i=0; i<this.state.currentUserDepartmentData.length; ++i){
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId,Department/Id,Department/Title&$expand=Department&$filter=((Interval eq 'Yearly Goals') and (DepartmentId eq ${this.state.currentUserDepartmentData[i].CurrentUserDepartmentId}))`,
-        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId&$filter=((Interval eq 'Yearly Goals') and (DepartmentId eq ${this.state.CurrentUserDepartmentId}))`,
-        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage&$filter=Interval eq 'Yearly Goals'`, 
+        //.get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId&$filter=((Interval eq 'Yearly Goals') and (DepartmentId eq ${this.state.CurrentUserDepartmentId}))`, 
           SPHttpClient.configurations.v1, {
           headers: headers
         })
@@ -383,20 +358,20 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
     }// for loop closed    
   }  
 
-  public render(): React.ReactElement<IDepartmentProps> {
-    return (
-      <div className={ styles.department }>
-        {/* <div className={ styles.container }>  */}
-          {/* <h3> Monthly Target of Department</h3> */}   
-          { (this.state.isIntervalDataDisplay === true) &&                                      
-            <div className={styles.SetDisplay}>   
-              <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Monthly Target</h3></DefaultButton></div>                                                         
-              <div className={styles.DataDisplay}>           
-              {this.state.currentUserDepartmentData.map( (CurrentUserDept, index)=> {
-               return(            
-                <ul>   
-                <h3> {CurrentUserDept.CurrentUserDepartment} Department </h3>                                 
-                  {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {
+public render(): React.ReactElement<IDepartmentProps> {
+  return (
+    <div className={ styles.department }>
+    {/* <div className={ styles.container }>  */}
+    {/* <h3> Monthly Target of Department</h3> */}   
+      { (this.state.isIntervalDataDisplay === true) &&                                      
+      <div className={styles.SetDisplay}>   
+        <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Monthly Target</h3></DefaultButton></div>                                                         
+        <div className={styles.DataDisplay}>           
+          {this.state.currentUserDepartmentData.map( (CurrentUserDept, index)=> {
+            return(            
+              <ul>   
+              <h3> {CurrentUserDept.CurrentUserDepartment} Department </h3>                                 
+                {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {
                     if(CurrentUserDept.CurrentUserDepartment === MonthlyTarget.Department ){
                     return(
                       <li key={MonthlyTarget.Id} >
@@ -489,55 +464,8 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
              
             { ((this.props.isAddDepartmentGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) &&  (this.state.isIntervalDataDisplay === true) ) &&
             <DefaultButton className={ styles.AddDepartmentGoalButton} onClick={this.AddDepartmentGoalClicked}><h3>Add Department Goal</h3></DefaultButton>
-            }
-            {/* <div className={styles.SetDisplay}>   
-            <div><DefaultButton className={styles.GoalsTabBtn}  onClick={this.MonthlyTargetClicked}><h3>Monthly Target</h3></DefaultButton></div>                                                         
-            <div><DefaultButton className={styles.GoalsTabBtn}  onClick={this.QuarterlyObjectivesClicked}><h3>Quarterly Objectives</h3></DefaultButton></div>
-            <div><DefaultButton className={styles.GoalsTabBtn}  onClick={this.YearlyGoalsClicked}><h3>Yearly Goals</h3></DefaultButton></div>                                                          
-            </div>
-            {  
-              ((this.state.count === 1) ?  
-                  <div className={styles.myTable}>
-                  <h3>Monthly Goal for Department</h3>             
-                  <ul>                  
-                    {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {
-                    return(
-                    //<li key={MonthlyTarget.Id} style={{color:MonthlyTarget.Color}}>{MonthlyTarget.Color} {MonthlyTarget.Goal}
-                    <li key={MonthlyTarget.Id}> {MonthlyTarget.Goal}
-                    </li>            
-                    )
-                    })}             
-                    </ul>
-                  </div>                            
-              : 
-               (this.state.count === 2) ?                       
-                    <div className={styles.myTable}> 
-                    <h3>Quarterly Goal for Department</h3>                                
-                    <ul>                  
-                      {this.state.quarterlyObjectivesData.map( (QuarterlyObjectives, index)=> {
-                      return(
-                      <li key={QuarterlyObjectives.Id} > {QuarterlyObjectives.Goal}
-                      </li>            
-                      )
-                      })}             
-                      </ul>
-                    </div> 
-              :  
-               (this.state.count === 3) ?                     
-                    <div className={styles.myTable}>
-                    <h3>Yearly Goal for Department</h3>                                
-                    <ul>                  
-                      {this.state.yearlyGoalsData.map( (YearlyGoals, index)=> {
-                      return(
-                      <li key={YearlyGoals.Id} >{YearlyGoals.Goal}
-                      </li>            
-                      )
-                      })}             
-                      </ul>
-                    </div>  
-              : "" )
-            }    */}
-         
+            }   
+
              { (this.state.isDepartmentGoalFormDisplay === true) &&               
                 <AddEditDepartmentGoal description={this.props.description}
                   context={this.props.context}
@@ -553,7 +481,7 @@ _getDepartmentGroupMembersData = async (departmentGroupId, departmentTitle, depa
                   openAddEditForm={this.state.openAddEditForm}>                 
                   </AddEditDepartmentGoal>              
              }                               
-        {/* </div>         */}
+        {/* </div>  */}
       </div>
     );
   }

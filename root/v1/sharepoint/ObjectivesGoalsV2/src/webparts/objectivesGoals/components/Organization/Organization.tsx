@@ -3,22 +3,14 @@ import styles from '../Organization/Organization.module.scss';
 import { IOrganizationProps, IOrganizationState } from '../Organization/IOrganizationProps';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
-import {
-  PropertyPaneTextField,
-  PropertyPaneCheckbox,
-  PropertyPaneLabel,
-  PropertyPaneLink,
-  PropertyPaneSlider,
-  PropertyPaneToggle,
-  PropertyPaneDropdown
-} from '@microsoft/sp-property-pane';
+// import {
+//   PropertyPaneTextField,PropertyPaneCheckbox,PropertyPaneLabel,PropertyPaneLink,
+//   PropertyPaneSlider,PropertyPaneToggle,PropertyPaneDropdown
+// } from '@microsoft/sp-property-pane';
 import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
+//import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
 import AddEditOrgnizationGoal from './AddEditOrganizationGoal';
 
-const stackTokens = { childrenGap: 50  };
-
-//let ExpandableOptionsData: any = [];
 let GoalSecurityData: any = [];
 let MonthlyTargetData: any = [];
 let QuarterlyObjectivesData: any = [];
@@ -29,9 +21,7 @@ var SPGroupList = new Array();
 
 const expandableOptions: IDropdownOption[] = [
   // { key: 'ExpandableOptions', text: 'Selet an Option ', itemType: DropdownMenuItemType.Header },
-  // { key: 'ExpandableOptions', text: 'Organization' },
-  // { key: 'ExpandableOptions', text: 'Department' },
-  // { key: 'ExpandableOptions', text: 'Personal' } 
+  // { key: 'ExpandableOptions', text: 'Organization' },  
 ];
 
 export default class Organization extends React.Component<IOrganizationProps, IOrganizationState, {}> {
@@ -42,7 +32,6 @@ export default class Organization extends React.Component<IOrganizationProps, IO
       goalSecurityData: [{
         Id:"",
         Title:"",
-        //IsButtonDisplay:true,
         Members:"",
         MembersId:0,       
       }],
@@ -90,13 +79,12 @@ export default class Organization extends React.Component<IOrganizationProps, IO
     };          
   }
 
-  handleCallback = (childData) =>{
+handleCallback = (childData) =>{
     this.setState({isOrgnizationGoalFormDisplay: childData})
 }
 
   componentDidMount()
-  { 
-    //this._getExpandableOptionsData();
+  {    
     this._getGoalSecurityData();
     //this._getOrganizationGroupMembersData();
     this._monthlyTargetData();
@@ -106,26 +94,26 @@ export default class Organization extends React.Component<IOrganizationProps, IO
     //this.displayEditStatusIdData();
   }   
 
-  MonthlyTargetClicked = () =>{
+MonthlyTargetClicked = () =>{
     this.setState({
       count: 1,        
     })
     this._monthlyTargetData();
   }
 
-  QuarterlyObjectivesClicked = () =>{
+QuarterlyObjectivesClicked = () =>{
     this.setState({
       count: 2,  
     })
   }
 
-  YearlyGoalsClicked = () =>{
+YearlyGoalsClicked = () =>{
     this.setState({
       count: 3,   
     })
   }
 
-  AddOrganizationGoalClicked = () =>{
+AddOrganizationGoalClicked = () =>{
     this.setState({
       isOrgnizationGoalFormDisplay: true,    
       isIntervalDataDisplay: false,
@@ -133,11 +121,10 @@ export default class Organization extends React.Component<IOrganizationProps, IO
     })
   }
 
-  _getGoalSecurityData = async () =>
+_getGoalSecurityData = async () =>
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalSecurityAddGoal')/items?$select=ID,Title,Members/Id,Members/Title&$expand=Members`, 
           SPHttpClient.configurations.v1, {
@@ -152,8 +139,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
           {
             GoalSecurityData.push({             
               Id:jsonresult.value[i].Id,
-              Title:jsonresult.value[i].Title,
-              //IsButtonDisplay:jsonresult.value[i].IsButtonDisplay,
+              Title:jsonresult.value[i].Title,             
               Members:jsonresult.value[i].Members.Title,
               MembersId:jsonresult.value[i].Members.Id,                 
             });           
@@ -169,16 +155,14 @@ export default class Organization extends React.Component<IOrganizationProps, IO
           if (this.state.organizationGroupId != 0)          
           {
             this._getOrganizationGroupMembersData();
-          }
-          
+          }         
         })      
   } 
 
-  _getOrganizationGroupMembersData = async () =>
+_getOrganizationGroupMembersData = async () =>
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
         await this.props.spHttpClient
         .get(`${this.props.siteurl}/_api/Web/SiteGroups/GetById(${this.state.organizationGroupId})/users?$select=Email,Id`, 
           SPHttpClient.configurations.v1, {
@@ -197,31 +181,21 @@ export default class Organization extends React.Component<IOrganizationProps, IO
             });
             if(jsonresult.value[i].Id === this.props.currentUserId)
             {
-                 this.AddOrganizationGoalButtonDisplay();
-                // this.setState({
-                //   //isOrgnizationGoalFormDisplay: true,
-                //   AddGoalButtonDisplay:true,                  
-                //   },()=>console.log("AddGoal Button Display =>" + this.state.AddGoalButtonDisplay)
-                // )
+              this.AddOrganizationGoalButtonDisplay();                
              }
           }
-          console.log("OrganizationGroupMembersData=>" + OrganizationGroupMembersData);
-
-          // this.setState({
-          //   goalSecurityData: GoalSecurityData
-          // },()=>console.log("Organization Data =>" + this.state.goalSecurityData)
-          // )
+          console.log("OrganizationGroupMembersData=>" + OrganizationGroupMembersData);        
         })      
   } 
 
-  AddOrganizationGoalButtonDisplay = () =>{
+AddOrganizationGoalButtonDisplay = () =>{
     console.log("AddGoal Button Display =>" + this.state.AddGoalButtonDisplay)
     this.setState({
       AddGoalButtonDisplay:true, 
     })
   }
 
-  editStatus= (SelectedId) =>{
+editStatus= (SelectedId) =>{
     alert( "Button clicked for Status change. Id For Goal =>" + SelectedId)
     this.setState({
       GoalStatusId: SelectedId,   
@@ -231,7 +205,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
     })
   }
 
-  async onChangeStatusHandle(selectedId:any){
+async onChangeStatusHandle(selectedId:any){
     this.setState({
       //selectedGoal:await selectedGoal.currentTarget.value,
       GoalStatusId:await selectedId,
@@ -239,7 +213,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
       console.log("GoalStatusId ==> ", this.state.GoalStatusId);
    }
 
-   displayEditStatusIdData =  async () =>
+displayEditStatusIdData =  async () =>
    {    
       const headers: HeadersInit = new Headers();
       headers.append("accept", "application/json;odata.metadata=none");
@@ -272,7 +246,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
         })      
       } 
       
-  _monthlyTargetData = async () =>
+_monthlyTargetData = async () =>
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
@@ -305,7 +279,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
         })      
   }  
 
-  _quarterlyObjectivesData = async () =>
+_quarterlyObjectivesData = async () =>
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
@@ -338,11 +312,10 @@ export default class Organization extends React.Component<IOrganizationProps, IO
         })      
   }  
    
-  _yearlyGoalsData = async () =>
+_yearlyGoalsData = async () =>
   {    
     const headers: HeadersInit = new Headers();
     headers.append("accept", "application/json;odata.metadata=none");
-
         await this.props.spHttpClient     
         .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalOrganization')/items?$select=ID,Title,Goal,Interval,StatusPercentage&$filter=Interval eq 'Yearly Goals'`, 
           SPHttpClient.configurations.v1, {
@@ -371,7 +344,6 @@ export default class Organization extends React.Component<IOrganizationProps, IO
         })      
   }  
 
-
   public render(): React.ReactElement<IOrganizationProps> {   
     return (
       <div className={ styles.organization }>
@@ -382,13 +354,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
               <div className={styles.DataDisplay}>
                 {/* <h3>Monthly Taget of Organization</h3> */}
                 <ul>                  
-                    {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {
-                    // return(
-                    // //<li key={MonthlyTarget.Id} style={{color:MonthlyTarget.Color}}>{MonthlyTarget.Color} {MonthlyTarget.Goal}
-                    // <li key={MonthlyTarget.Id}> {MonthlyTarget.Goal}
-                    // <progress id="file" value="75" max="100"></progress>75%
-                    // </li>            
-                    // )
+                    {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {                   
                     return(
                       <li key={MonthlyTarget.Id} >
                         <table> 
@@ -413,13 +379,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
               <div className={styles.DataDisplay}>
                 {/* <h3>Quaterly Objectives of Organization</h3> */}
                 <ul>                  
-                      {this.state.quarterlyObjectivesData.map( (QuarterlyObjectives, index)=> {
-                      // return(
-                      // <li key={QuarterlyObjectives.Id} > {QuarterlyObjectives.Goal}
-                      // <progress id="file" value="50" max="100"></progress>50%
-                      // <button onClick={this.editStatus} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button>
-                      // </li>            
-                      // )
+                      {this.state.quarterlyObjectivesData.map( (QuarterlyObjectives, index)=> {                      
                       return(
                         <li key={QuarterlyObjectives.Id} >
                           <table> 
@@ -444,13 +404,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
               <div className={styles.DataDisplay}>
                 {/* <h3>Yearly Taget of Organization</h3> */}
                 <ul>                  
-                      {this.state.yearlyGoalsData.map( (YearlyGoals, index)=> {
-                      // return(
-                      // <li key={YearlyGoals.Id} >{YearlyGoals.Goal}
-                      // <progress id="file" value="25" max="100"></progress>25%
-                      // <button onClick={this.editStatus}> Edit </button>
-                      // </li>            
-                      // )
+                    {this.state.yearlyGoalsData.map( (YearlyGoals, index)=> {                     
                       return(
                         <li key={YearlyGoals.Id} >
                           <table> 
@@ -464,7 +418,6 @@ export default class Organization extends React.Component<IOrganizationProps, IO
                           </table>                                               
                         </li>            
                         )
-
                       })}             
                 </ul>
               </div>                                                          
@@ -486,10 +439,8 @@ export default class Organization extends React.Component<IOrganizationProps, IO
                   currentUserId={this.props.currentUserId}
                   isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
                   isIntervalDataDisplay={this.props.isIntervalDataDisplay}
-                  RequireGoalStatusId={this.state.GoalStatusId}
-                  //openOrganizationForm={this.state.openAddEditForm}
-                  openAddEditForm={this.state.openAddEditForm}
-                  //isOrgnizationGoalFormDisplay={this.handleCallback}
+                  RequireGoalStatusId={this.state.GoalStatusId}                  
+                  openAddEditForm={this.state.openAddEditForm}                  
                   OrganizationTabDisplay={this.props.OrganizationTabDisplay}>
                   </AddEditOrgnizationGoal>               
              }                                 

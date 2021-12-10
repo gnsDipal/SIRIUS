@@ -112,14 +112,16 @@
 }
 .SetDisplay{
   display: flex;
+  justify-content: space-between;
   margin-bottom: 1px;
   margin-top:0px;
   flex-wrap: wrap;
-  //padding-left: 10px;
-  //padding-left: 220px;
   padding-left: 32%;
-  padding-right: 14%;
+  //padding-right: 17%;
   padding-bottom: 10px;
+  width:65%;
+  //width:68%;
+  //float:right;
 }
 
 .GoalsTabBtn
@@ -128,7 +130,14 @@
   //padding: 18px 40px;
   padding: 20px;
   outline: none;
+  width:100%;
 }
 
+@media screen and (max-width : 768px){
+  .SetDisplay{
+    display: block;
+  }
+
+}
 
 
