@@ -35,150 +35,211 @@
         @include ms-font-l;
         @include ms-fontColor-white;
       }
-    .topMarginMainPage50{
-        margin-top:'50px';
+      .msGridRow{
         @include ms-Grid-row;
-    }
-    .topLevelColumn{
-      @include ms-Grid-col;
-      @include ms-lg4;
-      @include ms-md4;
-      @include ms-sm12;
-    }
-
-    // .ms-Button--compound{
-    //   text-align: center;
-    // }
-
-    .myIssuesButton{
-         // .ms-Button-label{text-align:center};
-        // display: contents;
-        > span{
-          display: contents;
-        }
-        width:100%;
-        margin-bottom:15px;
-        max-width:100%;
-        border-radius:10px;
-        padding:65px;
-        height:150px;
-        font-size:20px;
-        // background-color: rgb(111 98 137);
-        background-color: rgb(111, 98, 137);
-        color:white;
-    }
-
-    // .ms-Button-flexContainer{
-    //   span{
-    //     display: contents;
-    //   }
-    // }
-    .gearIcon{
-      margin: 0;
-      float: right;
-    }
-    .assignedIssuesButton{
-        // .label{text-align:center};
-        > span{
-          display: contents;
-        }
-        width:95%;
-        margin-bottom:15px;
-        max-width:100%;
-        border-radius:10px;
-        padding:65px;
-        height:150px;
-        font-size:20px;
-        background-color:rgb(242, 117, 127);
-        color:white;
-    }
-
-    .dispatcherViewButton{
-        // .label{text-align:center};
-        > span{
-          display: contents;
-        }
-        width:100%;
-        margin-bottom:15px;
-        max-width:100%;
-        border-radius:10px;
-        padding:65px;
-        height:150px;
-        font-size:20px;
-        background-color:#ffa600;
-        color:white
-    }
-
-    .teamsSettings {
-      font-size: 20px;
-      //font-weight: bold;
-      cursor: pointer;
-      float: right;
-      margin-top:11px;
-    }
-  
-    .teamsSettings i{
-      font-weight: bold;
-    }
-
-    .upperAllThree{
+      }
+      .msGridRowWithMargin50{
+        @include ms-Grid-row;
+        margin-top:50px;
+      }
+      .msGridRowWithMargin40{
+        @include ms-Grid-row;
+        margin-top:40px;
+      }
+      .msGridColSize2{
+        @include ms-Grid-col;
+        @include ms-lg2;
+        @include ms-md2;
+        @include ms-sm2;
+      }
+      .msGridColSize4{
         @include ms-Grid-col;
         @include ms-lg4;
         @include ms-md4;
         @include ms-sm12;
-       }
-      
-       .upperTwo{
+      }
+      .msGridColSize8{
         @include ms-Grid-col;
+        @include ms-lg8;
+        @include ms-md8;
+        @include ms-sm8;
+      }
+      
+      .topMarginMainPage50{
+          margin-top:'50px';
+          @include ms-Grid-row;
+      }
+      .gridCallOut{
+        @include ms-Grid-col; 
         @include ms-lg6;
         @include ms-md6;
         @include ms-sm12;
-       }
-      
-       .upperOnlyOne{
+        text-align: center
+      }
+     
+      .gridCompleteCallOut{
         @include ms-Grid-col;
         @include ms-lg12;
         @include ms-md12;
-        @include ms-sm12;
-       }
+        @include ms-sm12; 
+        text-align: center
+      }
 
-    .raisedRequestButton{
-        // .label{text-align:center};
-        background-color:#2f4b7c;
-        margin-right:'';
-        padding:10px;
-        border-radius:5px;
-        color:white;
-        text-align:center
-    }
-  
-
-    .belowButtonsColumsAdjust{
+      .topLevelColumn{
         @include ms-Grid-col;
-        @include ms-xxxl6;
-        @include ms-xxl6;
-        @include ms-xl6;
-        @include ms-lg6;
-        @include ms-md6;
+        @include ms-lg4;
+        @include ms-md4;
         @include ms-sm12;
-    }
-
-    .managerViewButton{
-        background-color:#ff7c43;
-        margin-right:'';
-        padding:10px;
-        border-radius:5px;
-        color:white
-    }
-    .lowerImagesIconClass{
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-       //  height: 250px;
       }
-      .lowerImagesIconClass:hover{
+
+      .myIssuesButton{
+          > span{
+            display: grid !important;
+          }
+          width:100%;
+          margin-bottom:15px;
+          max-width:100%;
+          border-radius:10px;
+          padding:65px;
+          height:150px;
+          font-size:20px;
+          background-color: rgb(111, 98, 137);
+          color:white;
+      }
+
+      // .ms-Button-flexContainer{
+      //   span{
+      //     display: contents;
+      //   }
+      // }
+      .gearIcon{
+        margin: 0;
+        float: right;
+      }
+      .assignedIssuesButton{
+          // .label{text-align:center};
+          > span{
+            display: grid !important;
+          }
+          width:95%;
+          margin-bottom:15px;
+          max-width:100%;
+          border-radius:10px;
+          padding:65px;
+          height:150px;
+          font-size:20px;
+          background-color:rgb(242, 117, 127);
+          color:white;
+      }
+
+      .dispatcherViewButton{
+          > span{
+            display: grid !important;
+          }
+          width:100%;
+          margin-bottom:15px;
+          max-width:100%;
+          border-radius:10px;
+          padding:65px;
+          height:150px;
+          font-size:20px;
+          background-color:#ffa600;
+          color:white
+      }
+
+      .topHead{
+        @include ms-Grid-row;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 0;
+      }
+      .teamsSettings {
+        font-size: 20px;
+        //font-weight: bold;
         cursor: pointer;
-        
+        float: right;
+        // margin-top:11px;
+      }
+    
+      .teamsSettings i{
+        font-weight: bold;
       }
 
-}
+      .upperAllThree{
+          @include ms-Grid-col;
+          @include ms-lg4;
+          @include ms-md4;
+          @include ms-sm12;
+         }
+       
+         .upperTwo{
+          @include ms-Grid-col;
+          @include ms-lg6;
+          @include ms-md6;
+          @include ms-sm12;
+         }
+       
+         .upperOnlyOne{
+          @include ms-Grid-col;
+          @include ms-lg12;
+          @include ms-md12;
+          @include ms-sm12;
+          align-items: center;
+         }
+
+      .raisedRequestButton{
+          // .label{text-align:center};
+          > span{
+            display: grid !important;
+          }
+          background-color:#2f4b7c;
+          margin-right:'';
+          padding:10px 70px 10px 70px;
+          border-radius:5px;
+          color:white;
+          text-align:center
+      }
+      
+    
+      .belowButtonsColumsAdjust{
+          @include ms-Grid-col;
+          @include ms-xxxl6;
+          @include ms-xxl6;
+          @include ms-xl6;
+          @include ms-lg6;
+          @include ms-md6;
+          @include ms-sm12;
+      }
+
+      .managerViewButton{
+          > span{
+            display: grid !important;
+          }
+          background-color:#ff7c43;
+          margin-right:'';
+          padding:10px 80px 10px 80px;
+          border-radius:5px;
+          color:white
+      }
+      .raiseRequestIconClass{
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          font-size: 100px;
+          text-align: center;
+         //  height: 250px;
+        }
+        .managerIconClass{
+          margin-left: auto;
+          margin-right: auto;
+          display: block;
+          font-size: 80px;
+          text-align: center;
+          margin-top: 18px;
+         //  height: 250px;
+        }
+        .lowerImagesIconClass:hover{
+          cursor: pointer;    
+        }
+} //End of block

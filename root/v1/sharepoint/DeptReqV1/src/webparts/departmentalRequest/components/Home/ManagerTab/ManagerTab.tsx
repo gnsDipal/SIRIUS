@@ -1,10 +1,9 @@
-import * as React from 'react'
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
+import * as React from 'react';
 import styles from './ManagerTab.module.scss';
 import { useEffect, useContext, useState } from 'react';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link,useParams} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route,Link,useParams} from "react-router-dom";
 import Navbar from '../Navbar/Navbar'
 import Home from '../Home'
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
@@ -33,7 +32,7 @@ const ManagerTab = (props) => {
              <div className="ms-Grid" dir="ltr"> 
               <div className="ms-Grid-row">
                <div className="ms-Grid-col ms-lg2 ms-md2 ms-sm2">
-               <Link to="/nav"><Icon iconName='Home' className={styles.iconSize}></Icon></Link>
+               <Link to="/nav"><Icon iconName={strings.HomeLabel} className={styles.iconSize}></Icon></Link>
                </div>
                <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                     <h2>{strings.ManagerViewLabel}</h2>
@@ -69,8 +68,7 @@ const ManagerTab = (props) => {
                       <a>{strings.TotalLabel}
                         <span className={`${styles['bg-blue']} ${styles['pull-right']} ${styles.badge}`}>{res.Open + res.InProcess + res.Closed}</span>
                       </a>  
-                    </li>
-                    
+                    </li>           
                     </ul>
                  </div>
                  </div>
@@ -78,7 +76,6 @@ const ManagerTab = (props) => {
                  })
         }
               </div>
-
             </div>
             <Switch>
                 <Route exact path="/nav">
@@ -91,5 +88,4 @@ const ManagerTab = (props) => {
         </div>
     )
 }
-
 export default ManagerTab

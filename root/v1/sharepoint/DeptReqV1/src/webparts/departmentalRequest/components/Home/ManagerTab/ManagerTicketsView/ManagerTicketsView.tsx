@@ -1,22 +1,14 @@
 import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
 import styles from '../ManagerTab.module.scss';
-import * as strings from 'DepartmentalRequestWebPartStrings'
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link, useParams, useLocation} from "react-router-dom";
-import { IconButton } from '@fluentui/react/lib/Button';
+import * as strings from 'DepartmentalRequestWebPartStrings';
+import {BrowserRouter as Router,Link, useParams} from "react-router-dom";
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 initializeIcons();
 import { Icon } from '@fluentui/react/lib/Icon';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
-import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLevel} from "@pnp/logging";
-import { TooltipHost, ITooltipHostStyles } from '@fluentui/react/lib/Tooltip';  
+import { IStackStyles } from '@fluentui/react/lib/Stack';
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
-import { passUser } from '../../../../../../model/MyRequestedEachPlateData';
-import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
-import * as microsoftTeams from '@microsoft/teams-js';
 
 let spManagerServiceData: SPDepartmentalServiceData = null;
 const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
@@ -104,5 +96,4 @@ const ManagerTicketsView = () => {
      </div>
     )
 }
-
 export default ManagerTicketsView

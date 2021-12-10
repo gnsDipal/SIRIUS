@@ -1,15 +1,12 @@
 import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
-import { IItemAddResult } from "@pnp/sp/items";
+import {Web} from '@pnp/sp/presets/all';
 import { IList } from "@pnp/sp/lists";
 import { IAttachmentFileInfo } from "@pnp/sp/attachments";
-import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
-import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import {AssignedTicketData, MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { IDispatcherList, reAssignedUser, fileElements } from '../model/IDispatcher';
+import { IDropdownOption } from 'office-ui-fabric-react';
+import { IDispatcherList } from '../model/IDispatcher';
   debugger;
   let spfxContext = null;
 
@@ -71,7 +68,6 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
      {
           console.log("User not in any dispatch group");
      }
-
      return (SPGroupList);
 }
 
@@ -106,8 +102,7 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
         else{
 
         }
-      }   
-      
+      }      
       /* DispatcherTicketView related calls */
 
   public async loadDispatcherListInfo(passedDeptName):Promise<IDispatcherList[]>{
@@ -186,10 +181,8 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
       ReAssignToId: newUser.key,
     }
        let result = await this.web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
-        return result
-        
-}
-      
+        return result       
+}    
 } //End of Main class
 
 

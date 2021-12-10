@@ -1,17 +1,14 @@
 import * as React from 'react';
 import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
-// import { siteUsers } from '@pnp/sp/site-users/web'
+import { sp } from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
 import { Context } from "@microsoft/teams-js";
 import { SPHttpClient, ISPHttpClientOptions, SPHttpClientResponse } from '@microsoft/sp-http';
 
-
 export interface spProps {
   context:Context
 }
-// debugger;
 export default class spservices {
     private webContext:WebPartContext;
     constructor(private context: WebPartContext) {    
@@ -26,7 +23,6 @@ export default class spservices {
         // Init
         this.onInit();
         
-
       }
        // OnInit Function
   private async onInit() {

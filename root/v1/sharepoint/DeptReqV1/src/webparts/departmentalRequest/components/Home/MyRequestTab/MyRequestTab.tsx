@@ -1,22 +1,17 @@
-import * as React from 'react'
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
+import * as React from 'react';
 import styles from './MyRequestTab.module.scss'
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { useEffect, useContext, useState } from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router,Switch,Route,HashRouter,Link,useLocation,useParams} from "react-router-dom";
-import DispatcherTab from '../DispatcherTab/DispatcherTab';
 import Home from '../Home';
-import Main from '../../Main/Main'
 import Navbar from '../Navbar/Navbar';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main'
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
 let spMyRequestedServiceData:SPDepartmentalServiceData = null;
-
 const MyRequestTab = (props) => {
-    const location = useLocation();
     const mainContext = useContext(UserContext);
     const {myReqStatus,dept} = useParams();
     const [myRequestedPlate, setMyRequestedPlate] = useState([]);
@@ -34,7 +29,6 @@ const MyRequestTab = (props) => {
       setUnlockPlate(true);
     })
  }
-
     return (
         <div className={styles.myRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -90,8 +84,8 @@ const MyRequestTab = (props) => {
             <Switch>
                 <Route exact path="/nav">
                     <div>
-                        <Navbar {...props}/>
-                        <Home {...props}/>
+                        <Navbar/>
+                        <Home />
                     </div>
                 </Route>
             </Switch>
@@ -99,5 +93,4 @@ const MyRequestTab = (props) => {
         </div>
     )
 }
-
 export default MyRequestTab

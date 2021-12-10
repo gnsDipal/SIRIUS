@@ -7,14 +7,15 @@ import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router,Link } from "react-router-dom";
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import { UserContext } from '../../Main/Main';
+import { _UserCustomAction } from '@pnp/sp/user-custom-actions/types';
 debugger;
 let spPermissionDataService:SPDepartmentalServiceData = null;
 const Navbar = () => {
     const mainContext = useContext(UserContext);
     //state variable
-    const [dispatcherPermit, setDispatcherPermit] = useState(false);// check permission
-    const [assignedPermit, setAssignedPermit] = useState(false);// check permission
-    const [managerPermit, setManagerPermit] = useState(false);// check permission
+    const [dispatcherPermit, setDispatcherPermit] = useState(false);// check dispatcher permission
+    const [assignedPermit, setAssignedPermit] = useState(false);// check Assigned Issues permission
+    const [managerPermit, setManagerPermit] = useState(false);// check manager permission
     useEffect(() => { 
       init();              
     },[]);
@@ -39,54 +40,54 @@ const Navbar = () => {
         {
           <div>
             <div className="ms-Grid" dir="ltr"> 
-            <div className="ms-Grid-row">
-              <div className="ms-Grid-col" ms-lg8 ms-md8 ms-sm8>
+            <div className={styles.topHead}>
+              <div className={styles.msGridColSize8}>
                 <h1>{strings.WelcomeLabel}</h1>
               </div>
               { (mainContext.sdks.microsoftTeams) &&
-              <div className="ms-Grid-col" ms-lg2 ms-md2 ms-sm2>
+              <div className={styles.msGridColSize2}>
                 <div className={styles.gearIcon}>
                     <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel}></Icon>                  
                 </div>
               </div>
               }
             </div>
-              <div className="ms-Grid-row">
-                  <div className="ms-Grid-col ms-sm12 ms-md4 ms-lg4">
+              <div className={styles.msGridRowWithMargin50}> 
+                  <div className={(dispatcherPermit === true)?((assignedPermit=== true)?styles.upperAllThree:styles.upperTwo):(assignedPermit=== true?styles.upperTwo:styles.upperOnlyOne)}>
                   <Link to="/requested">
                   <CompoundButton className={styles.myIssuesButton}>{strings.RequestedIssuesLabel}</CompoundButton>
                   </Link>
                   </div>
                 { assignedPermit && 
-                  <div className="ms-Grid-col ms-sm12 ms-md4 ms-lg4">
-                  <Link to="/assigned">
-                  <CompoundButton className={styles.assignedIssuesButton}>{strings.AssignedIssuesLabel}</CompoundButton>
-                  </Link>
+                  <div className={(dispatcherPermit === true)?styles.upperAllThree:styles.upperTwo}>
+                    <Link to="/assigned">
+                      <CompoundButton className={styles.assignedIssuesButton}>{strings.AssignedIssuesLabel}</CompoundButton>
+                    </Link>
                   </div>
                 }
                 { dispatcherPermit &&
-                  <div className="ms-Grid-col ms-sm12 ms-md4 ms-lg4">
-                  <Link to="/dispatcher">
-                    <CompoundButton className={styles.dispatcherViewButton}>{strings.DispatcherViewLabel}</CompoundButton>
+                  <div className={(assignedPermit === true)?styles.upperAllThree:styles.upperTwo}>
+                    <Link to="/dispatcher">
+                      <CompoundButton className={styles.dispatcherViewButton}>{strings.DispatcherViewLabel}</CompoundButton>
                     </Link>
                   </div>
                 }
               </div>
                 
-              <div className="ms-Grid-row">
-                <div className="ms-Grid-col ms-u-sm6 block">
+              <div className={styles.msGridRowWithMargin40}>
+                <div className={managerPermit === true? styles.gridCallOut:styles.gridCompleteCallOut}>
                 <Link to="/raise">
                   <CompoundButton className={styles.raisedRequestButton}>{strings.NewTicketLabel}
-                  <Icon iconName={strings.TicketLabel} className={styles.lowerImagesIconClass} style={{fontSize:'100px', textAlign:'center'}}
+                  <Icon iconName={strings.TicketLabel} className={styles.raiseRequestIconClass} 
                   />
                   </CompoundButton>
                   </Link>
                 </div>
                 { managerPermit &&
-                <div className="ms-Grid-col ms-u-sm6 block">
+                <div className={styles.gridCallOut}>
                   <Link to="/manager">
                    <CompoundButton className={styles.managerViewButton}>{strings.ManagerViewLabel}
-                    <Icon iconName={strings.ReminderPersonLabel} className={styles.lowerImagesIconClass} style={{fontSize:'100px', textAlign:'center'}}
+                    <Icon iconName={strings.ReminderPersonLabel} className={styles.managerIconClass} 
                     /> 
                    </CompoundButton>
                    </Link>
@@ -100,5 +101,6 @@ const Navbar = () => {
         </div>
     )
 }
-
 export default Navbar
+
+

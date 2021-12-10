@@ -1,16 +1,9 @@
 import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web} from '@pnp/sp/presets/all';
-import { IItemAddResult } from "@pnp/sp/items";
-import { IList } from "@pnp/sp/lists";
-import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
-import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { IOptionWithKey } from '../model/RaiseRequest';
-import { IDepartmentList } from '../model/RaiseRequest';
-import {MyAssignedEachPlateData, MyRequestedEachPlateData, IMyRequestList} from '../model/MyRequestedEachPlateData'
+import {MyRequestedEachPlateData, IMyRequestList} from '../model/MyRequestedEachPlateData'
   let spfxContext = null;
   let uniqueDeptList = [],myRequestedEachPlateData = [];
   
@@ -29,9 +22,6 @@ import {MyAssignedEachPlateData, MyRequestedEachPlateData, IMyRequestList} from 
       graph.setup({
        spfxContext: context
       });
-
-      
-
       // Init
       this.onInit();
     }
@@ -41,9 +31,7 @@ import {MyAssignedEachPlateData, MyRequestedEachPlateData, IMyRequestList} from 
       this.loggedInUserId = this.webContext.pageContext.legacyPageContext["userId"];
       this.web = Web(this.webUrl);
     }
-
 /* My Requested Issues Call */
-
 public async loadManagerCount():Promise<MyRequestedEachPlateData[]>{
     try{
     let myRequestedDepartmentsCount:MyRequestedEachPlateData[] = [];

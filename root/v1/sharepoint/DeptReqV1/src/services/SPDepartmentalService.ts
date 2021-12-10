@@ -34,9 +34,6 @@ import { IDepartmentList } from '../model/RaiseRequest';
       graph.setup({
        spfxContext: context
       });
-
-      
-
       // Init
       this.onInit();
     }
@@ -106,7 +103,6 @@ import { IDepartmentList } from '../model/RaiseRequest';
             break;
           }
         }
-    
     let departmentCategoryOptions:IDropdownOption[] = getOptionsBySelectedDept.map((r,index) => {
       return {
         key:index,
@@ -132,7 +128,6 @@ import { IDepartmentList } from '../model/RaiseRequest';
               return Promise.resolve(groupUser)
           }
     }
-
 
     public async loadEmployeeRequest(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo):Promise<{}>{
      
@@ -192,13 +187,10 @@ import { IDepartmentList } from '../model/RaiseRequest';
         });
         }
       }
-
       Promise.all(fileInfos)
       .then(res=>{
       const list: IList = this.web.lists.getByTitle("EmpReq").items.getById(responseJSON.data.ID).attachmentFiles.addMultiple(res);
-
       })
-
     }
 
    // Assigned Issues Section Calls 
@@ -255,14 +247,11 @@ import { IDepartmentList } from '../model/RaiseRequest';
     }
   }
 
-
   //Todo (Dipal) (Change the method from item to count)
   public async getRequestedCountByPara(web, deptName, status, currentUserId){
     let result = await web.lists.getByTitle('EmpReq').items.select(`*`).filter(`ReAssignToId eq ${currentUserId} and Status eq '${status}' and Department eq '${deptName}'`).get();
     return result.length;
   }
-
-  // .filter(`Status eq '${inProcess}' and ReAssignToId eq ${this.loggedInUserId} and Department eq '${deptName}`)
 
   public async loadAssignToListInfo(inProcess,deptName):Promise<AssignedTicketData[]>{
       let ticketList:AssignedTicketData[] = [];
@@ -320,7 +309,6 @@ import { IDepartmentList } from '../model/RaiseRequest';
       return result;
 }
 
-
 public async emailIdMethod(userId):Promise<string>{
   const web = Web(this.webUrl);
   let result = await web.getUserById(userId).get();
@@ -336,7 +324,5 @@ public async loadCompletedWithStatusUpdate(idRequest,commentData):Promise<{}>{
   let result = await web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
   return result;
 }
-
-
 }//End of Main function
 

@@ -1,21 +1,11 @@
-import * as React from 'react'
+import * as React from 'react';
 import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
-import { IItemAddResult } from "@pnp/sp/items";
-import { IList } from "@pnp/sp/lists";
-import { IAttachmentFileInfo } from "@pnp/sp/attachments";
-// import { siteUsers } from '@pnp/sp/site-users/web'
+import { sp, Web } from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
-// import * as moment from 'moment';
 import { Logger, LogLevel} from "@pnp/logging";
-import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { IOptionWithKey } from '../model/RaiseRequest';
-import { IDepartmentList } from '../model/RaiseRequest';
-import {MyAssignedEachPlateData, MyRequestedEachPlateData, IMyRequestList} from '../model/MyRequestedEachPlateData'
-  debugger;
+import { MyRequestedEachPlateData, IMyRequestList} from '../model/MyRequestedEachPlateData';
   let spfxContext = null;
-  let uniqueDeptList = [],myRequestedEachPlateData = [];
+  let uniqueDeptList = [];
   
   export default class SPMyRequestService{ 
     private webContext = null;

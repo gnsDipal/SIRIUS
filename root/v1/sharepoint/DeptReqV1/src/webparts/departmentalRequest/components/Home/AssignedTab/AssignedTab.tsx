@@ -4,10 +4,8 @@ import styles from './AssignedTab.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router,Switch,Route,HashRouter,Link, useParams, useLocation} from "react-router-dom";
-import SPDepartmentalService from '../../../../../services/SPDepartmentalService';
 import { UserContext } from '../../Main/Main';
 import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
-import { MyAssignedEachPlateData } from '../../../../../model/MyRequestedEachPlateData';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
@@ -20,10 +18,8 @@ let spAssignedServiceData: SPDepartmentalServiceData = null;
 const AssignedTab = () => {     
     let loc = useLocation()
     const {Inprocess,dept,Closed} = useParams();
-    const [deptPlate,SetdeptPlate] = useState(null);
-    const [TotalRaisedData, SetTotalRaisedData] = useState(0); 
-    const [InProcessData, SetInProcessData] = useState(0); 
-    const [ClosedData, SetClosedData] = useState(0); 
+    const [deptPlate,setDeptPlate] = useState(null);
+    const [totalRaisedData, setTotalRaisedData] = useState(0); 
 
     const mainContext = useContext(UserContext);
     useEffect(() => {
@@ -38,8 +34,8 @@ const AssignedTab = () => {
       spAssignedServiceData = new SPDepartmentalServiceData(mainContext);
       spAssignedServiceData.getAssignedViewCountData()
      .then((res)=>{
-      SetdeptPlate(res);
-        SetTotalRaisedData(res.length);  // unlock display dept data
+      setDeptPlate(res);
+        setTotalRaisedData(res.length);  // unlock display dept data
      })
     }
     return (
@@ -53,13 +49,13 @@ const AssignedTab = () => {
                <h2>{strings.AssignedIssuesLabel}</h2>
            </div>
          </div>
-         <div>{(TotalRaisedData === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+         <div>{(totalRaisedData === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
           </div>
          <div className="ms-Grid">
          <div className="ms-Grid-row ms-lg12 ms-sm12">               
          <h4>{strings.DepartmentBasedCardLabel}</h4>
         {   
-          (TotalRaisedData !== 0) && //unlock display card
+          (totalRaisedData !== 0) && //unlock display card
           deptPlate.map((res,index)=>{
             return(
           <div className="ms-Grid-col ms-lg4 ms-sm4">

@@ -1,20 +1,16 @@
 import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
 import styles from '../AssignedTab.module.scss';
-import * as strings from 'DepartmentalRequestWebPartStrings'
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link, useParams, useLocation} from "react-router-dom";
-import { IconButton } from '@fluentui/react/lib/Button';
+import * as strings from 'DepartmentalRequestWebPartStrings';
+import {BrowserRouter as Router,Switch,Route,Link, useParams} from "react-router-dom";
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 initializeIcons();
 import { Icon } from '@fluentui/react/lib/Icon';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
-import { ToastContainer, toast } from 'react-toastify';
-import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLevel} from "@pnp/logging";
-import * as queryString from 'query-string';
-
-import { TooltipHost, ITooltipHostStyles } from '@fluentui/react/lib/Tooltip';
+import { Dropdown, IDropdownOption, TextField } from 'office-ui-fabric-react';
+import { Stack, IStackStyles } from '@fluentui/react/lib/Stack';
+import { ToastContainer } from 'react-toastify';
+import { Logger, LogLevel} from "@pnp/logging";
+import { TooltipHost } from '@fluentui/react/lib/Tooltip';
 import AssignedTab from '../AssignedTab';
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
@@ -39,23 +35,23 @@ const AssignedTicketsView = () => {
 
 
     //State variables
-    const [AssignedListData,SetAssignedListData] = useState(null);
-    const [LoadData,SetLoadData] = useState<boolean>(false);
-    const [IndexSelect,SetIndexSelect] = useState(0);
-    const [CommentData,SetCommentData] = useState('');
-    const [StatusOptions,SetStatusOptions] = useState<IDropdownOption[]>([]);
-    const [DeptListDropDown,SetDeptListDropDown] = useState<IDropdownOption[]>([]);
-    const [StatusCompletedCheck,SetStatusCompletedCheck] = useState(0);
-    const [DeleteSelectedTicket,SetDeleteSelectedTicket] = useState('');
-    const [PassAssignedToUser,SetPassAssignedToUser] = useState<passUser>({
+    const [assignedListData,setAssignedListData] = useState(null);
+    const [loadData,setLoadData] = useState<boolean>(false);
+    const [indexSelect,setIndexSelect] = useState(0);
+    const [commentData,setCommentData] = useState('');
+    const [statusOptions,setStatusOptions] = useState<IDropdownOption[]>([]);
+    const [deptListDropDown,setDeptListDropDown] = useState<IDropdownOption[]>([]);
+    const [statusCompletedCheck,setStatusCompletedCheck] = useState(0);
+    const [deleteSelectedTicket,setDeleteSelectedTicket] = useState('');
+    const [passAssignedToUser,setPassAssignedToUser] = useState<passUser>({
         key:0,
         text:''
     });
-    const [IdSelect,SetIdSelect] = useState<number>(0);
-    const [AssignedNotification,SetAssignedNotification] = useState<number>(0);
-    const [TicketCount,SetTicketCount] = useState<number>(0);
-    const [EmailId,SetEmailId] = useState<string>('');
-    const [msGraphProvider,SetMsGraphProvider] = useState<IMSGraphInterface>(
+    const [idSelect,setIdSelect] = useState<number>(0);
+    const [assignedNotification,setAssignedNotification] = useState<number>(0);
+    const [ticketCount,setTicketCount] = useState<number>(0);
+    const [emailId,setEmailId] = useState<string>('');
+    const [msGraphProvider,setMsGraphProvider] = useState<IMSGraphInterface>(
       {
         getCurrentUserId(): Promise<any>{return},
         getUserId(userEmail: string): Promise<any>{return},
@@ -81,9 +77,8 @@ const AssignedTicketsView = () => {
     spAssignedServiceData.getAssignToListData(Inprocess,dept)
    .then((res)=>{
        console.log('res = ' + res.length);
-       SetAssignedListData(res);
-       SetLoadData(true);
-       console.log('AssignedListData = ' + AssignedListData );
+       setAssignedListData(res);
+       setLoadData(true); //unlock data view
        fetchMsGraphProvider()
    });
     if(mainContext.sdks.microsoftTeams){ 
@@ -94,20 +89,20 @@ const AssignedTicketsView = () => {
   }
 
   const fetchMsGraphProvider = async () => {
-    SetMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
+    setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
   }
 
  function onTextFieldClickHandle(ticketNumber){
-    SetIndexSelect(ticketNumber)
+    setIndexSelect(ticketNumber)
 }
 
 function inputComment(event){  
-    SetCommentData(event.target.value)
+    setCommentData(event.target.value)
   }
 
 function loadStatusList(){
 
-    SetStatusOptions([
+    setStatusOptions([
         {key:1, text:'In Process'},
         {key:2, text:'Completed'},
     ])
@@ -117,10 +112,10 @@ function loadStatusList(){
     console.log(selectedStatus,ticketNumber);
     if(selectedStatus.text === 'Completed'){
       this.getEmail(authorId);
-      SetDeptListDropDown([]);
-      SetStatusCompletedCheck(2);
-      SetDeleteSelectedTicket(ticketNumber);
-      SetPassAssignedToUser({
+      setDeptListDropDown([]);
+      setStatusCompletedCheck(2);
+      setDeleteSelectedTicket(ticketNumber);
+      setPassAssignedToUser({
         key:null,
         text:''
       })
@@ -130,79 +125,78 @@ function loadStatusList(){
       spAssignedServiceData.getDeptOptionsByGrpName(department)
       .then(
         data=>{
-          SetDeptListDropDown(data);
-          SetIdSelect(idNumber);
-          SetStatusCompletedCheck(1);
-          SetDeleteSelectedTicket(ticketNumber);
+          setDeptListDropDown(data);
+          setIdSelect(idNumber);
+          setStatusCompletedCheck(1);
+          setDeleteSelectedTicket(ticketNumber);
         }
       )
     }
 }
 
 function getUserByDept(control,reAssignTo,department,idNumber){
-  if(StatusCompletedCheck === 1) {
+  if(statusCompletedCheck === 1) {
     spAssignedServiceData.getDeptOptionsByGrpName(department)
    .then(
     data=>{
         console.log(data);
-        SetDeptListDropDown(data);
-        SetIdSelect(idNumber);
+        setDeptListDropDown(data);
+        setIdSelect(idNumber);
     }
   )
-}
-else
+}else
 {
-  SetDeptListDropDown([]);
+  setDeptListDropDown([]);
 }
 }
 
 async function onUserSelect(userName,selectedName, ticketNumber){
   console.log(userName,selectedName);
   let AssignedUserEmailId:string = await spAssignedServiceData.getEmailId(selectedName.key);
-  SetEmailId(AssignedUserEmailId);
-  SetPassAssignedToUser(selectedName);
-  SetDeleteSelectedTicket(ticketNumber);
+  setEmailId(AssignedUserEmailId);
+  setPassAssignedToUser(selectedName);
+  setDeleteSelectedTicket(ticketNumber);
 }
 
 async function onSubmitDropDownHandle(commentData:string,idRequest:number,assignedToUser,ticketNumberCheck,department){
-        if(DeleteSelectedTicket === ticketNumberCheck){
+        if(deleteSelectedTicket === ticketNumberCheck){
           if(assignedToUser.text != ''){
             // SetEmailId(AssignedUserEmailId.Email);
-            SetAssignedNotification(1);
+            setAssignedNotification(1);
             spAssignedServiceData.addReAssignedToData(assignedToUser,idRequest,commentData,ticketNumberCheck).then(r=>{
-              var items = AssignedListData.filter(item=> item.dataId !==idRequest);
-              _sendReAssignedTeamsMessage(EmailId, ticketNumberCheck, department);
-              SetAssignedListData(items);
-              SetDeptListDropDown([]);
-              SetTicketCount(TicketCount - 1);
-              SetPassAssignedToUser({
+              var items = assignedListData.filter(item=> item.dataId !==idRequest);
+              _sendReAssignedTeamsMessage(emailId, ticketNumberCheck, department);
+              setAssignedListData(items);
+              setDeptListDropDown([]);
+              setTicketCount(ticketCount - 1);
+              setPassAssignedToUser({
                 key:null,
                 text:''
               });
-              SetStatusCompletedCheck(0);
-              SetStatusOptions([]);
-              SetCommentData('');
-              SetAssignedNotification(0);
+              setStatusCompletedCheck(0);
+              setStatusOptions([]);
+              setCommentData('');
+              setAssignedNotification(0);
 
             })
           }
           if(assignedToUser.text === '' && (this.state.statusCompletedCheck === 2) ){
-            _sendCompletedStatusTeamsMessage(EmailId,ticketNumberCheck);
-            SetAssignedNotification(1);
+            _sendCompletedStatusTeamsMessage(emailId,ticketNumberCheck);
+            setAssignedNotification(1);
            spAssignedServiceData.getCompletedWithStatusUpdate(idRequest,commentData).then(r =>{
-            var items = AssignedListData.filter(item=> item.dataId !==idRequest);
+            var items = assignedListData.filter(item=> item.dataId !==idRequest);
             //Setting state variables
-            SetAssignedListData(items);
-            SetDeptListDropDown([]);
-            SetTicketCount(TicketCount - 1);
-            SetPassAssignedToUser({
+            setAssignedListData(items);
+            setDeptListDropDown([]);
+            setTicketCount(ticketCount - 1);
+            setPassAssignedToUser({
               key:null,
               text:''
             });
-            SetStatusCompletedCheck(0);
-            SetStatusOptions([]);
-            SetCommentData('');
-            SetAssignedNotification(0);
+            setStatusCompletedCheck(0);
+            setStatusOptions([]);
+            setCommentData('');
+            setAssignedNotification(0);
 
            })
           }
@@ -359,8 +353,8 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             </tr>
           </thead>
           <tbody>
-            { LoadData && // unlock data view
-             AssignedListData.map((res,index)=>{
+            { loadData && // unlock data view
+             assignedListData.map((res,index)=>{
              var issuedDate = new Date(res.issueDate).toLocaleDateString();
                 return(
                   <tr>
@@ -373,14 +367,12 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                     <Stack horizontal styles={stackStyles}>
                      <TextField multiline rows={3}
                       key={index}
-                      // ref={textInput}
                       type="text"
-                      // accessKey={res.ticketNumber}
                       onClick={()=>onTextFieldClickHandle(res.dataId)}
                        defaultValue=""
                        value={
-                        (IndexSelect === res.dataId)?
-                        CommentData:''}
+                        (indexSelect === res.dataId)?
+                        commentData:''}
                        onChange={inputComment}
                      ></TextField>    
                      </Stack>
@@ -389,7 +381,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                       <Dropdown
                         placeholder='Select Status'
                        label={'Status'}
-                        options={StatusOptions}
+                        options={statusOptions}
                          defaultSelectedKey={" "}
                         onClick={()=>loadStatusList()}
                         onChange={(e,selectedStatusOption)=>onStatusChangeHandle(selectedStatusOption,res.ticketNumber,res.supportDeptName,res.dataId,res.authorId)}>
@@ -400,11 +392,10 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                        label={'ReAssigned To'}
                        defaultSelectedKey={" "}
                       onClick={(e)=>getUserByDept(res.ticketNumber + '_dropDown',this,res.supportDeptName,res.dataId)} 
-                      options={DeptListDropDown}
+                      options={deptListDropDown}
                       onChange={(e,selectedName)=>onUserSelect(e,selectedName,res.ticketNumber)}>
                       </Dropdown>
                     </td>
-
                     <td>
                       {
                         res.attachmentFileName.map((r,i)=>{
@@ -416,7 +407,6 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                         })                     
                       }
                     </td>
-        
                     <td>
                     {
                         res.attachmentFileName.map((r,i)=>{
@@ -425,12 +415,11 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                             <a href={r.ServerRelativeUrl}> {r.FileName}</a>
                           )
                           }
-                        })
-                      
+                        })             
                       }
                     </td>
                     <td>
-                    <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(CommentData,res.dataId,PassAssignedToUser,res.ticketNumber,res.department)}></Icon>
+                    <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(commentData,res.dataId,passAssignedToUser,res.ticketNumber,res.department)}></Icon>
                     </td>
                   </tr>
                 )
@@ -442,14 +431,14 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
         </div>
         <ToastContainer/>
       {
-        (AssignedNotification === 1) &&
+        (assignedNotification === 1) &&
         Logger.writeJSON("Ticket assigned",LogLevel.Info)
       } 
       </div>
                
             </div>
             <Switch>
-                <Route exact path="/assigned" component={(props)=><AssignedTab {...props}/>}></Route>
+                <Route exact path="/assigned" component={(props)=><AssignedTab/>}></Route>
             </Switch>
          </div>
     )

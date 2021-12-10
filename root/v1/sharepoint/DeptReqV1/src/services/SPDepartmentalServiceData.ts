@@ -1,16 +1,11 @@
 import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
-// import { siteUsers } from '@pnp/sp/site-users/web'
-import { graph } from "@pnp/graph";
-// import * as moment from 'moment';
-import { Logger, LogLevel} from "@pnp/logging";
-import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import SPDepartmentalService from './SPDepartmentalService';
 import SPDispatcherService from './SPDispatcherService';
 import {MyAssignedEachPlateData,MyRequestedEachPlateData,IMyRequestList} from '../model/MyRequestedEachPlateData';
 import {AssignedTicketData} from '../model/MyRequestedEachPlateData';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
+import { IDropdownOption } from 'office-ui-fabric-react';
 import { IOptionWithKey, IDepartmentList } from '../model/RaiseRequest';
 import { IDispatcherList } from '../model/IDispatcher';
 import SPMyRequestService from './SPMyRequestService';
@@ -118,8 +113,6 @@ import SPPermissionService from './SPPermissionService';
       getManagerPermissionHandle():Promise<boolean>{
         return this.permissionService.loadManagerPermissionHandle();
       }
-      
-
     } //End of Main Class
       
   

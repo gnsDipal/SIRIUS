@@ -2,24 +2,19 @@ import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import styles from '../DispatcherTab.module.scss';
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link, useParams, useLocation} from "react-router-dom";
-import { IconButton } from '@fluentui/react/lib/Button';
+import {BrowserRouter as Router,Switch,Route,Link, useParams} from "react-router-dom";
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 initializeIcons();
 import { Icon } from '@fluentui/react/lib/Icon';
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
+import { IStackStyles } from '@fluentui/react/lib/Stack';
 import { ToastContainer, toast } from 'react-toastify';
-import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLevel} from "@pnp/logging";
-import * as queryString from 'query-string';
-import { TooltipHost, ITooltipHostStyles } from '@fluentui/react/lib/Tooltip';
+import { Logger, LogLevel} from "@pnp/logging";
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
-import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
 import * as microsoftTeams from '@microsoft/teams-js';
 import DispatcherTab from '../DispatcherTab';
-import { IDispatcherList, passUser } from '../../../../../../model/IDispatcher';
+import { passUser } from '../../../../../../model/IDispatcher';
 
 const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 let spDispatcherServiceData:SPDepartmentalServiceData = null;
@@ -52,7 +47,6 @@ const DispatcherTicketsView = () => {
            setUnlockDispatcherData(true); // Condition for displaying table data
        });
       }
-
      const getUserByDept=(control,reAssignTo,department,idNumber)=>{
         // grpName= department;
         // this.loadDepartmentOptions();
@@ -90,18 +84,17 @@ const DispatcherTicketsView = () => {
              
               }
         }
-
     return (
         <div className={styles.dispatcherTab}>
             <div className="ms-Grid" dir="ltr"> 
               <div className="ms-Grid-row">
                 <div className="ms-Grid-col ms-lg4 ms-sm4">
-                <Link to="/dispatcher"><Icon iconName='NavigateBack' className={styles.iconSize}></Icon></Link>
+                <Link to="/dispatcher"><Icon iconName={strings.NavigateBackLabel} className={styles.iconSize}></Icon></Link>
                 </div>
               </div> 
               <div className="ms-Grid-row">
             <div className="ms-Grid-col ms-lg12 ms-sm12">
-            <div style={{overflowX:'auto'}}>
+            <div className={styles.overFlowX}>
             <table className={styles.tableSet} >
                 <thead>
                   <tr>
@@ -151,7 +144,7 @@ const DispatcherTicketsView = () => {
                              />
                           </td>
                          <td>
-                          <Icon iconName="Save" className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(e,res.dataId,passAssignedToUser,res.ticketNumber,res.raisedBy)}></Icon>
+                          <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(e,res.dataId,passAssignedToUser,res.ticketNumber,res.raisedBy)}></Icon>
                           </td>
                         </tr>
                       )
