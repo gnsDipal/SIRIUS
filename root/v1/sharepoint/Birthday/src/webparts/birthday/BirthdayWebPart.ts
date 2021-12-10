@@ -16,8 +16,6 @@ import { update, get } from '@microsoft/sp-lodash-subset';
 import { PropertyPaneDropdown } from '../../controls/PropertyPaneDropdown/components/PropertyPaneDropdown';
 import Birthday from './components/Birthday';
 import { IBirthdayProps } from './components/IBirthdayProps';
-import { IBirthday } from "../../Models/IBirthday";
-import { IAnniversary } from "../../Models/IAnniversary";
 import { PropertyFieldFilePicker, IFilePickerResult } from "@pnp/spfx-property-controls/lib/PropertyFieldFilePicker";
 import { sp } from '@pnp/sp';
 import "@pnp/sp/webs";
@@ -30,8 +28,6 @@ export interface IBirthdayWebPartProps {
   description: string;
   webPartContext: WebPartContext;  
   dropdown: string;
-  BirthPeople: IBirthday[];
-  AnniPeople: IAnniversary[];
   externalAPI: string;
   IsTeamsIcon: boolean;
   dataSource: string;
@@ -55,8 +51,6 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         description: this.properties.description,
         webPartContext: this.context,       
         dropdown: this.properties.dropdown,
-        BirthPeople: this.properties.BirthPeople,
-        AnniPeople: this.properties.AnniPeople,
         externalAPI: this.properties.externalAPI,
         IsTeamsIcon: this.properties.IsTeamsIcon,
         dataSource: this.properties.dataSource                     

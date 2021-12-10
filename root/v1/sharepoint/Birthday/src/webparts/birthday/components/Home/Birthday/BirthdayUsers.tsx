@@ -16,7 +16,7 @@ import {
   Persona,
   PersonaSize
 } from '@fluentui/react/lib/Persona';
-import { UserContext } from '../../Main/Birthday';
+import { UserContext } from '../../Main/Main1';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
 
 initializeIcons();

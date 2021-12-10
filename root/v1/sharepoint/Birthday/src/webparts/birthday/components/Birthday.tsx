@@ -7,7 +7,7 @@ import { DefaultButton } from "@fluentui/react/lib/Button";
 import { IBirthday} from '../../../Models/IBirthday';
 import { IAnniversary } from '../../../Models/IAnniversary';
 import { IBirthdayState } from './IBirthdayState';
-import { IBirthdayResults, ICell } from '../../../Models/IBirthdayResults';
+import { IBirthAnniResults, ICell } from '../../../Models/IBirthAnniResults';
 import BirthdayUser from './Birthday/BirthdayUser';
 import AnniversaryUser  from './Anniversary/AnniversaryUser';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
@@ -68,7 +68,7 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
     {     
       this.CheckBirthdayDataSource();
     } 
-    //this.checkIfTeamExist();    
+    this.checkIfTeamExist();    
   }
 
   checkIfTeamExist = async() =>
@@ -502,10 +502,10 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
         .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='RefinableDate00:range(datetime(${this.state.StartDate}), datetime(${this.state.EndDate}))'`, SPHttpClient.configurations.v1, {
           headers: headers
         })
-        .then((res: SPHttpClientResponse): Promise<IBirthdayResults> => {          
+        .then((res: SPHttpClientResponse): Promise<IBirthAnniResults> => {          
           return res.json();
         })
-        .then((res: IBirthdayResults): void => {
+        .then((res: IBirthAnniResults): void => {
           if (res.error) {
             // There was an error loading information about people.
             // Notify the user that loading data is finished and return the
@@ -707,10 +707,10 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
         .get(`${this.props.webPartContext.pageContext.web.absoluteUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'`, SPHttpClient.configurations.v1, {
           headers: headers
         })
-        .then((res: SPHttpClientResponse): Promise<IBirthdayResults> => {          
+        .then((res: SPHttpClientResponse): Promise<IBirthAnniResults> => {          
           return res.json();
         })
-        .then((res: IBirthdayResults): void => {
+        .then((res: IBirthAnniResults): void => {
           if (res.error) {
             this.setState({
               loading: false,
@@ -895,8 +895,8 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
             </Stack>
           </div>          
           {  this.props.webPartContext.sdks.microsoftTeams &&
-            ((this.state.count === 1) ? <BirthdayUser people={this.state.BUsers} webPartContext={this.props.webPartContext} dataSource={this.props.dropdown} IsTeamsIcon={this.state.IsTeamsIcon}/> : 
-            (this.state.count === 2) ? <AnniversaryUser people={this.state.AUsers} webPartContext={this.props.webPartContext} dataSource={this.props.dropdown} IsTeamsIcon={this.state.IsTeamsIcon} /> :  <BirthdayUser people={this.state.BUsers} webPartContext={this.props.webPartContext} dataSource={this.props.dropdown} IsTeamsIcon={this.state.IsTeamsIcon}/> )
+            ((this.state.count === 1) ? <BirthdayUser people={this.state.BUsers} webPartContext={this.props.webPartContext} dataSource={this.state.datasource} IsTeamsIcon={this.state.IsTeamsIcon}/> : 
+            (this.state.count === 2) ? <AnniversaryUser people={this.state.AUsers} webPartContext={this.props.webPartContext} dataSource={this.state.datasource} IsTeamsIcon={this.state.IsTeamsIcon} /> :  <BirthdayUser people={this.state.BUsers} webPartContext={this.props.webPartContext} dataSource={this.props.dropdown} IsTeamsIcon={this.state.IsTeamsIcon}/> )
           }
           {  (!this.props.webPartContext.sdks.microsoftTeams) &&
             ((this.state.count === 1) ? <BirthdayUser people={this.state.BUsers} webPartContext={this.props.webPartContext} dataSource={this.props.dropdown} IsTeamsIcon={this.props.IsTeamsIcon}/> : 
