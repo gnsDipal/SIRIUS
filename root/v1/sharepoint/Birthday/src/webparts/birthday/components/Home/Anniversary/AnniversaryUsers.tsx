@@ -16,7 +16,7 @@ import {
   Persona,
   PersonaSize
 } from '@fluentui/react/lib/Persona';
-import { UserContext } from '../../Main/Birthday';
+import { UserContext } from '../../Main/Main1';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
 
 initializeIcons();
@@ -24,7 +24,7 @@ initializeIcons();
 const MyMailIcon = () => <Icon iconName="Mail" />;
 const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
 
-let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = undefined;
+let spAnniversaryServiceData:SPBirthdayAnniversaryServiceData = undefined;
 let Images: string[] = [];
 
 const AnniversaryUsers = () => {
@@ -49,9 +49,9 @@ const AnniversaryUsers = () => {
     },[]);
 
     const init = async() => {
-      spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);   
+      spAnniversaryServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);   
       setMsGraphProvider(await useMsGraphProvider(mainContext.webPartContext.msGraphClientFactory));   
-      await spBirthdayServiceData.getAnniversaryImagesdata()
+      await spAnniversaryServiceData.getAnniversaryImagesdata()
         .then((res:any)=> {
             Images = [];
             for(let i=0; i<res.value.length; ++i)

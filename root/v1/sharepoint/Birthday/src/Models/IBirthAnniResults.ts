@@ -1,4 +1,4 @@
-export interface IBirthdayResults {
+export interface IBirthAnniResults {
 
     PrimaryQueryResult: {
       RelevantResults: {
