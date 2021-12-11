@@ -36,8 +36,6 @@ export interface AssignedTicketData {
     comment:string;
     attachmentFileName:fileElements[];
     getAttachmentData:string;
-    // dispatcherAttachmentFileName:File;
-    // dispatcherGetAttachmentData:string;
     authorId:number
 }
 

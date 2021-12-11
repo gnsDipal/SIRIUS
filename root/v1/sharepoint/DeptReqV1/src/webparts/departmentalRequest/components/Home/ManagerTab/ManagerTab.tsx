@@ -14,7 +14,7 @@ const ManagerTab = (props) => {
     const mainContext = useContext(UserContext);
     const {managerStatus,dept} = useParams(); 
     const [managerCountPlate, setManagerCountPlate] = useState([]);
-    const [unlockPlate, setUnlockPlate] = useState(false);
+    const [unlockPlate, setUnlockPlate] = useState(0);
     useEffect(() => {  
         init();              
    },[]);
@@ -24,7 +24,10 @@ const ManagerTab = (props) => {
     spManagerServiceData.getManagerViewCount()
       .then(res=>{
         setManagerCountPlate(res);
-        setUnlockPlate(true);
+        if(res === undefined)
+          setUnlockPlate(1);
+        else
+          setUnlockPlate(2);
       })
    }
     return (
@@ -38,10 +41,14 @@ const ManagerTab = (props) => {
                     <h2>{strings.ManagerViewLabel}</h2>
                </div>
               </div>
-              <div>{(unlockPlate === false) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+              <div>{(unlockPlate === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
               </div>
               <div className="ms-Grid-row ms-lg12 ms-md12 ms-sm12">
-              { unlockPlate &&  
+              {(unlockPlate === 1) &&
+                    <h2 className={styles.setToCenter}>{strings.NoDataPresentLabel}</h2>
+              } 
+              { (unlockPlate === 2) &&  
+                <h4>{strings.DepartmentBasedCardLabel}</h4> &&
                 managerCountPlate.map((res,index)=>{
                   return(
                     <div className="ms-Grid-col ms-lg4 ms-sm4">

@@ -39,6 +39,9 @@
         @include ms-fontColor-black;
       }
     
+      .setToCenter{
+        text-align: center;
+      }
       .SetDisplay{
         display: flex;
         //margin-bottom: 5px;

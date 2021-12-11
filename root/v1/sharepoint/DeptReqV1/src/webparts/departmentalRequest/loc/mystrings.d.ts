@@ -46,6 +46,7 @@ declare interface IDepartmentalRequestWebPartStrings {
   AllLabel:string;
   ViewAllLabel:string;
   SaveLabel:string;
+  NoDataPresentLabel:string;
 }
 
 declare module 'DepartmentalRequestWebPartStrings' {

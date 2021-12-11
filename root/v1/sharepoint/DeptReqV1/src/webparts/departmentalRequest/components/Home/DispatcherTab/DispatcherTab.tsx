@@ -10,7 +10,6 @@ import Home from '../Home';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-debugger;
 let spDispatcherServiceData: SPDepartmentalServiceData = null;
 const OpenRequests:string = "Open Requests";    
 const DispatcherTab = () => {
@@ -19,7 +18,6 @@ const DispatcherTab = () => {
 
     const [dispatcherCountData, setDispatcherCountData] = useState(null);
     const [unlockDispatcherCard, setUnlockDispatcherCard] = useState(0);
-    const [loading, setLoading] = useState(1);
     useEffect(() => {  
          init();              
     },[]);
@@ -34,7 +32,10 @@ const DispatcherTab = () => {
       spDispatcherServiceData.getDispatcherPlates()
       .then((res)=>{
         setDispatcherCountData(res);
-        setUnlockDispatcherCard(1); // For rendering once the data is set
+        if(res === undefined)
+          setUnlockDispatcherCard(1); // if data is not present
+        else
+          setUnlockDispatcherCard(2); // For rendering once the data is set
       })
     }
 
@@ -50,13 +51,16 @@ const DispatcherTab = () => {
                         <h2>{strings.DispatcherViewLabel}</h2>
                     </div>
                 </div>
-                <div>{(loading === 1) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+                <div>{(unlockDispatcherCard === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
                 </div>
                 <div className="ms-Grid">
-                 <div className="ms-Grid-row ms-lg12 ms-sm12">               
-                 <h4>{strings.DepartmentBasedCardLabel}</h4>
+                 <div className="ms-Grid-row ms-lg12 ms-sm12">  
+                 {(unlockDispatcherCard === 1) &&
+                    <h2 className={styles.setToCenter}>{strings.NoDataPresentLabel}</h2>
+                  }             
                 {   
-                  (unlockDispatcherCard !== 0) &&
+                  (unlockDispatcherCard === 2) &&
+                  <h4>{strings.DepartmentBasedCardLabel}</h4> &&
                   dispatcherCountData.map((res,index)=>{
                     return(
                   <div className="ms-Grid-col ms-lg4 ms-sm4">

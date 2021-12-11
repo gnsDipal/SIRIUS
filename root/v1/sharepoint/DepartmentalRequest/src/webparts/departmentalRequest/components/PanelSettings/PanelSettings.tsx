@@ -213,10 +213,10 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps,I
             isOpen={true}
             onDismiss={() => this.cancel()}        
             >  
-                           
-                {/* <Link href={this.state.webURL} underline>Go to admin settings
-                </Link> */}
-               
+                                         
+                <Link href={this.state.webURL} target="_blank" underline>
+                  Go to admin settings
+                </Link>              
             </Panel>
         )
     } 

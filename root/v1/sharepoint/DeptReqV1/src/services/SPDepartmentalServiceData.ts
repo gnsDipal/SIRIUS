@@ -113,6 +113,7 @@ import SPPermissionService from './SPPermissionService';
       getManagerPermissionHandle():Promise<boolean>{
         return this.permissionService.loadManagerPermissionHandle();
       }
+      /*  */
     } //End of Main Class
       
   

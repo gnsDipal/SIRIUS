@@ -8,6 +8,7 @@ import {BrowserRouter as Router,Link } from "react-router-dom";
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import { UserContext } from '../../Main/Main';
 import { _UserCustomAction } from '@pnp/sp/user-custom-actions/types';
+import SettingsPanel from '../SettingsPanel/SettingsPanel';
 debugger;
 let spPermissionDataService:SPDepartmentalServiceData = null;
 const Navbar = () => {
@@ -16,6 +17,7 @@ const Navbar = () => {
     const [dispatcherPermit, setDispatcherPermit] = useState(false);// check dispatcher permission
     const [assignedPermit, setAssignedPermit] = useState(false);// check Assigned Issues permission
     const [managerPermit, setManagerPermit] = useState(false);// check manager permission
+    const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false)
     useEffect(() => { 
       init();              
     },[]);
@@ -35,21 +37,29 @@ const Navbar = () => {
         setManagerPermit(r);
       })
     }
+    const panelOpenHandle=()=>{setIsSettingsPanelOpen(true)}
+    const panelCloseHandle=()=>{setIsSettingsPanelOpen(false)}
     return (
         <div className={styles.home}>
         {
           <div>
             <div className="ms-Grid" dir="ltr"> 
             <div className={styles.topHead}>
-              <div className={styles.msGridColSize8}>
+              <div className={styles.msGridColSize10}>
                 <h1>{strings.WelcomeLabel}</h1>
               </div>
-              { (mainContext.sdks.microsoftTeams) &&
+              {/* { (mainContext.sdks.microsoftTeams) && */}
               <div className={styles.msGridColSize2}>
                 <div className={styles.gearIcon}>
-                    <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel}></Icon>                  
+                    <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> panelOpenHandle()} ></Icon>                  
                 </div>
               </div>
+              {/* }  */}
+            </div>
+            <div>
+              {
+                (isSettingsPanelOpen) && 
+                <SettingsPanel onClosePanel = {()=> panelCloseHandle()} />
               }
             </div>
               <div className={styles.msGridRowWithMargin50}> 

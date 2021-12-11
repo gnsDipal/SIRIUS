@@ -81,11 +81,11 @@ const AssignedTicketsView = () => {
        setLoadData(true); //unlock data view
        fetchMsGraphProvider()
    });
-    if(mainContext.sdks.microsoftTeams){ 
-      mainContext.sdks.microsoftTeams.context.subEntityId = "/assigned";
-      alert("mainContext.sdks.microsoftTeams.context.subEntityId = " + mainContext.sdks.microsoftTeams.context.subEntityId);
-      alert("mainContext.sdks.microsoftTeams.context.entityId = " + mainContext.sdks.microsoftTeams.context.entityId);
-    }
+     if(mainContext.sdks.microsoftTeams){ 
+    //   mainContext.sdks.microsoftTeams.context.subEntityId = "/assigned";
+    //   alert("mainContext.sdks.microsoftTeams.context.subEntityId = " + mainContext.sdks.microsoftTeams.context.subEntityId);
+    //   alert("mainContext.sdks.microsoftTeams.context.entityId = " + mainContext.sdks.microsoftTeams.context.entityId);
+     }
   }
 
   const fetchMsGraphProvider = async () => {
@@ -211,7 +211,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
 
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">

@@ -9,7 +9,7 @@ import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-
+debugger;
 let myRequestedEachPlateData = [];   
 // const InProcess:string = "In Process";    
 // const Completed:string = "Completed";    
@@ -19,7 +19,7 @@ const AssignedTab = () => {
     let loc = useLocation()
     const {Inprocess,dept,Closed} = useParams();
     const [deptPlate,setDeptPlate] = useState(null);
-    const [totalRaisedData, setTotalRaisedData] = useState(0); 
+    const [unlockAssignedData, setUnlockAssignedData] = useState(0); 
 
     const mainContext = useContext(UserContext);
     useEffect(() => {
@@ -28,14 +28,17 @@ const AssignedTab = () => {
     },[]);
 
     const init = () => {
-      {(mainContext.sdks.microsoftTeams) &&
-        alert("Location" + loc.pathname);
-         }
+      // {(mainContext.sdks.microsoftTeams) &&
+      //   alert("Location" + loc.pathname);
+      //    }
       spAssignedServiceData = new SPDepartmentalServiceData(mainContext);
       spAssignedServiceData.getAssignedViewCountData()
      .then((res)=>{
       setDeptPlate(res);
-        setTotalRaisedData(res.length);  // unlock display dept data
+      if(res === undefined)
+      setUnlockAssignedData(1);  // set if data not present
+      else
+      setUnlockAssignedData(2); //set if data is present
      })
     }
     return (
@@ -49,13 +52,16 @@ const AssignedTab = () => {
                <h2>{strings.AssignedIssuesLabel}</h2>
            </div>
          </div>
-         <div>{(totalRaisedData === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+         <div>{(unlockAssignedData === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
           </div>
          <div className="ms-Grid">
          <div className="ms-Grid-row ms-lg12 ms-sm12">               
-         <h4>{strings.DepartmentBasedCardLabel}</h4>
+         {(unlockAssignedData === 1) &&
+            <h2 className={styles.setToCenter}>{strings.NoDataPresentLabel}</h2>
+          }
         {   
-          (totalRaisedData !== 0) && //unlock display card
+          (unlockAssignedData === 2) && //unlock display card
+          <h4>{strings.DepartmentBasedCardLabel}</h4> &&
           deptPlate.map((res,index)=>{
             return(
           <div className="ms-Grid-col ms-lg4 ms-sm4">

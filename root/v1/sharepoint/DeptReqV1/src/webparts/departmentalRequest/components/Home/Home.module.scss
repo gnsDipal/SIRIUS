@@ -64,6 +64,13 @@
         @include ms-md8;
         @include ms-sm8;
       }
+
+      .msGridColSize10{
+        @include ms-Grid-col;
+        @include ms-lg10;
+        @include ms-md10;
+        @include ms-sm10;
+      }
       
       .topMarginMainPage50{
           margin-top:'50px';
@@ -189,18 +196,30 @@
          }
 
       .raisedRequestButton{
-          // .label{text-align:center};
           > span{
             display: grid !important;
           }
           background-color:#2f4b7c;
           margin-right:'';
           padding:10px 70px 10px 70px;
-          border-radius:5px;
+          border-radius:10px;
           color:white;
-          text-align:center
+          text-align:center;
+          width: 100%;
+          max-width: 100%;
       }
-      
+      .managerViewButton{
+        > span{
+          display: grid !important;
+        }
+        background-color:#ff7c43;
+        margin-right:'';
+        padding:10px 70px 10px 70px;
+        border-radius:10px;
+        color:white;
+        width: 100%;
+        max-width: 100%;
+    }
     
       .belowButtonsColumsAdjust{
           @include ms-Grid-col;
@@ -212,16 +231,6 @@
           @include ms-sm12;
       }
 
-      .managerViewButton{
-          > span{
-            display: grid !important;
-          }
-          background-color:#ff7c43;
-          margin-right:'';
-          padding:10px 80px 10px 80px;
-          border-radius:5px;
-          color:white
-      }
       .raiseRequestIconClass{
           margin-left: auto;
           margin-right: auto;

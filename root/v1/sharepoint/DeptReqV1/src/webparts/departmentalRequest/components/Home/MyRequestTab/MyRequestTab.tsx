@@ -9,13 +9,13 @@ import Navbar from '../Navbar/Navbar';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main'
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-
+debugger;
 let spMyRequestedServiceData:SPDepartmentalServiceData = null;
 const MyRequestTab = (props) => {
     const mainContext = useContext(UserContext);
     const {myReqStatus,dept} = useParams();
     const [myRequestedPlate, setMyRequestedPlate] = useState([]);
-    const [unlockPlate, setUnlockPlate] = useState(false);
+    const [unlockPlate, setUnlockPlate] = useState(0);
 
     useEffect(() => {  
       init();              
@@ -26,7 +26,10 @@ const MyRequestTab = (props) => {
     spMyRequestedServiceData.getMyRequestsViewCount()
     .then(res=>{
       setMyRequestedPlate(res);
-      setUnlockPlate(true);
+      if(res === undefined)
+        setUnlockPlate(1);
+      else
+        setUnlockPlate(2);
     })
  }
     return (
@@ -40,10 +43,14 @@ const MyRequestTab = (props) => {
                     <h2>{strings.RequestedIssuesLabel}</h2>
                </div>
               </div>
-              <div>{(unlockPlate === false) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
+              <div>{(unlockPlate === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
               </div>
               <div className="ms-Grid-row ms-lg12 ms-md12 ms-sm12">
-              { unlockPlate &&  
+              {(unlockPlate === 1) &&
+                    <h2 className={styles.setToCenter}>{strings.NoDataPresentLabel}</h2>
+              }
+              { (unlockPlate === 2) &&  
+                <h4>{strings.DepartmentBasedCardLabel}</h4> &&
                 myRequestedPlate.map((res,index)=>{
                   return(
                     <div className="ms-Grid-col ms-lg4 ms-sm4">
