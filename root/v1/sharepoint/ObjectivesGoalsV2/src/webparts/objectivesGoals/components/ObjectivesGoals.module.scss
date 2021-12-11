@@ -110,16 +110,31 @@
     }
   }
 }
+
 .SetDisplay{
   display: flex;
   justify-content: space-between;
   margin-bottom: 1px;
   margin-top:0px;
   flex-wrap: wrap;
-  padding-left: 32%;
+  padding-left: 32.5%;
   //padding-right: 17%;
   padding-bottom: 10px;
   width:65%;
+  //width:68%;
+  //float:right;
+}
+
+.SetDisplayTeamsApp{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1px;
+  margin-top:0px;
+  flex-wrap: wrap;
+  padding-left: 31.5%;
+  //padding-right: 17%;
+  padding-bottom: 10px;
+  width:63.5%;
   //width:68%;
   //float:right;
 }
@@ -128,9 +143,19 @@
 { border: 1px solid black;
   //border: 1px solid rgb(239, 135, 0);
   //padding: 18px 40px;
-  padding: 20px;
+  padding: 23px 39px;
   outline: none;
-  width:100%;
+  width:110%;
+}
+
+.GoalsTabBtnTeamsApp
+{ border: 1px solid black;
+  //border: 1px solid rgb(239, 135, 0);
+  padding: 23px 39px;
+  //padding: 20px;
+  outline: none;
+  //width:100%;
+  width:110%;
 }
 
 @media screen and (max-width : 768px){

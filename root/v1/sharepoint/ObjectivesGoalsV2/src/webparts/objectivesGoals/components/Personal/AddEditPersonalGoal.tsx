@@ -43,7 +43,6 @@ const AssignToOptions : IDropdownOption[] = [
 
 //const stackTokens: IStackTokens = { childrenGap: 20 };
 
-debugger;
 export default class AddEditPersonalGoal extends React.Component<IAddEditPersonalGoalProps, IAddEditPersonalGoalState, {}> {
 
   constructor(props: IAddEditPersonalGoalProps, state:IAddEditPersonalGoalState) {

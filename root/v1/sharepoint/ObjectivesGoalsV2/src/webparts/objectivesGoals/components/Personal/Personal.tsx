@@ -23,7 +23,6 @@ let QuarterlyObjectivesData: any = [];
 let YearlyGoalsData: any = [];
 let EditStatusIdData: any =[];
 
-debugger;
 export default class Personal extends React.Component<IPersonalProps, IPersonalState, {}> {
 
   constructor(props: IPersonalProps, state:IPersonalState) {

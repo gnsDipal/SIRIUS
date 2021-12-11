@@ -43,7 +43,6 @@ const ExpandableOptions : IDropdownOption[] = [
 
 //const stackTokens: IStackTokens = { childrenGap: 20 };
 
-debugger;
 export default class AddEditOrganizationGoal extends React.Component<IAddEditOrganizationGoalProps, IAddEditOrganizationGoalState, {}> {
 
   constructor(props: IAddEditOrganizationGoalProps, state:IAddEditOrganizationGoalState) {

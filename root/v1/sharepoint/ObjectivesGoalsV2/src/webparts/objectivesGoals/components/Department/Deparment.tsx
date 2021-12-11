@@ -27,7 +27,6 @@ let MonthlyTargetData: any = [];
 let QuarterlyObjectivesData: any = [];
 let YearlyGoalsData: any = [];
 
-debugger;
 export default class Department extends React.Component<IDepartmentProps, IDepartmentState, {}> {
 
   constructor(props: IDepartmentProps, state:IDepartmentState) {
