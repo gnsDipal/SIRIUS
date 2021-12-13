@@ -1,5 +1,5 @@
 import { Web } from '@pnp/sp/presets/all';
-import { SPHttpClient, HttpClient, MSGraphClient } from '@microsoft/sp-http';
+import { SPHttpClient, SPHttpClientResponse, HttpClient, MSGraphClient } from '@microsoft/sp-http';
 import { IBirthAnniResults, ICell } from '../Models/IBirthAnniResults';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
@@ -253,6 +253,26 @@ export default class SPBirthdayAnniversaryService{
             .version("beta")
             .post(body).then(()=>{            
             });
+        });
+    }
+
+    public async insertUserDataToList(JsonData){
+        this.context.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`, SPHttpClient.configurations.v1,  
+        {  
+            headers: {  
+                'Accept': 'application/json;odata=nometadata',  
+                'Content-type': 'application/json;odata=nometadata',  
+                'odata-version': ''  
+            },  
+            body: JsonData  
+        }) 
+        .then((response: SPHttpClientResponse): Promise<void> => {
+            return response.json();  
+        })  
+        .then((item: any): void => {  
+            console.log('Item has been created.');
+        }, (error: any): void => {  
+            console.log('Error while creating the item: ' + error);
         });
     }
 

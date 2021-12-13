@@ -4,7 +4,6 @@ import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all'
 import { graph } from "@pnp/graph";
 import * as moment from 'moment';
 import { Logger, LogLevel} from "@pnp/logging";
-import {UserContext} from '../webparts/birthday/components/Main/Main1';
 import SPBirthdayAnniversaryService from './SPBirthdayAnniversaryService';
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
 import { IBirthday } from '../Models/IBirthday';
@@ -61,6 +60,11 @@ export default class SPBirthdayAnniversaryServiceData{
     getTocheckIfTeamExist()
     {
         return this.SPBirthdayAnniversaryService.loadTocheckIfTeamExist();
+    }
+
+    putUserDataToList(requestlistItem)
+    {
+        return this.SPBirthdayAnniversaryService.insertUserDataToList(requestlistItem)
     }
 } //End of Main Class
       

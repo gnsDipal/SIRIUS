@@ -8,7 +8,6 @@ import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { ISettingsPanelProps } from './ISettingsPanelProps';
 import { Toggle } from '@fluentui/react/lib/Toggle';
 import styles from './Birthday.module.scss';
-//import { Text } from '@fluentui/react/lib/Text';
 import { Link } from '@fluentui/react/lib/Link';
 import { MSGraphClient } from '@microsoft/sp-http';
 

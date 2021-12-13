@@ -6,18 +6,33 @@ import Birthday from '../Main/Birthday';
 
 export const UserContext = React.createContext(null);
 
+debugger;
 const Main = (props)=> {
     return (
         <div className={styles.birthday}>
             <HashRouter>
                 <UserContext.Provider value={...props}>
                     <Switch>
-                        { props.webPartContext.sdks.microsoftTeams &&
-                            <Route exact path="/birthdayforteams" component={() => <BirthdayForTeams />}/>
+                        { props.webPartContext.sdks.microsoftTeams &&                            
+                            <div>
+                                <Route exact path="/birthdayforteams" component={() => <BirthdayForTeams />}/> 
+                                <Route exact path="">
+                                    <div>
+                                        <BirthdayForTeams />                            
+                                    </div>
+                                </Route>
+                            </div> 
                         }
                         { !props.webPartContext.sdks.microsoftTeams &&
-                            <Route exact path="/birthday" component={(props)=><Birthday {...props}/>}/>   
-                        }           
+                            <div>
+                                <Route exact path="/birthday" component={() => <Birthday />}/> 
+                                <Route exact path="">
+                                    <div>
+                                        <Birthday />                            
+                                    </div>
+                                </Route>
+                            </div>  
+                        }                       
                     </Switch>
                 </UserContext.Provider>
             </HashRouter>
@@ -26,7 +41,3 @@ const Main = (props)=> {
 }
 
 export default Main
-
-
-
-
