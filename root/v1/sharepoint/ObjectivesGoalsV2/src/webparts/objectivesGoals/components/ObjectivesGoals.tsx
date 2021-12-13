@@ -2,6 +2,7 @@ import * as React from 'react';
 import styles from './ObjectivesGoals.module.scss';
 import { IObjectivesGoalsProps, IObjectivesGoalsState } from './IObjectivesGoalsProps';
 import { Icon } from '@fluentui/react/lib/Icon';
+import { initializeIcons } from '@fluentui/font-icons-mdl2';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 import Organization from '../components/Organization/Organization';
@@ -12,6 +13,7 @@ import { TooltipHost } from '@fluentui/react/lib/Tooltip';
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoals} />;
 const TeamsSettingsIcon = () => <Icon iconName="Settings" />
+initializeIcons();
 
 debugger;
 export default class ObjectivesGoals extends React.Component<IObjectivesGoalsProps, IObjectivesGoalsState, {}> {
