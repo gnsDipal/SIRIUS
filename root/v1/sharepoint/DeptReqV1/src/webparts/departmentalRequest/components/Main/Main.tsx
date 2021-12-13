@@ -18,40 +18,49 @@ import * as microsoftTeams from '@microsoft/teams-js';
 export const UserContext = React.createContext(null);
 const Main = (props:any) => {
   const [teamContext,setTeamContext] = useState(null);
-
+  const [isTeamAccess,setTeamAccess] = useState(false);
   //Initialize Microsoft teams sdk
   microsoftTeams.initialize(() => {
     microsoftTeams.getContext((c) => {
       setTeamContext(c);
+      if(c != null) {
+        setTeamAccess(true);
+      }
     });
-  });
-  
+  }); 
 
 
-  let path: string = window.location.href;//.search.split("path=")[0];
-  alert("path:" + path);
+  let path: string = window.location.href;
+
     return (
         <div>
             <HashRouter>
-                <UserContext.Provider value={props.webPartContext}>
-              <Switch>
-                <Route exact path="/requested" component={()=><MyRequestTab />}/>
-                <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
-                <Route exact path="/assigned" component={()=><AssignedTab />}/>
-                <Route exact path = "/assigned/:Inprocess/:dept" component={()=><AssignedTicketsView/>}/>
-                <Route exact path = "/assigned/set/:Closed/:dept" component={()=><AssignedClosedTicketsView />}/>
-                <Route exact path="/dispatcher" component={()=><DispatcherTab />}/>
-                <Route exact path="/dispatcher/:open/:dept" component={()=><DispatcherTicketsView />}/>
-                <Route exact path="/raise" component={()=><RaiseRequestTab />}/>
-                <Route exact path="/manager" component={()=><ManagerTab />}/>
-                <Route exact path="/manager/:managerStatus/:dept" component={()=>< ManagerTicketsView />}/>
-                <Route exact path="">
-                  <div>
-                    <Navbar/>
-                    <Home/>
-                  </div>
-                </Route>
-              </Switch>
+              <UserContext.Provider value={props.webPartContext}>
+              {!isTeamAccess &&
+                <Switch>
+                  <Route exact path="/requested" component={()=><MyRequestTab />}/>
+                  <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
+                  <Route exact path="/assigned" component={()=><AssignedTab />}/>
+                  <Route exact path = "/assigned/:Inprocess/:dept" component={()=><AssignedTicketsView/>}/>
+                  <Route exact path = "/assigned/set/:Closed/:dept" component={()=><AssignedClosedTicketsView />}/>
+                  <Route exact path="/dispatcher" component={()=><DispatcherTab />}/>
+                  <Route exact path="/dispatcher/:open/:dept" component={()=><DispatcherTicketsView />}/>
+                  <Route exact path="/raise" component={()=><RaiseRequestTab />}/>
+                  <Route exact path="/manager" component={()=><ManagerTab />}/>
+                  <Route exact path="/manager/:managerStatus/:dept" component={()=>< ManagerTicketsView />}/>
+                  <Route exact path="">
+                    <div>
+                      <Navbar/>
+                      <Home/>
+                    </div>
+                  </Route>
+                </Switch>
+              } 
+              {isTeamAccess &&
+                <Switch>
+                  <Route exact path="/assigned" component={()=><AssignedTab />}/>
+                </Switch>
+              }
               </UserContext.Provider>
             </HashRouter>
             <div>Context: {JSON.stringify(teamContext)}</div>
