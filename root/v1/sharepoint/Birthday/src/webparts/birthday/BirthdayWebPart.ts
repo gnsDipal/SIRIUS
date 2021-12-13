@@ -10,12 +10,12 @@ import {
   PropertyPaneLink
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext } from '@microsoft/sp-webpart-base';
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { update, get } from '@microsoft/sp-lodash-subset'; 
 import { PropertyPaneDropdown } from '../../controls/PropertyPaneDropdown/components/PropertyPaneDropdown';
-import Birthday from './components/Birthday';
+import Main from './components/Main/Main';
 import { IBirthdayProps } from './components/IBirthdayProps';
+import * as strings from 'BirthdayWebPartStrings';
 import { PropertyFieldFilePicker, IFilePickerResult } from "@pnp/spfx-property-controls/lib/PropertyFieldFilePicker";
 import { sp } from '@pnp/sp';
 import "@pnp/sp/webs";
@@ -23,6 +23,7 @@ import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 import "@pnp/sp/views";
 import { ChoiceFieldFormatType, DateTimeFieldFormatType, UrlFieldFormatType } from '@pnp/sp/fields/types';
+import SPBirthdayAnniversaryServiceData from '../../services/SPBirthdayAnniversaryServiceData';
 
 export interface IBirthdayWebPartProps {
   description: string;
@@ -34,19 +35,20 @@ export interface IBirthdayWebPartProps {
   filePickerResult: IFilePickerResult;
 }
 
+let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = undefined;
+
 debugger;
 export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebPartProps> {
 
   protected async onInit(): Promise<void> {
     await super.onInit();
-
     // we always setup using the current context
     sp.setup(this.context);
   }
 
   public render(): void {
     const element: React.ReactElement<IBirthdayProps> = React.createElement(
-      Birthday,
+      Main,
       {
         description: this.properties.description,
         webPartContext: this.context,       
@@ -56,23 +58,19 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         dataSource: this.properties.dataSource                     
       } 
     );
-    if(this.context.sdks.microsoftTeams)
-    {
+    if(this.context.sdks.microsoftTeams){
       this.createConfigurationList();   
       this.createListsUsingPNP();
     }
     else
-    {
-      this.createListsUsingPNP();
-    }     
+      this.createListsUsingPNP(); 
     ReactDom.render(element, this.domElement);
   }
 
   createConfigurationList = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("ConfigurationSettings", "Defines the configuration settings for webparts in teams", 100);    
-    if (listEnsureResult.created) 
-    {
+    if (listEnsureResult.created){
       const batch = sp.web.createBatch();
       listEnsureResult.list.fields.inBatch(batch).addMultilineText("Settings",6,false);
       listEnsureResult.list.fields.inBatch(batch).addText("Key");
@@ -99,29 +97,23 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     const listEnsureResult = await sp.web.lists.ensure("BirthdayAnniversaryImages", "Birthday and Anniversary Images list", 109);
 
     // check if the list was created, or if it already existed:
-    if (listEnsureResult.created) 
-    {
+    if (listEnsureResult.created){
       const batch = sp.web.createBatch();
       listEnsureResult.list.fields.inBatch(batch).addChoice("Category", ["Birthday", "Anniversary"], ChoiceFieldFormatType.Dropdown);     
       await batch.execute();
       await sp.web.lists.getByTitle("BirthdayAnniversaryImages").defaultView.fields.add("Category");
     } 
     else 
-    {
       console.log("My Library is already existed!");
-    }
-    // work on the created/updated list
     const r = await listEnsureResult.list.select("Id")();
-    if(r.Id){
+    if(r.Id)
       this.createListUsers();
-    }
   }
 
   createListUsers = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("UserBirthAnniversaryDetails", "Users details list", 100);
-    if (listEnsureResult.created)    
-    {
+    if (listEnsureResult.created){
       const batch = sp.web.createBatch(); 
       listEnsureResult.list.fields.inBatch(batch).addText("name");
       listEnsureResult.list.fields.inBatch(batch).addText("firstName");
@@ -140,20 +132,16 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("hireDate");
     } 
     else 
-    {
       console.log("My User List is already existed!");
-    }
     const r = await listEnsureResult.list.select("Id")();
-    if(r.Id){
+    if(r.Id)
       this.createListEmail();
-    }
   }
 
   createListEmail = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("EmailSender", "Email sending list", 100);
-    if (listEnsureResult.created) 
-    {
+    if (listEnsureResult.created){
       const batch = sp.web.createBatch();
       listEnsureResult.list.fields.inBatch(batch).addText("EmailSubject"); 
       listEnsureResult.list.fields.inBatch(batch).addMultilineText("EmailBody",3,true);
@@ -170,198 +158,155 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("ActivityEmail");
     } 
     else 
-    {
       console.log("My Email List is already existed!");
-    }
-    const r = await listEnsureResult.list.select("Id")();
-    console.log(r.Id);
   }
 
   private onDropdownChange(propertyPath: string, newValue: any): void {  
-    const oldValue: any = get(this.properties, propertyPath);  
-    // store new value in web part properties  
-    update(this.properties, propertyPath, (): any => { return newValue; });  
-    // refresh web part 
-    this.context.propertyPane.refresh(); 
-    this.render();     
+      const oldValue: any = get(this.properties, propertyPath);  
+      // store new value in web part properties  
+      update(this.properties, propertyPath, (): any => { return newValue; });  
+      // refresh web part 
+      this.context.propertyPane.refresh(); 
+      this.render();     
   }
 
   private loadOptions(): Promise<IDropdownOption[]> {
-    return new Promise<IDropdownOption[]>((resolve: (options: IDropdownOption[]) => void, reject: (error: any) => void) => {
-      setTimeout(() => {
-        resolve([{
-          key: 'Azure',
-          text: 'From Azure active directory'
-          },
-          {
-            key: 'Internal',
-            text: 'Internal list from SharePoint'
-          },
-          // {
-          //   key: 'External',
-          //   text: 'External list from SharePoint'
-          // },
-          {
-            key: 'API',
-            text: 'APIs OR Webservice'
-          }
-        ]
-        );
-      }, 2000);
-    });   
+      return new Promise<IDropdownOption[]>((resolve: (options: IDropdownOption[]) => void, reject: (error: any) => void) => {
+          setTimeout(() => {
+              resolve([{
+                  key: 'Azure',
+                  text: 'From Azure active directory'
+                  },
+                  {
+                    key: 'Internal',
+                    text: 'Internal list from SharePoint'
+                  },
+                  {
+                    key: 'API',
+                    text: 'APIs OR Webservice'
+                  }
+              ]);
+          }, 2000);
+      });   
   } 
   
   protected onDispose(): void {
-    ReactDom.unmountComponentAtNode(this.domElement);
+      ReactDom.unmountComponentAtNode(this.domElement);
   }
 
   protected get dataVersion(): Version {
-    return Version.parse('1.0');
+      return Version.parse('1.0');
   }
 
   private downloadCsv()
   {   
-    const linkSource = `data:application/csv;base64,${"TmFtZSxGaXJzdE5hbWUsTGFzdE5hbWUsRW1haWwsQmlydGhEYXRlLEhpcmVEYXRlLERlcGFydG1lbnQ="}`;
-    const downloadLink = document.createElement('a');
+      const linkSource = `data:application/csv;base64,${"TmFtZSxGaXJzdE5hbWUsTGFzdE5hbWUsRW1haWwsQmlydGhEYXRlLEhpcmVEYXRlLERlcGFydG1lbnQ="}`;
+      const downloadLink = document.createElement('a');
 
-    // Append to html link element page
-    document.body.appendChild(downloadLink);
+      // Append to html link element page
+      document.body.appendChild(downloadLink);
 
-    downloadLink.href = linkSource;
-    downloadLink.target = '_self';
-    downloadLink.download = "UserBirthAnniversaryDetails.csv";
+      downloadLink.href = linkSource;
+      downloadLink.target = '_self';
+      downloadLink.download = "UserBirthAnniversaryDetails.csv";
 
-    // Start download
-    downloadLink.click();
+      // Start download
+      downloadLink.click();
 
-    // Clean up and remove the link
-    setTimeout(function(){ downloadLink.parentNode.removeChild(downloadLink); }, 500);
+      // Clean up and remove the link
+      setTimeout(function(){ downloadLink.parentNode.removeChild(downloadLink); }, 500);
   }
 
   protected UploadCSV()
   {
-    if(this.properties.filePickerResult.fileName !== "")
-    {
-      let uploadedFileName = this.properties.filePickerResult.fileName;
-      let fileExtension = uploadedFileName.split('.').pop();
-      if(fileExtension === 'csv')
-      {
-        let file = this.properties.filePickerResult;
-        let selectedFile =  file.downloadFileContent()
-        .then((res: any): Promise<any> => {     
-          return res;
-        })
-        .then((res: any): void => {
-          if(res)
-          {
-            const reader = new FileReader();        
-            reader.onload = async (e) => {           
-              const text = reader.result;
-              const dataArray = this.csvToArray(text);
-              
-              this.exportDataToList(dataArray);
-            }
-            reader.readAsText(res);               
-          }
-        }, 
-        (error: any): void => {
-          console.log("Error occured.");
-        })
-        .catch((error: any): void => {
-          console.log("Error: " + error);      
-        }); 
-      }
-      else
-      {
-        
-      }  
-    }    
+      if(this.properties.filePickerResult.fileName !== ""){
+          let uploadedFileName = this.properties.filePickerResult.fileName;
+          let fileExtension = uploadedFileName.split('.').pop();
+          if(fileExtension === 'csv'){
+              let file = this.properties.filePickerResult;
+              let selectedFile =  file.downloadFileContent()
+              .then((res: any): Promise<any> => {     
+                return res;
+              })
+              .then((res: any): void => {
+                  if(res){
+                      const reader = new FileReader();        
+                      reader.onload = async (e) => {           
+                        const text = reader.result;
+                        const dataArray = this.csvToArray(text);              
+                        this.exportDataToList(dataArray);
+                      }
+                      reader.readAsText(res);               
+                  }
+              }, 
+              (error: any): void => {
+                console.log("Error occured.");
+              })
+              .catch((error: any): void => {
+                console.log("Error: " + error);      
+              }); 
+          }      
+      }    
   }
 
   private csvToArray(str, delimiter = ",")
   {
-    const headers = str.slice(0, str.indexOf("\r\n")).split(delimiter);
-    const rows = str.slice(str.indexOf("\n") + 1).split("\r\n");
-    
-    const arr = rows.map((row) => {
-      if(row.length !== 0){
-        const values = row.split(delimiter);    
-        const el = headers.reduce(function (object, header, index) {          
-          object[header] = values[index];
-          return object;                
-        }, {});
-        return el;
-      }        
-    });
-    //return an array
-    return arr;
+      const headers = str.slice(0, str.indexOf("\r\n")).split(delimiter);
+      const rows = str.slice(str.indexOf("\n") + 1).split("\r\n");
+      
+      const arr = rows.map((row) => {
+          if(row.length !== 0){
+              const values = row.split(delimiter);    
+              const el = headers.reduce(function (object, header, index) {          
+                  object[header] = values[index];
+                  return object;                
+              }, {});
+              return el;
+          }        
+      });
+      //return an array
+      return arr;
   }
 
   private exportDataToList(UserList: any)
   {
-    for(let i:number = 0; i<UserList.length; ++i)
-    {
-      if(UserList[i] !== undefined)
-      {
-        let birthDate = new Date(UserList[i].BirthDate);
-        let birthDateFinal = new Date(birthDate.getTime() - (birthDate.getTimezoneOffset() * 60000));
-        let hireDate = new Date(UserList[i].HireDate);
-        let hireDateFinal = new Date(hireDate.getTime() - (hireDate.getTimezoneOffset() * 60000));
-        const requestlistItem: string = JSON.stringify({
-          'Title': "Birthday/Anniversary",
-          'name': UserList[i].Name,
-          'firstName': UserList[i].FirstName,
-          'lastName': UserList[i].LastName,
-          'email': UserList[i].Email,
-          'birthDate': birthDateFinal, 
-          'hireDate': hireDateFinal,                           
-          'department': UserList[i].Department          
-          });
-          this.addListItems(requestlistItem);
-      }  
-    }
-  }
-
-  private addListItems(JsonData: string)
-  {
-    this.context.spHttpClient.post(`${this.context.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`, SPHttpClient.configurations.v1,  
-    {  
-      headers: {  
-      'Accept': 'application/json;odata=nometadata',  
-      'Content-type': 'application/json;odata=nometadata',  
-      'odata-version': ''  
-      },  
-      body: JsonData  
-    }) 
-    .then((response: SPHttpClientResponse): Promise<void> => {
-        return response.json();  
-    })  
-    .then((item: any): void => {  
-        console.log('Item has been created.');
-    }, (error: any): void => {  
-        console.log('Error while creating the item: ' + error);
-    });
+      spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(this.context);
+      for(let i:number = 0; i<UserList.length; ++i){
+          if(UserList[i] !== undefined){
+              let birthDate = new Date(UserList[i].BirthDate);
+              let birthDateFinal = new Date(birthDate.getTime() - (birthDate.getTimezoneOffset() * 60000));
+              let hireDate = new Date(UserList[i].HireDate);
+              let hireDateFinal = new Date(hireDate.getTime() - (hireDate.getTimezoneOffset() * 60000));
+              const requestlistItem: string = JSON.stringify({
+                'Title': "Birthday/Anniversary",
+                'name': UserList[i].Name,
+                'firstName': UserList[i].FirstName,
+                'lastName': UserList[i].LastName,
+                'email': UserList[i].Email,
+                'birthDate': birthDateFinal, 
+                'hireDate': hireDateFinal,                           
+                'department': UserList[i].Department          
+                });
+                spBirthdayServiceData.putUserDataToList(requestlistItem);
+          }  
+      }
   }
 
   private validateAPI(value: string): string {
-    if (value === null ||
-      value.trim().length === 0) {
-      return 'Provide a external API URL';
-    }
-    return '';
+      if (value === null || value.trim().length === 0) 
+        return 'Provide a external API URL';      
+      return '';
   }
 
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-  
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {  
     let uploadControl: any = []; 
     let CSVControl: any = []; 
     let externalAPI: any = [];
     let IsTeamsIcon: any = [];
       
-    if (this.properties.dropdown === "Internal") 
-    {  
+    if (this.properties.dropdown === "Internal"){  
       CSVControl = PropertyPaneButton('Csv File', {
-        text: "Download csv template",
+        text: strings.CSVtemplateText,
         buttonType: PropertyPaneButtonType.Primary,
         onClick: this.downloadCsv.bind(this)
       });
@@ -375,7 +320,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         onChanged: (e: IFilePickerResult) => { this.properties.filePickerResult = e; },        
         accepts:[".csv"],
         key: "filePickerId",
-        buttonLabel: "Upload Csv file",
+        buttonLabel: strings.UploadCSVlabel,
         label: "",
         hideRecentTab: true,
         hideStockImages: true,
@@ -386,15 +331,14 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       });
     }
 
-    if (this.properties.dropdown === "API")
-    {
+    if (this.properties.dropdown === "API"){
       externalAPI = PropertyPaneTextField('externalAPI',{
-        label: "Enter API/Webservice URL",
+        label: strings.ExternalAPIlabel,
         onGetErrorMessage: this.validateAPI.bind(this)
       });
 
       IsTeamsIcon = PropertyPaneToggle('IsTeamsIcon', {
-        label: "Show Teams Icon"
+        label: strings.TeamsIconlabel
       });
     }
 
@@ -403,10 +347,10 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         {          
           groups: [
             {
-              groupName: "Birthday/Anniversary Web Part Settings",
+              groupName: strings.GroupName,
               groupFields: [                               
                 new PropertyPaneDropdown('dropdown', {
-                  label: 'Select the source from where data to be fetched for users.',
+                  label: strings.DropDownlabel,
                   loadOptions: this.loadOptions.bind(this),
                   onPropertyChange: this.onDropdownChange.bind(this),
                   selectedKey: this.properties.dropdown,
@@ -418,17 +362,16 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
               ]
             },
             {
-              groupName: "Admin Settings",
+              groupName: strings.GroupNameAdmin,
               groupFields: [                               
                 PropertyPaneLink('link', {
                   href: "https://gns11.sharepoint.com/sites/SiriusTeams/BirthdayAnniversaryImages/Forms/Thumbnails.aspx",
-                  text: "Add Birthday and Anniversary Images",
+                  text: strings.LinkText,
                   target: "_blank" 
                 })                               
               ]
             }
-          ],
-          
+          ],          
         }
       ]
     };    

@@ -1,22 +1,12 @@
 import * as React from 'react';
-import { useEffect, useContext, useState } from 'react';
 import styles from '../../Birthday.module.scss';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
-import { Icon } from '@fluentui/react/lib/Icon';
-import { PrimaryButton } from "@fluentui/react/lib/Button";
-import { TextField } from '@fluentui/react/lib/TextField';
-import { Callout, DirectionalHint } from '@fluentui/react/lib/Callout';
+import { Icon, PrimaryButton, TextField, Callout, DirectionalHint, TooltipHost, Persona, PersonaSize } from '@fluentui/react';
 import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
 import useMsGraphProvider from "../../../../../services/msGraphProvider";
 import Carousel from 'react-elastic-carousel';
 import InputEmoji from 'react-input-emoji';
-import { TooltipHost } from '@fluentui/react/lib/Tooltip';
-import {
-  Persona,
-  PersonaSize
-} from '@fluentui/react/lib/Persona';
-import { UserContext } from '../../Main/Main1';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
 
 initializeIcons();
@@ -27,35 +17,33 @@ const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
 let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = undefined;
 let Images: string[] = [];
 
-const BirthdayUsers = () => {     
-    const mainContext = useContext(UserContext);
-    const [showCallOut, setShowCallOut] = useState(false);
-    const [showCallOutTeams, setshowCallOutTeams] = useState(false);
-    const [calloutElement, setCalloutElement] = useState(null);
-    const [person, setPerson] = useState(null);
-    const [currentMessage, setCurrentMessage] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState<string>("");
-    const [images, setImages] = useState([]);
-    const [selectedImage, setSelectedImage] = useState<string>("");
-    const [message, setMessage] = useState<string>("");
-    const [msGraphProvider, setMsGraphProvider] = useState({
+const BirthdayUsers = (props) => {     
+    const [showCallOut, setShowCallOut] = React.useState(false);
+    const [showCallOutTeams, setshowCallOutTeams] = React.useState(false);
+    const [calloutElement, setCalloutElement] = React.useState(null);
+    const [person, setPerson] = React.useState(null);
+    const [currentMessage, setCurrentMessage] = React.useState<string>("");
+    const [errorMessage, setErrorMessage] = React.useState<string>("");
+    const [images, setImages] = React.useState([]);
+    const [selectedImage, setSelectedImage] = React.useState<string>("");
+    const [message, setMessage] = React.useState<string>("");
+    const [msGraphProvider, setMsGraphProvider] = React.useState({
       getCurrentUserId(): Promise<any>{return},
       getUserId(userEmail: string): Promise<any>{return},
       createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return},
       sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
     })
-    useEffect(() => {         
+    React.useEffect(() => {         
       init();              
     },[]);
 
     const init = async() => {
-        spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);   
-        setMsGraphProvider(await useMsGraphProvider(mainContext.webPartContext.msGraphClientFactory));         
+        spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);   
+        setMsGraphProvider(await useMsGraphProvider(props.webPartContext.msGraphClientFactory));         
         await spBirthdayServiceData.getBirthdayImagesdata()
         .then((res:any)=> {
             Images = [];
-            for(let i=0; i<res.value.length; ++i)
-            {
+            for(let i=0; i<res.value.length; ++i){
               Images.push(res.value[i].FileLeafRef);
             }
             setImages(Images);
@@ -103,9 +91,7 @@ const BirthdayUsers = () => {
 
     const sendMessage = async(ToEmailId: string) => {
       if(currentMessage === "" || currentMessage === null)
-      { 
         setErrorMessage("Please write message");        
-      }
       let currentUserId = await msGraphProvider.getCurrentUserId(); 
       let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
       let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
@@ -122,17 +108,12 @@ const BirthdayUsers = () => {
     }
 
     const SaveDataClicked = async(message: string, image: string) => {
-      let userEmail = mainContext.webPartContext.pageContext.user.email;
-      if(message == "" || message == null)
-      {       
+      let userEmail = props.webPartContext.pageContext.user.email;
+      if(message == "" || message == null)    
         setErrorMessage("Please Add message");        
-      }
       else if(image == "" || image == null)
-      {
         setErrorMessage("Please select image");       
-      }
-      else
-      {
+      else{
         const requestlistItem: string = JSON.stringify({
         Title: "Birthday Message",
         EmailSubject: "Happy Birthday",
@@ -140,11 +121,11 @@ const BirthdayUsers = () => {
         EmailFrom: userEmail,
         EmailTo: person.email,
         EmailCCTo: "",
-        ActivityEmail: {'Description': image, 'Url': mainContext.webPartContext.pageContext.web.absoluteUrl + "/BirthdayAnniversaryImages/" + image}   
+        ActivityEmail: {'Description': image, 'Url': props.webPartContext.pageContext.web.absoluteUrl + "/BirthdayAnniversaryImages/" + image}   
         });
   
         console.log(requestlistItem);
-        mainContext.webPartContext.spHttpClient.post(`${mainContext.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('EmailSender')/items`, SPHttpClient.configurations.v1,  
+        props.webPartContext.spHttpClient.post(`${props.webPartContext.pageContext.web.absoluteUrl}/_api/web/lists/getbytitle('EmailSender')/items`, SPHttpClient.configurations.v1,  
         {  
           headers: {  
           'Accept': 'application/json;odata=nometadata',  
@@ -169,7 +150,7 @@ const BirthdayUsers = () => {
 
     return (
       <div>
-        {!mainContext.BirthPeople &&
+        {!props.BUsers &&
         <div>
           <Placeholder 
             iconName = ''
@@ -177,16 +158,13 @@ const BirthdayUsers = () => {
             description = ''/>
         </div>
         }
-        {mainContext.BirthPeople &&      
+        {props.BUsers &&      
         <div>      
-          {mainContext.BirthPeople.map((p, i) => {
+          {props.BUsers.map((p, i) => {
             let finalbirthdate;
             if(p.birthDate === "" || p.birthDate === undefined)
-            {
               finalbirthdate = p.birthDate;
-            }
-            else
-            {
+            else{
               let birthdate = new Date(p.birthDate);
               finalbirthdate = new Intl.DateTimeFormat('en-US', {day: '2-digit',month: 'long'}).format(birthdate); 
             }            
@@ -197,20 +175,15 @@ const BirthdayUsers = () => {
                   <div id={`callout${i}`} onClick={() => onSendEmailClicked(i, p)} className={styles.persona}>
                     <TooltipHost content="Send Email"><MyMailIcon /></TooltipHost>
                   </div>
-                  {mainContext.dataSource === "Azure" && 
-                    <div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
+                  {(props.dropdown === "Azure" || props.dropdown === "Internal") && 
+                    (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
                       <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
-                    </div> 
+                    </div>) 
                   }
-                  {mainContext.dataSource === "Internal" && 
-                    <div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
+                  {(props.dropdown === "API" && props.IsTeamsIcon) &&
+                    (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
                       <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
-                    </div> 
-                  }
-                  {mainContext.dataSource === "API" && mainContext.IsTeamsIcon &&
-                    <div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
-                      <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
-                    </div> 
+                    </div>) 
                   }
                 </div>                 
                 { showCallOut && calloutElement === i && (
@@ -242,7 +215,7 @@ const BirthdayUsers = () => {
                             isRTL={false}
                             focusOnSelect={true}>
                             {images.map((img, index) => {
-                              return <img src={`${mainContext.webPartContext.pageContext.web.absoluteUrl}/BirthdayAnniversaryImages/${img}`} onClick={(e)=>handleClick(img)} className={selectedImage == img ? styles.selected:''} height="100px" width="100%" margin-top="15px"/>
+                              return <img src={`${props.webPartContext.pageContext.web.absoluteUrl}/BirthdayAnniversaryImages/${img}`} onClick={(e)=>handleClick(img)} className={selectedImage == img ? styles.selected:''} height="100px" width="100%" margin-top="15px"/>
                             })}     
                         </Carousel>
                         <div style={{color:'#d9534f'}}>{errorMessage}</div>

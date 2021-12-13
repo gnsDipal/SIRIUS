@@ -6,5 +6,5 @@ export interface IBirthdayProps {
   dropdown: string;  
   externalAPI: string;
   IsTeamsIcon: boolean;
-  dataSource: string;
+  //dataSource: string;
 }
