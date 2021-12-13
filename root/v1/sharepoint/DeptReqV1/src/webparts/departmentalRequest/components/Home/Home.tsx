@@ -19,6 +19,10 @@ const Home = ()=> {
                 <Route exact path="/manager" component={()=><ManagerTab />}/>
             </Switch>
         </div>
-    );
-};
-export default Home;
+    )
+}
+export default Home
+
+
+
+

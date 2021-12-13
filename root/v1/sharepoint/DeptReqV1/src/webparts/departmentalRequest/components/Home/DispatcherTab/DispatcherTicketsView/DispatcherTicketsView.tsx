@@ -28,13 +28,13 @@ const DispatcherTicketsView = () => {
     const [deptListDropDown, setDeptListDropDown] = useState([]);
     const [idSelect, setIdSelect] = useState(0);
     const [passAssignedToUser, setPassAssignedToUser] = useState<passUser>({key:0,text:''});
-    const [deleteSelectedTicket, setDeleteSelectedTicket] = useState<string>('');
-    const [randomIndex, setRandomIndex] = useState(0);
+    const [deleteSelectedTicket, setDeleteSelectedTicket] = useState<string>('')
+    const [randomIndex, setRandomIndex] = useState(0)
     const [dispatcherFileAddition, setDispatcherFileAddition] = useState<File[]>(null);
     const [dispatcherNotification, setDispatcherNotification] = useState(0);
 
     useEffect(() => { 
-        init();
+        init();              
    },[]);
 
     const init = () => {
@@ -46,7 +46,7 @@ const DispatcherTicketsView = () => {
            setDispatcherDetails(res);
            setUnlockDispatcherData(true); // Condition for displaying table data
        });
-      };
+      }
      const getUserByDept=(control,reAssignTo,department,idNumber)=>{
         // grpName= department;
         // this.loadDepartmentOptions();
@@ -55,15 +55,15 @@ const DispatcherTicketsView = () => {
           data=>{
               setDeptListDropDown(data); // dept list dropdown
               setIdSelect(idNumber); // setting the current selected Id
-          });
-      };
+          })  
+      }
       const onUserSelect=(userName,selectedName, ticketNumber)=>{
         setPassAssignedToUser(selectedName);
         setDeleteSelectedTicket(ticketNumber);
-      };
+      }
       const onDispatcherFileAddition = (dispatcherFileAdd) => {
         setDispatcherFileAddition(dispatcherFileAdd);
-      };
+      }
 
       const onSubmitDropDownHandle = async(newPeoplePicker:any,idRequest:number,assignedToUser,ticketNumberCheck,raisedBy) => {
               if(deleteSelectedTicket === ticketNumberCheck){
@@ -79,11 +79,11 @@ const DispatcherTicketsView = () => {
                  setPassAssignedToUser({key:null,text:''});
                  setRandomIndex(Math.floor(Math.random() * 6) + 1);
                  setDispatcherNotification(0);
-              });
-             });
+              })
+             })
              
               }
-        };
+        }
     return (
         <div className={styles.dispatcherTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -133,7 +133,7 @@ const DispatcherTicketsView = () => {
                             res.attachmentFileName.map((r,i)=>{
                               return(
                                 <a href={r.ServerRelativeUrl}> {`${r.FileName}\n`}</a>
-                              );
+                              )
                             })
                             }
                           </td>
@@ -147,7 +147,7 @@ const DispatcherTicketsView = () => {
                           <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(e,res.dataId,passAssignedToUser,res.ticketNumber,res.raisedBy)}></Icon>
                           </td>
                         </tr>
-                      );
+                      )
                     })
                   }
                 </tbody>
@@ -165,7 +165,7 @@ const DispatcherTicketsView = () => {
                 <Route exact path="/dispatcher" component={()=><DispatcherTab />}></Route>
             </Switch>      
         </div>
-    );
-};
+    )       
+}
 
-export default DispatcherTicketsView;
+export default DispatcherTicketsView

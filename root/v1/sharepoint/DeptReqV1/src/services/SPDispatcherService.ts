@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import {Web} from '@pnp/sp/presets/all';
 import { IList } from "@pnp/sp/lists";
@@ -86,18 +86,18 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
                   deptName:r.Department,
                   dispatcherName:r.AssignedTo,
                   thisCount: count
-                };
+                }
               });
               
-              deptData.push({deptName:deptDispatchData[0].deptName,thisCount:count });
+              deptData.push({deptName:deptDispatchData[0].deptName,thisCount:count })
               deptDataCount = deptDataCount + 1;
           }
         }
         if(deptDataCount === SPGroupList.length && deptData.length > 0){
-            return deptData;
+            return deptData
         }
         else if(deptDataCount === SPGroupList.length && deptData.length === 0){
-            return deptData;
+            return deptData
         }
         else{
 
@@ -111,7 +111,7 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
 
              let dispatcherDetails:IDispatcherList[] = result.map((r,index)=>{
                 return{
-                  ticketNumber:`INC_${r.Department}_000${r.ID}`, // TODO: [DIPAL - 11DEC2021 - This is wrong practice - take the ticket format from configuration instead of hardcoded here.]
+                  ticketNumber:`INC_${r.Department}_000${r.ID}`,
                   supportDeptName:r.DepartmentGroup,
                   raisedBy:r.Author.Title,
                   issueDate:r.Created,
@@ -122,15 +122,15 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
                   dispatcherDeptName:r.AssignedTo,
                   reAssignedTo:r.ReAssignTo,
                   dataId:r.ID,
-                  attachmentFileName:r.AttachmentFiles.map((p,i)=>{
+                  attachmentFileName:r.AttachmentFiles.map((r,i)=>{
                     return{
-                    FileName:p.FileName,
-                    ServerRelativeUrl:p.ServerRelativeUrl
-                    };
+                    FileName:r.FileName,
+                    ServerRelativeUrl:r.ServerRelativeUrl
+                    }
                   }),
                   getAttachmentData:r.AttachmentFiles.length?r.AttachmentFiles[0].ServerRelativeUrl:'',
                   requesterAttachmentCheck:r.AttachmentFiles.length
-                };
+                }
               });
           return Promise.resolve(dispatcherDetails);
         }catch(error){
@@ -145,12 +145,12 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
           return{
             key:r.Id,
             text:r.Title,
-            };
-          });
+            }
+          })
       return Promise.resolve(groupUser);
      }catch(error){
         return Promise.reject(error);
-     }
+     }      
    }
 
   public async loadMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition):Promise<{}>{
@@ -168,7 +168,7 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
       await Promise.all(fileInfos)
       .then(res=>{
        list = this.web.lists.getByTitle("EmpReq").items.getById(requestedId).attachmentFiles.addMultiple(res);
-      });
+      })
       return await Promise.resolve(list);
    }
   }
@@ -179,9 +179,9 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
     let newItem:any = {
       Status: "In Process",
       ReAssignToId: newUser.key,
-    };
+    }
        let result = await this.web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
-        return result;
+        return result       
 }    
 } //End of Main class
 

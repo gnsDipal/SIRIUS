@@ -15,16 +15,16 @@ let myRequestedEachPlateData = [];
 // const Completed:string = "Completed";    
 let spAssignedServiceData: SPDepartmentalServiceData = null;
 
-const AssignedTab = () => {
-    let loc = useLocation();
+const AssignedTab = () => {     
+    let loc = useLocation()
     const {Inprocess,dept,Closed} = useParams();
     const [deptPlate,setDeptPlate] = useState(null);
     const [unlockAssignedData, setUnlockAssignedData] = useState(0); 
 
     const mainContext = useContext(UserContext);
     useEffect(() => {
-         myRequestedEachPlateData = [];
-         init();
+         myRequestedEachPlateData = [];  
+         init();              
     },[]);
 
     const init = () => {
@@ -39,8 +39,8 @@ const AssignedTab = () => {
       setUnlockAssignedData(1);  // set if data not present
       else
       setUnlockAssignedData(2); //set if data is present
-     });
-    };
+     })
+    }
     return (
         <div className={styles.assignedTab}>
          <div className="ms-Grid" dir="ltr"> 
@@ -55,7 +55,7 @@ const AssignedTab = () => {
          <div>{(unlockAssignedData === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
           </div>
          <div className="ms-Grid">
-         <div className="ms-Grid-row ms-lg12 ms-sm12">
+         <div className="ms-Grid-row ms-lg12 ms-sm12">               
          {(unlockAssignedData === 1) &&
             <h2 className={styles.setToCenter}>{strings.NoDataPresentLabel}</h2>
           }
@@ -87,7 +87,7 @@ const AssignedTab = () => {
             </ul>
          </div>
          </div>
-          );
+          )
          })
         }
         </div>
@@ -100,6 +100,6 @@ const AssignedTab = () => {
                 </Route>
             </Switch>
         </div>
-    );
-};
-export default AssignedTab;
+    )
+}
+export default AssignedTab

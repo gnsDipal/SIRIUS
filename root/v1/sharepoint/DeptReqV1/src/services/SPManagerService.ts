@@ -1,9 +1,9 @@
-import * as React from 'react';
+import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web} from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
-import {MyRequestedEachPlateData, IMyRequestList} from '../model/MyRequestedEachPlateData';
+import {MyRequestedEachPlateData, IMyRequestList} from '../model/MyRequestedEachPlateData'
   let spfxContext = null;
   let uniqueDeptList = [],myRequestedEachPlateData = [];
   
@@ -55,7 +55,7 @@ public async loadManagerCount():Promise<MyRequestedEachPlateData[]>{
             InProcess: 0,
             Closed:0,
           });
-        });
+        })
         let promiseOpenRequestCount = []; 
         let promiseInProcessRequestCount = []; 
         let promiseClosedRequestsCount = []; 
@@ -63,20 +63,20 @@ public async loadManagerCount():Promise<MyRequestedEachPlateData[]>{
        for(let i=0;i<uniqueDeptList.length;++i){
           promiseOpenRequestCount.push(this.getRequestedCountByPara(this.web,myRequestedDepartmentsCount[i].DepartmentName,'Pending',this.loggedInUserId));
           promiseInProcessRequestCount.push(this.getRequestedCountByPara(this.web,myRequestedDepartmentsCount[i].DepartmentName,'In Process',this.loggedInUserId));
-          promiseClosedRequestsCount.push(this.getRequestedCountByPara(this.web,myRequestedDepartmentsCount[i].DepartmentName,'Completed',this.loggedInUserId));
+          promiseClosedRequestsCount.push(this.getRequestedCountByPara(this.web,myRequestedDepartmentsCount[i].DepartmentName,'Completed',this.loggedInUserId))
        }
 
        await Promise.all(promiseOpenRequestCount)
        .then(result=>{
          result.map((r,index)=>{
-          myRequestedDepartmentsCount[index].Open = r;
+          myRequestedDepartmentsCount[index].Open = r
          });
        });
 
       await Promise.all(promiseInProcessRequestCount)
        .then(result=>{
          result.map((r,index)=>{
-          myRequestedDepartmentsCount[index].InProcess = r;
+          myRequestedDepartmentsCount[index].InProcess = r
          });
        });
 
@@ -121,10 +121,10 @@ public async loadManagerCount():Promise<MyRequestedEachPlateData[]>{
             return{
             FileName:r.FileName,
             ServerRelativeUrl:r.ServerRelativeUrl
-            };
+            }
           }),
           getAttachmentData:r.AttachmentFiles.length?r.AttachmentFiles[0].ServerRelativeUrl:''
-        };
+        }
       });
       return Promise.resolve(myReqData);
     }catch(error){

@@ -11,10 +11,7 @@ const SettingsPanel = (props) => {
     const mainContext = useContext(UserContext);
     const [webLink, setWebLink] = useState(''); // link for admin settings
     useEffect(() => {
-        
-        return () => {
-            init();
-        };
+        init();
     }, []);
 
     const init = async() =>{
@@ -29,6 +26,10 @@ const SettingsPanel = (props) => {
             props.onClosePanel();
     };
     
+    const cancel = () =>{
+            props.onClosePanel();
+    }
+
     return (
         <Panel
             headerText="Departmental Request Web Part Settings"
@@ -39,7 +40,7 @@ const SettingsPanel = (props) => {
                   Go to admin settings
                 </Link>                
             </Panel>
-    );
-};
+    )
+}
 
-export default SettingsPanel;
+export default SettingsPanel

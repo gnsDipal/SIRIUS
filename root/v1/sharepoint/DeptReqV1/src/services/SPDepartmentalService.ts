@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
 import { IItemAddResult } from "@pnp/sp/items";
@@ -65,7 +65,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
         return{
           key:index,
           text:r.Department
-        };
+        }
       });
        return await Promise.resolve(departmentOptions);    
      }
@@ -89,7 +89,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
           deptGroup:r.DepartmentGroup,
           deptManager:r.DepartmentManagerId,
           dispatcherName:r.AssignedTo
-        };
+        }
       });
       return await Promise.resolve(departmentFAQ_deptList);    
      }
@@ -99,7 +99,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
         const getOptionsBySelectedDept = [];
         for(var i=0;i<result.length;++i){
           if(result[i].Department.Title === selectedDept){
-            getOptionsBySelectedDept.push(result[i]);
+            getOptionsBySelectedDept.push(result[i])
             break;
           }
         }
@@ -109,7 +109,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
         text:r.Title,
       };
     });
-    return await Promise.resolve(departmentCategoryOptions);
+    return await Promise.resolve(departmentCategoryOptions)
     }
 
     public async loadSelectedDispatcherGroupPeople(selectedDept):Promise<[]>{
@@ -123,9 +123,9 @@ import { IDepartmentList } from '../model/RaiseRequest';
                 return{
                   eMail:r.Email,
                   name:r.Title
-                };
+                }
               });
-              return Promise.resolve(groupUser);
+              return Promise.resolve(groupUser)
           }
     }
 
@@ -190,14 +190,14 @@ import { IDepartmentList } from '../model/RaiseRequest';
       Promise.all(fileInfos)
       .then(res=>{
       const list: IList = this.web.lists.getByTitle("EmpReq").items.getById(responseJSON.data.ID).attachmentFiles.addMultiple(res);
-      });
+      })
     }
 
    // Assigned Issues Section Calls 
    /* 
       get the array containing the InProcess and Closed count for Assigned Tickets 
    */ 
-   public async getAssignedViewCount():Promise<MyAssignedEachPlateData[]>{
+   async getAssignedViewCount():Promise<MyAssignedEachPlateData[]>{
       let myRequestedDepartmentsCount:MyAssignedEachPlateData[] = [];
         const web = Web(this.webUrl);
         let result = await web.lists.getByTitle('EmpReq').items.select('*').filter(`ReAssignToId eq ${this.loggedInUserId}`).get();
@@ -219,7 +219,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
               InProcess: 0,
               Closed:0,
             });
-          });
+          })
 
           let promiseInProcessRequestCount = []; 
           let promiseClosedRequestsCount = []; 
@@ -227,12 +227,12 @@ import { IDepartmentList } from '../model/RaiseRequest';
          for(let i=0;i<uniqueDeptList.length;++i){
 
             promiseInProcessRequestCount.push(this.getRequestedCountByPara(web,myRequestedDepartmentsCount[i].DepartmentName,'In Process',this.loggedInUserId));
-            promiseClosedRequestsCount.push(this.getRequestedCountByPara(web,myRequestedDepartmentsCount[i].DepartmentName,'Completed',this.loggedInUserId));
+            promiseClosedRequestsCount.push(this.getRequestedCountByPara(web,myRequestedDepartmentsCount[i].DepartmentName,'Completed',this.loggedInUserId))
          }
         await Promise.all(promiseInProcessRequestCount)
          .then(result=>{
            result.map((r,index)=>{
-            myRequestedDepartmentsCount[index].InProcess = r;
+            myRequestedDepartmentsCount[index].InProcess = r
            });
          });
 
@@ -277,11 +277,11 @@ import { IDepartmentList } from '../model/RaiseRequest';
                 return{
                 FileName:r.FileName,
                 ServerRelativeUrl:r.ServerRelativeUrl
-                };
+                }
               }),
               getAttachmentData:r.AttachmentFiles.length?r.AttachmentFiles[0].ServerRelativeUrl:'',
-        };
-      });
+        }
+      })
       return Promise.resolve(ticketList);
   }
 
@@ -293,8 +293,8 @@ import { IDepartmentList } from '../model/RaiseRequest';
          return{
             key:r.Id,
             text:r.Title,
-          };
-        });
+          }
+        })
       return Promise.resolve(groupUser); 
    }
 
@@ -303,7 +303,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
         Status: "In Process",
         ReAssignToId: newReAssignedToUser.key,
         Comment:commentData
-      };
+      }
       const web = Web(this.webUrl);
       let result = await web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
       return result;
@@ -312,14 +312,14 @@ import { IDepartmentList } from '../model/RaiseRequest';
 public async emailIdMethod(userId):Promise<string>{
   const web = Web(this.webUrl);
   let result = await web.getUserById(userId).get();
-  return Promise.resolve(result.Email);
+  return Promise.resolve(result.Email)
 }
 
 public async loadCompletedWithStatusUpdate(idRequest,commentData):Promise<{}>{
   let newItem:any = {
     Status: "Completed",
     Comment:commentData
-  };
+  }
   const web = Web(this.webUrl);
   let result = await web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
   return result;

@@ -19,7 +19,7 @@ const ManagerTicketsView = () => {
     const [managerData, setManagerData] = useState([]);
     const [unlockData, setUnlockData] = useState(false);
     useEffect(() => { 
-        init();
+        init();              
    },[]);
    const init = () => {
         spManagerServiceData = new SPDepartmentalServiceData(mainContext);
@@ -27,8 +27,8 @@ const ManagerTicketsView = () => {
        .then(res=>{
         setManagerData(res);
            setUnlockData(true);
-       });
-   };
+       })
+   }
     return (
         <div className={styles.managerTab}>
               <div className="ms-Grid" dir="ltr"> 
@@ -79,12 +79,12 @@ const ManagerTicketsView = () => {
                                    res.attachmentFileName.map((r,i)=>{
                                            return(
                                                <a href={r.ServerRelativeUrl}> {r.FileName}</a>
-                                           );
-                                   })
+                                           )
+                                   })                     
                                  }
                                </td>
                            </tr>
-                         );
+                         )
                        })
                      }
                    </tbody>
@@ -94,6 +94,6 @@ const ManagerTicketsView = () => {
              </div> 
         </div>
      </div>
-    );
-};
-export default ManagerTicketsView;
+    )
+}
+export default ManagerTicketsView

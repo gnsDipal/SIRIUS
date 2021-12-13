@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web } from '@pnp/sp/presets/all';
 import { Logger, LogLevel} from "@pnp/logging";

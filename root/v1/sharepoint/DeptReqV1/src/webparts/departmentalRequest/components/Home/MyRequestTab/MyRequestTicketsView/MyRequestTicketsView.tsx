@@ -18,15 +18,15 @@ const MyRequestTicketsView = () => {
     //State variables
     const [myRequestedData, setMyRequestedData] = useState([]);
     useEffect(() => { 
-        init();
+        init();              
    },[]);
    const init = () => {
        spMyRequestServiceData = new SPDepartmentalServiceData(mainContext);
        spMyRequestServiceData.getDeptListInfo(myReqStatus,dept)
        .then(res=>{
            setMyRequestedData(res);
-       });
-   };
+       })
+   }
     return (
         <div className={styles.myRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -77,11 +77,11 @@ const MyRequestTicketsView = () => {
                                    res.attachmentFileName.map((r,i)=>{
                                            return(
                                                <a href={r.ServerRelativeUrl}> {r.FileName}</a>
-                                           );
-                                         })
+                                           )
+                                         })                     
                                     }
                               </td>
-                            </tr>);
+                            </tr>)
                         })
                       }
                     </tbody>
@@ -91,6 +91,6 @@ const MyRequestTicketsView = () => {
          </div> 
         </div>
       </div>
-    );
-};
-export default MyRequestTicketsView;
+    )
+}
+export default MyRequestTicketsView

@@ -36,7 +36,7 @@ export interface AssignedTicketData {
     comment:string;
     attachmentFileName:fileElements[];
     getAttachmentData:string;
-    authorId:number;
+    authorId:number
 }
 
 export interface passUser{
