@@ -11,7 +11,7 @@ import {UserContext} from '../../Main/Main'
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 debugger;
 let spMyRequestedServiceData:SPDepartmentalServiceData = null;
-const MyRequestTab = (props) => {
+const MyRequestTab = () => {
     const mainContext = useContext(UserContext);
     const {myReqStatus,dept} = useParams();
     const [myRequestedPlate, setMyRequestedPlate] = useState([]);

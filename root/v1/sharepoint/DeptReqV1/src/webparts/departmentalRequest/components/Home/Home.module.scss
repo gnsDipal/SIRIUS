@@ -99,6 +99,11 @@
         @include ms-sm12;
       }
 
+      .gearIcon{
+        margin: 0;
+        float: right;
+      }
+      
       .myIssuesButton{
           > span{
             display: grid !important;
@@ -113,22 +118,13 @@
           background-color: rgb(111, 98, 137);
           color:white;
       }
-
-      // .ms-Button-flexContainer{
-      //   span{
-      //     display: contents;
-      //   }
-      // }
-      .gearIcon{
-        margin: 0;
-        float: right;
-      }
+      
       .assignedIssuesButton{
           // .label{text-align:center};
           > span{
             display: grid !important;
           }
-          width:95%;
+          width:100%;
           margin-bottom:15px;
           max-width:100%;
           border-radius:10px;
