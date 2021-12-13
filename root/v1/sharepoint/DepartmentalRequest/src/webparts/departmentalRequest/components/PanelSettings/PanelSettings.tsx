@@ -124,19 +124,6 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps,I
       });
   }
 
-  createTabGeneralPost = async(teamId,channelId,body) =>{
-    await this.props.webPartContext.msGraphClientFactory
-    .getClient()
-      .then((client: MSGraphClient): void => {        
-        client
-          .api(`teams/${teamId}/channels/${channelId}/tabs`)
-          .version("beta")
-          .post(body).then(()=>{
-            // console.log("Inside create tab");  
-          });
-      });
-  }
-
   createTab1 = async(teamId,channelId) =>
   {
     let contentURL = `${this.props.webPartContext.pageContext.web.absoluteUrl}/_layouts/15/groups.aspx`
@@ -152,7 +139,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps,I
         }       
     };
 
-    this.createTabGeneralPost(teamId,channelId,body);
+    await this.createTabGeneralPost(teamId,channelId,body);
     
   } 
 
@@ -171,7 +158,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps,I
         }       
     };
 
-    this.createTabGeneralPost(teamId,channelId,body);
+    await this.createTabGeneralPost(teamId,channelId,body);
     
   } 
 
@@ -190,9 +177,20 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps,I
           "websiteUrl": null
         }       
     };
+    await this.createTabGeneralPost(teamId,channelId,body); 
+  }
 
-    this.createTabGeneralPost(teamId,channelId,body);
-    
+  createTabGeneralPost = async(teamId,channelId,body) =>{
+    await this.props.webPartContext.msGraphClientFactory
+    .getClient()
+      .then((client: MSGraphClient): void => {        
+        client
+          .api(`teams/${teamId}/channels/${channelId}/tabs`)
+          .version("beta")
+          .post(body).then(()=>{
+            // console.log("Inside create tab");  
+          });
+      });
   }
 
     cancel = () =>{

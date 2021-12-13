@@ -11,6 +11,7 @@ import { IDispatcherList } from '../model/IDispatcher';
 import SPMyRequestService from './SPMyRequestService';
 import SPManagerService from './SPManagerService';
 import SPPermissionService from './SPPermissionService';
+import SPSettingsPanelService from './SPSettingsPanelService';
 
   let uniqueDeptList = [];
   
@@ -20,12 +21,14 @@ import SPPermissionService from './SPPermissionService';
       private myRequestService: SPMyRequestService = null;
       private managerService: SPManagerService = null;
       private permissionService: SPPermissionService = null;
+      private settingsPanelService:SPSettingsPanelService = null;
       constructor(private context){
             this.departmentalService = new SPDepartmentalService(this.context);
             this.dispatcherService = new SPDispatcherService(this.context);
             this.myRequestService = new SPMyRequestService(this.context);
             this.managerService = new SPManagerService(this.context);
             this.permissionService = new SPPermissionService(this.context);
+            this.settingsPanelService = new SPSettingsPanelService(this.context);
             this.onInit();
       }
     private async onInit(){
@@ -113,5 +116,8 @@ import SPPermissionService from './SPPermissionService';
       public getManagerPermissionHandle():Promise<boolean>{
         return this.permissionService.loadManagerPermissionHandle();
       }
-      /*  */
+      /* Settings Panel service calls */
+      public createTeamTab(){
+        // return this.settingsPanelService.newTeam();
+      }
     } //End of Main Class
