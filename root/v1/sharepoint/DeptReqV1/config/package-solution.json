@@ -3,7 +3,7 @@
   "solution": {
     "name": "dept-req-v-1-client-side-solution",
     "id": "68f9e7fd-d0c7-4a20-8d9a-073431a62711",
-    "version": "1.0.0.0",
+    "version": "1.0.0.11",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,

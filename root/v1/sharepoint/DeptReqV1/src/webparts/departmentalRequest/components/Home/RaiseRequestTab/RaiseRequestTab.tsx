@@ -54,7 +54,7 @@ const RaiseRequestTab = (props) => {
     const [toasterNotificationFlag, setToasterNotificationFlag] = useState<boolean>(false);
     const [randomIndex, setRandomIndex] = useState<number>(0);
     useEffect(() => { 
-        init();              
+        init();
    },[]);
    const init = async() => {
     spRaiseRequestServiceData = new SPDepartmentalServiceData(mainContext);
@@ -67,14 +67,14 @@ const RaiseRequestTab = (props) => {
         setDepartmentOptions(res);
         staticDeptOptions = res;
         setOptionsUnlock(true);
-    })
-}
+    });
+};
 
 // UI event calls dynamic
 
 const onClickDeptHandle = async ()=>{
     setDepartmentOptions(staticDeptOptions);
-}
+};
 
 const onChangeDeptHandle = async (choosenDept)=> {
   //set states
@@ -90,22 +90,22 @@ const onChangeDeptHandle = async (choosenDept)=> {
   spRaiseRequestServiceData.getSelectedDispatcherGroupPeople(choosenDept.text)
   .then(res =>{
     setDispatcherGrpUsers(res);
-  })
-}
+  });
+};
 
 const onChangeDeptCategoryHandle = async (selectedDeptCategory:any)=> {
   setSelectedDeptCategory(selectedDeptCategory.text);
   setDataFilledCheck(1);
-}
+};
 
 const getDeptCateg = async()=>{
   setDepartmentCategoryOptions(departmentCategoryOptions);   
-}
+};
 
 const onChangeRequestDescriptionHandle = async(requestDescription:any)=>{
       setRequestDescription(requestDescription.currentTarget.value);
       setDataFilledCheck(1);
-}
+};
 
 const onFileAddHandle=async(fileAdd)=>{
   let allFiles = [];
@@ -114,7 +114,7 @@ const onFileAddHandle=async(fileAdd)=>{
   }
   let file = allFiles[0];
   setFileAddition(allFiles);
-}
+};
 
 const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,fileAddition)=>{
   if(selectedDept !== null){
@@ -122,9 +122,9 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
    .then((r)=>{
     setToasterNotificationFlag(true);
     setRandomIndex(Math.floor(Math.random() * 6) + 1);
-   })
+   });
   }
-}
+};
 
     return (
         <div className={styles.raiseRequestTab}>
@@ -212,7 +212,7 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
               Logger.writeJSON("Raised a new request",LogLevel.Info) 
             }
         </div>
-    )
-}
+    );
+};
 
-export default RaiseRequestTab
+export default RaiseRequestTab;

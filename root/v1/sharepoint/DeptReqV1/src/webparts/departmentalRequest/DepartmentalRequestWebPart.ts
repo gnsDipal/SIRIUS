@@ -75,7 +75,7 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
   }  
 
 
-  createListDepartment = async() =>
+  private createListDepartment = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("Dept", "Dept details list", 100);
     if (listEnsureResult.created)    
@@ -104,7 +104,7 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
     }
   }
 
-  createListDepartmentCategory = async() =>
+  private createListDepartmentCategory = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("DeptCateg", "Dept details list", 100);
     if (listEnsureResult.created)    
@@ -127,7 +127,7 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
     }
   }
 
-  createEmpReq = async() =>
+  private createEmpReq = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("EmpReq", "EmpReq details list", 100);
     if (listEnsureResult.created)    
@@ -164,7 +164,7 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
   }
 
 
-  createArchiveSettings = async() =>
+  private createArchiveSettings = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("ArchiveSett", "ArchiveSett details list", 100);
     if (listEnsureResult.created)    
@@ -194,7 +194,7 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
   }
 
 
-  createListEmail = async() =>
+  private createListEmail = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("EmailSender", "Email sending list", 100);
     if (listEnsureResult.created) 

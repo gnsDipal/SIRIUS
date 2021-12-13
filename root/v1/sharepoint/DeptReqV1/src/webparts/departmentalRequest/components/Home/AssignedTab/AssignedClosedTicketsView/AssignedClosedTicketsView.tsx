@@ -21,7 +21,7 @@ const AssignedClosedTicketsView = () => {
     const [assignedClosedListData,setAssignedClosedListData] = useState(null);
     const [loadData, setLoadData] = useState(false);
     useEffect(() => { 
-        init();              
+        init();
    },[]);
    const init = () => {
     spAssignedServiceData = new SPDepartmentalServiceData(mainContext);
@@ -31,7 +31,7 @@ const AssignedClosedTicketsView = () => {
        setAssignedClosedListData(res);
        setLoadData(true);
    });
-  }
+  };
 
     return (
         <div className={styles.assignedTab}>
@@ -74,9 +74,9 @@ const AssignedClosedTicketsView = () => {
                             if(r.FileName.substring(0,3) === "REQ"){
                             return(
                               <a href={r.ServerRelativeUrl}> {r.FileName}</a>
-                            )
+                            );
                             }
-                          })                   
+                          })
                         }
                       </td>
           
@@ -86,13 +86,13 @@ const AssignedClosedTicketsView = () => {
                             if(r.FileName.substring(0,4) === "DISP"){
                             return(
                               <a href={r.ServerRelativeUrl}> {r.FileName}</a>
-                            )
+                            );
                             }
-                          })                    
+                          })
                         }
                       </td>
                     </tr>
-                  )
+                  );
                 })
               }
             </tbody>
@@ -105,6 +105,6 @@ const AssignedClosedTicketsView = () => {
         </Switch>
       </div>
      </div>
-    )
-}
-export default AssignedClosedTicketsView
+    );
+};
+export default AssignedClosedTicketsView;

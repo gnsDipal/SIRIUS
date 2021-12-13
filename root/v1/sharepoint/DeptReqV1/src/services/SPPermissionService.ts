@@ -46,7 +46,7 @@ export default class SPPermissionService{
                 for(let j=0;j<result.length;++j){
                     if(loggedInUserGrps[i].Title ===result[j].GroupName.Title){
                         count = count + 1;
-                        break outer_loop
+                        break outer_loop;
                     }
                 }
             }
@@ -71,7 +71,7 @@ export default class SPPermissionService{
                 for(let j=0;j<result.length;++j){
                     if(loggedInUserGrps[i].Title === result[j].DepartmentGroup.Title){
                         count = count + 1;
-                        break outer_loop
+                        break outer_loop;
                     }
                 }
             }
@@ -103,7 +103,7 @@ export default class SPPermissionService{
                 for(let j=0;j<result.length;++j){
                     if(loggedInUserGrps[i].Title === result[j].Manager.Title){
                         count = count + 1;
-                        break outer_loop
+                        break outer_loop;
                     }
                 }
             }

@@ -4,19 +4,19 @@ import { useEffect, useContext, useState } from 'react';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
 import {BrowserRouter as Router,Switch,Route,Link,useParams} from "react-router-dom";
-import Navbar from '../Navbar/Navbar'
-import Home from '../Home'
+import Navbar from '../Navbar/Navbar';
+import Home from '../Home';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-let spManagerServiceData:SPDepartmentalServiceData = undefined
+let spManagerServiceData:SPDepartmentalServiceData = undefined;
 const ManagerTab = (props) => {
     const mainContext = useContext(UserContext);
     const {managerStatus,dept} = useParams(); 
     const [managerCountPlate, setManagerCountPlate] = useState([]);
     const [unlockPlate, setUnlockPlate] = useState(0);
     useEffect(() => {  
-        init();              
+        init();
    },[]);
   
    const init = () => {
@@ -28,8 +28,8 @@ const ManagerTab = (props) => {
           setUnlockPlate(1);
         else
           setUnlockPlate(2);
-      })
-   }
+      });
+   };
     return (
         <div className={styles.managerTab}>
              <div className="ms-Grid" dir="ltr"> 
@@ -79,7 +79,7 @@ const ManagerTab = (props) => {
                     </ul>
                  </div>
                  </div>
-                  )
+                  );
                  })
         }
               </div>
@@ -93,6 +93,6 @@ const ManagerTab = (props) => {
                 </Route>
             </Switch>
         </div>
-    )
-}
-export default ManagerTab
+    );
+};
+export default ManagerTab;

@@ -53,16 +53,16 @@ const AssignedTicketsView = () => {
     const [emailId,setEmailId] = useState<string>('');
     const [msGraphProvider,setMsGraphProvider] = useState<IMSGraphInterface>(
       {
-        getCurrentUserId(): Promise<any>{return},
-        getUserId(userEmail: string): Promise<any>{return},
-        createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return},
-        sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
+        getCurrentUserId(): Promise<any>{return;},
+        getUserId(userEmail: string): Promise<any>{return;},
+        createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return;},
+        sendMessage(chatId: string, chatMessage: string): Promise<any>{return;}
       }
     );
     
 
     useEffect(() => { 
-        init();              
+        init();
    },[]);
 
    const init = () => {
@@ -79,25 +79,25 @@ const AssignedTicketsView = () => {
        console.log('res = ' + res.length);
        setAssignedListData(res);
        setLoadData(true); //unlock data view
-       fetchMsGraphProvider()
+       fetchMsGraphProvider();
    });
      if(mainContext.sdks.microsoftTeams){ 
     //   mainContext.sdks.microsoftTeams.context.subEntityId = "/assigned";
     //   alert("mainContext.sdks.microsoftTeams.context.subEntityId = " + mainContext.sdks.microsoftTeams.context.subEntityId);
     //   alert("mainContext.sdks.microsoftTeams.context.entityId = " + mainContext.sdks.microsoftTeams.context.entityId);
      }
-  }
+  };
 
   const fetchMsGraphProvider = async () => {
-    setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
-  }
+    setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory));
+  };
 
  function onTextFieldClickHandle(ticketNumber){
-    setIndexSelect(ticketNumber)
-}
+    setIndexSelect(ticketNumber);
+ }
 
 function inputComment(event){  
-    setCommentData(event.target.value)
+    setCommentData(event.target.value);
   }
 
 function loadStatusList(){
@@ -105,7 +105,7 @@ function loadStatusList(){
     setStatusOptions([
         {key:1, text:'In Process'},
         {key:2, text:'Completed'},
-    ])
+    ]);
   }
 
  function onStatusChangeHandle(selectedStatus,ticketNumber,department,idNumber,authorId){
@@ -118,7 +118,7 @@ function loadStatusList(){
       setPassAssignedToUser({
         key:null,
         text:''
-      })
+      });
 
     }
     if(selectedStatus.text === 'In Process'){
@@ -130,7 +130,7 @@ function loadStatusList(){
           setStatusCompletedCheck(1);
           setDeleteSelectedTicket(ticketNumber);
         }
-      )
+      );
     }
 }
 
@@ -143,7 +143,7 @@ function getUserByDept(control,reAssignTo,department,idNumber){
         setDeptListDropDown(data);
         setIdSelect(idNumber);
     }
-  )
+  );
 }else
 {
   setDeptListDropDown([]);
@@ -177,8 +177,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
               setStatusOptions([]);
               setCommentData('');
               setAssignedNotification(0);
-
-            })
+            });
           }
           if(assignedToUser.text === '' && (this.state.statusCompletedCheck === 2) ){
             _sendCompletedStatusTeamsMessage(emailId,ticketNumberCheck);
@@ -197,8 +196,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             setStatusOptions([]);
             setCommentData('');
             setAssignedNotification(0);
-
-           })
+           });
           }
       } 
   }
@@ -211,7 +209,9 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
+    // const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId},"path":"assigned"},"channelId":${chatOfUser}}`);
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={subEntityId:${mainContext.sdks.microsoftTeams.context.subEntityId},subEntityLabel:assigned, subEntityWebUrl:"/assigned", teamSitePath:"/assigned"},"channelId":${chatOfUser}}`);
+    // const url = encodeURI(`https://teams.microsoft.com/l/entity/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId},"path":"assigned"},"channelId":${chatOfUser}}`);
 
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
@@ -238,15 +238,15 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     })
     .catch(error => {
       console.log(error);
-    });   
-    }    
+    });
+    }
     
     else{
     let currentUserId = await msGraphProvider.getCurrentUserId(); 
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    let url = `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${department}`
+    let url = `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${department}`;
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
     <div>Departmental Request Application</div>
@@ -275,7 +275,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
       console.log(error);
     });    
   }    
-  }
+  };
 
   const _sendCompletedStatusTeamsMessage=async(ToEmailId: string,ticketNumber:string)=>{
    
@@ -283,7 +283,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    let url = `${mainContext.pageContext.web.absoluteUrl}`
+    let url = `${mainContext.pageContext.web.absoluteUrl}`;
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
     <div>Departmental Request Application</div>
@@ -311,7 +311,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     .catch(error => {
       console.log(error);
     });    
-  }
+  };
 
     return (
          <div className={styles.assignedTab}>
@@ -402,9 +402,9 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                           if(r.FileName.substring(0,3) === "REQ"){
                           return(
                             <a href={r.ServerRelativeUrl}> {r.FileName}</a>
-                          )
+                          );
                           }
-                        })                     
+                        })
                       }
                     </td>
                     <td>
@@ -413,16 +413,16 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                           if(r.FileName.substring(0,4) === "DISP"){
                           return(
                             <a href={r.ServerRelativeUrl}> {r.FileName}</a>
-                          )
+                          );
                           }
-                        })             
+                        })
                       }
                     </td>
                     <td>
                     <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(commentData,res.dataId,passAssignedToUser,res.ticketNumber,res.department)}></Icon>
                     </td>
                   </tr>
-                )
+                );
               })
             }
           </tbody>
@@ -441,7 +441,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                 <Route exact path="/assigned" component={(props)=><AssignedTab/>}></Route>
             </Switch>
          </div>
-    )
-}
+    );
+};
 
-export default AssignedTicketsView
+export default AssignedTicketsView;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import styles from './MyRequestTab.module.scss'
+import styles from './MyRequestTab.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { useEffect, useContext, useState } from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
@@ -7,7 +7,7 @@ import {BrowserRouter as Router,Switch,Route,HashRouter,Link,useLocation,usePara
 import Home from '../Home';
 import Navbar from '../Navbar/Navbar';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
-import {UserContext} from '../../Main/Main'
+import {UserContext} from '../../Main/Main';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 debugger;
 let spMyRequestedServiceData:SPDepartmentalServiceData = null;
@@ -17,8 +17,8 @@ const MyRequestTab = (props) => {
     const [myRequestedPlate, setMyRequestedPlate] = useState([]);
     const [unlockPlate, setUnlockPlate] = useState(0);
 
-    useEffect(() => {  
-      init();              
+    useEffect(() => {
+      init();
  },[]);
 
  const init = () => {
@@ -30,8 +30,8 @@ const MyRequestTab = (props) => {
         setUnlockPlate(1);
       else
         setUnlockPlate(2);
-    })
- }
+    });
+ };
     return (
         <div className={styles.myRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -82,7 +82,7 @@ const MyRequestTab = (props) => {
                     </ul>
                  </div>
                  </div>
-                  )
+                  );
                  })
         }
               </div>
@@ -98,6 +98,6 @@ const MyRequestTab = (props) => {
             </Switch>
          
         </div>
-    )
-}
-export default MyRequestTab
+    );
+};
+export default MyRequestTab;

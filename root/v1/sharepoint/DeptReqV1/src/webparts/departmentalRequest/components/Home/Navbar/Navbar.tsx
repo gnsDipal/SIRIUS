@@ -17,9 +17,9 @@ const Navbar = () => {
     const [dispatcherPermit, setDispatcherPermit] = useState(false);// check dispatcher permission
     const [assignedPermit, setAssignedPermit] = useState(false);// check Assigned Issues permission
     const [managerPermit, setManagerPermit] = useState(false);// check manager permission
-    const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false)
+    const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false);
     useEffect(() => { 
-      init();              
+      init();
     },[]);
     //initialization
     const init = async()=>{
@@ -35,10 +35,10 @@ const Navbar = () => {
       await spPermissionDataService.getManagerPermissionHandle()
       .then(r=>{
         setManagerPermit(r);
-      })
-    }
-    const panelOpenHandle=()=>{setIsSettingsPanelOpen(true)}
-    const panelCloseHandle=()=>{setIsSettingsPanelOpen(false)}
+      });
+    };
+    const panelOpenHandle=()=>{setIsSettingsPanelOpen(true);};
+    const panelCloseHandle=()=>{setIsSettingsPanelOpen(false);};
     return (
         <div className={styles.home}>
         {
@@ -109,8 +109,8 @@ const Navbar = () => {
           }
 
         </div>
-    )
-}
-export default Navbar
+    );
+};
+export default Navbar;
 
 

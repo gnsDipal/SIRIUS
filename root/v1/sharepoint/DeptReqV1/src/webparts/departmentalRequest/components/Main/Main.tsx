@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import {BrowserRouter as Router,Switch,Route,HashRouter} from "react-router-dom";
 import Home from '../Home/Home';
@@ -13,8 +14,22 @@ import AssignedClosedTicketsView from '../Home/AssignedTab/AssignedClosedTickets
 import DispatcherTicketsView from '../Home/DispatcherTab/DispatcherTicketsView/DispatcherTicketsView';
 import MyRequestTicketsView from '../Home/MyRequestTab/MyRequestTicketsView/MyRequestTicketsView';
 import ManagerTicketsView from '../Home/ManagerTab/ManagerTicketsView/ManagerTicketsView';
+import * as microsoftTeams from '@microsoft/teams-js';
 export const UserContext = React.createContext(null);
 const Main = (props:any) => {
+  const [teamContext,setTeamContext] = useState(null);
+
+  //Initialize Microsoft teams sdk
+  microsoftTeams.initialize(() => {
+    microsoftTeams.getContext((c) => {
+      setTeamContext(c);
+    });
+  });
+  
+
+
+  let path: string = window.location.href;//.search.split("path=")[0];
+  alert("path:" + path);
     return (
         <div>
             <HashRouter>
@@ -22,7 +37,7 @@ const Main = (props:any) => {
               <Switch>
                 <Route exact path="/requested" component={()=><MyRequestTab />}/>
                 <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
-                <Route exact path="/assigned" component={()=><AssignedTab />}/>                  
+                <Route exact path="/assigned" component={()=><AssignedTab />}/>
                 <Route exact path = "/assigned/:Inprocess/:dept" component={()=><AssignedTicketsView/>}/>
                 <Route exact path = "/assigned/set/:Closed/:dept" component={()=><AssignedClosedTicketsView />}/>
                 <Route exact path="/dispatcher" component={()=><DispatcherTab />}/>
@@ -39,8 +54,10 @@ const Main = (props:any) => {
               </Switch>
               </UserContext.Provider>
             </HashRouter>
-        </div>    
-    )
-}
+            <div>Context: {JSON.stringify(teamContext)}</div>
+            <div>Path:{path}</div>
+        </div>
+    );
+};
 
-export default Main
+export default Main;

@@ -19,7 +19,7 @@ const DispatcherTab = () => {
     const [dispatcherCountData, setDispatcherCountData] = useState(null);
     const [unlockDispatcherCard, setUnlockDispatcherCard] = useState(0);
     useEffect(() => {  
-         init();              
+         init();
     },[]);
     // useEffect(()=>{
     //   if (dispatcherCountData.length>0){
@@ -36,8 +36,8 @@ const DispatcherTab = () => {
           setUnlockDispatcherCard(1); // if data is not present
         else
           setUnlockDispatcherCard(2); // For rendering once the data is set
-      })
-    }
+      });
+    };
 
    
     return (
@@ -77,7 +77,7 @@ const DispatcherTab = () => {
                     </ul>
                  </div>
                  </div>
-                  )
+                  );
                  })
                 }
                 </div>
@@ -94,6 +94,6 @@ const DispatcherTab = () => {
                 </Route>
             </Switch>
         </div>
-    )
-}
-export default DispatcherTab
+    );
+};
+export default DispatcherTab;

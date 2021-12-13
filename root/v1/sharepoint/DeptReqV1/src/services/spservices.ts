@@ -7,7 +7,7 @@ import { Context } from "@microsoft/teams-js";
 import { SPHttpClient, ISPHttpClientOptions, SPHttpClientResponse } from '@microsoft/sp-http';
 
 export interface spProps {
-  context:Context
+  context:Context;
 }
 export default class spservices {
     private webContext:WebPartContext;
@@ -49,8 +49,6 @@ export default class spservices {
               console.log('res = ' + res);
             }
             // return res.value;
-          })        
+          });
     }
-
-    
 }

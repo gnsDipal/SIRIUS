@@ -1,4 +1,4 @@
-import * as React from 'react'
+import * as React from 'react';
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
 import SPDepartmentalService from './SPDepartmentalService';
@@ -32,89 +32,86 @@ import SPPermissionService from './SPPermissionService';
         
         }
         /* Assigned Ticket data service calls */
-      getAssignedViewCountData():Promise<MyAssignedEachPlateData[]>{
+      public getAssignedViewCountData():Promise<MyAssignedEachPlateData[]>{
         return this.departmentalService.getAssignedViewCount();
       }
-      getAssignToListData(inProcess,deptName):Promise<AssignedTicketData[]>{
+      public getAssignToListData(inProcess,deptName):Promise<AssignedTicketData[]>{
         return this.departmentalService.loadAssignToListInfo(inProcess,deptName);
       }
-      getDeptOptionsByGrpName(department):Promise<IDropdownOption[]>{
+      public getDeptOptionsByGrpName(department):Promise<IDropdownOption[]>{
         return this.departmentalService.loadDepartmentOptionsByGroupName(department);
       }
-      getEmailId(assignedToUserId):Promise<string>{
-        return this.departmentalService.emailIdMethod(assignedToUserId)
+      public getEmailId(assignedToUserId):Promise<string>{
+        return this.departmentalService.emailIdMethod(assignedToUserId);
       }
-      addReAssignedToData(newReAssignedToUser:any,idRequest:number,commentData:string, ticketNumber:string):Promise<{}>{
+      public addReAssignedToData(newReAssignedToUser:any,idRequest:number,commentData:string, ticketNumber:string):Promise<{}>{
         return this.departmentalService.getAddReAssignedToData(newReAssignedToUser,idRequest,commentData, ticketNumber);
       }
-      getCompletedWithStatusUpdate(idRequest,commentData):Promise<{}>{
+      public getCompletedWithStatusUpdate(idRequest,commentData):Promise<{}>{
         return this.departmentalService.loadCompletedWithStatusUpdate(idRequest,commentData);
       }
 
       //Raise a request data service calls
 
-      getDepartmentOptions():Promise<IOptionWithKey[]>{
+      public getDepartmentOptions():Promise<IOptionWithKey[]>{
         return this.departmentalService.loadDepartmentOptions();
       }
 
-      getDepartmentDetailForPost():Promise<IDepartmentList[]>{
+      public getDepartmentDetailForPost():Promise<IDepartmentList[]>{
         return this.departmentalService.loadDepartmentDetailForPost();
       }
 
-      getDeptCategorySelect(selectedDept):Promise<IDropdownOption[]>{
+      public getDeptCategorySelect(selectedDept):Promise<IDropdownOption[]>{
         return this.departmentalService.deptCategorySelect(selectedDept);
       }
 
-      getSelectedDispatcherGroupPeople(selectedDept):Promise<[]>{
+      public getSelectedDispatcherGroupPeople(selectedDept):Promise<[]>{
         return this.departmentalService.loadSelectedDispatcherGroupPeople(selectedDept);
       }
 
-      getEmployeeRequestAdded(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo):Promise<{}>{
+      public getEmployeeRequestAdded(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo):Promise<{}>{
        return this.departmentalService.loadEmployeeRequest(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo);
       }
 
       /* Dispatcher view service calls */
-      getDispatcherPlates():Promise<{}>{
+      public getDispatcherPlates():Promise<{}>{
        return this.dispatcherService.getDepartmentsDetails();
       }
-      getDispatcherTicketData(passedDeptName):Promise<IDispatcherList[]>{
+      public getDispatcherTicketData(passedDeptName):Promise<IDispatcherList[]>{
         return this.dispatcherService.loadDispatcherListInfo(passedDeptName);
       }
-      getDepartmentOptionsByGroupName(department):Promise<IDropdownOption[]>{
+      public getDepartmentOptionsByGroupName(department):Promise<IDropdownOption[]>{
         return this.dispatcherService.loadDepartmentOptionsByGroupName(department);
       }
-      async addMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition):Promise<{}>{
+      public async addMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition):Promise<{}>{
        return this.dispatcherService.loadMultipleDispatcherAttachmentLoop(requestedId,dispatcherFileAddition);
       }
-      addDispatcherReAssign(assignedToUser,idRequest,raisedBy):Promise<{}>{
+      public addDispatcherReAssign(assignedToUser,idRequest,raisedBy):Promise<{}>{
         return this.dispatcherService.loadAddingReAssignedToData(assignedToUser,idRequest,raisedBy);
       }
 
       /* My Requested Issues Calls */
 
-      getMyRequestsViewCount():Promise<MyRequestedEachPlateData[]>{
+      public getMyRequestsViewCount():Promise<MyRequestedEachPlateData[]>{
       return this.myRequestService.loadMyRequestsViewCount();
       }
-      getDeptListInfo(selectedStatus,dept):Promise<IMyRequestList[]>{
-        return this.myRequestService.loadDeptListInfo(selectedStatus,dept)
+      public getDeptListInfo(selectedStatus,dept):Promise<IMyRequestList[]>{
+        return this.myRequestService.loadDeptListInfo(selectedStatus,dept);
       }
       /* Manager View Service Calls */
-      getManagerViewCount():Promise<MyRequestedEachPlateData[]>{
+      public getManagerViewCount():Promise<MyRequestedEachPlateData[]>{
         return this.managerService.loadManagerCount();
       }
 
       /* Permissions check */
-      getDispatcherPermissionHandle():Promise<boolean>{
+      public getDispatcherPermissionHandle():Promise<boolean>{
         return this.permissionService.loadDispatcherPermissionHandle();
       }
-      getAssignedPermissionHandle():Promise<boolean>{
+      public getAssignedPermissionHandle():Promise<boolean>{
         return this.permissionService.loadAssignedPermissionHandle();
       }
-      getManagerPermissionHandle():Promise<boolean>{
+      public getManagerPermissionHandle():Promise<boolean>{
         return this.permissionService.loadManagerPermissionHandle();
       }
       /*  */
     } //End of Main Class
-      
-  
- 

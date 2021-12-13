@@ -9,11 +9,11 @@ const SettingsPanel = (props) => {
         
         return () => {
             
-        }
-    }, [])
+        };
+    }, []);
     const cancel = () =>{
             props.onClosePanel();
-    }
+    };
     return (
         <Panel
             headerText="Departmental Request Web Part Settings"
@@ -26,7 +26,7 @@ const SettingsPanel = (props) => {
 
                
             </Panel>
-    )
-}
+    );
+};
 
-export default SettingsPanel
+export default SettingsPanel;
