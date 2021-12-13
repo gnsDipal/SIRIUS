@@ -16,6 +16,7 @@ export interface IPanelSettingsState {
     webURL:string;
 }
 
+debugger
 export default class PanelSettings extends React.Component<IPanelSettingsProps,IPanelSettingsState>{
     public constructor(props:IPanelSettingsProps){
         super(props);
