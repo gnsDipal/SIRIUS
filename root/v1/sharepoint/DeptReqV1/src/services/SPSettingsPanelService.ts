@@ -4,7 +4,7 @@ import { sp, Web } from '@pnp/sp/presets/all';
 import { Logger, LogLevel} from "@pnp/logging";
 import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import { MSGraphClient } from '@microsoft/sp-http';
-
+debugger;
 export default class SPSettingsPanelService{
     private webContext = null;
     private webUrl:string = null;
@@ -25,46 +25,79 @@ export default class SPSettingsPanelService{
         this.web = Web(this.webUrl);
       }
 
-      public async newTeam():Promise<string>{
-          let checkTeamCreated = await this.checkTeamCreatedBefore();
-          if(checkTeamCreated === false){
-           let creatingTeamOnSuccess = await this.createTeam();    
-           let teamsId = await this.getTeams();
-           let webLink = await this.getChannelId(teamsId);
-            return Promise.resolve(webLink);
-          }
-          if(checkTeamCreated === true){
-              return Promise.resolve('');
-          }
+      // public async newTeam():Promise<string>{
+      //     await this.checkTeamCreatedBefore();
+      //     return await Promise.resolve('');
+      // }
 
-      }
-
-public async checkTeamCreatedBefore():Promise<Boolean>{
+public async checkTeamCreatedBefore(){
     let teamPresentCheck:Boolean = false;
     await this.webContext.msGraphClientFactory
-     .getClient()
-     .then((client: MSGraphClient): void => {        
-       client
-         .api(`me/joinedTeams`)
-         .version("beta")
-         .get().then((res)=>{
-           for(let i:number =0; i<res.value.length; ++i)
-           {
-             if(res.value[i].displayName === "TestDepartmentalRequestAdmin")
-             {
-                teamPresentCheck = true;
-             }
-           }
-         });
-     }); 
-     return Promise.resolve(teamPresentCheck);
+    .getClient()
+    .then((client: MSGraphClient): void => {        
+    client
+      .api(`me/joinedTeams`)
+      .version("beta")
+      .get().then((res)=>{
+         return res;
+       });
+     });  
  }
+
+ public async checkTeamHandle(){
+  await this.webContext.msGraphClientFactory
+  .getClient()
+  .then((client: MSGraphClient): void => {        
+    client
+      .api(`me/joinedTeams`)
+      .version("beta")
+      .get().then(async(res)=>{
+        let teamPresentCheck:boolean = false;
+        for(let i:number =0; i<res.value.length; ++i)
+        {
+          if(res.value[i].displayName === "Test1DeptReqAdmin")
+          {
+            teamPresentCheck = true;
+          }
+        }
+       return (teamPresentCheck);
+       });
+     }); 
+ }
+
+//  public async checkTeamCreatedBeforeBackUp():Promise<Boolean>{
+//   let teamPresentCheck:Boolean = false;
+//   await this.webContext.msGraphClientFactory
+//    .getClient()
+//    .then((client: MSGraphClient): void => {        
+//      client
+//        .api(`me/joinedTeams`)
+//        .version("beta")
+//        .get().then(async(res)=>{
+//          for(let i:number =0; i<res.value.length; ++i)
+//          {
+//            if(res.value[i].displayName === "Test1DeptReqAdmin")
+//            {
+//               teamPresentCheck = true;
+//            }
+//          }
+//         return await Promise.resolve(teamPresentCheck);
+//         // res.map((r)=>{
+//         //   if(r.value === "Test1DeptReqAdmin"){
+//         //     teamPresentCheck = true;
+//         //   }
+//         // })
+//         // return teamPresentCheck;
+//         });
+//       }); 
+//       return await Promise.resolve(teamPresentCheck);
+// }
 
  public async createTeam():Promise<Boolean>{ 
  try{
  let body: any = {      
      "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
-     "displayName": "TestDepartmentalRequestAdmin",
+     "displayName": "Test1DeptReqAdmin",
      "description": "The team for those in architecture design."       
  };
  
@@ -78,9 +111,9 @@ await this.webContext.msGraphClientFactory
         //  this.GetTeams();
        });
    });
-   return Promise.resolve(true);
+   return await Promise.resolve(true);
 }catch(error){
-    Promise.reject(false);
+   return await Promise.reject(false);
 }
 }
 
@@ -96,7 +129,7 @@ public async getTeams():Promise<string>{
           .get().then((res)=>{
             for(let i:number =0; i<res.value.length; ++i)
             {
-              if(res.value[i].displayName === "DepartmentalRequestAdmin")
+              if(res.value[i].displayName === "Test1DeptReqAdmin")
               {
                 teamId = res.value[i].id;
               }
@@ -106,9 +139,9 @@ public async getTeams():Promise<string>{
             // }
         });
     }); 
-     return Promise.resolve(teamId);
+     return await Promise.resolve(teamId);
      }catch(error){
-     return Promise.reject(teamId);
+     return await Promise.reject(teamId);
      }
 }
 public async getChannelId(teamId):Promise<string>{

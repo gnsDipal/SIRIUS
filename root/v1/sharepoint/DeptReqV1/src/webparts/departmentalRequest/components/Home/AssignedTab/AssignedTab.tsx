@@ -9,7 +9,7 @@ import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-debugger;
+// debugger;
 let myRequestedEachPlateData = [];   
 // const InProcess:string = "In Process";    
 // const Completed:string = "Completed";    

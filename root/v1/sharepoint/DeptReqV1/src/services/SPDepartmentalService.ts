@@ -13,7 +13,7 @@ import {AssignedTicketData, MyAssignedEachPlateData} from '../model/MyRequestedE
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
 import { IOptionWithKey } from '../model/RaiseRequest';
 import { IDepartmentList } from '../model/RaiseRequest';
-  debugger;
+  // debugger;
   let spfxContext = null;
   let uniqueDeptList = [],myRequestedEachPlateData = [];
   

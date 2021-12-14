@@ -12,7 +12,7 @@ import SPMyRequestService from './SPMyRequestService';
 import SPManagerService from './SPManagerService';
 import SPPermissionService from './SPPermissionService';
 import SPSettingsPanelService from './SPSettingsPanelService';
-
+debugger;
   let uniqueDeptList = [];
   
   export default class SPDepartmentalServiceData{ 
@@ -117,8 +117,12 @@ import SPSettingsPanelService from './SPSettingsPanelService';
         return this.permissionService.loadManagerPermissionHandle();
       }
       /* Settings Panel service calls */
-      public createTeamTab(){
-        // return this.settingsPanelService.newTeam();
+      // public createTeamTab(){
+      //   return this.settingsPanelService.newTeam();
+      // }
+
+      public createTeamTabTest(){
+        return this.settingsPanelService.checkTeamCreatedBefore();
       }
     } //End of Main Class  
   

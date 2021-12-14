@@ -16,15 +16,12 @@ const SettingsPanel = (props) => {
 
     const init = async() =>{
         spSettingsPanelService = new SPDepartmentalServiceData(mainContext);
-        spSettingsPanelService.createTeamTab()
-        .then(res =>{
-            setWebLink(res);
+        spSettingsPanelService.createTeamTabTest()
+        .then((res:any) =>{
+            console.log('res = ' + res);
         });
     };
 
-    const cancel = () =>{
-            props.onClosePanel();
-    };
     
     const cancel = () =>{
             props.onClosePanel();

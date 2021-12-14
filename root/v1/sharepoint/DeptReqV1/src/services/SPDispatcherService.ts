@@ -7,7 +7,7 @@ import { Logger, LogLevel} from "@pnp/logging";
 import {AssignedTicketData, MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
 import { IDropdownOption } from 'office-ui-fabric-react';
 import { IDispatcherList } from '../model/IDispatcher';
-  debugger;
+  // debugger;
   let spfxContext = null;
 
 export default class SPDispatcherService{
