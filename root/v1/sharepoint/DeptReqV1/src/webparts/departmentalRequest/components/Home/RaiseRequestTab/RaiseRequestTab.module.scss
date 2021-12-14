@@ -1,7 +1,7 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
 @import '~office-ui-fabric-react/dist/css/fabric.css';
 
-.departmentalRequest {
+.raiseRequestTab {
   .container {
     max-width: 700px;
     margin: 0px auto;
@@ -74,7 +74,8 @@
    @include ms-Grid-col;
    @include ms-lg12;
    @include ms-md12;
-   @include ms-sm12; 
+   @include ms-sm12;
+   
  }
 
  .lowerImagesIconClass{
@@ -122,6 +123,14 @@
     background-color: gray;
   }
 
+  .saveButtonStyle{
+    background-color: #ef8700;
+    color: white;
+    border: 1px solid #ddd;
+    top: 8px;
+    margin-bottom: 20px;
+  }
+
   .button {
     // Our button
     text-decoration: none;
@@ -161,3 +170,6 @@
 .raisebtn .ms-Button-textContainer{
   text-align: center!important;
 }
+
+
+
