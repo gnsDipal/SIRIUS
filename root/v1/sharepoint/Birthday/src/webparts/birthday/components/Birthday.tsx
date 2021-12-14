@@ -12,7 +12,7 @@ import BirthdayUser from './Birthday/BirthdayUser';
 import AnniversaryUser  from './Anniversary/AnniversaryUser';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { Icon } from '@fluentui/react/lib/Icon';
-import SettingsPanel from './SettingsPanel';
+import SettingsPanel from './SettingsPanelOld';
 import { TooltipHost } from '@fluentui/react/lib/Tooltip';
 import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 import { Stack } from '@fluentui/react/lib/Stack';

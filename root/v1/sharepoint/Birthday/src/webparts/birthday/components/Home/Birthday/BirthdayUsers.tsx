@@ -17,6 +17,7 @@ const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
 let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = undefined;
 let Images: string[] = [];
 
+debugger;
 const BirthdayUsers = (props) => {     
     const [showCallOut, setShowCallOut] = React.useState(false);
     const [showCallOutTeams, setshowCallOutTeams] = React.useState(false);
@@ -43,12 +44,12 @@ const BirthdayUsers = (props) => {
         await spBirthdayServiceData.getBirthdayImagesdata()
         .then((res:any)=> {
             Images = [];
-            for(let i=0; i<res.value.length; ++i){
-              Images.push(res.value[i].FileLeafRef);
+            for(let i=0; i<res.length; ++i){
+              Images.push(res[i].FileLeafRef);
             }
             setImages(Images);
         })       
-    }
+    };
 
     const onSendEmailClicked = (index, person) => event => {
       setShowCallOut(!showCallOut);
@@ -175,12 +176,12 @@ const BirthdayUsers = (props) => {
                   <div id={`callout${i}`} onClick={() => onSendEmailClicked(i, p)} className={styles.persona}>
                     <TooltipHost content="Send Email"><MyMailIcon /></TooltipHost>
                   </div>
-                  {(props.dropdown === "Azure" || props.dropdown === "Internal") && 
+                  {(props.dataSource === "Azure" || props.dataSource === "Internal") && 
                     (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
                       <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
                     </div>) 
                   }
-                  {(props.dropdown === "API" && props.IsTeamsIcon) &&
+                  {(props.dataSource === "API" && props.IsTeamsIcon) &&
                     (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
                       <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
                     </div>) 
