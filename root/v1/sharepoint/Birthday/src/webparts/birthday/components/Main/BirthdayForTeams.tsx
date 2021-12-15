@@ -389,7 +389,7 @@ const handleSettingsPanel = async() => {
         <div>
             <Switch>
                 <Route exact path="/birthdayusers" component={()=><BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} />}></Route>
-                <Route exact path="/anniversaryusers" component={()=><AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} />}></Route>
+                <Route exact path="/anniversaryusers" component={()=><AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} AUsers={AUsers} />}></Route>
                 <Route exact path="">
                     <div>
                         <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} />

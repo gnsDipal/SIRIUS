@@ -17,8 +17,8 @@ const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
 let spAnniversaryServiceData:SPBirthdayAnniversaryServiceData = undefined;
 let Images: string[] = [];
 
+debugger;
 const AnniversaryUsers = (props) => {
-    //const mainContext = React.useContext(UserContextBirth);
     const [showCallOut, setShowCallOut] = React.useState(false);
     const [showCallOutTeams, setshowCallOutTeams] = React.useState(false);
     const [calloutElement, setCalloutElement] = React.useState(null);
@@ -44,12 +44,12 @@ const AnniversaryUsers = (props) => {
       await spAnniversaryServiceData.getAnniversaryImagesdata()
         .then((res:any)=> {
             Images = [];
-            for(let i=0; i<res.value.length; ++i){
-              Images.push(res.value[i].FileLeafRef);
+            for(let i=0; i<res.length; ++i){
+              Images.push(res[i].FileLeafRef);
             }
             setImages(Images);
         })
-    }
+    };
 
     const onSendEmailClicked = (index, person) => {
       setShowCallOut(!showCallOut);
@@ -175,12 +175,12 @@ const AnniversaryUsers = (props) => {
                 <div id={`callout${i}`} onClick={() => onSendEmailClicked(i, p)} className={styles.persona}>
                   <TooltipHost content="Send Email"><MyMailIcon /></TooltipHost>
                 </div>                  
-                {(props.dropdown === "Azure" || props.dropdown === "Internal") && 
+                {(props.dataSource === "Azure" || props.dataSource === "Internal") && 
                   (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
                     <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
                   </div>) 
                 }
-                {(props.dropdown === "API" && props.IsTeamsIcon) &&
+                {(props.dataSource === "API" && props.IsTeamsIcon) &&
                   (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
                     <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
                   </div>) 
@@ -203,7 +203,7 @@ const AnniversaryUsers = (props) => {
                     Send Message to {person.firstName}
                   </h3>        
                   <div className={styles.mt10}>
-                    <TextField label="Personal Message" className={styles.emailTextarea}multiline rows={3} onChange={(e) => handleChange(e.currentTarget.value)}/>
+                    <TextField label="Personaal Message" className={styles.emailTextarea}multiline rows={3} onChange={(e) => handleChange(e.currentTarget.value)}/>
                   </div>             
                   <div className={styles.mt10}>
                     <label>Select Template:</label>

@@ -5,7 +5,7 @@ import { TextField } from '@fluentui/react/lib/TextField';
 import { PrimaryButton, DefaultButton } from '@fluentui/react/lib/Button';
 import { DialogFooter } from '@fluentui/react/lib/Dialog';
 import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
-import { ISettingsPanelProps } from './ISettingsPanelProps';
+import { ISettingsPanelProps } from './ISettingsPanelPropsOld';
 import { Toggle } from '@fluentui/react/lib/Toggle';
 import styles from './Birthday.module.scss';
 import { Link } from '@fluentui/react/lib/Link';
@@ -43,6 +43,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
     this.GetupdateDataSource();
   }
 
+  //create team tab for admin to do the initial level settings
   checkIfTeamExist = async() =>
   {
     await this.props.webPartContext.msGraphClientFactory

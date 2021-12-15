@@ -3,21 +3,14 @@ import { SPHttpClient, SPHttpClientResponse, HttpClient, MSGraphClient } from '@
 import { IBirthAnniResults, ICell } from '../Models/IBirthAnniResults';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
-//import { IItemAddResult } from "@pnp/sp/items";
-//import { IList } from "@pnp/sp/lists";
-//import { graph } from "@pnp/graph";
-//import {UserContext} from '../webparts/birthday/components/Main/Birthday';  
-//import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
 
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
 
+debugger;
 export default class SPBirthdayAnniversaryService{
     private webContext = null;
     private webUrl:string = null;
-    // private loggedInUserId?:string = null;
-    // private loggedInUserEmail?:string = "";
-    // private loggedInUserName?:string = "";
     private web = null;
 
     constructor(private context) {
@@ -37,9 +30,6 @@ export default class SPBirthdayAnniversaryService{
 
     private async onInit() {
         this.webUrl = this.webContext.pageContext.web.absoluteUrl;
-        // this.loggedInUserId = this.webContext.pageContext.legacyPageContext["userId"];
-        // this.loggedInUserEmail = this.webContext.pageContext.user.email;
-        // this.loggedInUserName = this.webContext.pageContext.user.displayName;
         this.web = Web(this.webUrl);
     }
 
@@ -129,131 +119,6 @@ export default class SPBirthdayAnniversaryService{
             result = res;
         })
         return result;
-    }
-    
-    public async loadTocheckIfTeamExist()
-    {
-        await this.context.msGraphClientFactory
-        .getClient()
-        .then((client: MSGraphClient): void => {        
-            client
-            .api(`me/joinedTeams`)
-            .version("beta")
-            .get().then((res:any)=>{
-                let teamExist: boolean = false;
-            for(let i:number =0; i<res.value.length; ++i){
-              if(res.value[i].displayName === "Birthday/Anniversary Admin")
-                teamExist = true;
-            }
-            if(teamExist === false)
-              this.createTeam();
-          });
-      });    
-    }
-
-    public async createTeam()
-    {
-        let body: any = {      
-            "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
-            "displayName": "Birthday/Anniversary Admin",
-            "description": "The team for those in architecture design."       
-        };
-        
-        await this.context.msGraphClientFactory
-        .getClient()
-        .then((client: MSGraphClient): void => {        
-            client
-            .api(`teams`)
-            .version("v1.0")
-            .post(body).then(()=>{
-                this.GetTeams();
-            });
-        });
-    }
-
-    public async GetTeams()
-    {
-        await this.context.msGraphClientFactory
-        .getClient()
-        .then((client: MSGraphClient): void => {        
-            client
-            .api(`me/joinedTeams`)
-            .version("beta")
-            .get().then((res)=>{
-                let teamId: string = "";
-                for(let i:number =0; i<res.value.length; ++i){
-                    if(res.value[i].displayName === "Birthday/Anniversary Admin")
-                        teamId = res.value[i].id;
-                }
-                if(teamId !== "")
-                    this.GetChannelId(teamId);
-            });
-        }); 
-    }
-
-    public async GetChannelId(teamId: string)
-    {
-        await this.context.msGraphClientFactory
-        .getClient()
-        .then((client: MSGraphClient): void => {        
-            client
-            .api(`teams/${teamId}/channels`)
-            .version("beta")
-            .get().then((res)=>{
-                let webURL: string = res.value[0].webUrl;
-                console.log("web url: " + webURL);
-                let channelId = res.value[0].id;           
-                this.createImagesTab(teamId,channelId);
-                this.createUsersTab(teamId,channelId);
-            });
-        });
-    }
-
-    public async createImagesTab(teamId: string, channelId: string)
-    {
-        let contentURL = `${this.webUrl}/BirthdayAnniversaryImages/Forms/Thumbnails.aspx`
-        let body: any = {      
-        "displayName": "BirthdayAnniversaryImages",
-        "teamsAppId": null,
-        "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
-        "configuration": {
-            "entityId": null,
-            "contentUrl": contentURL,
-            "removeUrl": null,
-            "websiteUrl": null
-            }       
-        };
-        this.createTab(teamId, channelId, body);
-    }
-
-    public async createUsersTab(teamId: string, channelId: string)
-    {
-        let contentURL = `${this.webUrl}/Lists/UserBirthAnniversaryDetails/AllItems.aspx`
-        let body: any = {      
-        "displayName": "UserBirthAnniversaryDetails",
-        "teamsAppId": null,
-        "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
-        "configuration": {
-            "entityId": null,
-            "contentUrl": contentURL,
-            "removeUrl": null,
-            "websiteUrl": null
-            }       
-        }; 
-        this.createTab(teamId, channelId, body);
-    }
-
-    createTab = async(teamId: string, channelId: string, body: string) =>
-    {
-        await this.context.msGraphClientFactory
-        .getClient()
-        .then((client: MSGraphClient): void => {        
-            client
-            .api(`teams/${teamId}/channels/${channelId}/tabs`)
-            .version("beta")
-            .post(body).then(()=>{            
-            });
-        });
     }
 
     public async insertUserDataToList(JsonData){
