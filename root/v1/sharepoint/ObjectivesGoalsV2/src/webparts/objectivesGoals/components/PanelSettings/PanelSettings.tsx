@@ -10,6 +10,7 @@ import { IPanelSettingsProps } from './IPanelSettingsProps';
 import { MSGraphClientFactory } from "@microsoft/sp-http";
 import { MSGraphClient } from '@microsoft/sp-http';
 import { Link } from '@fluentui/react/lib/Link';
+
 var tabLinkUrl:string='';
 
 export interface IPanelSettingsState {
@@ -196,7 +197,7 @@ export default class PanelSettings extends React.Component<IPanelSettingsProps,I
     
   }
 
-    cancel = () =>{
+cancel = () =>{
         this.props.onClosePanel();
         this.props.webPartContext.sdks.microsoftTeams.context.userTeamRole
     }
@@ -211,11 +212,17 @@ export default class PanelSettings extends React.Component<IPanelSettingsProps,I
             headerText="Objectives And Goals Web Part Settings"
             isOpen={true}
             onDismiss={() => this.cancel()}        
-            >  
-                           
-                {/* <Link href={this.state.webURL} underline>Go to admin settings
-                </Link> */}
-               
+            >             
+            <div>
+              <div>
+                <label style={{fontSize:"16px"}}>Admin Settings</label>
+              </div> 
+              <div>            
+                  <Link href={"https://www.google.com"} target="_blank" underline>
+                    Go to admin settings
+                  </Link>                        
+              </div>
+            </div>
             </Panel>
         )
     } 

@@ -85,12 +85,9 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
         {/* <div className={ styles.container }> */}
             <div className={styles.description}>                        
               <h1 style={{margin:'0', float:'left'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
-              <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
+              {/* <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
                 <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
-              </div > 
-              {(this.props.webPartContext.sdks.microsoftTeams) && 
-                <h1>Configuration Settings</h1> 
-               }             
+              </div >                          */}
               {(this.props.webPartContext.sdks.microsoftTeams) && 
                 <div  className={styles.teamsSettings}>
                 <TooltipHost content="Configure properties"><Icon iconName="Settings" onClick={() => { this.setIsSettingsPanelOpen() }} /></TooltipHost>
