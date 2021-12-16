@@ -10,6 +10,7 @@ import AnniversaryUsers from '../Home/Anniversary/AnniversaryUsers';
 import styles from '../Birthday.module.scss';
 import SPBirthdayAnniversaryServiceData from '../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
+import SettingsPanel from './SettingsPanel';
 
 initializeIcons();
 const MyBirthdayIcon = () => <Icon iconName="BirthdayCake" className = {styles.birthdayIcon} />;
@@ -23,7 +24,7 @@ const CategoryOptions: IDropdownOption[] = [
     { key: 'all', text: 'All' },
     { key: 'dept', text: 'Department' } 
 ];
-
+debugger;
 const BirthdayForTeams = ()=> {
     const mainContext = React.useContext(UserContext);
     const[ BUsers, setBUsers ] = React.useState<IBirthday[]>([]);
@@ -53,13 +54,13 @@ const BirthdayForTeams = ()=> {
     const loadSettingsForTeams = async() => {
         spBirthAnniServiceData.getTeamsSettingData()
         .then((res:any)=> {
-            if(res.value.length > 0){
-              let start: number = res.value[0].Settings.indexOf(":");        
-              let end: number = res.value[0].Settings.indexOf("}");
-              let teamsDataSource = res.value[0].Settings.substring(start + 2, end - 1);
+            if(res.length > 0){
+              let start: number = res[0].Settings.indexOf(":");        
+              let end: number = res[0].Settings.indexOf("}");
+              let teamsDataSource = res[0].Settings.substring(start + 2, end - 1);
               setDatasource(teamsDataSource);
-              setIsTeamsIcon(res.value[0].IsTeamsIcon);
-              setExternalAPI(res.value[0].ExternalAPI);
+              setIsTeamsIcon(res[0].IsTeamsIcon);
+              setExternalAPI(res[0].ExternalAPI);
             }
             else
               setDatasource("Azure");
@@ -361,14 +362,12 @@ const handleSettingsPanel = async() => {
       <div className={styles.birthday} >
       <div className={ styles.container }>
         <div className={styles.description}>                        
-          <h1 style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1> 
-          <div onClick={handleSettingsPanel} className={styles.teamsSettings}>
-              <TooltipHost content={strings.configureContent}><TeamsSettingsIcon /></TooltipHost>
-          </div >          
-          
-          {/* {isSettingsPanelOpen &&
-            <SettingsPanel webPartContext={this.props.webPartContext} onClosePanel={handleSettingsPanel} />
-          } */}
+          <h1 style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1>
+          <Link to="/settingsPanel"> 
+            <div onClick={handleSettingsPanel} className={styles.teamsSettings}>
+                <TooltipHost content={strings.configureContent}><TeamsSettingsIcon /></TooltipHost>
+            </div>
+          </Link>
         </div>          
         <br></br>
         <div className={styles.SetDisplay}>                                                             
@@ -390,6 +389,11 @@ const handleSettingsPanel = async() => {
             <Switch>
                 <Route exact path="/birthdayusers" component={()=><BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} />}></Route>
                 <Route exact path="/anniversaryusers" component={()=><AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} AUsers={AUsers} />}></Route>
+                {isSettingsPanelOpen &&
+                    <div>
+                        <Route exact path="/settingsPanel" component={() => <SettingsPanel webPartContext={mainContext.webPartContext} onClosePanel={() => handleSettingsPanel()} />}/>                        
+                    </div>                   
+                }
                 <Route exact path="">
                     <div>
                         <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} />

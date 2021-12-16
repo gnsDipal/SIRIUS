@@ -1,14 +1,17 @@
 import SPBirthdayAnniversaryService from './SPBirthdayAnniversaryService';
+import SPSettingsPanelService from './SPSettingsPanelService';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
 
 export default class SPBirthdayAnniversaryServiceData{
 
     private SPBirthdayAnniversaryService: SPBirthdayAnniversaryService = null;
+    private SPSettingsPanelService: SPSettingsPanelService = null;
 
     constructor(private context)
     {
-        this.SPBirthdayAnniversaryService = new SPBirthdayAnniversaryService(this.context);            
+        this.SPBirthdayAnniversaryService = new SPBirthdayAnniversaryService(this.context);  
+        this.SPSettingsPanelService = new SPSettingsPanelService(this.context);          
         this.onInit();
     }
 
@@ -52,6 +55,11 @@ export default class SPBirthdayAnniversaryServiceData{
     putUserDataToList(requestlistItem)
     {
         return this.SPBirthdayAnniversaryService.insertUserDataToList(requestlistItem)
+    }
+
+    createNewTeam():Promise<string>
+    {
+        return this.SPSettingsPanelService.newTeam();
     }
 } //End of Main Class
       

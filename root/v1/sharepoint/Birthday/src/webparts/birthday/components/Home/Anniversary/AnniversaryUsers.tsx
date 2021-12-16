@@ -8,6 +8,7 @@ import useMsGraphProvider from "../../../../../services/msGraphProvider";
 import InputEmoji from 'react-input-emoji';
 import Carousel from 'react-elastic-carousel';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
+import * as strings from 'BirthdayWebPartStrings';
 
 initializeIcons();
 
@@ -173,16 +174,16 @@ const AnniversaryUsers = (props) => {
               <Persona primaryText={p.name} secondaryText={finalhiredate} tertiaryText={p.email} imageUrl={p.photoUrl} imageAlt={p.name} size={PersonaSize.size72} />                
               <div>
                 <div id={`callout${i}`} onClick={() => onSendEmailClicked(i, p)} className={styles.persona}>
-                  <TooltipHost content="Send Email"><MyMailIcon /></TooltipHost>
+                  <TooltipHost content={strings.sendEmailTooltipContent}><MyMailIcon /></TooltipHost>
                 </div>                  
                 {(props.dataSource === "Azure" || props.dataSource === "Internal") && 
                   (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
-                    <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
+                    <TooltipHost content={strings.sendMessageTooltipContent}><MyTeamsIcon /></TooltipHost>
                   </div>) 
                 }
                 {(props.dataSource === "API" && props.IsTeamsIcon) &&
                   (<div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
-                    <TooltipHost content="Send message in Teams"><MyTeamsIcon /></TooltipHost>
+                    <TooltipHost content={strings.sendMessageTooltipContent}><MyTeamsIcon /></TooltipHost>
                   </div>) 
                 }
               </div>    
