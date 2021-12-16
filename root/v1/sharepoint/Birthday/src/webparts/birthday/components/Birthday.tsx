@@ -866,7 +866,7 @@ export default class Birthday extends React.Component<IBirthdayProps, IBirthdayS
             }  */}
             <div onClick={() => window.open('https://www.google.com', '_blank')} className={styles.helpSettings}>
                 <TooltipHost content="User Help"><Help /></TooltipHost>
-              </div >
+            </div >
             <div onClick={() => { this.setIsSettingsPanelOpen(); }} className={styles.teamsSettings}>
                 <TooltipHost content="Configure properties"><TeamsSettingsIcon /></TooltipHost>
               </div >           
