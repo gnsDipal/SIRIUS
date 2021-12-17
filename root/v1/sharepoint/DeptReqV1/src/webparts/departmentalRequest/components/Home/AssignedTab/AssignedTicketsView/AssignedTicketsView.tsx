@@ -59,6 +59,7 @@ const AssignedTicketsView = () => {
         sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
       }
     );
+    const [ticketProcessNotification, setTicketProcessNotification] = useState<number>(0);
     
 
     useEffect(() => { 
@@ -161,8 +162,8 @@ async function onUserSelect(userName,selectedName, ticketNumber){
 async function onSubmitDropDownHandle(commentData:string,idRequest:number,assignedToUser,ticketNumberCheck,department){
         if(deleteSelectedTicket === ticketNumberCheck){
           if(assignedToUser.text != ''){
+            setTicketProcessNotification(1)
             // SetEmailId(AssignedUserEmailId.Email);
-            setAssignedNotification(1);
             spAssignedServiceData.addReAssignedToData(assignedToUser,idRequest,commentData,ticketNumberCheck).then(r=>{
               var items = assignedListData.filter(item=> item.dataId !==idRequest);
               _sendReAssignedTeamsMessage(emailId, ticketNumberCheck, department);
@@ -176,11 +177,15 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
               setStatusCompletedCheck(0);
               setStatusOptions([]);
               setCommentData('');
-              setAssignedNotification(0);
-
+              // setAssignedNotification(0);
+              setTicketProcessNotification(0);
+              // setAssignedNotification(1);
+              setTimeout(()=>{
+                setAssignedNotification(1)
+              },6000);
             })
           }
-          if(assignedToUser.text === '' && (this.state.statusCompletedCheck === 2) ){
+          if(assignedToUser.text === '' && (statusCompletedCheck === 2) ){
             _sendCompletedStatusTeamsMessage(emailId,ticketNumberCheck);
             setAssignedNotification(1);
            spAssignedServiceData.getCompletedWithStatusUpdate(idRequest,commentData).then(r =>{
@@ -196,13 +201,15 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             setStatusCompletedCheck(0);
             setStatusOptions([]);
             setCommentData('');
-            setAssignedNotification(0);
+            setAssignedNotification(0); //Complete it properly
 
            })
           }
       } 
   }
   // &path=${loc.pathname}
+  //  https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f?context=%7B%22subEntityId%22:&path=main,%22channelId%22:19:2cef2dcf-746b-4131-84ad-c31eb521f4d6_5074cd19-ca21-46a0-b3e2-6d882d16c376@unq.gbl.spaces%7D
+
   const _sendReAssignedTeamsMessage = async(ToEmailId: string, ticketNumber:string,department:string)=>{
 
     if(mainContext.sdks.microsoftTeams) 
@@ -212,6 +219,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
     const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
+
 
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
@@ -235,6 +243,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     .then(
       (result: any[]): void => {
       console.log(result);
+      setAssignedNotification(1);
     })
     .catch(error => {
       console.log(error);
@@ -270,6 +279,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     .then(
       (result: any[]): void => {
       console.log(result);
+      
     })
     .catch(error => {
       console.log(error);
@@ -431,7 +441,11 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
         </div>
         <ToastContainer/>
       {
-        (assignedNotification === 1) &&
+        (ticketProcessNotification === 1) && (assignedNotification === 0) &&
+        Logger.writeJSON("Please wait, ticket is being assigned",LogLevel.Info)
+      }
+      {
+        (assignedNotification === 1) && (ticketProcessNotification === 0) &&
         Logger.writeJSON("Ticket assigned",LogLevel.Info)
       } 
       </div>

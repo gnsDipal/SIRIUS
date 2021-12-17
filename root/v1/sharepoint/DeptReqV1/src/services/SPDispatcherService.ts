@@ -1,10 +1,8 @@
-import * as React from 'react'
-import { WebPartContext } from "@microsoft/sp-webpart-base";
+import * as React from 'react';
 import {Web} from '@pnp/sp/presets/all';
 import { IList } from "@pnp/sp/lists";
 import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import { Logger, LogLevel} from "@pnp/logging";
-import {AssignedTicketData, MyRequestedEachPlateData} from '../model/MyRequestedEachPlateData';
 import { IDropdownOption } from 'office-ui-fabric-react';
 import { IDispatcherList } from '../model/IDispatcher';
   // debugger;
@@ -35,6 +33,8 @@ export default class SPDispatcherService{
 public async getDepartmentsDetails():Promise<{}>{  
  let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
  let loggedInUserDispGrps = await this.web.currentUser.groups(); 
+
+ let testq = await this.web.siteUsers.IsSiteAdmin ;
 //    await this.getLoggedInUserIdSPGroups(result);
  let SPGroupList = await this.getLoggedInUserIdSPGroupsSuccess(loggedInUserDispGrps,result);
   let dispatcherData = await this.loadAssignedTask(SPGroupList);

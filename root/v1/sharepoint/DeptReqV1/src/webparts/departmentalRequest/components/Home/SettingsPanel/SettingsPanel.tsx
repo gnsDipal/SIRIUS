@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
+import * as strings from 'DepartmentalRequestWebPartStrings';
 import { CompoundButton } from '@fluentui/react/lib/Button';
 import { Panel } from '@fluentui/react/lib/Panel';
 import { Link } from '@fluentui/react/lib/Link';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import { UserContext } from '../../Main/Main';
-debugger;
+import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
+
 let spSettingsPanelService:SPDepartmentalServiceData = null;
 const SettingsPanel = (props) => {
     const mainContext = useContext(UserContext);
@@ -19,6 +21,8 @@ const SettingsPanel = (props) => {
         spSettingsPanelService.createTeamTabTest()
         .then((res:any) =>{
             console.log('res = ' + res);
+            alert("webLink = " + res);
+            setWebLink(res);
         });
     };
 
@@ -31,12 +35,17 @@ const SettingsPanel = (props) => {
         <Panel
             headerText="Departmental Request Web Part Settings"
             isOpen={true}
-            onDismiss={() => cancel()}        
-            >     
-                <Link href="https://gns11.sharepoint.com/sites/SiriusTeams/Lists/Dept/AllItems.aspx" target="_blank" underline> 
-                  Go to admin settings
-                </Link>                
-            </Panel>
+            onDismiss={() => cancel()}>  
+                {
+                    (webLink === '') &&
+                    <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>
+                }
+                {   (webLink !== '') &&
+                    <Link href={webLink} target="_blank" underline> 
+                        Link to admin settings
+                    </Link> 
+                }               
+        </Panel>
     )
 }
 

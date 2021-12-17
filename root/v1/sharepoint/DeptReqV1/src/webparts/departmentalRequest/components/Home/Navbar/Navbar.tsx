@@ -9,21 +9,27 @@ import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalSer
 import { UserContext } from '../../Main/Main';
 import { _UserCustomAction } from '@pnp/sp/user-custom-actions/types';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
-// debugger;
+debugger;
 let spPermissionDataService:SPDepartmentalServiceData = null;
 const Navbar = () => {
     const mainContext = useContext(UserContext);
     //state variable
-    const [dispatcherPermit, setDispatcherPermit] = useState(false);// check dispatcher permission
-    const [assignedPermit, setAssignedPermit] = useState(false);// check Assigned Issues permission
-    const [managerPermit, setManagerPermit] = useState(false);// check manager permission
-    const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState(false)
+    const [dispatcherPermit, setDispatcherPermit] = useState<boolean>(false);// check dispatcher permission
+    const [assignedPermit, setAssignedPermit] = useState<boolean>(false);// check Assigned Issues permission
+    const [managerPermit, setManagerPermit] = useState<boolean>(false);// check manager permission
+    const [isSettingsPanelOpen, setIsSettingsPanelOpen] = useState<boolean>(false);
+    const [isAdminCheck, setIsAdminCheck] = useState<boolean>(false); //Admin check
     useEffect(() => { 
       init();              
     },[]);
     //initialization
     const init = async()=>{
       spPermissionDataService = new SPDepartmentalServiceData(mainContext);
+      // await spPermissionDataService.getAdminLoginCheck()
+      // .then(r=>{
+      //   setIsAdminCheck(r);
+      // });
+      setIsAdminCheck(mainContext.pageContext.legacyPageContext.isSiteAdmin);
       await spPermissionDataService.getDispatcherPermissionHandle()
       .then(r=>{
         setDispatcherPermit(r);
@@ -48,13 +54,13 @@ const Navbar = () => {
               <div className={styles.msGridColSize10}>
                 <h1>{strings.WelcomeLabel}</h1>
               </div>
-              {/* { (mainContext.sdks.microsoftTeams) && */}
+              { (mainContext.sdks.microsoftTeams) && (isAdminCheck) &&
               <div className={styles.msGridColSize2}>
                 <div className={styles.gearIcon}>
                     <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> panelOpenHandle()} ></Icon>                  
                 </div>
               </div>
-              {/* }  */}
+              }
             </div>
             <div>
               {

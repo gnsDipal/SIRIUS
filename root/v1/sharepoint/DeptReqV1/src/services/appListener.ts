@@ -43,6 +43,11 @@ import {
             toastId: "success",
             });
         }
+        else if(entry.level == LogLevel.Info && (entry.message === "\"Please wait, ticket is being assigned\"") ){
+          toast.success("Please wait, ticket is being assigned", {
+            toastId: "success",
+            });
+        }
         else{
           console.log('Message from FunctionListener%c' + entry.message, "color:blue;");
         }

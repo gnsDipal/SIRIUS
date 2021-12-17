@@ -12,9 +12,7 @@ import SPMyRequestService from './SPMyRequestService';
 import SPManagerService from './SPManagerService';
 import SPPermissionService from './SPPermissionService';
 import SPSettingsPanelService from './SPSettingsPanelService';
-debugger;
-  let uniqueDeptList = [];
-  
+ 
   export default class SPDepartmentalServiceData{ 
       private departmentalService: SPDepartmentalService = null;
       private dispatcherService: SPDispatcherService = null;
@@ -107,6 +105,9 @@ debugger;
       }
 
       /* Permissions check */
+      getAdminLoginCheck():Promise<boolean>{
+        return this.permissionService.loadAdminUserCheck();
+      }
       getDispatcherPermissionHandle():Promise<boolean>{
         return this.permissionService.loadDispatcherPermissionHandle();
       }
@@ -121,8 +122,8 @@ debugger;
       //   return this.settingsPanelService.newTeam();
       // }
 
-      public createTeamTabTest(){
-        return this.settingsPanelService.checkTeamCreatedBefore();
+      public createTeamTabTest():Promise<string>{
+        return this.settingsPanelService.newTeam();
       }
     } //End of Main Class  
   

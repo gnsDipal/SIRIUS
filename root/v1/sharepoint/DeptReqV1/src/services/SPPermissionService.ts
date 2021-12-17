@@ -3,7 +3,7 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web } from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
-
+debugger;
 export default class SPPermissionService{ 
     private webContext = null;
     private webUrl:string = null;
@@ -31,6 +31,16 @@ export default class SPPermissionService{
           this.loggedInUserEmail = this.webContext.pageContext.user.email;
           this.loggedInUserName = this.webContext.pageContext.user.displayName;
           this.web = Web(this.webUrl);
+        }
+        public async loadAdminUserCheck():Promise<boolean>{
+            try{          
+            // let result = await this.web.currentUser.IsSiteAdmin();
+            let adminUser = await this.webContext.pageContext.legacyPageContext.isSiteAdmin;
+            console.log('result = ' + adminUser);
+            return await Promise.resolve(adminUser);
+            }catch(error){
+                return await Promise.reject(error);
+            }
         }
         public async loadDispatcherPermissionHandle():Promise<boolean>{
             let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();

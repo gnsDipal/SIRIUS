@@ -4,7 +4,7 @@ import { sp, Web } from '@pnp/sp/presets/all';
 import { Logger, LogLevel} from "@pnp/logging";
 import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import { MSGraphClient } from '@microsoft/sp-http';
-debugger;
+
 export default class SPSettingsPanelService{
     private webContext = null;
     private webUrl:string = null;
@@ -25,23 +25,45 @@ export default class SPSettingsPanelService{
         this.web = Web(this.webUrl);
       }
 
-      // public async newTeam():Promise<string>{
-      //     await this.checkTeamCreatedBefore();
-      //     return await Promise.resolve('');
-      // }
+      public async newTeam():Promise<string>{
+          let checkTeamCreated:any = await this.checkTeamCreatedBefore();
+          // setTimeout(async()=>{
+            if(checkTeamCreated === false){
+              let creatingTeamOnSuccess = await this.createTeam();    
+              let teamsId = await this.getTeams();
+              let webLink = await this.getChannelId(teamsId);
+               return await Promise.resolve(webLink);
+             }
+             if(checkTeamCreated === true){
+               let teamsId = await this.getTeams();
+               let webLink = await this.getwebLink(teamsId);
+               return await Promise.resolve(webLink);
+             }
+          // },5000);
+          // return await Promise.resolve('');
+      }
 
-public async checkTeamCreatedBefore(){
+public async checkTeamCreatedBefore():Promise<Boolean>{
     let teamPresentCheck:Boolean = false;
     await this.webContext.msGraphClientFactory
     .getClient()
-    .then((client: MSGraphClient): void => {        
-    client
+    .then(async(client: MSGraphClient) => {        
+     await client
       .api(`me/joinedTeams`)
       .version("beta")
-      .get().then((res)=>{
-         return res;
-       });
-     });  
+      .get().then(async(res)=>{
+        for(let i:number =0; i<res.value.length; ++i)
+        {
+          if(res.value[i].displayName === "DeptReqAdmin")
+          {
+            teamPresentCheck = true;
+          }
+        }
+      //  return (teamPresentCheck);
+    });
+  });  
+  return await Promise.resolve(teamPresentCheck);
+    
  }
 
  public async checkTeamHandle(){
@@ -55,7 +77,7 @@ public async checkTeamCreatedBefore(){
         let teamPresentCheck:boolean = false;
         for(let i:number =0; i<res.value.length; ++i)
         {
-          if(res.value[i].displayName === "Test1DeptReqAdmin")
+          if(res.value[i].displayName === "DeptReqAdmin")
           {
             teamPresentCheck = true;
           }
@@ -97,14 +119,14 @@ public async checkTeamCreatedBefore(){
  try{
  let body: any = {      
      "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
-     "displayName": "Test1DeptReqAdmin",
+     "displayName": "DeptReqAdmin",
      "description": "The team for those in architecture design."       
  };
  
 await this.webContext.msGraphClientFactory
    .getClient()
-   .then((client: MSGraphClient): void => {        
-     client
+   .then(async(client: MSGraphClient) => {        
+     await client
        .api(`teams`)
        .version("v1.0")
        .post(body).then(()=>{
@@ -122,14 +144,14 @@ public async getTeams():Promise<string>{
    try{
    await this.webContext.msGraphClientFactory
       .getClient()
-      .then((client: MSGraphClient): void => {        
-        client
+      .then(async(client: MSGraphClient) => {        
+       await client
           .api(`me/joinedTeams`)
-          .version("beta")
+          .version("beta") 
           .get().then((res)=>{
             for(let i:number =0; i<res.value.length; ++i)
             {
-              if(res.value[i].displayName === "Test1DeptReqAdmin")
+              if(res.value[i].displayName === "DeptReqAdmin")
               {
                 teamId = res.value[i].id;
               }
@@ -141,33 +163,48 @@ public async getTeams():Promise<string>{
     }); 
      return await Promise.resolve(teamId);
      }catch(error){
-     return await Promise.reject(teamId);
+     return await Promise.reject(error);
      }
 }
 public async getChannelId(teamId):Promise<string>{
     let webURL:string='';
    await this.webContext.msGraphClientFactory
       .getClient()
-      .then((client: MSGraphClient): void => {        
-        client
+      .then(async(client: MSGraphClient) => {        
+        await client
           .api(`teams/${teamId}/channels`)
           .version("beta")
-          .get().then((res)=>{
-            let channelId = res.value[0].id;
-            webURL = res.value[0].webUrl;
+          .get().then(async(res)=>{
+            let channelId = await res.value[0].id;
+            webURL = await res.value[0].webUrl;
             // this.setState({
             //     webURL:res.value[0].webUrl
             // })
             // tabLinkUrl = res.value[0].webUrl;
-            this.createTab1(teamId,channelId);
-            this.createTab2(teamId,channelId);
-            this.createTab3(teamId,channelId);
+            await this.createTab1(teamId,channelId);
+            await this.createTab2(teamId,channelId);
+            await this.createTab3(teamId,channelId);
           });
       });
       return Promise.resolve(webURL)
-  }
+}
+
+public async getwebLink(teamId):Promise<string>{
+  let webURL:string='';
+ await this.webContext.msGraphClientFactory
+    .getClient()
+    .then(async(client: MSGraphClient) => {        
+      await client
+        .api(`teams/${teamId}/channels`)
+        .version("beta")
+        .get().then(async(res)=>{
+          webURL = await res.value[0].webUrl;
+        });
+    });
+    return await Promise.resolve(webURL)
+}
   public async createTab1 (teamId,channelId){
-    let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/_layouts/15/groups.aspx`
+    let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/_layouts/15/groups.aspx`;
     let body: any = {      
       "displayName": "PeopleAndGroup",
       "teamsAppId": null,
@@ -183,7 +220,7 @@ public async getChannelId(teamId):Promise<string>{
   } 
 
   public async createTab2(teamId,channelId){
-    let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/Lists/Dept/AllItems.aspx`
+    let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/Lists/Dept/AllItems.aspx`;
     let body: any = {      
       "displayName": "Dept",
       "teamsAppId": null,
@@ -200,7 +237,7 @@ public async getChannelId(teamId):Promise<string>{
 
 
   public async createTab3(teamId,channelId){
-    let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/Lists/DeptCateg/AllItems.aspx`
+    let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/Lists/DeptCateg/AllItems.aspx`;
     let body: any = {      
       "displayName": "DeptCateg",
       "teamsAppId": null,
@@ -218,8 +255,8 @@ public async getChannelId(teamId):Promise<string>{
   public async createTabGeneralPost(teamId,channelId,body){
     await this.webContext.msGraphClientFactory
     .getClient()
-      .then((client: MSGraphClient): void => {        
-        client
+      .then(async(client: MSGraphClient) => {        
+        await client
           .api(`teams/${teamId}/channels/${channelId}/tabs`)
           .version("beta")
           .post(body).then(()=>{

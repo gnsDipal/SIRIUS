@@ -13,7 +13,7 @@ import AssignedClosedTicketsView from '../Home/AssignedTab/AssignedClosedTickets
 import DispatcherTicketsView from '../Home/DispatcherTab/DispatcherTicketsView/DispatcherTicketsView';
 import MyRequestTicketsView from '../Home/MyRequestTab/MyRequestTicketsView/MyRequestTicketsView';
 import ManagerTicketsView from '../Home/ManagerTab/ManagerTicketsView/ManagerTicketsView';
-debugger;
+
 export const UserContext = React.createContext(null);
 const Main = (props:any) => {
     return (
@@ -35,6 +35,7 @@ const Main = (props:any) => {
                   <div>
                     <Navbar/>
                     <Home/>
+                    {/* <AssignedTab /> */}
                   </div>
                 </Route>
               </Switch>
