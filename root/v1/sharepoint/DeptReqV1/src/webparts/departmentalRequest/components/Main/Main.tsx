@@ -19,12 +19,16 @@ export const UserContext = React.createContext(null);
 const Main = (props:any) => {
   const [teamContext,setTeamContext] = useState(null);
   const [isTeamAccess,setTeamAccess] = useState(false);
+  const [teamPath,setTeamPath] = useState("");
   //Initialize Microsoft teams sdk
   microsoftTeams.initialize(() => {
     microsoftTeams.getContext((c) => {
       setTeamContext(c);
       if(c != null) {
         setTeamAccess(true);
+        if(c.teamSitePath === 'assigned') {
+          setTeamPath('/assinged');
+        }
       }
     });
   }); 
@@ -58,13 +62,20 @@ const Main = (props:any) => {
               } 
               {isTeamAccess &&
                 <Switch>
-                  <Route exact path="/assigned" component={()=><AssignedTab />}/>
+                  <Route exact path="">
+                    <div>
+                      <Navbar/>
+                      <Home/>
+                    </div>
+                  </Route>
+                  <Route exact path={teamPath} component={()=><AssignedTab />}/>
                 </Switch>
               }
               </UserContext.Provider>
             </HashRouter>
             <div>Context: {JSON.stringify(teamContext)}</div>
             <div>Path:{path}</div>
+            <div>TeamPath:{teamPath}</div>
         </div>
     );
 };
