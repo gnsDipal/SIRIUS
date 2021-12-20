@@ -14,8 +14,14 @@ import DispatcherTicketsView from '../Home/DispatcherTab/DispatcherTicketsView/D
 import MyRequestTicketsView from '../Home/MyRequestTab/MyRequestTicketsView/MyRequestTicketsView';
 import ManagerTicketsView from '../Home/ManagerTab/ManagerTicketsView/ManagerTicketsView';
 
+
 export const UserContext = React.createContext(null);
 const Main = (props:any) => {
+  const [teamContext, setTeamContext] = React.useState(null);
+  const [teamPath, setTeamPath] = React.useState('');
+  React.useEffect(() => {
+    
+  }, [])
     return (
         <div>
             <HashRouter>
