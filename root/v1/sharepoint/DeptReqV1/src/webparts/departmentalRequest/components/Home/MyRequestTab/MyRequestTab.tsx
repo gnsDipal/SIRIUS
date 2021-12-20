@@ -53,7 +53,7 @@ const MyRequestTab = () => {
                 <h4>{strings.DepartmentBasedCardLabel}</h4> &&
                 myRequestedPlate.map((res,index)=>{
                   return(
-                    <div className="ms-Grid-col ms-lg4 ms-sm4">
+                    <div className="ms-Grid-col ms-lg4 ms-sm12">
                 <div className={`${styles.smallBox} ${styles.setMainBox}`} >
                 <div className={styles.SetMainTitle}>
                     <h4>{res.DepartmentName}</h4>

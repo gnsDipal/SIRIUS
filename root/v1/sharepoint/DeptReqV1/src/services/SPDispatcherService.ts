@@ -5,7 +5,7 @@ import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import { Logger, LogLevel} from "@pnp/logging";
 import { IDropdownOption } from 'office-ui-fabric-react';
 import { IDispatcherList } from '../model/IDispatcher';
-  // debugger;
+  debugger;
   let spfxContext = null;
 
 export default class SPDispatcherService{

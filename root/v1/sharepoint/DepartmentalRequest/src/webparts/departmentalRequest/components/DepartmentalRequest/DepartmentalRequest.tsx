@@ -158,6 +158,7 @@ export default class DepartmentalRequest extends React.Component<IDepartmentalRe
   }
 
   componentDidMount(){
+    // let isAdminTest = this.props.webPartContext.sdks.microsoftTeams.teamsJs
     this.loadDepartmentOptions();
     this.fetchMsGraphProvider();
     loggedInUserEmail = this.props.loggedInUserEmail;

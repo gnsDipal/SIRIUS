@@ -9,7 +9,7 @@ import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalSer
 import { UserContext } from '../../Main/Main';
 import { _UserCustomAction } from '@pnp/sp/user-custom-actions/types';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
-debugger;
+// debugger;
 let spPermissionDataService:SPDepartmentalServiceData = null;
 const Navbar = () => {
     const mainContext = useContext(UserContext);
@@ -29,6 +29,8 @@ const Navbar = () => {
       // .then(r=>{
       //   setIsAdminCheck(r);
       // });
+      // let adminInTeams =  mainContext.sdks.microsoftTeams.legacyPageContext.isSiteAdmin;
+      // alert('adminInTeams = ' + adminInTeams);
       setIsAdminCheck(mainContext.pageContext.legacyPageContext.isSiteAdmin);
       await spPermissionDataService.getDispatcherPermissionHandle()
       .then(r=>{

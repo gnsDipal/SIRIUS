@@ -81,7 +81,8 @@
         @include ms-lg6;
         @include ms-md6;
         @include ms-sm12;
-        text-align: center
+        text-align: center;
+        margin-bottom: 20px;
       }
      
       .gridCompleteCallOut{
@@ -102,6 +103,10 @@
       .gearIcon{
         margin: 0;
         float: right;
+      }
+      .iconStyle{
+        font-size: 25px;
+        cursor: pointer;
       }
       
       .myIssuesButton{

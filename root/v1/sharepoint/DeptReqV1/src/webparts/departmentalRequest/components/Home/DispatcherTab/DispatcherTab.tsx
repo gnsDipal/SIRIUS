@@ -11,7 +11,8 @@ import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalSer
 import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 let spDispatcherServiceData: SPDepartmentalServiceData = null;
-const OpenRequests:string = "Open Requests";    
+const OpenRequests:string = "Open Requests";   
+debugger; 
 const DispatcherTab = () => {
     const mainContext = useContext(UserContext);
     const {open,dept} = useParams();
@@ -63,7 +64,7 @@ const DispatcherTab = () => {
                   <h4>{strings.DepartmentBasedCardLabel}</h4> &&
                   dispatcherCountData.map((res,index)=>{
                     return(
-                  <div className="ms-Grid-col ms-lg4 ms-sm4">
+                  <div className="ms-Grid-col ms-lg4 ms-sm12">
                   <div className={`${styles.smallBox} ${styles.setMainBox}`} >
                   <div className={styles.SetMainTitle}>
                       <h4>{res.deptName}</h4>

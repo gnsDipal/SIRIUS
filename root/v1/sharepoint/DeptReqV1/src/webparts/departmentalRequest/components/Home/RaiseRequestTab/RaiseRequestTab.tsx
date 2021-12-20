@@ -27,7 +27,7 @@ import { ToastContainer, toast } from 'react-toastify';
 
 
 
-// debugger;
+debugger;
 const stackTokens = { childrenGap: 50  };
 const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
 let spRaiseRequestServiceData:SPDepartmentalServiceData = null;
@@ -71,7 +71,6 @@ const RaiseRequestTab = (props) => {
 }
 
 // UI event calls dynamic
-
 const onClickDeptHandle = async ()=>{
     setDepartmentOptions(staticDeptOptions);
 }
@@ -117,7 +116,7 @@ const onFileAddHandle=async(fileAdd)=>{
 }
 
 const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,fileAddition)=>{
-  if(selectedDept !== null){
+  if(selectedDept !== ''){
    spRaiseRequestServiceData.getEmployeeRequestAdded(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo)
    .then((r)=>{
     setToasterNotificationFlag(true);
@@ -125,13 +124,12 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
    })
   }
 }
-
     return (
         <div className={styles.raiseRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
               <div className="ms-Grid-row">
                <div className="ms-Grid-col ms-lg2 ms-md2 ms-sm2">
-                    <Link to="/nav"><Icon iconName='Home' style={{fontSize:'25px', cursor:'pointer'}}></Icon></Link>
+                    <Link to="/nav"><Icon iconName={strings.HomeLabel} className={styles.iconStyle}></Icon></Link>
                </div>
               </div>  
               {  
@@ -139,13 +137,13 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                  <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                   <Stack tokens={stackTokens}>
                          <Dropdown
-                           placeholder="Select Department"
-                           label="Select the Department"
+                           placeholder={strings.SelectDepartmentLabel}
+                           label={strings.SelectTheDepartmentLabel}
                            options={departmentOptions.length !== 0 ?departmentOptions:noDataDeptOptions}
                            defaultValue={selectedDept}
                            onChange={(e,selectedDept) => onChangeDeptHandle(selectedDept)}
                            key={randomIndex}
-                           styles={{ dropdown: { width:'100%',height:'34px' } }}
+                          //  styles={{ dropdown: { width:'100%',height:'34px' } }}
                            className={styles.dropdownStyle}
                          />
                     </Stack>
@@ -166,7 +164,7 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                            defaultSelectedKey={" "}
                            onChange={(e,selectedDeptCategory)=>onChangeDeptCategoryHandle(selectedDeptCategory)}
                            key={randomIndex}
-                           styles={{ dropdown: { width: '100%' } }}
+                          //  styles={{ dropdown: { width: '100%' } }}
                          />
                      </Stack>
                 </div>
@@ -176,6 +174,7 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                  <TextField label="Type your issue" multiline rows={3}
                             value={requestDescription}
                             onChange={(requestDescription)=>onChangeRequestDescriptionHandle(requestDescription)}
+                            key={randomIndex}
                          />
               </div>
              </div>
@@ -202,8 +201,8 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
             <Switch>
                 <Route exact path="/nav">
                     <div>
-                        <Navbar {...props}/>
-                        <Home {...props}/>
+                        <Navbar/>
+                        <Home/>
                     </div>
                 </Route>
             </Switch>

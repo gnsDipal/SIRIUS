@@ -13,7 +13,7 @@ import {AssignedTicketData, MyAssignedEachPlateData} from '../model/MyRequestedE
 import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
 import { IOptionWithKey } from '../model/RaiseRequest';
 import { IDepartmentList } from '../model/RaiseRequest';
-  // debugger;
+  debugger;
   let spfxContext = null;
   let uniqueDeptList = [],myRequestedEachPlateData = [];
   
@@ -50,21 +50,11 @@ import { IDepartmentList } from '../model/RaiseRequest';
     public async loadDepartmentOptions():Promise<IOptionWithKey[]>{
       let departmentOptions:IOptionWithKey[] = [];
       const web = Web(this.webUrl);
-      let result = await web.lists.getByTitle('EmpReq').items.select("*","DepartmentManager/Title").expand("DepartmentManager").orderBy("ID",false).get();
-      console.log("result = " + result);
-      let tempArr = result.reduce((acc, current) => {
-        const x = acc.find(item => item.Department === current.Department);
-        if (!x) {
-          return acc.concat([current]);
-        } 
-        else {
-          return acc;
-        }
-      }, []);
-      departmentOptions = tempArr.map((r,index)=>{
+      let result = await this.web.lists.getByTitle('Dept').items.select("*").orderBy("Title",true).get();
+      departmentOptions = result.map((r,index)=>{
         return{
           key:index,
-          text:r.Department
+          text:r.Title
         }
       });
        return await Promise.resolve(departmentOptions);    
@@ -72,23 +62,13 @@ import { IDepartmentList } from '../model/RaiseRequest';
 
      public async loadDepartmentDetailForPost():Promise<IDepartmentList[]>{
       let departmentFAQ_deptList:IDepartmentList[] = Array();
-      const web = Web(this.webUrl);
-      let result = await web.lists.getByTitle('EmpReq').items.select("*","DepartmentManager/Title").expand("DepartmentManager").orderBy("ID",false).get();
-      console.log("result = " + result);
-      let tempArr = result.reduce((acc, current) => {
-        const x = acc.find(item => item.Department === current.Department);
-        if (!x) {
-          return acc.concat([current]);
-        } else {
-          return acc;
-        }
-      }, []);
-      departmentFAQ_deptList = tempArr.map((r,index)=>{
+      let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",true).get();
+      departmentFAQ_deptList = result.map((r,index)=>{
         return{
-          deptName:r.Department,
-          deptGroup:r.DepartmentGroup,
-          deptManager:r.DepartmentManagerId,
-          dispatcherName:r.AssignedTo
+          deptName:r.Title,
+          deptGroup:r.DepartmentGroup.Title,
+          deptManager:r.ManagerId,
+          dispatcherName:r.GroupName.Title
         }
       });
       return await Promise.resolve(departmentFAQ_deptList);    

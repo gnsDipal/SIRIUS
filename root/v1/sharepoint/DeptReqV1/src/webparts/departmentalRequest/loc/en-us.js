@@ -46,6 +46,9 @@ define([], function() {
     "AllLabel":"All",
     "ViewAllLabel":"ViewAll",
     "SaveLabel":"Save",
-    "NoDataPresentLabel":"No data present"
+    "NoDataPresentLabel":"No data present",
+    "RaisedANewRequestLabel":"Raised a new request",
+    "SelectDepartmentLabel":"Select Department",
+    "SelectTheDepartmentLabel":"Select the Department"
   }
 });

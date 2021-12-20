@@ -18,7 +18,7 @@ import "@pnp/sp/webs";
 import "@pnp/sp/lists";
 import "@pnp/sp/fields";
 import "@pnp/sp/views";
-import { ChoiceFieldFormatType, DateTimeFieldFormatType, UrlFieldFormatType, FieldUserSelectionMode, FieldTypes  } from '@pnp/sp/fields/types';
+import { ChoiceFieldFormatType, DateTimeFieldFormatType, UrlFieldFormatType, FieldUserSelectionMode, FieldTypes , IFieldCreationProperties } from '@pnp/sp/fields/types';
 import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLevel} from "@pnp/logging";
 import AppListener from '../../services/appListener';
 import { ToastContainer, toast } from 'react-toastify';
@@ -86,6 +86,10 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
       listEnsureResult.list.fields.inBatch(batch).addUser("GroupName", FieldUserSelectionMode.PeopleAndGroups);
       listEnsureResult.list.fields.inBatch(batch).addUser("DepartmentGroup", FieldUserSelectionMode.PeopleAndGroups);
       await batch.execute();
+      await sp.web.lists.getByTitle("Dept").defaultView.fields.add("Manager");
+      await sp.web.lists.getByTitle("Dept").defaultView.fields.add("GroupName");
+      await sp.web.lists.getByTitle("Dept").defaultView.fields.add("DepartmentGroup");
+
       
       // await sp.web.lists.getByTitle("Dept").defaultView.fields()
       // const xml = await sp.web.lists.getByTitle("Dept").defaultView.fields.getSchemaXml();
@@ -113,8 +117,8 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
       const batch = sp.web.createBatch(); 
       listEnsureResult.list.fields.inBatch(batch).addLookup("Department",departmentListId, "Title");
       await batch.execute();
-
-
+      await sp.web.lists.getByTitle("DeptCateg").defaultView.fields.add("Department");
+      await sp.web.lists.getByTitle("DeptCateg").defaultView.fields.add("Title");
     } 
     // else 
     // {
@@ -146,53 +150,27 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
       listEnsureResult.list.fields.inBatch(batch).addUser("Author", FieldUserSelectionMode.PeopleOnly);
       listEnsureResult.list.fields.inBatch(batch).addCalculated("ArchiveDate", "=Created+ArchivedTimeSpan", DateTimeFieldFormatType.DateTime, FieldTypes.DateTime);
       listEnsureResult.list.fields.inBatch(batch).addText("DepartmentGroup");
-      // listEnsureResult.list.fields.addCalculated("Dispatch_x0020_Group", "=IF(Status='Pending',AssignedTo,'')", DateTimeFieldFormatType.DateOnly, FieldTypes.Text);
-      // listEnsureResult.list.fields.addNumber
-
       await batch.execute();
-
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("Description");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("Category");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("Department");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("AssignedTo");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("ReAssignTo");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("Status");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("Comment");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("DepartmentManager");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("ArchivedTimeSpan");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("Author");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("ArchiveDate");
+      await sp.web.lists.getByTitle("EmpReq").defaultView.fields.add("DepartmentGroup");
+      
     } 
     // else 
     // {
     //   alert("My EmpReq List is already existed!");
     // }
     const r = await listEnsureResult.list.select("Id")();
-    console.log(r.Id);
-    if(r.Id){
-      this.createArchiveSettings();
-    }
   }
-
-
-  createArchiveSettings = async() =>
-  {
-    const listEnsureResult = await sp.web.lists.ensure("ArchiveSett", "ArchiveSett details list", 100);
-    if (listEnsureResult.created)    
-    {
-      alert("My ArchiveSett List is created!");
-      const batch = sp.web.createBatch(); 
-      listEnsureResult.list.fields.inBatch(batch).addNumber("NumberOfDays");
-      await batch.execute();
-
-
-    } 
-    // else{
-    //   Logger.activeLogLevel = LogLevel.Info;
-    //   Logger.subscribe(functionlistener);
-    //   Logger.subscribe(new ConsoleListener());
-    //   }
-    // else 
-    // {
-    //   alert("My ArchiveSett List is already existed!");
-    // }
-    const r = await listEnsureResult.list.select("Id")();
-    console.log(r.Id);
-    // if(r.Id){
-    //   this.appListner.setAppLogger();
-    // }
-    
-  }
-
 
   createListEmail = async() =>
   {
@@ -254,20 +232,20 @@ export default class DepartmentalRequestWebPart extends BaseClientSideWebPart<ID
               href: `${this.context.pageContext.web.absoluteUrl}/Lists/DeptCateg/AllItems.aspx`,
               text: 'Departmental Category List',
               target: '_blank',
-          }),
-          PropertyPaneDropdown('emailType',{
-            label:"Select the email facility",options:[
-              {
-                key:0,
-                text: "Normal EMail",
-              },
-              {
-                key:1,
-                text:"Power Automate"
-              }
-            ],
-            selectedKey:0
           })
+          // PropertyPaneDropdown('emailType',{
+          //   label:"Select the email facility",options:[
+          //     {
+          //       key:0,
+          //       text: "Normal EMail",
+          //     },
+          //     {
+          //       key:1,
+          //       text:"Power Automate"
+          //     }
+          //   ],
+          //   selectedKey:0
+          // })
               ]
             }
           ]

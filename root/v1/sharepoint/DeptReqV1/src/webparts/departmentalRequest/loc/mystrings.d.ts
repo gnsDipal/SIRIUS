@@ -47,6 +47,9 @@ declare interface IDepartmentalRequestWebPartStrings {
   ViewAllLabel:string;
   SaveLabel:string;
   NoDataPresentLabel:string;
+  RaisedANewRequestLabel:string;
+  SelectDepartmentLabel:string;
+  SelectTheDepartmentLabel:string;
 }
 
 declare module 'DepartmentalRequestWebPartStrings' {

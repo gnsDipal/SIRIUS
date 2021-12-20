@@ -330,18 +330,18 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                 <div className="ms-Grid-col ms-lg4 ms-sm4">
                 <Link to="/assigned"><Icon iconName='NavigateBack' className={styles.iconSize}></Icon></Link>
                 </div>
-                    <div className="ms-Grid-col ms-lg4 ms-sm4">
-                      <TooltipHost
-                         content={strings.TicketLabel}
-                      ><Icon iconName={strings.AssignLabel} className={styles.iconSize} ></Icon>
-                      </TooltipHost>             
-                    </div>
-                    <div className="ms-Grid-col ms-lg4 ms-sm4">
-                      <TooltipHost
-                         content={strings.AllLabel}
-                      ><Icon iconName={strings.ViewAllLabel} className={styles.iconSize} ></Icon>
-                      </TooltipHost>
-                    </div>
+                <div className="ms-Grid-col ms-lg8 ms-sm8">
+                  <TooltipHost
+                     content={strings.TicketLabel}
+                  ><Icon iconName={strings.AssignLabel} className={styles.iconSize} ></Icon>
+                  </TooltipHost>             
+                </div>
+                {/* <div className="ms-Grid-col ms-lg4 ms-sm4">
+                  <TooltipHost
+                     content={strings.AllLabel}
+                  ><Icon iconName={strings.ViewAllLabel} className={styles.iconSize} ></Icon>
+                  </TooltipHost>
+                </div> */}
               </div>
 
       <div className="ms-Grid-row">
