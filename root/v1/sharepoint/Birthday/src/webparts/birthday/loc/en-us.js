@@ -18,6 +18,12 @@ define([], function() {
     settingsPanelDescription: "Birthday/Anniversary Web Part Settings",
     settingsPanelDropdownLabel: "Select the source from where data to be fetched for users",
     sendEmailTooltipContent: "Send Email",
-    sendMessageTooltipContent: "Send message in Teams"
+    sendMessageTooltipContent: "Send message in Teams",
+    noBirthdayText: "No Birthdays in this month.",
+    noAnniversaryTet: "No Work Annversaries in this month.",
+    sendMsgText: "Send Message to",
+    personalMsgText: "Personal Message",
+    templateText: "Select Template:",
+    sendText:"Send"
   }
 });

@@ -52,7 +52,7 @@ export default class SPBirthdayAnniversaryServiceData{
         return this.SPBirthdayAnniversaryService.loadDataUsingThirdPartyAPI(query);
     }
     
-    putUserDataToList(requestlistItem)
+    putUserDataToList(requestlistItem: string)
     {
         return this.SPBirthdayAnniversaryService.insertUserDataToList(requestlistItem)
     }
@@ -61,6 +61,22 @@ export default class SPBirthdayAnniversaryServiceData{
     {
         return this.SPSettingsPanelService.newTeam();
     }
+
+    putTeamsConfigurationToList(JsonData: string, ItemID: number)
+    {
+        return this.SPSettingsPanelService.updateTeamsConfigurationToList(JsonData, ItemID);
+    }
+
+    addTeamsConfigurationToList(JsonData: string)
+    {
+        return this.SPSettingsPanelService.insertTeamsConfigurationToList(JsonData);
+    }
+
+    addEmailDataToList(JsonData: string)
+    {
+        return this.SPBirthdayAnniversaryService.insertEmailDataToList(JsonData);
+    }
+    
 } //End of Main Class
       
   

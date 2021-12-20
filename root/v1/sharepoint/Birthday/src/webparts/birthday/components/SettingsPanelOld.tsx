@@ -391,7 +391,7 @@ export default class SettingsPanel extends React.Component<ISettingsPanelProps, 
         errorMessage: 'Wrong file uploaded. Please select UserBirthAnniversaryDetails.csv file.'
       })
     }
-  }6
+  }
 
   private csvToArray(str, delimiter = ",")
   {

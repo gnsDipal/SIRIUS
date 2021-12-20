@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MSGraphClient } from '@microsoft/sp-http';
+import { SPHttpClient, SPHttpClientResponse, MSGraphClient } from '@microsoft/sp-http';
 
 debugger;
-export default class SPBirthdayAnniversaryService{
+export default class SPSettingsPanelService{
     private webContext = null;
     private webUrl:string = null;
 
@@ -41,7 +41,7 @@ export default class SPBirthdayAnniversaryService{
             await client.api(`me/joinedTeams`).version("beta").get()
                 .then(async(res)=>{
                 for(let i:number =0; i<res.value.length; ++i){
-                if(res.value[i].displayName === "DeptReqAdmin")
+                if(res.value[i].displayName === "Birthday/Anniversary Admin")
                     teamPresentCheck = true;
                 }
             });
@@ -167,5 +167,50 @@ export default class SPBirthdayAnniversaryService{
                 .then(()=>{  
                 });
             });
-    }    
-}//End Of Main Class
+    } 
+    
+    public async updateTeamsConfigurationToList(JsonData: string, ItemID: number)
+    {
+        this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('ConfigurationSettings')/items(${ItemID})`, SPHttpClient.configurations.v1,  
+        {  
+            headers: {  
+            'Accept': 'application/json;odata=nometadata',  
+            'Content-type': 'application/json;odata=nometadata',  
+            'odata-version': '',
+            'IF-MATCH': '*',
+            'X-HTTP-Method': 'MERGE' 
+            },  
+            body: JsonData  
+        }) 
+        .then((response: SPHttpClientResponse): Promise<void> => {  
+            return response.json();  
+        })  
+        .then((item: any): void => {  
+            console.log('Item has been updated.');
+        }, (error: any): void => {  
+            console.log('Error while updating an item: ' + error);
+        });
+        
+    }
+
+    public async insertTeamsConfigurationToList(JsonData: string)
+    {
+        this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('ConfigurationSettings')/items`, SPHttpClient.configurations.v1,  
+        {  
+            headers: {  
+            'Accept': 'application/json;odata=nometadata',  
+            'Content-type': 'application/json;odata=nometadata',  
+            'odata-version': ''  
+        },  
+            body: JsonData  
+        }) 
+        .then((response: SPHttpClientResponse): Promise<void> => {  
+            return response.json();  
+        })  
+        .then((item: any): void => {  
+            console.log('Item has been created.');
+        }, (error: any): void => {  
+            console.log('Error while creating the item: ' + error);
+        });
+    }
+}//End Of Main Function

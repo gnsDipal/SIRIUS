@@ -18,6 +18,12 @@ declare interface IBirthdayWebPartStrings {
   settingsPanelDropdownLabel: string;
   sendEmailTooltipContent: string;
   sendMessageTooltipContent: string;
+  noBirthdayText: string;
+  noAnniversaryTet: string;
+  sendMsgText: string;
+  personalMsgText: string;
+  templateText: string;
+  sendText: string;
 }
 
 declare module 'BirthdayWebPartStrings' {
