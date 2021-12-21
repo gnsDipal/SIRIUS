@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import {BrowserRouter as Router,Switch,Route,HashRouter} from "react-router-dom";
 import Home from '../Home/Home';
@@ -20,17 +20,19 @@ const Main = (props:any) => {
   const [teamContext,setTeamContext] = useState(null);
   const [isTeamAccess,setTeamAccess] = useState(false);
   const [teamPath,setTeamPath] = useState('');
-  //Initialize Microsoft teams sdk
-  // microsoftTeams.initialize(() => {
-  //   microsoftTeams.getContext((c) => {
-  //     setTeamContext(c);
-  //     if(c != null) {
-  //       setTeamAccess(true);
-  //       if(c.teamSitePath === 'assigned')
-  //         setTeamPath('/assigned');
-  //     }
-  //   });
-  // }); 
+ // Initialize Microsoft teams sdk
+  useEffect(() => {
+    microsoftTeams.initialize(() => {
+      microsoftTeams.getContext((c) => {
+        setTeamContext(c);
+        if(c != null) {
+          setTeamAccess(true);
+          if(c.teamSitePath === 'assigned')
+            setTeamPath('/assigned');
+        }
+      });
+    });   
+  }, [])
 
 
   let path: string = window.location.href;
