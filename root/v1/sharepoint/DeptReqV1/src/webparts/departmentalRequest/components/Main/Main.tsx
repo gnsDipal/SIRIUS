@@ -13,15 +13,34 @@ import AssignedClosedTicketsView from '../Home/AssignedTab/AssignedClosedTickets
 import DispatcherTicketsView from '../Home/DispatcherTab/DispatcherTicketsView/DispatcherTicketsView';
 import MyRequestTicketsView from '../Home/MyRequestTab/MyRequestTicketsView/MyRequestTicketsView';
 import ManagerTicketsView from '../Home/ManagerTab/ManagerTicketsView/ManagerTicketsView';
+import * as microsoftTeams from "@microsoft/teams-js";
 
 
 export const UserContext = React.createContext(null);
 const Main = (props:any) => {
   const [teamContext, setTeamContext] = React.useState(null);
+  const [isTeamAccess,setTeamAccess] = React.useState(false);
   const [teamPath, setTeamPath] = React.useState('');
   React.useEffect(() => {
-    
-  }, [])
+     //Initialize Microsoft teams sdk
+  microsoftTeams.initialize(() => {
+    microsoftTeams.getContext((c) => {
+      setTeamContext(c);
+      if(c != null) {
+        setTeamAccess(true);
+        if(c.teamSitePath === 'assigned'){
+          setTeamPath('/assigned');
+          alert("Inside setting assinged in teamSitePath");
+        }
+          alert("c.teamSitePath = " + c.teamSitePath);
+      }
+      if(c === null){
+        alert("c.teamSitePath is null = " + c.teamSitePath);
+      }
+    });
+  }); 
+  }, []);
+  let path: string = window.location.href;
     return (
         <div>
             <HashRouter>
@@ -29,7 +48,7 @@ const Main = (props:any) => {
               <Switch>
                 <Route exact path="/requested" component={()=><MyRequestTab />}/>
                 <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
-                <Route exact path="/assigned" component={()=><AssignedTab />}/>                  
+                <Route exact path={teamPath} component={()=><AssignedTab />}/>                  
                 <Route exact path = "/assigned/:Inprocess/:dept" component={()=><AssignedTicketsView/>}/>
                 <Route exact path = "/assigned/set/:Closed/:dept" component={()=><AssignedClosedTicketsView />}/>
                 <Route exact path="/dispatcher" component={()=><DispatcherTab />}/>
@@ -47,6 +66,9 @@ const Main = (props:any) => {
               </Switch>
               </UserContext.Provider>
             </HashRouter>
+            <div>Context: {JSON.stringify(teamContext)}</div>
+            <div>Path:{path}</div>
+            <div>teamPath:{teamPath}</div>
         </div>    
     )
 }
