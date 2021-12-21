@@ -35,8 +35,8 @@ const Birthday = ()=> {
     const[ bgColorAnniversary, setBgColorAnniversary ] = React.useState<string>("white");
     const[ colorBirthday,setColorBirthday ] = React.useState<string>("white");
     const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black");
-    const[ StartDate, setStartDate ] = React.useState<string>(null);
-    const[ EndDate, setEndDate ] = React.useState<string>(null);    
+    const[ StartDate, setStartDate ] = React.useState<string>("");
+    const[ EndDate, setEndDate ] = React.useState<string>("");    
     const[ selectedCategory, setSelectedCategory ] = React.useState<string>("All");
     React.useEffect(() => {
         setDropdownValue(mainContext.dropdown);
@@ -45,41 +45,29 @@ const Birthday = ()=> {
 
     const init = async() => {
         spBirthAnniServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);
-        CheckBirthAnniversaryDataSource();       
+        await CheckBirthAnniversaryDataSource();      
     }; 
 
     //check the value of dropdown from property pane and call the method accordingly to fetch the user birthday/anniversary data.
     const CheckBirthAnniversaryDataSource = async() => {      
         {(mainContext.dropdown === 'Azure' && count === 1) &&
-            LoadBirthdayDetails();
+            await LoadBirthdayDetails();
         }
         {(mainContext.dropdown === 'Azure' &&  count === 2) &&
-            LoadAnniversaryDetails();
+            await LoadAnniversaryDetails();
         }
         {mainContext.dropdown === 'Internal' && 
-            LoadInternalDetails();
+            await LoadInternalDetails();
         }
         {mainContext.dropdown === 'API' && 
-            GetThirdPartyBirthdayAPI();
+            await GetThirdPartyBirthdayAPI();
         }
     };
 
     //Load birthday details of all the users from Azure
     const LoadBirthdayDetails = async() => {
         await CountStartAndEndDates();
-        spBirthAnniServiceData.getBirthdayFromAzure(StartDate,EndDate)
-        .then((res:any) => {
-            if(res.length > 0){
-                if(selectedCategory === "Department")
-                    GetDeptwiseDataForBirthday(res);
-                else{
-                    res = SortBirthday(res);
-                    setBUsers(res);
-                }
-            }
-        },(error: any): void => {      
-            console.log(error);
-        });
+        
     };
 
     //count the start date and end date for current month
@@ -99,8 +87,21 @@ const Birthday = ()=> {
           startDate  = "2000-" + month + "-01";
           endDate  = "2000-" + month + "-" + days;
         }    
-        setStartDate(startDate);
-        setEndDate(endDate);       
+        // setStartDate(startDate);
+        // setEndDate(endDate); 
+        await spBirthAnniServiceData.getBirthdayFromAzure(startDate,endDate)
+        .then(async(res:any) => {
+            if(res.length > 0){
+                if(selectedCategory === "Department")
+                   await GetDeptwiseDataForBirthday(res);
+                else{
+                    res = SortBirthday(res);
+                    setBUsers(res);
+                }
+            }
+        },(error: any): void => {      
+            console.log(error);
+        });      
     };
 
     //get number of days for current month
@@ -116,14 +117,13 @@ const Birthday = ()=> {
         for(let i=0; i<people.length; ++i){
             if(people[i].email === userEmail){
                 azureDepartment = people[i].department;
-                //return;
             }
         }
         for(let j=0; j<people.length; ++j){
             if(people[j].department === azureDepartment)            
                 deptPeople.push(people[j]);            
         }
-        deptPeople = SortBirthday(deptPeople);
+        deptPeople = await SortBirthday(deptPeople);
         setBUsers(deptPeople);        
     };
 
@@ -140,7 +140,7 @@ const Birthday = ()=> {
 
     //Load anniversary details of all the users from Azure
     const LoadAnniversaryDetails = async() => {
-        spBirthAnniServiceData.getAnniversaryFromAzure()
+        await spBirthAnniServiceData.getAnniversaryFromAzure()
         .then((res:any) => {
             if(res.length > 0){
                 let currentMonthPeople = GetAnniversaryForSorting(res);
@@ -181,16 +181,14 @@ const Birthday = ()=> {
         let azureDepartment: string;
         let userEmail = mainContext.webPartContext.pageContext.user.email;
         for(let i=0; i<people.length; ++i){
-            if(people[i].email === userEmail){
+            if(people[i].email === userEmail)
                 azureDepartment = people[i].department;
-                //return;
-            }
         }
         for(let j=0; j<people.length; ++j){
             if(people[j].department === azureDepartment)            
                 deptPeople.push(people[j]);            
         }
-        deptPeople = SortAnniversary(deptPeople);
+        deptPeople = await SortAnniversary(deptPeople);
         setAUsers(deptPeople);        
     };
 
@@ -207,7 +205,7 @@ const Birthday = ()=> {
 
     //get the birthday/anniversary details from the internal SharePoint list
     const LoadInternalDetails = async() => {
-        spBirthAnniServiceData.getInternalDetails()
+        await spBirthAnniServiceData.getInternalDetails()
         .then((res:any) => {
             if(count === 1){
                 let people:IBirthday[] = res;                
@@ -273,7 +271,7 @@ const Birthday = ()=> {
     //get the birthday/anniversary details using third party API
     const GetThirdPartyBirthdayAPI = async() => {
         let query: string = mainContext.externalAPI;
-        spBirthAnniServiceData.getDataUsingThirdPartyAPI(query)
+        await spBirthAnniServiceData.getDataUsingThirdPartyAPI(query)
         .then((res:any)=>{
             if(count === 1) {
                 let people:IBirthday[] = res;                 
@@ -334,9 +332,9 @@ const Birthday = ()=> {
             <div className={ styles.container }>
                 <div className={styles.description}>                        
                     <h1 style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1> 
-                    <div onClick={() => window.open('https://www.google.com', '_blank')} className={styles.helpSettings}>
+                    {/* <div onClick={() => window.open('https://www.google.com', '_blank')} className={styles.helpSettings}>
                         <TooltipHost content={strings.helpContent}><Help /></TooltipHost>
-                    </div >
+                    </div > */}
                 </div>          
                 <br></br>
                 <div className={styles.SetDisplay}>                                                             

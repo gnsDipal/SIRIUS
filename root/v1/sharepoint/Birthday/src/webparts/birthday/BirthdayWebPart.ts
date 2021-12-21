@@ -67,6 +67,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
     ReactDom.render(element, this.domElement);
   }
 
+  //create list to store the configuration for widgetset by admin in Microsoft teams
   createConfigurationList = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("ConfigurationSettings", "Defines the configuration settings for webparts in teams", 100);    
@@ -86,11 +87,10 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
 
   private createListsUsingPNP()
   {
-    this.createLibrary();
-    //this.createListUsers();
-    //this.createListEmail();
+    this.createLibrary();   
   }  
 
+  //create library to store the images for birthday and anniversary
   createLibrary = async() =>
   {
     // ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
@@ -110,6 +110,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       this.createListUsers();
   }
 
+  //create the list to store the user details
   createListUsers = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("UserBirthAnniversaryDetails", "Users details list", 100);
@@ -138,6 +139,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       this.createListEmail();
   }
 
+  //Create list to store the email details send to wish the desired person
   createListEmail = async() =>
   {
     const listEnsureResult = await sp.web.lists.ensure("EmailSender", "Email sending list", 100);
@@ -197,7 +199,8 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
   protected get dataVersion(): Version {
       return Version.parse('1.0');
   }
-
+  
+  //download the template to add the user details
   private downloadCsv()
   {   
       const linkSource = `data:application/csv;base64,${"TmFtZSxGaXJzdE5hbWUsTGFzdE5hbWUsRW1haWwsQmlydGhEYXRlLEhpcmVEYXRlLERlcGFydG1lbnQ="}`;
@@ -216,7 +219,8 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       // Clean up and remove the link
       setTimeout(function(){ downloadLink.parentNode.removeChild(downloadLink); }, 500);
   }
-
+  
+  //upload the csv format data to SharePoint list 
   protected UploadCSV()
   {
       if(this.properties.filePickerResult.fileName !== ""){
@@ -364,11 +368,17 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
             {
               groupName: strings.GroupNameAdmin,
               groupFields: [                               
-                PropertyPaneLink('link', {
-                  href: "https://gns11.sharepoint.com/sites/SiriusTeams/BirthdayAnniversaryImages/Forms/Thumbnails.aspx",
-                  text: strings.LinkText,
+                PropertyPaneLink('linkImage', {
+                  href: `${this.context.pageContext.web.absoluteUrl}/BirthdayAnniversaryImages/Forms/Thumbnails.aspx`,
+                  text: strings.LinkTextImage,
                   target: "_blank" 
-                })                               
+                }),
+                
+                PropertyPaneLink('linkUsers', {
+                  href: `${this.context.pageContext.web.absoluteUrl}/Lists/UserBirthAnniversaryDetails/AllItems.aspx`,
+                  text: strings.LinkTextUsers,
+                  target: "_blank" 
+                })
               ]
             }
           ],          

@@ -1,5 +1,5 @@
 import { Web } from '@pnp/sp/presets/all';
-import { SPHttpClient, SPHttpClientResponse, HttpClient, MSGraphClient } from '@microsoft/sp-http';
+import { SPHttpClient, SPHttpClientResponse, HttpClient } from '@microsoft/sp-http';
 import { IBirthAnniResults, ICell } from '../Models/IBirthAnniResults';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
@@ -39,12 +39,12 @@ export default class SPBirthdayAnniversaryService{
     }
 
     public async loadBirthdayImages():Promise<{}>{
-        let result = await this.web.lists.getByTitle('BirthdayAnniversaryImages').items.select("*").filter(`Category eq 'Birthday'`).get();
+        let result = await this.web.lists.getByTitle('BirthdayAnniversaryImages').items.select("ID", "Title", "FileLeafRef", "ImageWidth", "ImageHeight", "AuthorId").filter(`Category eq 'Birthday'`).get();
         return result;
     }
 
     public async loadAnniversaryImages():Promise<{}>{
-        let result = await this.web.lists.getByTitle('BirthdayAnniversaryImages').items.select("*").filter(`Category eq 'Anniversary'`).get();
+        let result = await this.web.lists.getByTitle('BirthdayAnniversaryImages').items.select("ID", "Title", "FileLeafRef", "ImageWidth", "ImageHeight", "AuthorId").filter(`Category eq 'Anniversary'`).get();
         return result;
     }
 
@@ -55,11 +55,10 @@ export default class SPBirthdayAnniversaryService{
 
     public async loadBirthdayFromAzure(startDate: string, endDate: string): Promise<IBirthday[]>{
         let birthdayUsers: IBirthday[] = [];
-        this.context.SPHttpClient
-        .get(`${this.webUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='RefinableDate00:range(datetime(${startDate}), datetime(${endDate}))'`, SPHttpClient.configurations.v1, {
+        await this.webContext.spHttpClient.get(`${this.webUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='RefinableDate00:range(datetime(${startDate}), datetime(${endDate}))'`, SPHttpClient.configurations.v1, {
             headers: headers
         })
-        .then((res: IBirthAnniResults) => {
+        .then(async(res: IBirthAnniResults) => {
             let siteURL: string = this.webUrl;
             let userphotourl: string = siteURL.substring(0,siteURL.search("/sites"));
             birthdayUsers = res.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
@@ -74,16 +73,15 @@ export default class SPBirthdayAnniversaryService{
                 };
             });
         })
-        return Promise.resolve(birthdayUsers);
+        return await Promise.resolve(birthdayUsers);
     }
 
     public async loadAnniversaryFromAzure(): Promise<IAnniversary[]>{
         let anniversaryUsers: IAnniversary[] = [];
-        this.context.SPHttpClient
-        .get(`${this.webUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'`, SPHttpClient.configurations.v1, {
+        await this.webContext.spHttpClient.get(`${this.webUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'`, SPHttpClient.configurations.v1, {
             headers: headers
         })
-        .then((res: IBirthAnniResults) => {
+        .then(async(res: IBirthAnniResults) => {
             let siteURL: string = this.webUrl;
             let userphotourl: string = siteURL.substring(0,siteURL.search("/sites"));
             anniversaryUsers = res.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
@@ -98,7 +96,7 @@ export default class SPBirthdayAnniversaryService{
                 };
             });
         })
-        return Promise.resolve(anniversaryUsers);
+        return await Promise.resolve(anniversaryUsers);
     }
 
     private GetValueFromSearchResult(key: string, cells: ICell[]): string {
@@ -112,17 +110,17 @@ export default class SPBirthdayAnniversaryService{
     
     public async loadDataUsingThirdPartyAPI(query: string): Promise<{}>{
         let result;
-        this.context.httpClient.get(`${query}`, HttpClient.configurations.v1, {
+        await this.webContext.httpClient.get(`${query}`, HttpClient.configurations.v1, {
             headers: headers
         })
-        .then((res:any) => {
+        .then(async(res:any) => {
             result = res;
         })
-        return result;
+        return await Promise.resolve(result);
     }
 
-    public async insertUserDataToList(JsonData){
-        this.context.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`, SPHttpClient.configurations.v1,  
+    public async insertUserDataToList(JsonData: string){
+        await this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`, SPHttpClient.configurations.v1,  
         {  
             headers: {  
                 'Accept': 'application/json;odata=nometadata',  
@@ -139,6 +137,21 @@ export default class SPBirthdayAnniversaryService{
         }, (error: any): void => {  
             console.log('Error while creating the item: ' + error);
         });
+    }
+
+    public async insertEmailDataToList(JsonData: string){
+        await this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('EmailSender')/items`, SPHttpClient.configurations.v1,  
+        {  
+            headers: {  
+                'Accept': 'application/json;odata=nometadata',  
+                'Content-type': 'application/json;odata=nometadata',  
+                'odata-version': ''  
+            },  
+            body: JsonData  
+        }) 
+        .then((response: SPHttpClientResponse): Promise<void> => {  
+            return response.json();  
+        });        
     }
 
 }//End of Main function

@@ -1,14 +1,17 @@
 import SPBirthdayAnniversaryService from './SPBirthdayAnniversaryService';
+import SPSettingsPanelService from './SPSettingsPanelService';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
 
 export default class SPBirthdayAnniversaryServiceData{
 
     private SPBirthdayAnniversaryService: SPBirthdayAnniversaryService = null;
+    private SPSettingsPanelService: SPSettingsPanelService = null;
 
     constructor(private context)
     {
-        this.SPBirthdayAnniversaryService = new SPBirthdayAnniversaryService(this.context);            
+        this.SPBirthdayAnniversaryService = new SPBirthdayAnniversaryService(this.context);  
+        this.SPSettingsPanelService = new SPSettingsPanelService(this.context);          
         this.onInit();
     }
 
@@ -49,10 +52,31 @@ export default class SPBirthdayAnniversaryServiceData{
         return this.SPBirthdayAnniversaryService.loadDataUsingThirdPartyAPI(query);
     }
     
-    putUserDataToList(requestlistItem)
+    putUserDataToList(requestlistItem: string)
     {
         return this.SPBirthdayAnniversaryService.insertUserDataToList(requestlistItem)
     }
+
+    createNewTeam():Promise<string>
+    {
+        return this.SPSettingsPanelService.newTeam();
+    }
+
+    putTeamsConfigurationToList(JsonData: string, ItemID: number)
+    {
+        return this.SPSettingsPanelService.updateTeamsConfigurationToList(JsonData, ItemID);
+    }
+
+    addTeamsConfigurationToList(JsonData: string)
+    {
+        return this.SPSettingsPanelService.insertTeamsConfigurationToList(JsonData);
+    }
+
+    addEmailDataToList(JsonData: string)
+    {
+        return this.SPBirthdayAnniversaryService.insertEmailDataToList(JsonData);
+    }
+    
 } //End of Main Class
       
   
