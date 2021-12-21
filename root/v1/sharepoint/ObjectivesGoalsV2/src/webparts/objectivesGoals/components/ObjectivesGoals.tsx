@@ -12,10 +12,9 @@ import PanelSettings from './PanelSettings/PanelSettings';
 import { TooltipHost } from '@fluentui/react/lib/Tooltip';
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoals} />;
-const TeamsSettingsIcon = () => <Icon iconName="Settings" />
 initializeIcons();
 
-debugger;
+//debugger;
 export default class ObjectivesGoals extends React.Component<IObjectivesGoalsProps, IObjectivesGoalsState, {}> {
 
   constructor(props: IObjectivesGoalsProps, state:IObjectivesGoalsState) {
@@ -99,11 +98,11 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
             </div>
             <br></br>
             <div className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.SetDisplayTeamsApp : styles.SetDisplay}>               
-              <div style={{width:'33.33%'}}><DefaultButton className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.GoalsTabBtnTeamsApp : styles.GoalsTabBtn}
+              <div className={styles.GoalsTabs} ><DefaultButton className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.GoalsTabBtnTeamsApp : styles.GoalsTabBtn}
                     style={{backgroundColor:this.state.bgColorOrganization, color:this.state.colorOrganization}} onClick={this.OrganizationButtonClicked}><h3>Organization</h3></DefaultButton></div>                                                         
-              <div style={{width:'33.33%'}}><DefaultButton className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.GoalsTabBtnTeamsApp : styles.GoalsTabBtn} 
+              <div className={styles.GoalsTabs}><DefaultButton className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.GoalsTabBtnTeamsApp : styles.GoalsTabBtn} 
                       style={{backgroundColor:this.state.bgColorDepartment, color:this.state.colorDepartment}} onClick={this.DepartmentButtonClicked}><h3>Department</h3></DefaultButton></div>
-              <div style={{width:'33.33%'}}><DefaultButton className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.GoalsTabBtnTeamsApp : styles.GoalsTabBtn} 
+              <div className={styles.GoalsTabs}><DefaultButton className={(this.props.webPartContext.sdks.microsoftTeams) ? styles.GoalsTabBtnTeamsApp : styles.GoalsTabBtn} 
                       style={{backgroundColor:this.state.bgColorPersonal, color:this.state.colorPersonal}} onClick={this.PersonalButtonClicked}><h3>Personal</h3></DefaultButton></div>                                                          
             </div> 
             {/* <div className={styles.SetDisplay}>   

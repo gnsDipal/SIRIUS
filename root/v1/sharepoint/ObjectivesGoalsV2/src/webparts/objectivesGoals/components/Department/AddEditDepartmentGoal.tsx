@@ -42,7 +42,7 @@ const DepartmentOptions : IDropdownOption[] = [
   // { key: 'DepartmentOptions3', text: 'Finance' }
 ];
 
-const CurrentUserDepartmentOptions : IDropdownOption[] = [
+let CurrentUserDepartmentOptions : IDropdownOption[] = [
   //{ key: 'DepartmentOptions', text: 'DepartmentOptions', itemType: DropdownMenuItemType.Header },
   // { key: 'DepartmentOptions1', text: 'IT'},
   // { key: 'DepartmentOptions2', text: 'HR' },
@@ -50,6 +50,7 @@ const CurrentUserDepartmentOptions : IDropdownOption[] = [
 
 //const stackTokens: IStackTokens = { childrenGap: 20 };
 
+debugger;
 export default class AddEditDepartmentGoal extends React.Component<IAddEditDepartmentGoalProps, IAddEditDepartmentGoalState, {}> {
 
   constructor(props: IAddEditDepartmentGoalProps, state:IAddEditDepartmentGoalState) {
@@ -96,10 +97,8 @@ export default class AddEditDepartmentGoal extends React.Component<IAddEditDepar
   }
 
   componentDidMount()
-  {
-    this._getDepartmentOptionsData();
-    //this._SaveOrganizationGoal();
-    //this._CancelButtonClicked();
+  { CurrentUserDepartmentOptions=[];
+    this._getDepartmentOptionsData();  
     this.displayEditStatusIdData();
   } 
 
@@ -282,29 +281,27 @@ displayEditStatusIdData =  async () =>
     }); 
   }
 
-  _SaveEditDepartmentGoal(){
-    alert( "Department Goal Data Updated");
+_SaveEditDepartmentGoal(){
+  alert( "Department Goal Data Updated");
     this.setState({
       AddEditGoalsFormDisplay:false, 
       IntervalDataDisplay:true,  
-    });
+  });
 
-    const headers: HeadersInit = new Headers();
-    headers.append("accept", "application/json;odata.metadata=none");
-   
-    this.props.spHttpClient
-           .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items('${this.props.RequireGoalStatusId}')?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId,Department/Id,Department/Title&$expand=Department/Id,Department/Title&$filter=Id eq '${this.props.RequireGoalStatusId}'`, 
-             SPHttpClient.configurations.v1, {
-             headers: headers
+  const headers: HeadersInit = new Headers();
+  headers.append("accept", "application/json;odata.metadata=none");   
+  this.props.spHttpClient
+      .get(`${this.props.siteurl}/_api/web/lists/getbytitle('GoalDepartment')/items('${this.props.RequireGoalStatusId}')?$select=ID,Title,Goal,Interval,StatusPercentage,DepartmentId,Department/Id,Department/Title&$expand=Department/Id,Department/Title&$filter=Id eq '${this.props.RequireGoalStatusId}'`, 
+          SPHttpClient.configurations.v1, {
+           headers: headers
            })
-           .then((result: SPHttpClientResponse) => {          
+      .then((result: SPHttpClientResponse) => {          
              return result.json();
            })
-           .then((jsonresult) => {
+      .then((jsonresult) => {
             //  EditStatusIdData = [];         
             //  for(let i=0; i<jsonresult.value.length; ++i)
-            //  {
-            //    EditStatusIdData.push({                 
+            //  { EditStatusIdData.push({                 
             //      Id:jsonresult.value[i].Id,
             //      Title:jsonresult.value[i].Title,
             //      Goal:jsonresult.value[i].Goal,
@@ -312,17 +309,8 @@ displayEditStatusIdData =  async () =>
             //      Department:jsonresult.value[i].Department.Title,
             //      StatusPercentage:jsonresult.value[i].StatusPercentage,            
             //    });
-            //  }         
-            //  this.setState({
-            //    editStatusIdData: EditStatusIdData,
-            //    selectedEditTitle: EditStatusIdData[0].Title,
-            //    selectedEditGoal:EditStatusIdData[0].Goal,
-            //    selectedEditInterval:EditStatusIdData[0].Interval,
-            //    selectedEditDepartmentOptionId:EditStatusIdData[0].Department,
-            //    selectedEditStatusPercentage:EditStatusIdData[0].StatusPercentage,
-            //  },()=>console.log("EditStatusId Data  =>" + this.state.editStatusIdData)
-            //  )
-           })    
+            //  }                
+      })    
 
     const spOpts: string = JSON.stringify({     
       'Title': this.state.selectedEditTitle,
@@ -333,36 +321,34 @@ displayEditStatusIdData =  async () =>
     });
   
     this.props.spHttpClient.post(`${this.props.webUrl}/_api/web/lists/getbytitle('GoalDepartment')/items(${this.props.RequireGoalStatusId})`,     
-    SPHttpClient.configurations.v1,  
-    {  
-        headers: {  
+     SPHttpClient.configurations.v1,  
+      {   headers: {  
             'Accept': 'application/json;odata=nometadata',  
             'Content-type': 'application/json;odata=nometadata',  
             'odata-version': '',  
             'IF-MATCH': '*',  
-            'X-HTTP-Method': 'MERGE',
-              // "X-RequestDigest": $("#__REQUESTDIGEST").val()
+            'X-HTTP-Method': 'MERGE',              
             },  
         body: spOpts  
-    }) 
+      }) 
     .then((response: SPHttpClientResponse): Promise<void> => {  
-        return response.json();  
-    })  
+          return response.json();  
+         })  
     .then((item: any): void => {  
-        console.log('Item has been created.');
-    }, (error: any): void => {  
-        console.log('Error while creating the item: ' + error);
-    }); 
+          console.log('Item has been created.');
+          }, (error: any): void => {  
+          console.log('Error while creating the item: ' + error);
+        }); 
   }
 
-  _NewFormCancelButtonClicked = () =>{
+_NewFormCancelButtonClicked = () =>{
     this.setState({
       AddEditGoalsFormDisplay:false,
       IntervalDataDisplay:true,   
     }) 
    }
   
-   _EditFormCancelButtonClicked = () =>{
+_EditFormCancelButtonClicked = () =>{
     this.setState({
       AddEditGoalsFormDisplay:false, 
       IntervalDataDisplay:true,  
@@ -370,106 +356,106 @@ displayEditStatusIdData =  async () =>
    }
  
 public render(): React.ReactElement<IAddEditDepartmentGoalProps> {
-        return (
-          <div className={ styles.addEditDepartmentGoal }>
-            {/* <div className={ styles.container }>  */}
-          { (this.state.AddEditGoalsFormDisplay === true) && 
-            <div className={ styles.FormDisplay }> 
-            <div className="ms-Grid" dir="ltr">
-              {/* Form Header information */}
-              {((this.props.openAddEditForm === 1) ? <h3>Add Department Goal Form</h3>
+  return (
+  <div className={ styles.addEditDepartmentGoal }>
+    {/* <div className={ styles.container }>  */}
+      { (this.state.AddEditGoalsFormDisplay === true) && 
+      <div className={ styles.FormDisplay }> 
+        <div className="ms-Grid" dir="ltr">
+          {/* Form Header information */}
+          {((this.props.openAddEditForm === 1) ? <h3>Add Department Goal Form</h3>
                 : (this.props.openAddEditForm === 2) ? <h3>Edit Department Goal Form</h3> 
                 : "")}
-              {/* Title Field information */}
-              <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                 <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
-                  <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                    <Stack {...columnProps}>
-                      {((this.props.openAddEditForm === 1) ?                          
-                          <TextField label="Title" id="TitleName" 
-                           onChange={(selectedTitle)=>this.onChangeGoalTitleHandle(selectedTitle)}/>
-                        :(this.props.openAddEditForm === 2) ? 
-                          <TextField label="Title" id="TitleName" disabled
-                            placeholder={this.state.selectedEditTitle} 
-                            onChange={(selectedTitle)=>this.onChangeGoalTitleHandle(selectedTitle)} />
-                           :"")}
-                    </Stack>
-                  </Stack>
-                  </div>
-               </div>
-               {/* Goal Field information*/}
-               <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                 <div className="ms-Grid-col ms-lg8 ms-sm8">  
-                  <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                    <Stack {...columnProps}>                     
-                        {((this.props.openAddEditForm === 1) ?                          
-                           <TextField label="Goal" id="GoalsInfo" multiline rows={3}
-                            onChange={(selectedGoal)=>this.onChangeGoalHandle(selectedGoal)}/>
-                          :(this.props.openAddEditForm === 2) ? 
-                            <TextField label="Goal" id="GoalsInfo" multiline rows={3}
-                              placeholder={this.state.selectedEditGoal} disabled
-                              onChange={(selectedGoal)=>this.onChangeGoalHandle(selectedGoal)}/>
-                          :"")}
-                    </Stack>
-                  </Stack>
-                </div>
-               </div> 
-               {/* Interval Field information */}            
-               <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                 <div className="ms-Grid-col ms-lg8 ms-sm8">                                             
-                    {((this.props.openAddEditForm === 1) ? 
-                      <Stack tokens={stackTokens}>                          
-                        <Dropdown
-                            placeholder="Select an Interval"
-                            label="Interval"
-                            options={IntervalOptions}                         
-                            onChange={(e,selectedInterval) => this.onChangeIntervalHandle(selectedInterval)}
-                            //styles={dropdownStyles}
-                            styles={{ dropdown: { width: 300 } }}
-                          />
-                        </Stack>
+          {/* Title Field information */}
+          <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+            <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
+              <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+                <Stack {...columnProps}>
+                 {((this.props.openAddEditForm === 1) ?                          
+                       <TextField label="Title" id="TitleName" 
+                        onChange={(selectedTitle)=>this.onChangeGoalTitleHandle(selectedTitle)}/>
                     :(this.props.openAddEditForm === 2) ? 
-                      <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                        <Stack {...columnProps}>
+                        <TextField label="Title" id="TitleName" disabled
+                        placeholder={this.state.selectedEditTitle} 
+                        onChange={(selectedTitle)=>this.onChangeGoalTitleHandle(selectedTitle)} />
+                      :"")}
+                 </Stack>
+              </Stack>
+             </div>
+          </div>
+          {/* Goal Field information*/}
+          <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+            <div className="ms-Grid-col ms-lg8 ms-sm8">  
+              <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+                <Stack {...columnProps}>                     
+                  {((this.props.openAddEditForm === 1) ?                          
+                        <TextField label="Goal" id="GoalsInfo" multiline rows={3}
+                        onChange={(selectedGoal)=>this.onChangeGoalHandle(selectedGoal)}/>
+                      :(this.props.openAddEditForm === 2) ? 
+                         <TextField label="Goal" id="GoalsInfo" multiline rows={3}
+                          placeholder={this.state.selectedEditGoal} disabled
+                          onChange={(selectedGoal)=>this.onChangeGoalHandle(selectedGoal)}/>
+                        :"")}
+                </Stack>
+              </Stack>
+            </div>
+          </div> 
+          {/* Interval Field information */}            
+          <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+            <div className="ms-Grid-col ms-lg8 ms-sm8">                                             
+              {((this.props.openAddEditForm === 1) ? 
+                <Stack tokens={stackTokens}>                          
+                    <Dropdown
+                      placeholder="Select an Interval"
+                      label="Interval"
+                      options={IntervalOptions}                         
+                      onChange={(e,selectedInterval) => this.onChangeIntervalHandle(selectedInterval)}
+                      //styles={dropdownStyles}
+                      styles={{ dropdown: { width: 300 } }}
+                     />
+                    </Stack>
+                  :(this.props.openAddEditForm === 2) ? 
+                    <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+                      <Stack {...columnProps}>
                           <TextField label="Interval" id="Interval" 
                               placeholder={this.state.selectedEditInterval} disabled
                               onChange={(selectedInterval)=>this.onChangeIntervalHandle(selectedInterval)}/>
-                        </Stack>
                       </Stack>
+                    </Stack>
                     :"")}                     
-                  </div>
-               </div>
-               {/* Department Field information */}            
-               <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                 <div className="ms-Grid-col ms-lg8 ms-sm8">                                             
-                    {((this.props.openAddEditForm === 1) ? 
-                      <Stack tokens={stackTokens}>
-                        <Dropdown
-                          placeholder="Select Department"
-                          label="Department"                         
-                          options={CurrentUserDepartmentOptions} 
-                          //options={DepartmentOptions}                              
-                          onChange={(e,selectedDepartmentOption) => this.onChangeDepartmentOptionsHandle(selectedDepartmentOption)}
-                          //styles={dropdownStyles}
-                          styles={{ dropdown: { width: 300 } }}
-                        />
-                      </Stack>
-                    :(this.props.openAddEditForm === 2) ? 
-                      <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                        <Stack {...columnProps}>
-                          <TextField label="Department" id="Department" 
+            </div>
+          </div>
+          {/* Department Field information */}            
+          <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+            <div className="ms-Grid-col ms-lg8 ms-sm8">                                             
+               {((this.props.openAddEditForm === 1) ? 
+                  <Stack tokens={stackTokens}>
+                    <Dropdown
+                      placeholder="Select Department"
+                      label="Department"                         
+                      options={CurrentUserDepartmentOptions} 
+                      //options={DepartmentOptions}                              
+                      onChange={(e,selectedDepartmentOption) => this.onChangeDepartmentOptionsHandle(selectedDepartmentOption)}
+                      //styles={dropdownStyles}
+                      styles={{ dropdown: { width: 300 } }}
+                      />
+                  </Stack>
+                :(this.props.openAddEditForm === 2) ? 
+                  <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+                    <Stack {...columnProps}>
+                      <TextField label="Department" id="Department" 
                            placeholder={this.state.selectedEditDepartmentOption} disabled
                            onChange={(selectedDepartment)=>this.onChangeIntervalHandle(selectedDepartment)}/>
                         </Stack>
                       </Stack>
-                    :"")}                     
-                  </div>
-               </div>         
-               {/* StatusPercentage Field information */}
-               <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                 <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
-                  <Stack horizontal tokens={stackTokens} styles={stackStyles}>
-                    <Stack {...columnProps}>                         
+                  :"")}                     
+            </div>
+          </div>         
+          {/* StatusPercentage Field information */}
+          <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+            <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
+              <Stack horizontal tokens={stackTokens} styles={stackStyles}>
+                <Stack {...columnProps}>                         
                       {((this.props.openAddEditForm === 1) ?                          
                         <TextField label="StatusPercentage" id="StatusPercentage"
                            placeholder="Add Percentage for status" 
@@ -479,33 +465,33 @@ public render(): React.ReactElement<IAddEditDepartmentGoalProps> {
                          placeholder={this.state.selectedEditStatusPercentage} 
                          onChange={(selectedEditStatusPercentage)=>this.onChangeEditGoalStatusPercentageHandle(selectedEditStatusPercentage)}/>
                       :"")}                       
-                    </Stack>
-                  </Stack>
-                 </div>
-               </div>              
-               <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                 <div className="ms-Grid-col ms-lg8 ms-sm8">
-                   {/* Save Button information (Save New Data and Save Edit Data)*/}
-                      {((this.props.openAddEditForm === 1) ?                          
-                          <PrimaryButton onClick={() => this._SaveAddDepartmentGoal()} ><h3>Save</h3></PrimaryButton>  
-                      :(this.props.openAddEditForm === 2) ? 
+                </Stack>
+              </Stack>
+            </div>
+          </div>              
+          <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+            <div className="ms-Grid-col ms-lg8 ms-sm8">
+              {/* Save Button information (Save New Data and Save Edit Data)*/}
+                {((this.props.openAddEditForm === 1) ?                          
+                    <PrimaryButton onClick={() => this._SaveAddDepartmentGoal()} ><h3>Save</h3></PrimaryButton>  
+                    :(this.props.openAddEditForm === 2) ? 
                           <PrimaryButton onClick={() => this._SaveEditDepartmentGoal()} ><h3>Save</h3></PrimaryButton> 
                       :"")} 
-                   {/* Cancel Button information (Cancel New Data Form and Cancel Edit Data Form)*/}
-                  {((this.props.openAddEditForm === 1) ?                          
-                        <DefaultButton onClick={() =>this._NewFormCancelButtonClicked()}><h3>Cancel</h3></DefaultButton>  
+              {/* Cancel Button information (Cancel New Data Form and Cancel Edit Data Form)*/}
+                {((this.props.openAddEditForm === 1) ?                          
+                    <DefaultButton onClick={() =>this._NewFormCancelButtonClicked()}><h3>Cancel</h3></DefaultButton>  
                     :(this.props.openAddEditForm === 2) ? 
-                    <DefaultButton onClick={() =>this._EditFormCancelButtonClicked()}><h3>Cancel</h3></DefaultButton> 
-                    :"")}                                                                                                    
-                  </div>
-               </div>                
-           </div>  
-          </div>
-          }   
-        {/* //Form Add/Edit Form Display condition close */}
+                     <DefaultButton onClick={() =>this._EditFormCancelButtonClicked()}><h3>Cancel</h3></DefaultButton> 
+                     :"")}                                                                                                    
+              </div>
+          </div>                
+        </div>  
+      </div>
+     }   
+    {/* //Form Add/Edit Form Display condition close */}
 
-        { (this.state.AddEditGoalsFormDisplay === false) &&
-            <Department description={this.props.description}
+    { (this.state.AddEditGoalsFormDisplay === false) &&
+          <Department description={this.props.description}
             context={this.props.context}
             siteurl={this.props.siteurl}
             spHttpClient={this.props.spHttpClient}
@@ -518,11 +504,11 @@ public render(): React.ReactElement<IAddEditDepartmentGoalProps> {
             openAddEditForm={this.props.openAddEditForm} 
             isIntervalDataDisplay={this.state.IntervalDataDisplay}           
             >
-            </Department>
-        }
+          </Department>
+    }
 
-        {/* </div> */}
-      </div>
-   );
-  }
+    {/* </div> */}
+   </div>
+  );
+ }
 }

@@ -357,14 +357,11 @@ _yearlyGoalsData = async () =>
                     {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {                   
                     return(
                       <li key={MonthlyTarget.Id} >
-                        <table> 
-                            <tr><td>{MonthlyTarget.Goal}</td></tr>                            
-                            <tr>
-                                <td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%</td>
+                        <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
+                               <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%
                                 { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) &&
-                                <td> <button onClick={()=>this.editStatus(MonthlyTarget.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> </td>
-                                }
-                             </tr>
+                                  <button style={{margin:'20px'}} onClick={()=>this.editStatus(MonthlyTarget.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button>                                 
+                               }</td></tr>
                         </table>                                               
                       </li>            
                       )
@@ -379,21 +376,18 @@ _yearlyGoalsData = async () =>
               <div className={styles.DataDisplay}>
                 {/* <h3>Quaterly Objectives of Organization</h3> */}
                 <ul>                  
-                      {this.state.quarterlyObjectivesData.map( (QuarterlyObjectives, index)=> {                      
-                      return(
-                        <li key={QuarterlyObjectives.Id} >
-                          <table> 
-                              <tr><td>{QuarterlyObjectives.Goal}</td></tr>                            
-                              <tr>
-                                  <td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%</td>
+                  {this.state.quarterlyObjectivesData.map( (QuarterlyObjectives, index)=> {                      
+                    return(
+                      <li key={QuarterlyObjectives.Id} >
+                        <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                                                          
+                               <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%
                                   { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) &&
-                                  <td> <button onClick={()=>this.editStatus(QuarterlyObjectives.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> </td>
-                                  }
-                               </tr>
-                          </table>                                               
-                        </li>            
-                        )
-                      })}             
+                                   <button className={styles.EditButton} onClick={()=>this.editStatus(QuarterlyObjectives.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button>
+                                  } </td></tr>                              
+                        </table>                                               
+                      </li>            
+                     )
+                  })}             
                 </ul>
               </div>                                                          
             </div>
@@ -404,21 +398,18 @@ _yearlyGoalsData = async () =>
               <div className={styles.DataDisplay}>
                 {/* <h3>Yearly Taget of Organization</h3> */}
                 <ul>                  
-                    {this.state.yearlyGoalsData.map( (YearlyGoals, index)=> {                     
-                      return(
-                        <li key={YearlyGoals.Id} >
-                          <table> 
-                              <tr><td>{YearlyGoals.Goal}</td></tr>                            
-                              <tr>
-                                  <td><progress id="file" value={(YearlyGoals.StatusPercentage)} max="100"> </progress>{YearlyGoals.StatusPercentage}%</td>
+                  {this.state.yearlyGoalsData.map( (YearlyGoals, index)=> {                     
+                    return(
+                      <li key={YearlyGoals.Id} >
+                        <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
+                              <tr><td><progress id="file" value={(YearlyGoals.StatusPercentage)} max="100"> </progress>{YearlyGoals.StatusPercentage}%
                                   { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) &&
-                                  <td> <button onClick={()=>this.editStatus(YearlyGoals.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> </td>
-                                  }
-                               </tr>
+                                  <button className={styles.EditButton} onClick={()=>this.editStatus(YearlyGoals.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> 
+                                  } </td></tr>                               
                           </table>                                               
-                        </li>            
-                        )
-                      })}             
+                      </li>            
+                     )
+                  })}             
                 </ul>
               </div>                                                          
             </div>

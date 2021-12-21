@@ -17,7 +17,7 @@ export interface IPanelSettingsState {
     webURL:string;
 }
 
-debugger
+//debugger
 export default class PanelSettings extends React.Component<IPanelSettingsProps,IPanelSettingsState>{
     public constructor(props:IPanelSettingsProps){
         super(props);
@@ -218,7 +218,7 @@ cancel = () =>{
                 <label style={{fontSize:"16px"}}>Admin Settings</label>
               </div> 
               <div>            
-                  <Link href={"https://www.google.com"} target="_blank" underline>
+                  <Link href={this.state.webURL} target="_blank" underline>
                     Go to admin settings
                   </Link>                        
               </div>
