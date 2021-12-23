@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import {BrowserRouter as Router,Switch,Route,HashRouter} from "react-router-dom";
 import Home from '../Home/Home';
@@ -19,19 +19,20 @@ export const UserContext = React.createContext(null);
 const Main = (props:any) => {
   const [teamContext,setTeamContext] = useState(null);
   const [isTeamAccess,setTeamAccess] = useState(false);
-  const [teamPath,setTeamPath] = useState("");
-  //Initialize Microsoft teams sdk
-  microsoftTeams.initialize(() => {
-    microsoftTeams.getContext((c) => {
-      setTeamContext(c);
-      if(c != null) {
-        setTeamAccess(true);
-        if(c.teamSitePath === 'assigned') {
-          setTeamPath('/assinged');
+  const [teamPath,setTeamPath] = useState('');
+ // Initialize Microsoft teams sdk
+  useEffect(() => {
+    microsoftTeams.initialize(() => {
+      microsoftTeams.getContext((c) => {
+        setTeamContext(c);
+        if(c != null) {
+          setTeamAccess(true);
+          if(c.teamSitePath === 'assigned')
+            setTeamPath('/assigned');
         }
-      }
-    });
-  }); 
+      });
+    });   
+  }, []);
 
 
   let path: string = window.location.href;
@@ -40,7 +41,7 @@ const Main = (props:any) => {
         <div>
             <HashRouter>
               <UserContext.Provider value={props.webPartContext}>
-              {!isTeamAccess &&
+              {/* {!isTeamAccess && */}
                 <Switch>
                   <Route exact path="/requested" component={()=><MyRequestTab />}/>
                   <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>
@@ -59,8 +60,8 @@ const Main = (props:any) => {
                     </div>
                   </Route>
                 </Switch>
-              } 
-              {isTeamAccess &&
+              {/* }  */}
+              {/* {isTeamAccess &&
                 <Switch>
                   <Route exact path="">
                     <div>
@@ -68,9 +69,9 @@ const Main = (props:any) => {
                       <Home/>
                     </div>
                   </Route>
-                  <Route exact path={teamPath} component={()=><AssignedTab />}/>
+                    <Route exact path={teamPath} component={()=><AssignedTab />}/>
                 </Switch>
-              }
+              } */}
               </UserContext.Provider>
             </HashRouter>
             <div>Context: {JSON.stringify(teamContext)}</div>

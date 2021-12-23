@@ -46,7 +46,7 @@ const AssignedTab = () => {
          <div className="ms-Grid" dir="ltr"> 
          <div className="ms-Grid-row">
            <div className="ms-Grid-col ms-lg2 ms-md2 ms-sm2">
-               <Link to="/nav"><Icon iconName='Home' className={styles.iconSize}></Icon></Link>
+               <Link to="/nav"><Icon iconName='Home'></Icon></Link>
            </div>
            <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                <h2>{strings.AssignedIssuesLabel}</h2>
@@ -70,7 +70,7 @@ const AssignedTab = () => {
               <h4>{res.DepartmentName}</h4>
             </div>
             <ul className={styles.nav}>
-              <li><Link to={`/assigned/${strings.InProcessLabel}/${res.DepartmentName}`}>
+              <li><Link to={`/assigned/${strings.InProcessLabel}/${res.DepartmentName}`} className={styles.iconSize} >
                 <a>{strings.InProcessLabel}
                   <span className={`${styles['bg-orange']} ${styles['pull-right']} ${styles.badge}`}>{res.InProcess}</span>
                 </a></Link>
