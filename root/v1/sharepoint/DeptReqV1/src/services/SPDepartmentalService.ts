@@ -99,13 +99,14 @@ import { IDepartmentList } from '../model/RaiseRequest';
           if(result.length>0){
             dispatcherGroupName = result[0].AssignedTo;
               let res = await this.web.siteGroups.getByName(dispatcherGroupName).users();
-              var groupUser:[]=res.map((r,index)=>{
+              var groupUsers:[]=res.map((r,index)=>{
                 return{
                   eMail:r.Email,
-                  name:r.Title
+                  name:r.Title,
+                  id:r.Id
                 }
               });
-              return Promise.resolve(groupUser)
+              return Promise.resolve(groupUsers)
           }
     }
 
@@ -177,7 +178,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
    /* 
       get the array containing the InProcess and Closed count for Assigned Tickets 
    */ 
-   async getAssignedViewCount():Promise<MyAssignedEachPlateData[]>{
+   public async getAssignedViewCount():Promise<MyAssignedEachPlateData[]>{
       let myRequestedDepartmentsCount:MyAssignedEachPlateData[] = [];
         const web = Web(this.webUrl);
         let result = await web.lists.getByTitle('EmpReq').items.select('*').filter(`ReAssignToId eq ${this.loggedInUserId}`).get();

@@ -49,6 +49,10 @@ define([], function() {
     "NoDataPresentLabel":"No data present",
     "RaisedANewRequestLabel":"Raised a new request",
     "SelectDepartmentLabel":"Select Department",
-    "SelectTheDepartmentLabel":"Select the Department"
+    "SelectTheDepartmentLabel":"Select the Department",
+    "SelectDepartmentCategoryLabel":"Select Department Category",
+    "SelectTheDepartmentCategoryLabel":"Select the Department Category",
+    "TypeYourIssueLabel":"Type your issue",
+    "FileLabel":"file"
   }
 });

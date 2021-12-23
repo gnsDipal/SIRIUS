@@ -12,7 +12,7 @@ import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 let spDispatcherServiceData: SPDepartmentalServiceData = null;
 const OpenRequests:string = "Open Requests";   
-debugger; 
+// debugger; 
 const DispatcherTab = () => {
     const mainContext = useContext(UserContext);
     const {open,dept} = useParams();
@@ -33,7 +33,7 @@ const DispatcherTab = () => {
       spDispatcherServiceData.getDispatcherPlates()
       .then((res)=>{
         setDispatcherCountData(res);
-        if(res === undefined)
+        if(res === undefined || (res[0].length === 0))
           setUnlockDispatcherCard(1); // if data is not present
         else
           setUnlockDispatcherCard(2); // For rendering once the data is set

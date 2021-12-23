@@ -24,7 +24,7 @@ import Home from '../Home';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import { IDepartmentList } from '../../../../../model/RaiseRequest';
 import { ToastContainer, toast } from 'react-toastify';
-
+import useMsGraphProvider, { IMSGraphInterface } from '../../../../../services/msGraphProvider';
 
 
 debugger;
@@ -39,7 +39,9 @@ const noDataDeptOptions:IDropdownOption[] = [{
 }
 ];
 let staticDeptOptions = [];
+//Raise a request component
 const RaiseRequestTab = (props) => {
+    let currentUserId:any; // get current user GUID
     const mainContext = useContext(UserContext);
     const [deptListCoreInfo, setDeptListCoreInfo] = useState(null);
     const [departmentOptions, setDepartmentOptions] = useState([]);
@@ -53,21 +55,36 @@ const RaiseRequestTab = (props) => {
     const [fileAddition, setFileAddition] = useState<File[]>(null);
     const [toasterNotificationFlag, setToasterNotificationFlag] = useState<boolean>(false);
     const [randomIndex, setRandomIndex] = useState<number>(0);
-    useEffect(() => { 
+    const [msGraphProvider,setMsGraphProvider] = 
+    useState<IMSGraphInterface>(
+      {
+        getCurrentUserId(): Promise<any>{return},
+        getUserId(userEmail: string): Promise<any>{return},
+        createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return},
+        sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
+      }
+    );
+    //Component 
+    useEffect(() => {
         init();              
    },[]);
    const init = async() => {
-    spRaiseRequestServiceData = new SPDepartmentalServiceData(mainContext);
-    await spRaiseRequestServiceData.getDepartmentDetailForPost()
-    .then((res:any)=>{
-      setDeptListCoreInfo(res);
-});
-    await spRaiseRequestServiceData.getDepartmentOptions()
-    .then(res =>{
+     spRaiseRequestServiceData = new SPDepartmentalServiceData(mainContext);
+     await spRaiseRequestServiceData.getDepartmentDetailForPost()
+     .then((res:any)=>{
+       setDeptListCoreInfo(res);
+      });
+      await spRaiseRequestServiceData.getDepartmentOptions()
+      .then(async(res) =>{
         setDepartmentOptions(res);
         staticDeptOptions = res;
         setOptionsUnlock(true);
-    })
+        fetchMsGraphProvider();
+      });
+}
+// ms-graph provider initializer
+const fetchMsGraphProvider = async () => {
+  setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
 }
 
 // UI event calls dynamic
@@ -115,12 +132,95 @@ const onFileAddHandle=async(fileAdd)=>{
   setFileAddition(allFiles);
 }
 
+const _sendMessage = async(ToEmailId: string, name:string) =>
+{ 
+  if(mainContext.sdks.microsoftTeams) 
+  {
+    if(ToEmailId !== ''){
+    let currentUserId = await msGraphProvider.getCurrentUserId(); 
+    let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
+    let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}&path=dispatcher/tickets`);
+
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">New Ticket</a>
+    </div>
+    </div><br />
+    `;
+    const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+  };  
+
+    await msGraphProvider.sendMessage(chatOfUser, chatMessage)
+    .then(
+      (result: any[]): void => {
+      console.log(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });   
+  }  
+} 
+
+  else
+  {
+    
+    if(ToEmailId !== ''){
+    let currentUserId = await msGraphProvider.getCurrentUserId(); 
+    let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
+    let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+
+    let url = `${mainContext.pageContext.web.absoluteUrl}#/dispatcher/Pending/${selectedDept}`;
+    let message =  `
+    <div style="border-style:solid; border-width:1px; padding:10px;">
+    <div>Departmental Request Application</div>
+    <hr />
+    <div style="background: #eaeaff; font-weight: bold ">
+        <a href="${url}">New Ticket</a>
+    </div>
+    </div><br />`;
+   const chatMessage:any = {
+      body: {
+          contentType: "html",
+          content: message
+      }
+    };
+    await msGraphProvider.sendMessage(chatOfUser, chatMessage)
+    .then(
+      (result: any[]): void => {
+      console.log(result);
+    })
+    .catch(error => {
+      console.log(error);
+    });    
+  }
+ }
+}
+
+const _messaging= (dispatcherGroupEmailIds)=>{
+  for(let i=0;i<dispatcherGroupEmailIds.length;++i){
+    _sendMessage(dispatcherGroupEmailIds[i].eMail, dispatcherGroupEmailIds[i].name );
+  }
+}
+
 const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,fileAddition)=>{
   if(selectedDept !== ''){
+    _messaging(dispatcherGrpUsers)
    spRaiseRequestServiceData.getEmployeeRequestAdded(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo)
    .then((r)=>{
     setToasterNotificationFlag(true);
     setRandomIndex(Math.floor(Math.random() * 6) + 1);
+
+   }).then(re=>{
+     setToasterNotificationFlag(false);
    })
   }
 }
@@ -133,7 +233,7 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                </div>
               </div>  
               {  
-               <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+               <div className={styles.rowWithMargin}>
                  <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                   <Stack tokens={stackTokens}>
                          <Dropdown
@@ -149,14 +249,13 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                     </Stack>
                  </div>
                 </div>
-                }
-                
-              <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
+                }           
+              <div className={styles.rowWithMargin}>
                 <div className="ms-Grid-col ms-lg8 ms-sm8">
                   <Stack tokens={stackTokens}>
                      <Dropdown
-                           placeholder="Select Department Category"
-                           label="Select the Department Category"
+                           placeholder={strings.SelectDepartmentCategoryLabel}
+                           label={strings.SelectTheDepartmentCategoryLabel}
                            onClick={getDeptCateg}
                            options={departmentCategoryOptions.length !==0 ?
                             departmentCategoryOptions:noDataDeptOptions}
@@ -171,8 +270,8 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
               </div>
              <div className="ms-Grid-row">
               <div className="ms-Grid-col ms-lg8 ms-sm8">
-                 <TextField label="Type your issue" multiline rows={3}
-                            value={requestDescription}
+                 <TextField label={strings.TypeYourIssueLabel} multiline rows={3}
+                            // value={requestDescription}
                             onChange={(requestDescription)=>onChangeRequestDescriptionHandle(requestDescription)}
                             key={randomIndex}
                          />
@@ -181,8 +280,8 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
              
              <div className="ms-Grid-row">
                <div className="ms-Grid-col ms-lg8 ms-sm8">
-                  <h4 style={{fontSize:'14px', fontWeight:'normal',marginBottom:'0'}} >{strings.AddFileLabel}</h4>
-                  <input type="file" multiple style={{width:'100%',border:'1px solid #ddd',paddingTop:'10px', paddingBottom:'10px' }}
+                  <h4 className={styles.fileHeading} >{strings.AddFileLabel}</h4>
+                  <input type={strings.FileLabel} multiple className={styles.fileInputStyle}
                   onChange={(e)=> onFileAddHandle(e.target.files) }
                   key={randomIndex}
                   />

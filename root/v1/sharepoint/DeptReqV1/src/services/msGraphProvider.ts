@@ -6,7 +6,7 @@ export interface IMSGraphInterface {
     createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>;
     sendMessage(chatId: string, chatMessage: any): Promise<any>;
 }
-// debugger;
+debugger;
 export default async function msGraphProvider(msGraphClientFactory: MSGraphClientFactory): Promise<IMSGraphInterface> {
 
     const msGraphClient = await msGraphClientFactory.getClient();

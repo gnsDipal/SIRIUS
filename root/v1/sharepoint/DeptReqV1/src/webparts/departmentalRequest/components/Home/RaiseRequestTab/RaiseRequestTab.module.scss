@@ -51,6 +51,23 @@
     color: red;
   }
 
+  .rowWithMargin{
+    @include ms-Grid-row;
+    margin-bottom: 20px;
+  }
+
+  .fileHeading{
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+
+  .fileInputStyle{
+    width: 100%;
+    border: 1px solid #ddd;
+    padding-top: 10px;
+  }
+
   .teamsSettings {
     font-size: 20px;
     //font-weight: bold;

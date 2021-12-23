@@ -506,7 +506,7 @@ export default class DepartmentalRequest extends React.Component<IDepartmentalRe
           };
         });
   
-  
+        
    departmentOptions =  res.value.map((r,index) => {
     return {
       key:index,

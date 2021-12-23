@@ -50,6 +50,10 @@ declare interface IDepartmentalRequestWebPartStrings {
   RaisedANewRequestLabel:string;
   SelectDepartmentLabel:string;
   SelectTheDepartmentLabel:string;
+  SelectDepartmentCategoryLabel:string;
+  SelectTheDepartmentCategoryLabel:string;
+  TypeYourIssueLabel:string;
+  FileLabel:string;
 }
 
 declare module 'DepartmentalRequestWebPartStrings' {

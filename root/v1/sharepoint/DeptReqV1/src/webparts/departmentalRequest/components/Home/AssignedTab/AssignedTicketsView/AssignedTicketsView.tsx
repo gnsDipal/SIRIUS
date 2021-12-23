@@ -68,7 +68,7 @@ const AssignedTicketsView = () => {
 
    const init = () => {
     //Initialize Microsoft teams sdk
-    microsoftTeams.initialize();
+    // microsoftTeams.initialize();
     // console.log('main = ' + main);
     // alert('main = ' + main);
     // alert('search = ' + search);
@@ -80,13 +80,13 @@ const AssignedTicketsView = () => {
        console.log('res = ' + res.length);
        setAssignedListData(res);
        setLoadData(true); //unlock data view
-       fetchMsGraphProvider()
+       fetchMsGraphProvider();
    });
-     if(mainContext.sdks.microsoftTeams){ 
+    //  if(mainContext.sdks.microsoftTeams){ 
     //   mainContext.sdks.microsoftTeams.context.subEntityId = "/assigned";
     //   alert("mainContext.sdks.microsoftTeams.context.subEntityId = " + mainContext.sdks.microsoftTeams.context.subEntityId);
     //   alert("mainContext.sdks.microsoftTeams.context.entityId = " + mainContext.sdks.microsoftTeams.context.entityId);
-     }
+    //  }
   }
 
   const fetchMsGraphProvider = async () => {
@@ -211,82 +211,86 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
   //  https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f?context=%7B%22subEntityId%22:&path=main,%22channelId%22:19:2cef2dcf-746b-4131-84ad-c31eb521f4d6_5074cd19-ca21-46a0-b3e2-6d882d16c376@unq.gbl.spaces%7D
 
   const _sendReAssignedTeamsMessage = async(ToEmailId: string, ticketNumber:string,department:string)=>{
+    // microsoftTeams.initialize(async() => {
+        if(mainContext.sdks.microsoftTeams) 
+        {
+        let currentUserId = await msGraphProvider.getCurrentUserId(); 
+        let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
+        let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+        
+         // const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
 
-    if(mainContext.sdks.microsoftTeams) 
-    {
-    let currentUserId = await msGraphProvider.getCurrentUserId(); 
-    let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
-    let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+        // microsoftTeams.initialize(() => {
+          // microsoftTeams.getContext((c) => {
+          // c.teamSitePath = 'assigned';
+          // });
+            // if(mainContext.sdks.microsoftTeams){ 
+             mainContext.sdks.microsoftTeams.context.subEntityId = "assigned";
+            // }
 
-    // const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
+          const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={subEntityId:'assigned',teamSitePath:"assigned"},"channelId":${chatOfUser}}`);
 
-    const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={subEntityId:${mainContext.sdks.microsoftTeams.context.subEntityId},teamSitePath:"assigned"},"channelId":${chatOfUser}}`);
+          let message =  `
+          <div style="border-style:solid; border-width:1px; padding:10px;">
+          <div>Departmental Request Application</div>
+          <hr />
+          <div style="background: #eaeaff; font-weight: bold ">
+              <a href="${url}">Ticket number: ${ticketNumber} has been reassigned to you</a>
+          </div>
+          </div><br />
+          `;
+         const chatMessage:any = {
+           body: {
+               contentType: "html",
+               content: message
+           }
+         };
 
-
-    let message =  `
-    <div style="border-style:solid; border-width:1px; padding:10px;">
-    <div>Departmental Request Application</div>
-    <hr />
-    <div style="background: #eaeaff; font-weight: bold ">
-        <a href="${url}">Ticket number: ${ticketNumber} has been reassigned to you</a>
-    </div>
-    </div><br />
-    `
-    ;
-
-    const chatMessage:any = {
-      body: {
-          contentType: "html",
-          content: message
-      }
-  };
-
-    await msGraphProvider.sendMessage(chatOfUser, chatMessage)
-    .then(
-      (result: any[]): void => {
-      console.log(result);
-      setAssignedNotification(1);
-    })
-    .catch(error => {
-      console.log(error);
-    });   
-    }    
+         await msGraphProvider.sendMessage(chatOfUser, chatMessage)
+         .then(
+           (result: any[]): void => {
+           console.log(result);
+           setAssignedNotification(1);
+         })
+         .catch(error => {
+           console.log(error);
+         });   
+         }    
     
-    else{
-    let currentUserId = await msGraphProvider.getCurrentUserId(); 
-    let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
-    let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+      else{
+          let currentUserId = await msGraphProvider.getCurrentUserId(); 
+          let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
+          let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    let url = `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${department}`
-    let message =  `
-    <div style="border-style:solid; border-width:1px; padding:10px;">
-    <div>Departmental Request Application</div>
-    <hr />
-    <div style="background: #eaeaff; font-weight: bold ">
-        <a href="${url}">Ticket number: ${ticketNumber} has been reassigned to you</a>
-    </div>
-    </div><br />
-    `
-    ;
+          let url = `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${department}`
+          let message =  `
+          <div style="border-style:solid; border-width:1px; padding:10px;">
+          <div>Departmental Request Application</div>
+          <hr />
+          <div style="background: #eaeaff; font-weight: bold ">
+              <a href="${url}">Ticket number: ${ticketNumber} has been reassigned to you</a>
+          </div>
+          </div><br />
+          `;
 
-    const chatMessage:any = {
-      body: {
-          contentType: "html",
-          content: message
-      }
-  };
+          const chatMessage:any = {
+            body: {
+                contentType: "html",
+                content: message
+            }
+       };
     
 
-    await msGraphProvider.sendMessage(chatOfUser, chatMessage)
-    .then(
-      (result: any[]): void => {
-      console.log(result);
-      
-    })
-    .catch(error => {
-      console.log(error);
-    });    
-  }    
+        await msGraphProvider.sendMessage(chatOfUser, chatMessage)
+            .then(
+              (result: any[]): void => {
+              console.log(result);
+              
+            }).catch(error => {
+              console.log(error);
+            });    
+      }
+    // }); 
   }
 
   const _sendCompletedStatusTeamsMessage=async(ToEmailId: string,ticketNumber:string)=>{
@@ -330,7 +334,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             <div className="ms-Grid" dir="ltr"> 
               <div className="ms-Grid-row">
                 <div className="ms-Grid-col ms-lg4 ms-sm4">
-                <Link to="/assigned"><Icon iconName='NavigateBack' className={styles.iconSize}></Icon></Link>
+                <Link to="/assigned"><Icon iconName={strings.NavigateBackLabel} className={styles.iconSize}></Icon></Link>
                 </div>
                 <div className="ms-Grid-col ms-lg8 ms-sm8">
                   <TooltipHost

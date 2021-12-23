@@ -91,7 +91,11 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
               
               deptData.push({deptName:deptDispatchData[0].deptName,thisCount:count })
               deptDataCount = deptDataCount + 1;
-          }
+            }
+            if(result.length === 0){
+              deptDataCount = deptDataCount + 1;
+            }
+
         }
         if(deptDataCount === SPGroupList.length && deptData.length > 0){
             return deptData
@@ -182,7 +186,18 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
     }
        let result = await this.web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
         return result       
-}    
+ }
+ 
+ public async loadEmail(userId):Promise<string>{
+   try{
+   let result = await this.web.getUserById(userId).get();
+   return Promise.resolve(result.Email);
+   }catch(error){
+      return await Promise.reject(error);
+   }
+   
+}
+
 } //End of Main class
 
 

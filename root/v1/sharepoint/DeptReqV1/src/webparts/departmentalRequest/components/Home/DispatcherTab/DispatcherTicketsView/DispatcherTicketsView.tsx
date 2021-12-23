@@ -15,7 +15,8 @@ import SPDepartmentalServiceData from '../../../../../../services/SPDepartmental
 import * as microsoftTeams from '@microsoft/teams-js';
 import DispatcherTab from '../DispatcherTab';
 import { passUser } from '../../../../../../model/IDispatcher';
-
+import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
+debugger;
 const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 let spDispatcherServiceData:SPDepartmentalServiceData = null;
 const DispatcherTicketsView = () => {
@@ -32,11 +33,19 @@ const DispatcherTicketsView = () => {
     const [randomIndex, setRandomIndex] = useState(0)
     const [dispatcherFileAddition, setDispatcherFileAddition] = useState<File[]>(null);
     const [dispatcherNotification, setDispatcherNotification] = useState(0);
+    const [msGraphProvider,setMsGraphProvider] = useState<IMSGraphInterface>(
+      {
+        getCurrentUserId(): Promise<any>{return},
+        getUserId(userEmail: string): Promise<any>{return},
+        createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return},
+        sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
+      }
+    );
 
     useEffect(() => { 
         init();              
    },[]);
-
+    //initial method
     const init = () => {
         //Initialize Microsoft teams sdk
         microsoftTeams.initialize();
@@ -45,8 +54,14 @@ const DispatcherTicketsView = () => {
        .then((res)=>{
            setDispatcherDetails(res);
            setUnlockDispatcherData(true); // Condition for displaying table data
+       fetchMsGraphProvider();
+
        });
       }
+      const fetchMsGraphProvider = async () => {
+        setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
+      }
+
      const getUserByDept=(control,reAssignTo,department,idNumber)=>{
         // grpName= department;
         // this.loadDepartmentOptions();
@@ -65,15 +80,90 @@ const DispatcherTicketsView = () => {
         setDispatcherFileAddition(dispatcherFileAdd);
       }
 
-      const onSubmitDropDownHandle = async(newPeoplePicker:any,idRequest:number,assignedToUser,ticketNumberCheck,raisedBy) => {
+      const _sendMessage = async(ToEmailId ,raisedBy, dept) =>
+      { 
+        if(mainContext.sdks.microsoftTeams) 
+        {
+          let currentUserId = await msGraphProvider.getCurrentUserId(); 
+          let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
+          let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+          
+          const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}`);
+          
+          let message =  `
+          <div style="border-style:solid; border-width:1px; padding:10px;">
+          <div>Departmental Request Application</div>
+          <hr />
+          <div style="background: #eaeaff; font-weight: bold ">
+            <a href="${url}">A new Request created by ${raisedBy}  has been assigned to you</a>
+          </div>
+          </div><br />
+          `;
+    
+        const chatMessage:any = {
+          body: {
+              contentType: "html",
+              content: message
+            }
+         };
+    
+        await msGraphProvider.sendMessage(chatOfUser, chatMessage)
+        .then(
+          (result: any[]): void => {
+          console.log(result);
+        })
+        .catch(error => {
+          console.log(error);
+        });   
+      }    
+        
+        else{
+           // let message =`Notification from Departmental Request Application: ${this.props.loggedInUserName} has raised a new Request.`;
+           let currentUserId = await msGraphProvider.getCurrentUserId(); 
+           let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
+           let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
+
+           let url =  `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${dept}`
+           let message =  `
+           <div style="border-style:solid; border-width:1px; padding:10px;">
+           <div>Departmental Request Application</div>
+           <hr />
+           <div style="background: #eaeaff; font-weight: bold ">
+               <a href="${url}">A new Request created by ${raisedBy}  has been assigned to you</a>
+           </div>
+           </div><br />
+           `
+           ;
+
+           const chatMessage:any = {
+             body: {
+                 contentType: "html",
+                 content: message
+             }
+             };
+        
+           await msGraphProvider.sendMessage(chatOfUser, chatMessage)
+           .then(
+             (result: any[]): void => {
+             console.log(result);
+           })
+           .catch(error => {
+             console.log(error);
+           });    
+         }    
+    } 
+      const onSubmitDropDownHandle = async(newPeoplePicker:any,idRequest:number,assignedToUser,ticketNumberCheck,raisedBy, dept) => {
               if(deleteSelectedTicket === ticketNumberCheck){
+              await spDispatcherServiceData.getEmail(assignedToUser.key)
+              .then(res=>{
+                _sendMessage(res,raisedBy,dept);
+              })
               setDispatcherNotification(1);
              await spDispatcherServiceData.addMultipleDispatcherAttachmentLoop(idRequest,dispatcherFileAddition)
              .then(r=>{
                  spDispatcherServiceData.addDispatcherReAssign(assignedToUser,idRequest,raisedBy)
                  .then(r=>{
                   let items = dispatcherDetails.filter(item=> item.dataId !==idRequest);
-                 // this._sendMessage(this.state.eMailId,raisedBy);
                  setDispatcherDetails(items);
                  setDeptListDropDown([]);
                  setPassAssignedToUser({key:null,text:''});
@@ -81,8 +171,7 @@ const DispatcherTicketsView = () => {
                  setDispatcherNotification(0);
               })
              })
-             
-              }
+            }
         }
     return (
         <div className={styles.dispatcherTab}>
@@ -144,7 +233,7 @@ const DispatcherTicketsView = () => {
                              />
                           </td>
                          <td>
-                          <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(e,res.dataId,passAssignedToUser,res.ticketNumber,res.raisedBy)}></Icon>
+                          <Icon iconName={strings.SaveLabel} className={styles.saveIcon} onClick={(e)=>onSubmitDropDownHandle(e,res.dataId,passAssignedToUser,res.ticketNumber,res.raisedBy,res.department)}></Icon>
                           </td>
                         </tr>
                       )
