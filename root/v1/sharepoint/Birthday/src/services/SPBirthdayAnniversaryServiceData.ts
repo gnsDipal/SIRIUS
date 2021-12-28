@@ -32,9 +32,14 @@ export default class SPBirthdayAnniversaryServiceData{
         return this.SPBirthdayAnniversaryService.loadAnniversaryImages();
     }
     
-    getInternalDetails():Promise<{}>
+    getInternalBirthdayDetails(Month: number):Promise<{}>
     {
-        return this.SPBirthdayAnniversaryService.loadInternalDetails();
+        return this.SPBirthdayAnniversaryService.loadInternalBirthdayDetails(Month);
+    }
+
+    getInternalAnniversaryDetails(Month: number):Promise<{}>
+    {
+        return this.SPBirthdayAnniversaryService.loadInternalAnniversaryDetails(Month);
     }
     
     getBirthdayFromAzure(startDate: string, endDate: string):Promise<IBirthday[]>
@@ -76,7 +81,21 @@ export default class SPBirthdayAnniversaryServiceData{
     {
         return this.SPBirthdayAnniversaryService.insertEmailDataToList(JsonData);
     }
+
+    getUserPhotoURL()
+    {
+        return this.SPBirthdayAnniversaryService.loadUserphotoURL();
+    }
+
+    getIntUserDepartment(intUserEmail: string)
+    {
+        return this.SPBirthdayAnniversaryService.loadIntUserDepartment(intUserEmail);
+    }
     
+    getAzureUserDepartment(azureUserEmail: string)
+    {
+        return this.SPBirthdayAnniversaryService.loadAzureUserDepartment(azureUserEmail);
+    }
 } //End of Main Class
       
   

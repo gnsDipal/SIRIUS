@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Switch, Route, Link } from "react-router-dom";
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { DefaultButton, Dropdown, IDropdownOption, Icon, TooltipHost, Stack } from '@fluentui/react';
 import { UserContext } from '../Main/Main';
@@ -11,63 +10,70 @@ import styles from '../Birthday.module.scss';
 import * as strings from 'BirthdayWebPartStrings';
 import SPBirthdayAnniversaryServiceData from '../../../../services/SPBirthdayAnniversaryServiceData';
 
-
 initializeIcons();
-const MyBirthdayIcon = () => <Icon iconName="BirthdayCake" className = {styles.birthdayIcon} />;
-const Help = () => <Icon iconName="Help" />
-
-let spBirthAnniServiceData:SPBirthdayAnniversaryServiceData = undefined;
-const stackTokens = { childrenGap: 50  };
-
-const CategoryOptions: IDropdownOption[] = [  
-    { key: 'all', text: 'All' },
-    { key: 'dept', text: 'Department' } 
-];
-
 debugger;
 const Birthday = ()=> {
+    let spBirthAnniServiceData:SPBirthdayAnniversaryServiceData = null;
     const mainContext = React.useContext(UserContext);
-    const[ dropdownValue, setDropdownValue ] = React.useState("");
     const[ BUsers, setBUsers ] = React.useState<IBirthday[]>([]);
     const[ AUsers, setAUsers ] = React.useState<IAnniversary[]>([]);  
     const[ count, setCount ] = React.useState<number>(1);  
     const[ bgColorBirthday, setBgColorBirthday ] = React.useState<string>("rgb(0,120,212)");
     const[ bgColorAnniversary, setBgColorAnniversary ] = React.useState<string>("white");
     const[ colorBirthday,setColorBirthday ] = React.useState<string>("white");
-    const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black");
-    const[ StartDate, setStartDate ] = React.useState<string>("");
-    const[ EndDate, setEndDate ] = React.useState<string>("");    
-    const[ selectedCategory, setSelectedCategory ] = React.useState<string>("All");
-    React.useEffect(() => {
-        setDropdownValue(mainContext.dropdown);
-        init();
-    },[dropdownValue, mainContext.dropdown]);
+    const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black"); 
+    const[ selectedCategory, setSelectedCategory ] = React.useState<IDropdownOption>({key: 'all', text: 'All'});
 
-    const init = async() => {
-        spBirthAnniServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);
-        await CheckBirthAnniversaryDataSource();      
+    const MyBirthdayIcon = () => <Icon iconName="BirthdayCake" className = {styles.birthdayIcon} />;
+    const Help = () => <Icon iconName="Help" />    
+    const stackTokens = { childrenGap: 50  };
+    const CategoryOptions: IDropdownOption[] = [  
+        { key: 'all', text: 'All' },
+        { key: 'dept', text: 'Department' } 
+    ]; 
+    spBirthAnniServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);  
+
+    React.useEffect(() => {
+        init();
+    },[ mainContext, selectedCategory]);
+
+    const init = async() => {        
+        await CheckBirthAnniversaryDataSource(count);      
     }; 
 
+    //get the department of logged in user from internal sharepoint list
+    const getInternalUserDepartment = async():Promise<string> => {
+        let userEmail = mainContext.webPartContext.pageContext.user.email;
+        let UserDepartment: string = "";
+        await spBirthAnniServiceData.getIntUserDepartment(userEmail)
+        .then((res: any) => {
+            UserDepartment = res[0].department;
+        });
+        return Promise.resolve(UserDepartment);
+    };
+
     //check the value of dropdown from property pane and call the method accordingly to fetch the user birthday/anniversary data.
-    const CheckBirthAnniversaryDataSource = async() => {      
-        {(mainContext.dropdown === 'Azure' && count === 1) &&
+    const CheckBirthAnniversaryDataSource = async(counter) => {      
+        {(mainContext.dropdown === 'Azure' && counter === 1) &&
             await LoadBirthdayDetails();
         }
-        {(mainContext.dropdown === 'Azure' &&  count === 2) &&
+        {(mainContext.dropdown === 'Azure' &&  counter === 2) &&
             await LoadAnniversaryDetails();
         }
-        {mainContext.dropdown === 'Internal' && 
-            await LoadInternalDetails();
+        {(mainContext.dropdown === 'Internal' &&  counter === 1) &&
+            await LoadInternalBirthdayDetails();
+        }
+        {(mainContext.dropdown === 'Internal'  &&  counter === 2) && 
+            await LoadInternalAnniversaryDetails();
         }
         {mainContext.dropdown === 'API' && 
-            await GetThirdPartyBirthdayAPI();
+            await GetThirdPartyBirthdayAPI(counter);
         }
     };
 
     //Load birthday details of all the users from Azure
     const LoadBirthdayDetails = async() => {
-        await CountStartAndEndDates();
-        
+        await CountStartAndEndDates();        
     };
 
     //count the start date and end date for current month
@@ -87,13 +93,11 @@ const Birthday = ()=> {
           startDate  = "2000-" + month + "-01";
           endDate  = "2000-" + month + "-" + days;
         }    
-        // setStartDate(startDate);
-        // setEndDate(endDate); 
         await spBirthAnniServiceData.getBirthdayFromAzure(startDate,endDate)
         .then(async(res:any) => {
             if(res.length > 0){
-                if(selectedCategory === "Department")
-                   await GetDeptwiseDataForBirthday(res);
+                if(selectedCategory.text === "Department")
+                   await GetDeptwiseDataForAzureBirthday(res);
                 else{
                     res = SortBirthday(res);
                     setBUsers(res);
@@ -109,7 +113,22 @@ const Birthday = ()=> {
         return new Date(year, month, 0).getDate();
     };
 
-    //get the birthday data for the users who belong to logged in users department
+    const GetDeptwiseDataForAzureBirthday = async(people: IBirthday[]) => {
+        let azureUserEmail = mainContext.webPartContext.pageContext.user.email;
+        await spBirthAnniServiceData.getAzureUserDepartment(azureUserEmail)
+        .then((res: string) => {
+            let AzureUserDepartment = res;
+            let deptPeople: IBirthday[] = [];
+            for(let j= 0; j<people.length; ++j){
+                if(people[j].department === AzureUserDepartment)
+                    deptPeople.push(people[j]);
+            }
+            let finalUsers = SortBirthday(deptPeople);
+            setBUsers(finalUsers); 
+        })
+    };
+
+    //get the external birthday data for the users who belong to logged in users department
     const GetDeptwiseDataForBirthday = async(people: IBirthday[]) => {
         let deptPeople: IBirthday[] = [];
         let azureDepartment: string;
@@ -123,8 +142,9 @@ const Birthday = ()=> {
             if(people[j].department === azureDepartment)            
                 deptPeople.push(people[j]);            
         }
-        deptPeople = await SortBirthday(deptPeople);
-        setBUsers(deptPeople);        
+        let currentMonthPeople = GetBirthdayForSorting(deptPeople);
+        let finalPeople = await SortBirthday(currentMonthPeople);
+        setBUsers(finalPeople);        
     };
 
     //sort the birthday data according to birthdate
@@ -139,21 +159,26 @@ const Birthday = ()=> {
     };
 
     //Load anniversary details of all the users from Azure
-    const LoadAnniversaryDetails = async() => {
+    const LoadAnniversaryDetails = async() => {        
         await spBirthAnniServiceData.getAnniversaryFromAzure()
-        .then((res:any) => {
-            if(res.length > 0){
-                let currentMonthPeople = GetAnniversaryForSorting(res);
-                if(selectedCategory === "Department")
-                    GetDeptwiseDataForAnniversary(currentMonthPeople);
+        .then(async(res:any) => {
+            if(res.length > 0){                
+                if(selectedCategory.text === "Department")
+                    await GetDeptwiseDataForAnniversary(res)
+                    .then((result:IAnniversary[])=>{
+                        let currentMonthPeople = GetAnniversaryForSorting(result);
+                        let currentMonthPeopleFinal = SortAnniversary(currentMonthPeople);
+                        setAUsers(currentMonthPeopleFinal);
+                    })
                 else{
+                    let currentMonthPeople = GetAnniversaryForSorting(res);
                     let currentMonthPeopleFinal = SortAnniversary(currentMonthPeople);
                     setAUsers(currentMonthPeopleFinal);
                 }
             }
         },(error: any): void => {      
             console.log(error);
-        });
+        });        
     };
     
     //get anniversary users for current month only
@@ -175,21 +200,20 @@ const Birthday = ()=> {
         return currentMonthPeople;
     };
 
-    //get the anniversary data for the users who belong to logged in users department
-    const GetDeptwiseDataForAnniversary = async(people: IAnniversary[]) => {
+    //get the azure and external anniversary data for the users who belong to logged in users department
+    const GetDeptwiseDataForAnniversary = async(people: IAnniversary[]):Promise<IAnniversary[]> => {
         let deptPeople: IAnniversary[] = [];
-        let azureDepartment: string;
+        let userDepartment: string;
         let userEmail = mainContext.webPartContext.pageContext.user.email;
         for(let i=0; i<people.length; ++i){
             if(people[i].email === userEmail)
-                azureDepartment = people[i].department;
+                userDepartment = people[i].department;
         }
         for(let j=0; j<people.length; ++j){
-            if(people[j].department === azureDepartment)            
+            if(people[j].department === userDepartment)            
                 deptPeople.push(people[j]);            
         }
-        deptPeople = await SortAnniversary(deptPeople);
-        setAUsers(deptPeople);        
+        return Promise.resolve(deptPeople);
     };
 
     //sort the anniversary data according to hiredate
@@ -203,45 +227,77 @@ const Birthday = ()=> {
         });
     };
 
-    //get the birthday/anniversary details from the internal SharePoint list
-    const LoadInternalDetails = async() => {
-        await spBirthAnniServiceData.getInternalDetails()
+    //get the birthday for current month from the internal SharePoint list
+    const LoadInternalBirthdayDetails = async() => {
+        let currentMonth: number = new Date().getMonth() + 1;        
+        await spBirthAnniServiceData.getInternalBirthdayDetails(currentMonth)
         .then((res:any) => {
-            if(count === 1){
-                let people:IBirthday[] = res;                
-                if(people.length > 0){
-                    people = getPhotoURL(people);
-                    let currentMonthPeople = GetBirthdayForSorting(people);
-                    if(selectedCategory === "Department")                    
-                        GetDeptwiseDataForBirthday(currentMonthPeople);                    
-                    else{
-                        let currentMonthPeopleFinal = SortBirthday(currentMonthPeople);
-                        setBUsers(currentMonthPeopleFinal);
-                    }
-                }
-            }
-            if(count === 2){
-                let people:IAnniversary[] = res; 
-                if(people.length > 0){
+            let people:IBirthday[] = res;            
+            if(people.length > 0){
                 people = getPhotoURL(people);
-                let currentMonthPeople = GetAnniversaryForSorting(people);
-                if(selectedCategory === "Department")
-                    GetDeptwiseDataForAnniversary(currentMonthPeople);
+                if(selectedCategory.text === "Department")
+                    GetDeptwiseDataForIntBirthday(people);
                 else{
-                    let currentMonthPeopleFinal = SortAnniversary(currentMonthPeople);
-                    setAUsers(currentMonthPeopleFinal);
+                    let currentMonthPeople = SortBirthday(people);                    
+                    setBUsers(currentMonthPeople);
+                }
+            }                        
+        },(error: any): void => {      
+            console.log(error);
+        })        
+    };
+
+    //Get the anniversary for current month from the internal sharepoint list
+    const LoadInternalAnniversaryDetails = async() => {
+        let currentMonth: number = new Date().getMonth() + 1;
+        await spBirthAnniServiceData.getInternalAnniversaryDetails(currentMonth)
+        .then((res:any) => {
+            let people:IAnniversary[] = res;
+            if(people.length > 0){
+                people = getPhotoURL(people);
+                if(selectedCategory.text === "Department")
+                    GetDeptwiseDataForIntAnniversary(people);
+                else{
+                    let currentMonthPeople = SortAnniversary(people);                    
+                    setAUsers(currentMonthPeople);
                 }
             }
-          }
         },(error: any): void => {      
             console.log(error);
         })
     };
 
+    //Get the departmentwise data for birthday
+    const GetDeptwiseDataForIntBirthday = async(people: IBirthday[]) => {        
+        let deptPeople: IBirthday[] = [];
+        await getInternalUserDepartment()
+        .then((IntUserDepartment: string) =>{
+            for(let j= 0; j<people.length; ++j){
+                if(people[j].department === IntUserDepartment)
+                    deptPeople.push(people[j]);
+            }
+            let finalUsers = SortBirthday(deptPeople);
+            setBUsers(finalUsers);
+        });               
+    };
+
+    //Get the departmentwise data for anniversary
+    const GetDeptwiseDataForIntAnniversary = async(people: IAnniversary[]) => {        
+        let deptPeople: IAnniversary[] = [];
+        await getInternalUserDepartment()
+        .then((IntUserDepartment: string) =>{
+            for(let j= 0; j<people.length; ++j){
+                if(people[j].department === IntUserDepartment)
+                    deptPeople.push(people[j]);
+            }
+            let finalUsers = SortAnniversary(deptPeople);
+            setAUsers(finalUsers);
+        });              
+    };   
+
     //get the photo url for the user having birthday/anniversary in current month
     const getPhotoURL = (people) => {
-        let siteURL: string = mainContext.webPartContext.pageContext.web.absoluteUrl;
-        let userphotourl: string = siteURL.substring(0,siteURL.search("/sites"));
+        let userphotourl: string = spBirthAnniServiceData.getUserPhotoURL();        
         for(let i: number = 0; i<people.length; ++i){     
             let imageURL: string = `${userphotourl}${"/_layouts/15/userphoto.aspx?size=S&accountname=" + people[i].email}`;
             people[i].photoUrl = imageURL;
@@ -269,29 +325,34 @@ const Birthday = ()=> {
     };
 
     //get the birthday/anniversary details using third party API
-    const GetThirdPartyBirthdayAPI = async() => {
-        let query: string = mainContext.externalAPI;
-        await spBirthAnniServiceData.getDataUsingThirdPartyAPI(query)
-        .then((res:any)=>{
-            if(count === 1) {
+    const GetThirdPartyBirthdayAPI = async(counter) => {
+        await spBirthAnniServiceData.getDataUsingThirdPartyAPI(mainContext.externalAPI)
+        .then(async(res:any)=>{
+            if(counter === 1) {
                 let people:IBirthday[] = res;                 
-                if(people.length > 0){
-                    let currentMonthPeople = GetBirthdayForSorting(people);
-                    if(selectedCategory === "Department")
-                        GetDeptwiseDataForBirthday(currentMonthPeople);
+                if(people.length > 0){                    
+                    if(selectedCategory.text === "Department")
+                        GetDeptwiseDataForBirthday(people);
                     else{
+                        let currentMonthPeople = GetBirthdayForSorting(people);
                         let currentMonthPeopleFinal = SortBirthday(currentMonthPeople);
                         setBUsers(currentMonthPeopleFinal);
                     }
                 }
             }
-            if(count === 2){
+            if(counter === 2){
                 let people:IAnniversary[] = res;            
-                if(people.length > 0){
-                    let currentMonthPeople = GetAnniversaryForSorting(people);
-                    if(selectedCategory === "Department")
-                        GetDeptwiseDataForAnniversary(currentMonthPeople);
+                if(people.length > 0){                    
+                    if(selectedCategory.text === "Department"){
+                        await GetDeptwiseDataForAnniversary(people)
+                        .then((result:IAnniversary[])=>{
+                            let currentMonthPeople = GetAnniversaryForSorting(result);
+                            let currentMonthPeopleFinal = SortAnniversary(currentMonthPeople);
+                            setAUsers(currentMonthPeopleFinal);
+                        });
+                    }
                     else{
+                        let currentMonthPeople = GetAnniversaryForSorting(people);
                         let currentMonthPeopleFinal = SortAnniversary(currentMonthPeople);
                         setAUsers(currentMonthPeopleFinal);
                     }
@@ -303,28 +364,29 @@ const Birthday = ()=> {
     };
 
     //User clicks on Birthday tab
-    const BirthdayClicked = async(dataSourceName) => {
+    const BirthdayClicked = async() => {
         setBgColorBirthday("rgb(0,120,212)");
         setBgColorAnniversary("white");
         setColorBirthday("white");
         setColorAnniversary("black");
-        setCount(1);
-        await CheckBirthAnniversaryDataSource();
+        let newcount = 1;
+        setCount(newcount);
+        await CheckBirthAnniversaryDataSource(newcount);
     };
 
     //User clicks on Anniversary tab
-    const AnniversaryClicked = async(dataSourceName) => {
+    const AnniversaryClicked = async() => {
         setBgColorBirthday("white");
         setBgColorAnniversary("rgb(0,120,212)");
         setColorBirthday("black");
         setColorAnniversary("white");
-        setCount(2);
-        await CheckBirthAnniversaryDataSource();  
+        let newcount = 2;        
+        setCount(newcount);
+        await CheckBirthAnniversaryDataSource(newcount);  
     };
 
-    const onChangeDeptCategoryHandle = async(selectedCategory:any) => {
-        setSelectedCategory(selectedCategory.text);        
-        await CheckBirthAnniversaryDataSource();
+    const onChangeCategoryHandle = async(Category:IDropdownOption) => {
+        setSelectedCategory({key:Category.key, text:Category.text});        
     };  
 
     return(
@@ -338,30 +400,26 @@ const Birthday = ()=> {
                 </div>          
                 <br></br>
                 <div className={styles.SetDisplay}>                                                             
-                    <div><Link to="/birthdayusers"><DefaultButton className={styles.birthTabBtn} style={{backgroundColor:bgColorBirthday, color:colorBirthday}} onClick={BirthdayClicked}><h3>{strings.birthdayBtnText}</h3></DefaultButton></Link></div>                                                               
-                    <div><Link to="/anniversaryusers"><DefaultButton className={styles.birthTabBtn} style={{backgroundColor:bgColorAnniversary, color:colorAnniversary}} onClick={AnniversaryClicked}><h3>{strings.anniversaryBtnText}</h3></DefaultButton></Link></div>                    
+                    <div><DefaultButton className={styles.birthTabBtn} style={{backgroundColor:bgColorBirthday, color:colorBirthday}} onClick={BirthdayClicked}><h3>{strings.birthdayBtnText}</h3></DefaultButton></div>                                                               
+                    <div><DefaultButton className={styles.birthTabBtn} style={{backgroundColor:bgColorAnniversary, color:colorAnniversary}} onClick={AnniversaryClicked}><h3>{strings.anniversaryBtnText}</h3></DefaultButton></div>                    
                 </div>
                 <br></br>
                 <div>
                     <Stack tokens={stackTokens}>
                         <Dropdown
-                        options={CategoryOptions}
-                        defaultSelectedKey={"all"}
-                        onChange={(e,selectedCategory) => onChangeDeptCategoryHandle(selectedCategory)}
+                        options={CategoryOptions}                      
                         styles={{ dropdown: { width: '20%' } }}
+                        defaultValue={selectedCategory.text}
+                        defaultSelectedKey={selectedCategory.key}
+                        onChange={(e,selectedCategory)=>onChangeCategoryHandle(selectedCategory)}
                         />
                     </Stack>
                 </div>          
-                <div>                    
-                    <Switch>
-                        <Route exact path="/birthdayusers" component={()=><BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers}  />}></Route>
-                        <Route exact path="/anniversaryusers" component={()=><AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} AUsers={AUsers}  />}></Route>
-                        <Route exact path="">
-                            <div>
-                                <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} />
-                            </div>
-                        </Route>
-                    </Switch>                   
+                <div>
+                    {
+                        (count === 1) ? <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} /> : 
+                        (count === 2) ? <AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} AUsers={AUsers} /> : <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} /> 
+                    }             
                 </div>                       
             </div>        
         </div>

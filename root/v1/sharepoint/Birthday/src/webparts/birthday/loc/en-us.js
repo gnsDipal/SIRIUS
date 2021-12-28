@@ -24,6 +24,10 @@ define([], function() {
     sendMsgText: "Send Message to",
     personalMsgText: "Personal Message",
     templateText: "Select Template:",
-    sendText:"Send"
+    sendText:"Send",
+    configurationListName: "ConfigurationSettings",
+    userDetailsListName: "UserBirthAnniversaryDetails",
+    imagesListName: "BirthdayAnniversaryImages",
+    emailSenderListName: "EmailSender"
   }
 });

@@ -3,27 +3,24 @@ import { Panel, Dropdown, TextField, PrimaryButton, DefaultButton, DialogFooter,
 import SPBirthdayAnniversaryServiceData from '../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
 
-let spPanelSettingsServiceData:SPBirthdayAnniversaryServiceData = undefined;
 debugger;
-
 const SettingsPanel = (props)=> {
+    let spPanelSettingsServiceData:SPBirthdayAnniversaryServiceData = undefined;
     const[ dropdown, setDropdown ] = React.useState<string>("");
     const[ externalAPI, setExternalAPI ] = React.useState<string>("");
     const[ IsTeamsIcon, setIsTeamsIcon ] = React.useState<boolean>(false);
     const[ errorMessage, setErrorMessage ] = React.useState<string>("");
     const[ webURL, setWebURL ] = React.useState<string>("");
+    spPanelSettingsServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);
     React.useEffect(() => {
         init();
-    },[]);
+    },[]);    
 
     const init = async() => {
-        spPanelSettingsServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);
-
         //create team tab for admin to do the initial level settings
         let webURL = await spPanelSettingsServiceData.createNewTeam();
         setWebURL(webURL);
-        await GetUpdatedDataSource(); 
-               
+        await GetUpdatedDataSource();               
     };
     
     //Get configuration from config list and update in panel
@@ -215,8 +212,8 @@ const SettingsPanel = (props)=> {
                     { key: 'Internal', text: 'Internal list from SharePoint' },
                     { key: 'API', text: 'APIs OR Webservice' }
                 ]}
-                defaultSelectedKey= {dropdown ? dropdown : 'Azure'}
-                onChange={(e, v) => setDataSource(v.key)} 
+                defaultSelectedKey= {(dropdown !== "") ? dropdown : 'Azure'}
+                onChange={(e, selectedDataSource) => setDataSource(selectedDataSource.key)} 
             />
             <br></br>
             { dropdown === 'Internal' && (
@@ -246,7 +243,7 @@ const SettingsPanel = (props)=> {
                     </div>
                     <br></br>
                     <div>
-                        <Toggle label="Show Teams Icon" onText="On" offText="Off" onChange={showHideTeamsIcon} defaultChecked={IsTeamsIcon}/>
+                        <Toggle label="Show Teams Icon" onText="On" offText="Off" onChange={showHideTeamsIcon} checked={IsTeamsIcon}/>
                     </div>
                     <div style={{color:'#d9534f'}}>{errorMessage}</div>
                 </div>                     

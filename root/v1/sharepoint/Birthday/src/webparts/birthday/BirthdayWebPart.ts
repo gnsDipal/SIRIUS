@@ -17,13 +17,14 @@ import Main from './components/Main/Main';
 import { IBirthdayProps } from './components/IBirthdayProps';
 import * as strings from 'BirthdayWebPartStrings';
 import { PropertyFieldFilePicker, IFilePickerResult } from "@pnp/spfx-property-controls/lib/PropertyFieldFilePicker";
-import { sp } from '@pnp/sp';
-import "@pnp/sp/webs";
-import "@pnp/sp/lists";
-import "@pnp/sp/fields";
-import "@pnp/sp/views";
-import { ChoiceFieldFormatType, DateTimeFieldFormatType, UrlFieldFormatType } from '@pnp/sp/fields/types';
+// import { sp } from '@pnp/sp';
+// import "@pnp/sp/webs";
+// import "@pnp/sp/lists";
+// import "@pnp/sp/fields";
+// import "@pnp/sp/views";
+// import { ChoiceFieldFormatType, DateTimeFieldFormatType, FieldTypes, UrlFieldFormatType } from '@pnp/sp/fields/types';
 import SPBirthdayAnniversaryServiceData from '../../services/SPBirthdayAnniversaryServiceData';
+import SPEnsureListService from '../../services/SPEnsureListService';
 
 export interface IBirthdayWebPartProps {
   description: string;
@@ -31,19 +32,30 @@ export interface IBirthdayWebPartProps {
   dropdown: string;
   externalAPI: string;
   IsTeamsIcon: boolean;
-  dataSource: string;
   filePickerResult: IFilePickerResult;
 }
 
 let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = undefined;
+let SPListsEnsureService: SPEnsureListService = undefined;
 
 debugger;
 export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebPartProps> {
 
-  protected async onInit(): Promise<void> {
-    await super.onInit();
-    // we always setup using the current context
-    sp.setup(this.context);
+  protected async onInit(){
+    SPListsEnsureService = new SPEnsureListService(this.context);
+    // await super.onInit();
+    // // we always setup using the current context
+    // sp.setup(this.context);
+    if(this.context.sdks.microsoftTeams){         
+      await SPListsEnsureService.ensureConfigurationList(strings.configurationListName)
+      .then((res:string)=> {
+          if(res)
+            this.createListsUsingPNP();
+      })
+            
+    }
+    else      
+      this.createListsUsingPNP();
   }
 
   public render(): void {
@@ -54,114 +66,121 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         webPartContext: this.context,       
         dropdown: this.properties.dropdown,
         externalAPI: this.properties.externalAPI,
-        IsTeamsIcon: this.properties.IsTeamsIcon,
-        dataSource: this.properties.dataSource                     
+        IsTeamsIcon: this.properties.IsTeamsIcon                            
       } 
-    );
-    if(this.context.sdks.microsoftTeams){
-      this.createConfigurationList();   
-      this.createListsUsingPNP();
-    }
-    else
-      this.createListsUsingPNP(); 
+    );     
     ReactDom.render(element, this.domElement);
   }
 
-  //create list to store the configuration for widgetset by admin in Microsoft teams
-  createConfigurationList = async() =>
-  {
-    const listEnsureResult = await sp.web.lists.ensure("ConfigurationSettings", "Defines the configuration settings for webparts in teams", 100);    
-    if (listEnsureResult.created){
-      const batch = sp.web.createBatch();
-      listEnsureResult.list.fields.inBatch(batch).addMultilineText("Settings",6,false);
-      listEnsureResult.list.fields.inBatch(batch).addText("Key");
-      listEnsureResult.list.fields.inBatch(batch).addText("ExternalAPI");
-      listEnsureResult.list.fields.inBatch(batch).addBoolean("IsTeamsIcon");
-      await batch.execute();
-      await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("Settings");
-      await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("Key");
-      await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("ExternalAPI");
-      await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("IsTeamsIcon");
-    }
-  }
+  //create list to store the configuration for widget set by admin in Microsoft teams
+  // createConfigurationList = async() =>
+  // {
+  //   const listEnsureResult = await sp.web.lists.ensure("ConfigurationSettings", "Defines the configuration settings for webparts in teams", 100);    
+  //   if (listEnsureResult.created){
+  //     const batch = sp.web.createBatch();
+  //     listEnsureResult.list.fields.inBatch(batch).addMultilineText("Settings",6,false);
+  //     listEnsureResult.list.fields.inBatch(batch).addText("Key");
+  //     listEnsureResult.list.fields.inBatch(batch).addText("ExternalAPI");
+  //     listEnsureResult.list.fields.inBatch(batch).addBoolean("IsTeamsIcon");
+  //     await batch.execute();
+  //     await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("Settings");
+  //     await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("Key");
+  //     await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("ExternalAPI");
+  //     await sp.web.lists.getByTitle("ConfigurationSettings").defaultView.fields.add("IsTeamsIcon");
+  //   }
+  // }
 
-  private createListsUsingPNP()
+  private createListsUsingPNP = async() => 
   {
-    this.createLibrary();   
+      await SPListsEnsureService.ensureImageLibrary(strings.imagesListName)
+      .then(async(res:string) => {
+        if(res)
+            await SPListsEnsureService.ensureUserList(strings.userDetailsListName)
+            .then(async(res:string) => {
+              if(res)
+                  await SPListsEnsureService.ensureEmailList(strings.emailSenderListName)
+                  .then((res:string) => {
+                    if(res)
+                      console.log("All lists are created.");
+                  });
+            });
+      });
   }  
 
   //create library to store the images for birthday and anniversary
-  createLibrary = async() =>
-  {
-    // ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
-    const listEnsureResult = await sp.web.lists.ensure("BirthdayAnniversaryImages", "Birthday and Anniversary Images list", 109);
+  // createLibrary = async() =>
+  // {
+  //   // ensure that a list exists. If it doesn't it will be created with the provided title (the rest of the settings will be default):
+  //   const listEnsureResult = await sp.web.lists.ensure("BirthdayAnniversaryImages", "Birthday and Anniversary Images list", 109);
 
-    // check if the list was created, or if it already existed:
-    if (listEnsureResult.created){
-      const batch = sp.web.createBatch();
-      listEnsureResult.list.fields.inBatch(batch).addChoice("Category", ["Birthday", "Anniversary"], ChoiceFieldFormatType.Dropdown);     
-      await batch.execute();
-      await sp.web.lists.getByTitle("BirthdayAnniversaryImages").defaultView.fields.add("Category");
-    } 
-    else 
-      console.log("My Library is already existed!");
-    const r = await listEnsureResult.list.select("Id")();
-    if(r.Id)
-      this.createListUsers();
-  }
+  //   // check if the list was created, or if it already existed:
+  //   if (listEnsureResult.created){
+  //     const batch = sp.web.createBatch();
+  //     listEnsureResult.list.fields.inBatch(batch).addChoice("Category", ["Birthday", "Anniversary"], ChoiceFieldFormatType.Dropdown);     
+  //     await batch.execute();
+  //     await sp.web.lists.getByTitle("BirthdayAnniversaryImages").defaultView.fields.add("Category");
+  //   } 
+  //   else 
+  //     console.log("My Library is already existed!");
+  //   const r = await listEnsureResult.list.select("Id")();
+  //   if(r.Id)
+  //     this.createListUsers();
+  // }
 
   //create the list to store the user details
-  createListUsers = async() =>
-  {
-    const listEnsureResult = await sp.web.lists.ensure("UserBirthAnniversaryDetails", "Users details list", 100);
-    if (listEnsureResult.created){
-      const batch = sp.web.createBatch(); 
-      listEnsureResult.list.fields.inBatch(batch).addText("name");
-      listEnsureResult.list.fields.inBatch(batch).addText("firstName");
-      listEnsureResult.list.fields.inBatch(batch).addText("lastName");
-      listEnsureResult.list.fields.inBatch(batch).addText("email");
-      listEnsureResult.list.fields.inBatch(batch).addText("department"); 
-      listEnsureResult.list.fields.inBatch(batch).addDateTime("birthDate",DateTimeFieldFormatType.DateOnly);   
-      listEnsureResult.list.fields.inBatch(batch).addDateTime("hireDate",DateTimeFieldFormatType.DateOnly);
-      await batch.execute();
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("name");
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("firstName");
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("lastName");
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("email");
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("department");
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("birthDate");
-      await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("hireDate");
-    } 
-    else 
-      console.log("My User List is already existed!");
-    const r = await listEnsureResult.list.select("Id")();
-    if(r.Id)
-      this.createListEmail();
-  }
+  // createListUsers = async() =>
+  // {
+  //   const listEnsureResult = await sp.web.lists.ensure("UserBirthAnniversaryDetails", "Users details list", 100);
+  //   if (listEnsureResult.created){
+  //     const batch = sp.web.createBatch(); 
+  //     listEnsureResult.list.fields.inBatch(batch).addText("name");
+  //     listEnsureResult.list.fields.inBatch(batch).addText("firstName");
+  //     listEnsureResult.list.fields.inBatch(batch).addText("lastName");
+  //     listEnsureResult.list.fields.inBatch(batch).addText("email");
+  //     listEnsureResult.list.fields.inBatch(batch).addText("department"); 
+  //     listEnsureResult.list.fields.inBatch(batch).addDateTime("birthDate",DateTimeFieldFormatType.DateOnly);   
+  //     listEnsureResult.list.fields.inBatch(batch).addDateTime("hireDate",DateTimeFieldFormatType.DateOnly);
+  //     listEnsureResult.list.fields.inBatch(batch).addCalculated("birthdayMonth", "=MONTH(birthDate)", DateTimeFieldFormatType.DateOnly, FieldTypes.Number);
+  //     listEnsureResult.list.fields.inBatch(batch).addCalculated("hireDayMonth", "=MONTH(hireDate)", DateTimeFieldFormatType.DateOnly, FieldTypes.Number);
+  //     await batch.execute();
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("name");
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("firstName");
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("lastName");
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("email");
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("department");
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("birthDate");
+  //     await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").defaultView.fields.add("hireDate");
+  //   } 
+  //   else 
+  //     console.log("My User List is already existed!");
+  //   const r = await listEnsureResult.list.select("Id")();
+  //   if(r.Id)
+  //     this.createListEmail();
+  // }
 
   //Create list to store the email details send to wish the desired person
-  createListEmail = async() =>
-  {
-    const listEnsureResult = await sp.web.lists.ensure("EmailSender", "Email sending list", 100);
-    if (listEnsureResult.created){
-      const batch = sp.web.createBatch();
-      listEnsureResult.list.fields.inBatch(batch).addText("EmailSubject"); 
-      listEnsureResult.list.fields.inBatch(batch).addMultilineText("EmailBody",3,true);
-      listEnsureResult.list.fields.inBatch(batch).addText("EmailTo"); 
-      listEnsureResult.list.fields.inBatch(batch).addText("EmailCCTo"); 
-      listEnsureResult.list.fields.inBatch(batch).addText("EmailFrom");
-      listEnsureResult.list.fields.inBatch(batch).addUrl("ActivityEmail",UrlFieldFormatType.Image);            
-      await batch.execute();
-      await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailSubject");
-      await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailBody");
-      await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailTo");
-      await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailCCTo");
-      await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailFrom");
-      await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("ActivityEmail");
-    } 
-    else 
-      console.log("My Email List is already existed!");
-  }
+  // createListEmail = async() =>
+  // {
+  //   const listEnsureResult = await sp.web.lists.ensure("EmailSender", "Email sending list", 100);
+  //   if (listEnsureResult.created){
+  //     const batch = sp.web.createBatch();
+  //     listEnsureResult.list.fields.inBatch(batch).addText("EmailSubject"); 
+  //     listEnsureResult.list.fields.inBatch(batch).addMultilineText("EmailBody",3,true);
+  //     listEnsureResult.list.fields.inBatch(batch).addText("EmailTo"); 
+  //     listEnsureResult.list.fields.inBatch(batch).addText("EmailCCTo"); 
+  //     listEnsureResult.list.fields.inBatch(batch).addText("EmailFrom");
+  //     listEnsureResult.list.fields.inBatch(batch).addUrl("ActivityEmail",UrlFieldFormatType.Image);            
+  //     await batch.execute();
+  //     await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailSubject");
+  //     await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailBody");
+  //     await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailTo");
+  //     await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailCCTo");
+  //     await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("EmailFrom");
+  //     await sp.web.lists.getByTitle("EmailSender").defaultView.fields.add("ActivityEmail");
+  //   } 
+  //   else 
+  //     console.log("My Email List is already existed!");
+  // }
 
   private onDropdownChange(propertyPath: string, newValue: any): void {  
       const oldValue: any = get(this.properties, propertyPath);  

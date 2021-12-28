@@ -1,40 +1,34 @@
-import { Web } from '@pnp/sp/presets/all';
+import { Web, sp, ISearchQuery, SearchResults, ISearchResult } from '@pnp/sp/presets/all';
 import { SPHttpClient, SPHttpClientResponse, HttpClient } from '@microsoft/sp-http';
-import { IBirthAnniResults, ICell } from '../Models/IBirthAnniResults';
+import { ICell } from '../Models/IBirthAnniResults';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
 
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
+let birthdayUsers: IBirthday[] = [];
 
 debugger;
+
 export default class SPBirthdayAnniversaryService{
     private webContext = null;
     private webUrl:string = null;
-    private web = null;
+    private web = null;   
 
     constructor(private context) {
-        // Setup Context to PnPjs and MSGraph
+        //Setup Context to PnPjs and MSGraph
         this.webContext = context;
-        // sp.setup({
-        //   spfxContext: context
-        // });
-    
-        // graph.setup({
-        //  spfxContext: context
-        // });       
-
-        // Init
+        sp.setup(context);
         this.onInit();
     }
 
     private async onInit() {
         this.webUrl = this.webContext.pageContext.web.absoluteUrl;
-        this.web = Web(this.webUrl);
+        this.web = Web(this.webUrl);      
     }
-
+    
     public async loadSettingsForTeams():Promise<{}>{        
-        let result = await this.web.lists.getByTitle('ConfigurationSettings').items.select("*").filter(`Key eq 'Birthday'`).get();
+        let result = await this.web.lists.getByTitle('ConfigurationSettings').items.select("Settings", "Key", "ExternalAPI", "IsTeamsIcon").filter(`Key eq 'Birthday'`).get();
         return result;
     }
 
@@ -48,55 +42,91 @@ export default class SPBirthdayAnniversaryService{
         return result;
     }
 
-    public async loadInternalDetails():Promise<{}>{       
-        let result = await this.web.lists.getByTitle('UserBirthAnniversaryDetails').items.select("*").get();        
+    public async loadInternalBirthdayDetails(Month: number):Promise<{}>{ 
+        const resultCAML = await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").getItemsByCAMLQuery({
+            ViewXml: `<View><Query><Where><Eq><FieldRef Name="birthdayMonth" /><Value Type="Number">${Month}</Value></Eq></Where></Query></View>`,
+        });      
+        return resultCAML;        
+    }
+
+    public async loadInternalAnniversaryDetails(Month: number):Promise<{}>{
+        const resultCAML = await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").getItemsByCAMLQuery({
+            ViewXml: `<View><Query><Where><Eq><FieldRef Name="hireDayMonth" /><Value Type="Number">${Month}</Value></Eq></Where></Query></View>`,
+        });       
+        return resultCAML;
+    }
+
+    public async loadIntUserDepartment(intUserEmail: string):Promise<string>{
+        let result = await this.web.lists.getByTitle('UserBirthAnniversaryDetails').items.select("department").filter(`email eq '${intUserEmail}'`).get();        
         return result;
     }
 
-    public async loadBirthdayFromAzure(startDate: string, endDate: string): Promise<IBirthday[]>{
-        let birthdayUsers: IBirthday[] = [];
-        await this.webContext.spHttpClient.get(`${this.webUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate00'&refinementfilters='RefinableDate00:range(datetime(${startDate}), datetime(${endDate}))'`, SPHttpClient.configurations.v1, {
-            headers: headers
-        })
-        .then(async(res: IBirthAnniResults) => {
-            let siteURL: string = this.webUrl;
-            let userphotourl: string = siteURL.substring(0,siteURL.search("/sites"));
-            birthdayUsers = res.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
-                return{
-                    name: this.GetValueFromSearchResult('PreferredName', r.Cells),
-                    firstName: this.GetValueFromSearchResult('FirstName', r.Cells),
-                    lastName: this.GetValueFromSearchResult('LastName', r.Cells),     
-                    email: this.GetValueFromSearchResult('WorkEmail', r.Cells),
-                    photoUrl: `${userphotourl}${"/_layouts/15/userphoto.aspx?size=S&accountname=" + this.GetValueFromSearchResult('WorkEmail', r.Cells)}`,
-                    birthDate:  this.GetValueFromSearchResult('RefinableDate00', r.Cells),
-                    department: this.GetValueFromSearchResult('Department', r.Cells)
-                };
-            });
-        })
+    public async loadAzureUserDepartment(azureUserEmail: string):Promise<string>{
+        let department;
+        for(let i:number = 0; i<birthdayUsers.length; ++i){
+            if(birthdayUsers[i].email === azureUserEmail)
+                department = birthdayUsers[i].department;
+        }
+        return await Promise.resolve(department);
+    }
+
+    public async loadBirthdayFromAzure(startDate: string, endDate: string): Promise<IBirthday[]>{               
+        const results: SearchResults = await sp.search(<ISearchQuery>{
+            Querytext: "*",
+            RowLimit: 500,
+            SourceId: 'b09a7990-05ea-4af9-81ef-edfab16c4e31',
+            SelectProperties: ['FirstName','LastName','PreferredName','WorkEmail','PictureURL','Department','RefinableDate00'],
+            RefinementFilters: [`RefinableDate00:range(datetime(${startDate}), datetime(${endDate}))`]
+        });
+
+        let userphotourl: string = this.loadUserphotoURL();            
+        birthdayUsers = results.RawSearchResults.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
+            return{
+                name: this.GetValueFromSearchResult('PreferredName', r.Cells),                    
+                firstName: this.GetValueFromSearchResult('FirstName', r.Cells),
+                lastName: this.GetValueFromSearchResult('LastName', r.Cells),
+                email: this.GetValueFromSearchResult('WorkEmail', r.Cells), 
+                photoUrl: `${userphotourl}${"/_layouts/15/userphoto.aspx?size=S&accountname=" + this.GetValueFromSearchResult('WorkEmail', r.Cells)}`,
+                birthDate: this.GetValueFromSearchResult('RefinableDate00', r.Cells),
+                department:  this.GetValueFromSearchResult('Department', r.Cells)                  
+            };
+        });        
         return await Promise.resolve(birthdayUsers);
     }
 
     public async loadAnniversaryFromAzure(): Promise<IAnniversary[]>{
-        let anniversaryUsers: IAnniversary[] = [];
-        await this.webContext.spHttpClient.get(`${this.webUrl}/_api/search/query?querytext='*'&sourceid='b09a7990-05ea-4af9-81ef-edfab16c4e31'&rowlimit=500&selectproperties='FirstName,LastName,PreferredName,WorkEmail,PictureURL,Department,RefinableDate01'`, SPHttpClient.configurations.v1, {
-            headers: headers
-        })
-        .then(async(res: IBirthAnniResults) => {
-            let siteURL: string = this.webUrl;
-            let userphotourl: string = siteURL.substring(0,siteURL.search("/sites"));
-            anniversaryUsers = res.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
-                return{
-                    name: this.GetValueFromSearchResult('PreferredName', r.Cells),
-                    firstName: this.GetValueFromSearchResult('FirstName', r.Cells),
-                    lastName: this.GetValueFromSearchResult('LastName', r.Cells),     
-                    email: this.GetValueFromSearchResult('WorkEmail', r.Cells),
-                    photoUrl: `${userphotourl}${"/_layouts/15/userphoto.aspx?size=S&accountname=" + this.GetValueFromSearchResult('WorkEmail', r.Cells)}`,
-                    hireDate: this.GetValueFromSearchResult('RefinableDate01', r.Cells),
-                    department: this.GetValueFromSearchResult('Department', r.Cells)
-                };
-            });
-        })
+        let anniversaryUsers: IAnniversary[] = [];              
+        const results: SearchResults = await sp.search(<ISearchQuery>{
+            Querytext: "*",
+            RowLimit: 500,
+            SourceId: 'b09a7990-05ea-4af9-81ef-edfab16c4e31',
+            SelectProperties: ['FirstName','LastName','PreferredName','WorkEmail','PictureURL','Department','RefinableDate01']
+        });        
+        
+        let userphotourl: string = this.loadUserphotoURL();
+        anniversaryUsers = results.RawSearchResults.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
+            return{
+                name: this.GetValueFromSearchResult('PreferredName', r.Cells),
+                firstName: this.GetValueFromSearchResult('FirstName', r.Cells),
+                lastName: this.GetValueFromSearchResult('LastName', r.Cells),     
+                email: this.GetValueFromSearchResult('WorkEmail', r.Cells),
+                photoUrl: `${userphotourl}${"/_layouts/15/userphoto.aspx?size=S&accountname=" + this.GetValueFromSearchResult('WorkEmail', r.Cells)}`,
+                hireDate: this.GetValueFromSearchResult('RefinableDate01', r.Cells),
+                department: this.GetValueFromSearchResult('Department', r.Cells)
+            };
+        });        
         return await Promise.resolve(anniversaryUsers);
+    }  
+    
+    public loadUserphotoURL(): string {
+        let siteURL: string = this.webUrl;
+        let userphotourl: string;
+        let MainSiteURL: number = siteURL.search("/sites");
+        if(MainSiteURL !== -1)
+            userphotourl = siteURL.substring(0, MainSiteURL);
+        else
+            userphotourl = siteURL;
+        return userphotourl;
     }
 
     private GetValueFromSearchResult(key: string, cells: ICell[]): string {
@@ -108,15 +138,10 @@ export default class SPBirthdayAnniversaryService{
         return '';
     } 
     
-    public async loadDataUsingThirdPartyAPI(query: string): Promise<{}>{
-        let result;
-        await this.webContext.httpClient.get(`${query}`, HttpClient.configurations.v1, {
-            headers: headers
-        })
-        .then(async(res:any) => {
-            result = res;
-        })
-        return await Promise.resolve(result);
+    public async loadDataUsingThirdPartyAPI(query: string): Promise<{}>{        
+        const result = await fetch(`${query}`);        
+        const jsonData = await result.json();         
+        return await Promise.resolve(jsonData);
     }
 
     public async insertUserDataToList(JsonData: string){
@@ -153,5 +178,4 @@ export default class SPBirthdayAnniversaryService{
             return response.json();  
         });        
     }
-
 }//End of Main function

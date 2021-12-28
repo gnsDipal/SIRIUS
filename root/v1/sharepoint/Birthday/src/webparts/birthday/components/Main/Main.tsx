@@ -16,7 +16,7 @@ const Main = (props)=> {
                         { props.webPartContext.sdks.microsoftTeams &&                            
                             <div>
                                 <Route exact path="/birthdayforteams" component={() => <BirthdayForTeams />}/> 
-                                <Route exact path="">
+                                <Route exact path="/">
                                     <div>
                                         <BirthdayForTeams />                            
                                     </div>
@@ -26,7 +26,7 @@ const Main = (props)=> {
                         { !props.webPartContext.sdks.microsoftTeams &&
                             <div>
                                 <Route exact path="/birthday" component={() => <Birthday />}/> 
-                                <Route exact path="">
+                                <Route exact path="/">
                                     <div>
                                         <Birthday />                            
                                     </div>

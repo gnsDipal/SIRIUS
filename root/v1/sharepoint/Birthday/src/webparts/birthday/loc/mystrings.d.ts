@@ -24,6 +24,10 @@ declare interface IBirthdayWebPartStrings {
   personalMsgText: string;
   templateText: string;
   sendText: string;
+  configurationListName: string;
+  userDetailsListName: string;
+  imagesListName: string;
+  emailSenderListName: string;
 }
 
 declare module 'BirthdayWebPartStrings' {

@@ -4,22 +4,16 @@ import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { Icon, PrimaryButton, TextField, Callout, DirectionalHint, TooltipHost, Persona, PersonaSize } from '@fluentui/react';
 import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
-import useMsGraphProvider from "../../../../../services/msGraphProvider";
+import useMsGraphProvider, { IMSGraphInterface } from "../../../../../services/msGraphProvider";
 import Carousel from 'react-elastic-carousel';
 import InputEmoji from 'react-input-emoji';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
 
 initializeIcons();
-
-const MyMailIcon = () => <Icon iconName="Mail" />;
-const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
-
-let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = undefined;
-let Images: string[] = [];
-
 debugger;
-const BirthdayUsers = (props) => {     
+const BirthdayUsers = (props) => {
+    let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = null;     
     const [showCallOut, setShowCallOut] = React.useState(false);
     const [showCallOutTeams, setshowCallOutTeams] = React.useState(false);
     const [calloutElement, setCalloutElement] = React.useState(null);
@@ -29,18 +23,22 @@ const BirthdayUsers = (props) => {
     const [images, setImages] = React.useState([]);
     const [selectedImage, setSelectedImage] = React.useState<string>("");
     const [message, setMessage] = React.useState<string>("");
-    const [msGraphProvider, setMsGraphProvider] = React.useState({
+    const [msGraphProvider, setMsGraphProvider] = React.useState<IMSGraphInterface>({
       getCurrentUserId(): Promise<any>{return},
       getUserId(userEmail: string): Promise<any>{return},
       createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return},
       sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
-    })
+    });
+    const MyMailIcon = () => <Icon iconName="Mail" />;
+    const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
+    spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);
+    let Images: string[] = [];  //to store birthday images loaded from library
+
     React.useEffect(() => {         
       init();              
     },[]);
 
-    const init = async() => {
-        spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);   
+    const init = async() => {           
         setMsGraphProvider(await useMsGraphProvider(props.webPartContext.msGraphClientFactory));         
         await spBirthdayServiceData.getBirthdayImagesdata()
         .then((res:any)=> {
@@ -91,7 +89,8 @@ const BirthdayUsers = (props) => {
         setCurrentMessage(messageEmoji);
     };
 
-    const sendMessage = async(ToEmailId: string) => {
+    //send message in Teams
+    const sendMessageInTeams = async(ToEmailId: string) => {
         if(currentMessage === "" || currentMessage === null)
             setErrorMessage("Please write message");        
         let currentUserId = await msGraphProvider.getCurrentUserId(); 
@@ -107,7 +106,8 @@ const BirthdayUsers = (props) => {
             console.log(error);
         });
     };
-
+    
+    //save data to email sending list
     const SaveDataClicked = async(message: string, image: string) => {
         let userEmail = props.webPartContext.pageContext.user.email;
         if(message == "" || message == null)    
@@ -244,7 +244,7 @@ const BirthdayUsers = (props) => {
                                 ></InputEmoji>
                                 <div style={{color:'#d9534f'}}>{errorMessage}</div>
                                 <div className={styles.SetSaveBtn}>
-                                    <PrimaryButton style={{border:'1px solid #ddd',backgroundColor:'rgb(0,120,212)',color:'#fff', width:'100%'}} onClick={() => sendMessage(person.email)} text={strings.sendText} />         
+                                    <PrimaryButton style={{border:'1px solid #ddd',backgroundColor:'rgb(0,120,212)',color:'#fff', width:'100%'}} onClick={() => sendMessageInTeams(person.email)} text={strings.sendText} />         
                                 </div>
                             </div>
                             </Callout> 
