@@ -28,7 +28,7 @@ export default class SPBirthdayAnniversaryService{
     }
     
     public async loadSettingsForTeams():Promise<{}>{        
-        let result = await this.web.lists.getByTitle('ConfigurationSettings').items.select("Settings", "Key", "ExternalAPI", "IsTeamsIcon").filter(`Key eq 'Birthday'`).get();
+        let result = await this.web.lists.getByTitle('ConfigurationSettings').items.select("ID", "Settings", "Key", "ExternalAPI", "IsTeamsIcon").filter(`Key eq 'Birthday'`).get();
         return result;
     }
 

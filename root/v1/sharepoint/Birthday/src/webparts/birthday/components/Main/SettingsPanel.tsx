@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Spinner,SpinnerSize } from 'office-ui-fabric-react/lib/Spinner';
 import { Panel, Dropdown, TextField, PrimaryButton, DefaultButton, DialogFooter, Toggle, Link } from '@fluentui/react';
 import SPBirthdayAnniversaryServiceData from '../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
@@ -18,14 +19,17 @@ const SettingsPanel = (props)=> {
 
     const init = async() => {
         //create team tab for admin to do the initial level settings
-        let webURL = await spPanelSettingsServiceData.createNewTeam();
-        setWebURL(webURL);
-        await GetUpdatedDataSource();               
+        spPanelSettingsServiceData.createNewTeam()
+        .then((res:any) => {
+            alert("Web URL: " + res);
+            setWebURL(res);
+        });        
+        GetUpdatedDataSource();               
     };
     
     //Get configuration from config list and update in panel
-    const GetUpdatedDataSource = async() => {
-        await spPanelSettingsServiceData.getTeamsSettingData()
+    const GetUpdatedDataSource = () => {
+        spPanelSettingsServiceData.getTeamsSettingData()
         .then((res:any) => {
             if(res.length > 0){
                 let start: number = res[0].Settings.indexOf(":");        
@@ -264,10 +268,16 @@ const SettingsPanel = (props)=> {
                 <div>
                     <label style={{fontSize:"16px"}}>Admin Settings</label>
                 </div> 
-                <div>                
-                    <Link href={webURL} target="_blank" underline>
-                        Go to admin settings
-                    </Link>               
+                <div> 
+                    {
+                        (webURL === '') &&
+                        <Spinner size={SpinnerSize.large} label="Loading"/>
+                    }
+                    {   (webURL !== '') &&
+                        <Link href={webURL} target="_blank" underline> 
+                            Go to admin settings
+                        </Link> 
+                    }                                 
                 </div>
             </div>
         </Panel>
