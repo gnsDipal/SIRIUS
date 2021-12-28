@@ -154,13 +154,21 @@
   padding: 23px 39px;
   //padding: 20px;
   outline: none;
-  //width:100%;
   width:110%;
+}
+
+.GoalsTabs
+{
+  width:33.33%;
 }
 
 @media screen and (max-width : 768px){
   .SetDisplay{
     display: block;
+    padding-left:15%;
+  }
+  .GoalsTabs {
+    width:100%;
   }
 
 }

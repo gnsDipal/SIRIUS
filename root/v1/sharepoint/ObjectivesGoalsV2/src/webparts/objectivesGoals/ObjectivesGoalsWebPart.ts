@@ -35,7 +35,7 @@ export interface IObjectivesGoalsWebPartProps {
   context:any;
   siteurl: string;
   spHttpClient: SPHttpClient;
-  isAddOrganizationGoalButtonDisplay:boolean;
+  //isAddOrganizationGoalButtonDisplay:boolean;
   isAddDepartmentGoalButtonDisplay : boolean;
   isAddPersonalGoalButtonDisplay : boolean;
   isIntervalDataDisplay: boolean;
@@ -73,7 +73,7 @@ export default class ObjectivesGoalsWebPart extends BaseClientSideWebPart<IObjec
         spHttpClient: this.context.spHttpClient,
         webUrl: this.context.pageContext.web.absoluteUrl,
         webPartContext: this.context,    
-        isAddOrganizationGoalButtonDisplay:this.properties.isAddOrganizationGoalButtonDisplay,
+        //isAddOrganizationGoalButtonDisplay:this.properties.isAddOrganizationGoalButtonDisplay,
         isAddDepartmentGoalButtonDisplay:this.properties.isAddDepartmentGoalButtonDisplay,
         isAddPersonalGoalButtonDisplay:this.properties.isAddPersonalGoalButtonDisplay,
         isIntervalDataDisplay:this.properties.isIntervalDataDisplay,

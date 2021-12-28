@@ -8,7 +8,7 @@ export interface IObjectivesGoalsProps {
   siteurl: string;
   spHttpClient: SPHttpClient;
   webUrl: string;
-  isAddOrganizationGoalButtonDisplay:boolean;
+  //isAddOrganizationGoalButtonDisplay:boolean;
   isAddDepartmentGoalButtonDisplay : boolean;
   isAddPersonalGoalButtonDisplay : boolean;
   isIntervalDataDisplay: boolean;

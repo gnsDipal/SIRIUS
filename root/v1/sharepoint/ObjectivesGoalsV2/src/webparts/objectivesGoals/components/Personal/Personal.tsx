@@ -247,47 +247,45 @@ _yearlyGoalsData = async () =>
 public render(): React.ReactElement<IPersonalProps> {
   return (
     <div className={ styles.personal }>
-    {/* <div className={ styles.container }>                             */}
-    { (this.state.isIntervalDataDisplay === true) &&
-      <div className={styles.SetDisplay}>   
-        <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Monthly Target</h3></DefaultButton></div>                                                         
-        <div className={styles.DataDisplay}>
-        {/* <h3>Monthly Taget of Personal</h3> */}
-          <ul>                  
-           {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {                 
+    {/* <div className={ styles.container }>*/}
+    {/* <h3>Monthly Taget of Personal</h3> */}
+      { (this.state.isIntervalDataDisplay === true) &&
+       <div className={styles.SetDisplay}>   
+           <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Monthly Target</h3></DefaultButton></div>                                                         
+           <div className={styles.DataDisplay}>      
+             <ul>                  
+             {this.state.monthlyTargetData.map( (MonthlyTarget, index)=> {                 
               return(
-                      <li key={MonthlyTarget.Id} >
-                        <table> 
-                            <tr><td>{MonthlyTarget.Goal}</td></tr>                                                       
-                            <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%</td>
-                                { this.props.isAddPersonalGoalButtonDisplay &&
-                                <td> <button onClick={()=>this.editStatus(MonthlyTarget.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> </td>
-                                }
-                             </tr>
-                        </table>                                               
-                      </li>            
-                      )
-                    })}             
-                </ul>
-              </div>                                                          
-            </div> 
+                  <li key={MonthlyTarget.Id} >
+                    <table> 
+                      <tr><td>{MonthlyTarget.Goal}</td></tr>                                                       
+                      <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%
+                        { this.props.isAddPersonalGoalButtonDisplay &&
+                         <button className={styles.EditButton} onClick={()=>this.editStatus(MonthlyTarget.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button>
+                         }</td></tr>
+                    </table>                                               
+                  </li>            
+                  )
+                })}             
+              </ul>
+            </div>                                                          
+          </div> 
           }
+          {/* <h3>Quaterly Objectives of Personal</h3> */}
           { (this.state.isIntervalDataDisplay === true) &&
             <div className={styles.SetDisplay}>   
               <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Quaterly Objectives</h3></DefaultButton></div>                                                         
-              <div className={styles.DataDisplay}>
-                {/* <h3>Quaterly Objectives of Personal</h3> */}
+              <div className={styles.DataDisplay}>             
                 <ul>                  
                   {this.state.quarterlyObjectivesData.map( (QuarterlyObjectives, index)=> {                    
                       return(
                         <li key={QuarterlyObjectives.Id} >
                           <table> 
-                              <tr><td>{QuarterlyObjectives.Goal}</td></tr>                                                         
-                              <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%</td>
+                            <tr><td>{QuarterlyObjectives.Goal}</td></tr>                                                         
+                            <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%
                                   { this.props.isAddPersonalGoalButtonDisplay &&
-                                  <td> <button onClick={()=>this.editStatus(QuarterlyObjectives.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> </td>
-                                  }
-                               </tr>
+                                   <button className={styles.EditButton} onClick={()=>this.editStatus(QuarterlyObjectives.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> 
+                                  } </td></tr>                              
                           </table>                                               
                         </li>            
                         )
@@ -296,21 +294,21 @@ public render(): React.ReactElement<IPersonalProps> {
               </div>                                                          
             </div>
             }
+            {/* <h3>Yearly Taget of Personal</h3> */}
             { (this.state.isIntervalDataDisplay === true) &&
             <div className={styles.SetDisplay}>   
               <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Yearly Target</h3></DefaultButton></div>                                                         
-              <div className={styles.DataDisplay}>
-                {/* <h3>Yearly Taget of Personal</h3> */}
+              <div className={styles.DataDisplay}>                
                 <ul>                  
                    {this.state.yearlyGoalsData.map( (YearlyGoals, index)=> {                     
                       return(
                         <li key={YearlyGoals.Id} >
                           <table> 
                               <tr><td>{YearlyGoals.Goal}</td></tr>                                                         
-                              <tr> <td><progress id="file" value={(YearlyGoals.StatusPercentage)} max="100"> </progress>{YearlyGoals.StatusPercentage}%</td>
+                              <tr><td><progress id="file" value={(YearlyGoals.StatusPercentage)} max="100"> </progress>{YearlyGoals.StatusPercentage}%
                                   { this.props.isAddPersonalGoalButtonDisplay &&
-                                  <td> <button onClick={()=>this.editStatus(YearlyGoals.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> </td>
-                                  }
+                                   <button className={styles.EditButton} onClick={()=>this.editStatus(YearlyGoals.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> 
+                                  }</td>
                                </tr>
                           </table>                                               
                         </li>            

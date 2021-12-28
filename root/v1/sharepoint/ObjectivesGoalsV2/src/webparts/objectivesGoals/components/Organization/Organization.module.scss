@@ -147,6 +147,11 @@
   margin-top: 20px;
 }
 
+.EditButton
+{
+  margin-left:20px;
+}
+
 .DataDisplay
 { 
   border: 1px solid black;
@@ -157,6 +162,15 @@
   overflow-y: scroll;
   //height: 80px;
   height: 100px;
-
 }
+
+@media screen and (max-width : 768px){
+  .IntervalButtonDiv{
+    width: 100%;
+  }  
+  .DataDisplay{ 
+    width:100%; 
+   }
+}
+
 

@@ -10,7 +10,7 @@ export interface IOrganizationProps {
   loggedInUserName: string;
   loggedInUserEmail: string;
   currentUserId:number;
-  isAddOrganizationGoalButtonDisplay : boolean;
+  //isAddOrganizationGoalButtonDisplay : boolean;
   isIntervalDataDisplay:boolean;
   //isOrgnizationGoalFormDisplay:boolean;
   //openOrganizationForm:number;
@@ -62,8 +62,6 @@ export interface IOrganizationState {
     }],
   organizationGroupId:any;
   organizationGroup:any;
-  expandableOptionsData:IDropdownOption[];
-  count:number,
   isOrgnizationGoalFormDisplay:boolean,
   isIntervalDataDisplay:boolean,
   GoalStatusId:number;

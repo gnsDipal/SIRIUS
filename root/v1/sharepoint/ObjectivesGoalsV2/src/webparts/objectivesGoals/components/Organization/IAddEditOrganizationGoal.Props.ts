@@ -18,7 +18,7 @@ export interface IAddEditOrganizationGoalProps {
   currentUserId:number;
   RequireGoalStatusId:number;
   //openOrganizationForm:number;
-  isAddOrganizationGoalButtonDisplay:boolean;
+  //isAddOrganizationGoalButtonDisplay:boolean;
   isIntervalDataDisplay:boolean;
   openAddEditForm:number;
   //isOrgnizationGoalFormDisplay:any;
@@ -26,12 +26,6 @@ export interface IAddEditOrganizationGoalProps {
 }
 
 export interface IAddEditOrganizationGoalState {
-goalsData:[{
-    Id: any;
-    Title: any;
-    Goal: any;
-    Interval: any; 
-    }];
 editStatusIdData:[{
       Id: any;
       Title: any;
