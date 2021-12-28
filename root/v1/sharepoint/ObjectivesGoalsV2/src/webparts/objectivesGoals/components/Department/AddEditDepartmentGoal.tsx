@@ -50,7 +50,7 @@ let CurrentUserDepartmentOptions : IDropdownOption[] = [
 
 //const stackTokens: IStackTokens = { childrenGap: 20 };
 
-debugger;
+//debugger;
 export default class AddEditDepartmentGoal extends React.Component<IAddEditDepartmentGoalProps, IAddEditDepartmentGoalState, {}> {
 
   constructor(props: IAddEditDepartmentGoalProps, state:IAddEditDepartmentGoalState) {

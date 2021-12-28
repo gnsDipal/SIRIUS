@@ -18,7 +18,7 @@ export interface IAddEditOrganizationGoalProps {
   currentUserId:number;
   RequireGoalStatusId:number;
   //openOrganizationForm:number;
-  isAddOrganizationGoalButtonDisplay:boolean;
+  //isAddOrganizationGoalButtonDisplay:boolean;
   isIntervalDataDisplay:boolean;
   openAddEditForm:number;
   //isOrgnizationGoalFormDisplay:any;

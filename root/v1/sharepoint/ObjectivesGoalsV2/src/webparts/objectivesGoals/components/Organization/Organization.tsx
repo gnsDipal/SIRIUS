@@ -17,13 +17,8 @@ let QuarterlyObjectivesData: any = [];
 let YearlyGoalsData: any = [];
 let EditStatusIdData: any =[];
 let OrganizationGroupMembersData: any =[];
-var SPGroupList = new Array();
 
-const expandableOptions: IDropdownOption[] = [
-  // { key: 'ExpandableOptions', text: 'Selet an Option ', itemType: DropdownMenuItemType.Header },
-  // { key: 'ExpandableOptions', text: 'Organization' },  
-];
-
+debugger;
 export default class Organization extends React.Component<IOrganizationProps, IOrganizationState, {}> {
 
   constructor(props: IOrganizationProps, state:IOrganizationState) {
@@ -68,9 +63,7 @@ export default class Organization extends React.Component<IOrganizationProps, IO
         Email:"", 
       }],
       organizationGroupId:0,
-      organizationGroup:"",
-      expandableOptionsData:[],
-      count:0,     
+      organizationGroup:"",          
       isOrgnizationGoalFormDisplay: false,     
       isIntervalDataDisplay:true,
       GoalStatusId:0,
@@ -79,39 +72,14 @@ export default class Organization extends React.Component<IOrganizationProps, IO
     };          
   }
 
-handleCallback = (childData) =>{
-    this.setState({isOrgnizationGoalFormDisplay: childData})
-}
-
   componentDidMount()
-  {    
+  { MonthlyTargetData=[];  
     this._getGoalSecurityData();
     //this._getOrganizationGroupMembersData();
     this._monthlyTargetData();
     this._quarterlyObjectivesData();
     this._yearlyGoalsData();
-    //this.editStatus();
-    //this.displayEditStatusIdData();
   }   
-
-MonthlyTargetClicked = () =>{
-    this.setState({
-      count: 1,        
-    })
-    this._monthlyTargetData();
-  }
-
-QuarterlyObjectivesClicked = () =>{
-    this.setState({
-      count: 2,  
-    })
-  }
-
-YearlyGoalsClicked = () =>{
-    this.setState({
-      count: 3,   
-    })
-  }
 
 AddOrganizationGoalClicked = () =>{
     this.setState({
@@ -359,7 +327,8 @@ _yearlyGoalsData = async () =>
                       <li key={MonthlyTarget.Id} >
                         <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
                                <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%
-                                { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) &&
+                                {/* { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) && */}
+                                {  (this.state.AddGoalButtonDisplay) &&
                                   <button style={{margin:'20px'}} onClick={()=>this.editStatus(MonthlyTarget.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button>                                 
                                }</td></tr>
                         </table>                                               
@@ -381,7 +350,8 @@ _yearlyGoalsData = async () =>
                       <li key={QuarterlyObjectives.Id} >
                         <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                                                          
                                <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%
-                                  { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) &&
+                               {/* { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) && */}
+                                  { (this.state.AddGoalButtonDisplay)  &&
                                    <button className={styles.EditButton} onClick={()=>this.editStatus(QuarterlyObjectives.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button>
                                   } </td></tr>                              
                         </table>                                               
@@ -403,7 +373,8 @@ _yearlyGoalsData = async () =>
                       <li key={YearlyGoals.Id} >
                         <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
                               <tr><td><progress id="file" value={(YearlyGoals.StatusPercentage)} max="100"> </progress>{YearlyGoals.StatusPercentage}%
-                                  { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) &&
+                              {/* { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) ) && */}
+                                  {  (this.state.AddGoalButtonDisplay)  &&
                                   <button className={styles.EditButton} onClick={()=>this.editStatus(YearlyGoals.Id)} onChange={(selectedId)=>this.onChangeStatusHandle(selectedId)}> Edit </button> 
                                   } </td></tr>                               
                           </table>                                               
@@ -414,8 +385,9 @@ _yearlyGoalsData = async () =>
               </div>                                                          
             </div>
             }
-                            
-            { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) && (this.state.isIntervalDataDisplay === true) )&& 
+
+             {/* { ((this.props.isAddOrganizationGoalButtonDisplay) && (this.state.AddGoalButtonDisplay) && (this.state.isIntervalDataDisplay === true) )&&                 */}
+            { ( (this.state.AddGoalButtonDisplay) && (this.state.isIntervalDataDisplay === true) )&& 
             <DefaultButton className={ styles.AddOrganizationGoalButton} onClick={this.AddOrganizationGoalClicked}><h3>Add Organization Goal</h3></DefaultButton>
             }             
                        
@@ -428,7 +400,7 @@ _yearlyGoalsData = async () =>
                   loggedInUserName= {this.props.loggedInUserName}
                   loggedInUserEmail= {this.props.loggedInUserEmail}
                   currentUserId={this.props.currentUserId}
-                  isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
+                  //isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
                   isIntervalDataDisplay={this.props.isIntervalDataDisplay}
                   RequireGoalStatusId={this.state.GoalStatusId}                  
                   openAddEditForm={this.state.openAddEditForm}                  

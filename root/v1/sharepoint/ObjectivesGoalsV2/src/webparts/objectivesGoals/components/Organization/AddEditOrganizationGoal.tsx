@@ -358,7 +358,7 @@ public render(): React.ReactElement<IAddEditOrganizationGoalProps> {
             loggedInUserName= {this.props.loggedInUserName}
             loggedInUserEmail= {this.props.loggedInUserEmail}
             currentUserId={this.props.currentUserId}
-            isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
+            //isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
             RequireGoalStatusId={this.state.GoalStatusId}      
             //openOrganizationForm={this.state.openAddEditForm}
             OrganizationTabDisplay={this.state.OrganizationTabDisplay}

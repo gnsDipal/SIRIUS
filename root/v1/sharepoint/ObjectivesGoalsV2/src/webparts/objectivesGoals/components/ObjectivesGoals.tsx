@@ -120,7 +120,7 @@ export default class ObjectivesGoals extends React.Component<IObjectivesGoalsPro
                   loggedInUserName= {this.props.loggedInUserName}
                   loggedInUserEmail= {this.props.loggedInUserEmail}
                   currentUserId={this.props.currentUserId}
-                  isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
+                  //isAddOrganizationGoalButtonDisplay={this.props.isAddOrganizationGoalButtonDisplay}
                   isIntervalDataDisplay={this.props.isIntervalDataDisplay}               
                   RequireGoalStatusId={this.props.RequireGoalStatusId}
                   openAddEditForm={this.props.openAddEditForm}                 
