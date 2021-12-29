@@ -28,6 +28,8 @@ define([], function() {
     configurationListName: "ConfigurationSettings",
     userDetailsListName: "UserBirthAnniversaryDetails",
     imagesListName: "BirthdayAnniversaryImages",
-    emailSenderListName: "EmailSender"
+    emailSenderListName: "EmailSender",
+    saveText: "Save",
+    cancelText: "Cancel",    
   }
 });

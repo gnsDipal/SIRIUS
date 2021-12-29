@@ -421,7 +421,7 @@ const Birthday = ()=> {
                         (count === 2) ? <AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} AUsers={AUsers} /> : <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} /> 
                     }             
                 </div>                       
-            </div>        
+            </div>       
         </div>
     );
 }

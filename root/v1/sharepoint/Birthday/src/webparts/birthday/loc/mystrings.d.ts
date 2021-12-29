@@ -28,6 +28,8 @@ declare interface IBirthdayWebPartStrings {
   userDetailsListName: string;
   imagesListName: string;
   emailSenderListName: string;
+  saveText: string;
+  cancelText: string;
 }
 
 declare module 'BirthdayWebPartStrings' {

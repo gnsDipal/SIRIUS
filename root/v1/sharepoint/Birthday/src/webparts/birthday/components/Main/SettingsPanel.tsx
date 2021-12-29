@@ -225,14 +225,14 @@ const SettingsPanel = (props)=> {
                     <div>
                         <PrimaryButton
                           onClick={downloadCsv}
-                          text="Download csv template"            
+                          text={strings.CSVtemplateText}            
                         />
                     </div>
                     <br></br>
                     <div>
                         <input
                           type="file"
-                          name="Upload Csv file"
+                          name={strings.UploadCSVlabel}
                           onChange={(e) => UploadCSV(e.target.files[0])}
                         />
                     </div>
@@ -243,11 +243,11 @@ const SettingsPanel = (props)=> {
             { dropdown === 'API' && (
                 <div>
                     <div>
-                        <TextField label="Enter API/Webservice URL" onChange={(e) => handleChange(e.currentTarget.value)} value={externalAPI}></TextField>
+                        <TextField label={strings.ExternalAPIlabel} onChange={(e) => handleChange(e.currentTarget.value)} value={externalAPI}></TextField>
                     </div>
                     <br></br>
                     <div>
-                        <Toggle label="Show Teams Icon" onText="On" offText="Off" onChange={showHideTeamsIcon} checked={IsTeamsIcon}/>
+                        <Toggle label={strings.TeamsIconlabel} onText="On" offText="Off" onChange={showHideTeamsIcon} checked={IsTeamsIcon}/>
                     </div>
                     <div style={{color:'#d9534f'}}>{errorMessage}</div>
                 </div>                     
@@ -255,11 +255,11 @@ const SettingsPanel = (props)=> {
             <DialogFooter>
                 <PrimaryButton
                     onClick={() => save()}
-                    text="Save"            
+                    text={strings.saveText}           
                 />
                 <DefaultButton 
                     onClick={() => cancel()} 
-                    text="Cancel" 
+                    text={strings.cancelText} 
                 />
             </DialogFooter>
             <br></br>
