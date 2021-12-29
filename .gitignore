@@ -102,3 +102,11 @@ dist
 
 # TernJS port file
 .tern-port
+root/v1/sharepoint/DeptReqV1/.history
+root/v1/sharepoint/DeptReqV1/lib
+root/v1/sharepoint/DeptReqV1/release
+root/v1/sharepoint/DeptReqV1/sharepoint
+root/v1/sharepoint/DeptReqV1/temp
+root/v1/sharepoint/DeptReqV1/package-lock.json
+root/v1/sharepoint/ObjectivesGoalsV3/.vscode
+root/v1/sharepoint/ObjectivesGoalsV3/teams
