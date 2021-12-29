@@ -20,13 +20,13 @@ import SPSettingsPanelService from './SPSettingsPanelService';
       private managerService: SPManagerService = null;
       private permissionService: SPPermissionService = null;
       private settingsPanelService:SPSettingsPanelService = null;
-      constructor(private context){
-            this.departmentalService = new SPDepartmentalService(this.context);
-            this.dispatcherService = new SPDispatcherService(this.context);
-            this.myRequestService = new SPMyRequestService(this.context);
-            this.managerService = new SPManagerService(this.context);
-            this.permissionService = new SPPermissionService(this.context);
-            this.settingsPanelService = new SPSettingsPanelService(this.context);
+      constructor(private mainProp){
+            this.departmentalService = new SPDepartmentalService(this.mainProp);
+            this.dispatcherService = new SPDispatcherService(this.mainProp);
+            this.myRequestService = new SPMyRequestService(this.mainProp);
+            this.managerService = new SPManagerService(this.mainProp);
+            this.permissionService = new SPPermissionService(this.mainProp);
+            this.settingsPanelService = new SPSettingsPanelService(this.mainProp);
             this.onInit();
       }
     private async onInit(){

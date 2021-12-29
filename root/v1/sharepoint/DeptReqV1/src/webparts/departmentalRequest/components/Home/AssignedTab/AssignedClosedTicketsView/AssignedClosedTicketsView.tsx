@@ -5,16 +5,17 @@ import {BrowserRouter as Router,Switch,Route,Link, useParams} from "react-router
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 initializeIcons();
 import { Icon } from '@fluentui/react/lib/Icon';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
+import { IStackStyles } from '@fluentui/react/lib/Stack';
 import AssignedTab from '../AssignedTab';
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 
-let spAssignedServiceData: SPDepartmentalServiceData = null;
-const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
+
 //Main function
 const AssignedClosedTicketsView = () => {
+    let spAssignedServiceData: SPDepartmentalServiceData = null;
+    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     const {Closed,dept} = useParams();
     const mainContext = useContext(UserContext);
     //State variables

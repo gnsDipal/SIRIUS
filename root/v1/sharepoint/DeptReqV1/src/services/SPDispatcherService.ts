@@ -1,13 +1,11 @@
-import * as React from 'react';
 import {Web} from '@pnp/sp/presets/all';
 import { IList } from "@pnp/sp/lists";
 import { IAttachmentFileInfo } from "@pnp/sp/attachments";
 import { Logger, LogLevel} from "@pnp/logging";
 import { IDropdownOption } from 'office-ui-fabric-react';
 import { IDispatcherList } from '../model/IDispatcher';
-  debugger;
-  let spfxContext = null;
 
+/* Main function call */
 export default class SPDispatcherService{
    private webContext = null;
    private webUrl:string = null;
@@ -15,8 +13,8 @@ export default class SPDispatcherService{
    private loggedInUserEmail?:string = "";
    private loggedInUserName?:string = "";
    private web = null;
-   constructor(private context) {  
-       this.webContext = context; 
+   constructor(private mainProp) {  
+       this.webContext = this.mainProp.webPartContext; 
      this.onInit();
    }
    private async onInit() {
@@ -31,12 +29,9 @@ export default class SPDispatcherService{
 /* DispatcherTab related calls */
 
 public async getDepartmentsDetails():Promise<{}>{  
- let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
- let loggedInUserDispGrps = await this.web.currentUser.groups(); 
-
- let testq = await this.web.siteUsers.IsSiteAdmin ;
-//    await this.getLoggedInUserIdSPGroups(result);
- let SPGroupList = await this.getLoggedInUserIdSPGroupsSuccess(loggedInUserDispGrps,result);
+  let result = await this.web.lists.getByTitle(this.mainProp.departmentListName).items.select("GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
+  let loggedInUserDispGrps = await this.web.currentUser.groups(); 
+  let SPGroupList = await this.getLoggedInUserIdSPGroupsSuccess(loggedInUserDispGrps,result);
   let dispatcherData = await this.loadAssignedTask(SPGroupList);
     return Promise.resolve(dispatcherData);
 }
@@ -50,7 +45,6 @@ public async getLoggedInUserIdSPGroups(departmentDetailsArray){
 public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
  let SPGroupList = new Array();
  var obj = res, currentLoggedInUserDispatcherGroups = 0;
- var test1:number=0;
 
  for (var loggedInTemp = 0; loggedInTemp < obj.length; loggedInTemp++) {
    obj[loggedInTemp].Added = false;
@@ -76,11 +70,11 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
       var i=0, deptDataCount=0;
       for(i=0;i<SPGroupList.length;++i){
         var depCount:number = SPGroupList.length;
-           let result = await this.web.lists.getByTitle('EmpReq').items.select("*","Author/Title").expand("Author").filter(`Status eq 'Pending' and AssignedTo eq '${SPGroupList[i].groupname}'`).orderBy("ID",false).get();
+           let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select("Department","AssignedTo","Author/Title").expand("Author").filter(`Status eq 'Pending' and AssignedTo eq '${SPGroupList[i].groupname}'`).orderBy("ID",false).get();
             
               if(result.length>0){
               var count:number = 0;
-              let deptDispatchData = result.map((r,index)=>{
+              let deptDispatchData = result.map((r)=>{
                   count = count + 1;
                   return{
                   deptName:r.Department,
@@ -111,7 +105,7 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
 
   public async loadDispatcherListInfo(passedDeptName):Promise<IDispatcherList[]>{
       try{
-          let result = await this.web.lists.getByTitle('EmpReq').items.select("*","Author/Title","AttachmentFiles").expand("Author","AttachmentFiles").filter(`Department eq '${passedDeptName}' and Status eq 'Pending'`).orderBy("ID",false).get();
+          let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select("Department","ID","DepartmentGroup","Created","Description","Category","Status","AssignedTo","ReAssignTo/Title","Author/Title","AttachmentFiles").expand("Author","ReAssignTo","AttachmentFiles").filter(`Department eq '${passedDeptName}' and Status eq 'Pending'`).orderBy("ID",false).get();
 
              let dispatcherDetails:IDispatcherList[] = result.map((r,index)=>{
                 return{
@@ -171,7 +165,7 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
       }
       await Promise.all(fileInfos)
       .then(res=>{
-       list = this.web.lists.getByTitle("EmpReq").items.getById(requestedId).attachmentFiles.addMultiple(res);
+       list = this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.getById(requestedId).attachmentFiles.addMultiple(res);
       })
       return await Promise.resolve(list);
    }
@@ -184,7 +178,7 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
       Status: "In Process",
       ReAssignToId: newUser.key,
     }
-       let result = await this.web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
+       let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.getById(idRequest).update(newItem);
         return result       
  }
  
@@ -197,7 +191,6 @@ public async getLoggedInUserIdSPGroupsSuccess(res,departmentDetailsArray){
    }
    
 }
-
 } //End of Main class
 
 

@@ -1,38 +1,33 @@
-import * as React from 'react'
-import { WebPartContext } from "@microsoft/sp-webpart-base";
-import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
+import { sp, Web } from '@pnp/sp/presets/all';
 import { IItemAddResult } from "@pnp/sp/items";
 import { IList } from "@pnp/sp/lists";
 import { IAttachmentFileInfo } from "@pnp/sp/attachments";
-// import { siteUsers } from '@pnp/sp/site-users/web'
 import { graph } from "@pnp/graph";
-// import * as moment from 'moment';
 import { Logger, LogLevel} from "@pnp/logging";
-import {UserContext} from '../webparts/departmentalRequest/components/Main/Main';
 import {AssignedTicketData, MyAssignedEachPlateData} from '../model/MyRequestedEachPlateData';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
+import { IDropdownOption } from 'office-ui-fabric-react';
 import { IOptionWithKey } from '../model/RaiseRequest';
 import { IDepartmentList } from '../model/RaiseRequest';
-  debugger;
-  let spfxContext = null;
-  let uniqueDeptList = [],myRequestedEachPlateData = [];
-  
-  export default class SPDepartmentalService{ 
+
+
+export default class SPDepartmentalService{ 
+    private uniqueDeptList = [];
+    private myRequestedEachPlateData = [];
     private webContext = null;
     private webUrl:string = null;
     private loggedInUserId?:string = null;
     private loggedInUserEmail?:string = "";
     private loggedInUserName?:string = "";
     private web = null;
-    constructor(private context) {    
+    constructor(private mainProp) {    
       // Setup Context to PnPjs and MSGraph
-      this.webContext = context;
+      this.webContext = this.mainProp.webPartContext;
       sp.setup({
-        spfxContext: context
+        spfxContext: mainProp
       });
   
       graph.setup({
-       spfxContext: context
+       spfxContext: mainProp
       });
       // Init
       this.onInit();
@@ -45,12 +40,11 @@ import { IDepartmentList } from '../model/RaiseRequest';
       this.loggedInUserName = this.webContext.pageContext.user.displayName;
       this.web = Web(this.webUrl);
     }
-/* Raise a request related Calls  */
+    /* Raise a request related Calls  */
 
     public async loadDepartmentOptions():Promise<IOptionWithKey[]>{
       let departmentOptions:IOptionWithKey[] = [];
-      const web = Web(this.webUrl);
-      let result = await this.web.lists.getByTitle('Dept').items.select("*").orderBy("Title",true).get();
+      let result = await this.web.lists.getByTitle(this.mainProp.departmentListName).items.select("Title").orderBy("Title",true).get();
       departmentOptions = result.map((r,index)=>{
         return{
           key:index,
@@ -62,7 +56,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
 
      public async loadDepartmentDetailForPost():Promise<IDepartmentList[]>{
       let departmentFAQ_deptList:IDepartmentList[] = Array();
-      let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",true).get();
+      let result = await this.web.lists.getByTitle(this.mainProp.departmentListName).items.select("Title","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",true).get();
       departmentFAQ_deptList = result.map((r,index)=>{
         return{
           deptName:r.Title,
@@ -74,8 +68,8 @@ import { IDepartmentList } from '../model/RaiseRequest';
       return await Promise.resolve(departmentFAQ_deptList);    
      }
 
-     public async deptCategorySelect(selectedDept):Promise<IDropdownOption[]>{
-      let result = await this.web.lists.getByTitle('DeptCateg').items.select("*","Department/Title").expand("Department").get();
+     public async deptCategorySelect(selectedDept:any):Promise<IDropdownOption[]>{
+      let result = await this.web.lists.getByTitle(this.mainProp.departmentCategoryListName).items.select("Title","ID","Department/Title").expand("Department").get();
         const getOptionsBySelectedDept = [];
         for(var i=0;i<result.length;++i){
           if(result[i].Department.Title === selectedDept){
@@ -91,10 +85,9 @@ import { IDepartmentList } from '../model/RaiseRequest';
     });
     return await Promise.resolve(departmentCategoryOptions)
     }
-
+    /* Loading all users belonging to present dispatcher group */
     public async loadSelectedDispatcherGroupPeople(selectedDept):Promise<[]>{
-      let result = await this.web.lists.getByTitle('EmpReq').items.select("*","Author/Title","AttachmentFiles").expand("Author","AttachmentFiles").filter(`Department eq '${selectedDept}' and Status eq 'Pending'`).orderBy("ID",false).get();
-
+      let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select("AssignedTo","Author/Title","AttachmentFiles").expand("Author","AttachmentFiles").filter(`Department eq '${selectedDept}' and Status eq 'Pending'`).orderBy("ID",false).get();
           let dispatcherGroupName = '';
           if(result.length>0){
             dispatcherGroupName = result[0].AssignedTo;
@@ -137,7 +130,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
    
      if(issueDescription !== "" && selectedDept !== ""){
 
-      const result: IItemAddResult = await this.web.lists.getByTitle("EmpReq").items.add({
+      const result: IItemAddResult = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.add({
         Title: selectedTitle,
         Description: issueDescription,
         Category: selectedDeptCategory,
@@ -147,9 +140,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
         DepartmentManagerId: selectedDeptManager,
         DepartmentGroup:selectedDeptGroup
       }).then((responseJSON) => {
-             this.addMultipleAttachmentLoop(responseJSON,fileAddition);
-            //  this.notify();
-            //  this._messaging(this.state.raisedDispatcherGroupMembersEmailIds);      
+             this.addMultipleAttachmentLoop(responseJSON,fileAddition);   
            });
       } 
       return Promise.resolve(1);
@@ -170,9 +161,9 @@ import { IDepartmentList } from '../model/RaiseRequest';
       }
       Promise.all(fileInfos)
       .then(res=>{
-      const list: IList = this.web.lists.getByTitle("EmpReq").items.getById(responseJSON.data.ID).attachmentFiles.addMultiple(res);
-      })
-    }
+      const list: IList = this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.getById(responseJSON.data.ID).attachmentFiles.addMultiple(res);
+      });
+    };
 
    // Assigned Issues Section Calls 
    /* 
@@ -180,35 +171,33 @@ import { IDepartmentList } from '../model/RaiseRequest';
    */ 
    public async getAssignedViewCount():Promise<MyAssignedEachPlateData[]>{
       let myRequestedDepartmentsCount:MyAssignedEachPlateData[] = [];
-        const web = Web(this.webUrl);
-        let result = await web.lists.getByTitle('EmpReq').items.select('*').filter(`ReAssignToId eq ${this.loggedInUserId}`).get();
-        console.log('result = ' + result);
+        let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select('Department').filter(`ReAssignToId eq ${this.loggedInUserId}`).get();
         if(result.length>0){
          var tempArr:string[]=[];
          for(let i=0;i<result.length;++i){
              tempArr.push(result[i].Department);
          }
-         uniqueDeptList = tempArr.filter(function(elem, index) {
+         this.uniqueDeptList = tempArr.filter(function(elem, index) {
            return tempArr.indexOf(elem)  === index;
          });
-         if(uniqueDeptList.length >0){
+         if(this.uniqueDeptList.length >0){
           let data:MyAssignedEachPlateData;
-          uniqueDeptList.map((r,index)=>{
+          this.uniqueDeptList.map(r =>{
             myRequestedDepartmentsCount.push(
              data = {
               DepartmentName:r,
               InProcess: 0,
               Closed:0,
             });
-          })
+          });
 
           let promiseInProcessRequestCount = []; 
           let promiseClosedRequestsCount = []; 
         
-         for(let i=0;i<uniqueDeptList.length;++i){
+         for(let i=0;i<this.uniqueDeptList.length;++i){
 
-            promiseInProcessRequestCount.push(this.getRequestedCountByPara(web,myRequestedDepartmentsCount[i].DepartmentName,'In Process',this.loggedInUserId));
-            promiseClosedRequestsCount.push(this.getRequestedCountByPara(web,myRequestedDepartmentsCount[i].DepartmentName,'Completed',this.loggedInUserId))
+            promiseInProcessRequestCount.push(this.getRequestedCountByPara(this.web,myRequestedDepartmentsCount[i].DepartmentName,'In Process',this.loggedInUserId));
+            promiseClosedRequestsCount.push(this.getRequestedCountByPara(this.web,myRequestedDepartmentsCount[i].DepartmentName,'Completed',this.loggedInUserId))
          }
         await Promise.all(promiseInProcessRequestCount)
          .then(result=>{
@@ -230,16 +219,15 @@ import { IDepartmentList } from '../model/RaiseRequest';
 
   //Todo (Dipal) (Change the method from item to count)
   public async getRequestedCountByPara(web, deptName, status, currentUserId){
-    let result = await web.lists.getByTitle('EmpReq').items.select(`*`).filter(`ReAssignToId eq ${currentUserId} and Status eq '${status}' and Department eq '${deptName}'`).get();
+    let result = await web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select('ID').filter(`ReAssignToId eq ${currentUserId} and Status eq '${status}' and Department eq '${deptName}'`).get();
     return result.length;
   }
 
   public async loadAssignToListInfo(inProcess,deptName):Promise<AssignedTicketData[]>{
       let ticketList:AssignedTicketData[] = [];
-      const web = Web(this.webUrl);
-      let result = await web.lists.getByTitle('EmpReq').items.select("*","Author/Title","ReAssignTo/Title","AttachmentFiles").expand("Author","ReAssignTo","AttachmentFiles").filter(`Status eq '${inProcess}' and ReAssignToId eq ${this.loggedInUserId} and Department eq '${deptName}'`).orderBy("ID",false).get();
+      let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select("DepartmentGroup","Department","ID","Created","Description","Category","Status","AssignedTo","Comment","Author/Title","AuthorId","ReAssignTo/Title","AttachmentFiles").expand("Author","ReAssignTo","AttachmentFiles").filter(`Status eq '${inProcess}' and ReAssignToId eq ${this.loggedInUserId} and Department eq '${deptName}'`).orderBy("ID",false).get();
       console.log('result = ' + result.length);
-      ticketList = result.map((r,index)=>{
+      ticketList = result.map((r)=>{
         return{
           ticketNumber:`INC_${r.Department}_000${r.ID}`,
               supportDeptName:r.DepartmentGroup,
@@ -267,9 +255,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
   }
 
   public async loadDepartmentOptionsByGroupName(groupName):Promise<IDropdownOption[]>{
-    const web = Web(this.webUrl);
-    let result = await web.siteGroups.getByName(`${groupName}`).users();
-      console.log('result = ' + result);
+    let result = await this.web.siteGroups.getByName(`${groupName}`).users();
        let groupUser:IDropdownOption[] = result.map((r,index)=>{
          return{
             key:r.Id,
@@ -285,14 +271,12 @@ import { IDepartmentList } from '../model/RaiseRequest';
         ReAssignToId: newReAssignedToUser.key,
         Comment:commentData
       }
-      const web = Web(this.webUrl);
-      let result = await web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
+      let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.getById(idRequest).update(newItem);
       return result;
-}
+};
 
 public async emailIdMethod(userId):Promise<string>{
-  const web = Web(this.webUrl);
-  let result = await web.getUserById(userId).get();
+  let result = await this.web.getUserById(userId).get();
   return Promise.resolve(result.Email)
 }
 
@@ -301,8 +285,7 @@ public async loadCompletedWithStatusUpdate(idRequest,commentData):Promise<{}>{
     Status: "Completed",
     Comment:commentData
   }
-  const web = Web(this.webUrl);
-  let result = await web.lists.getByTitle('EmpReq').items.getById(idRequest).update(newItem);
+  let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.getById(idRequest).update(newItem);
   return result;
 }
 }//End of Main function

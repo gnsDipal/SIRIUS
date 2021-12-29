@@ -53,6 +53,17 @@ define([], function() {
     "SelectDepartmentCategoryLabel":"Select Department Category",
     "SelectTheDepartmentCategoryLabel":"Select the Department Category",
     "TypeYourIssueLabel":"Type your issue",
-    "FileLabel":"file"
+    "FileLabel":"file",
+    // "DepartmentListName":"Sirius_DeptRequest_Department",
+    // "DepartmentCategoryName":"Sirius_DeptRequest_DepartmentCategory",
+    // "EmployeeRequestName":"Sirius_DeptRequest_EmployeeRequest"
+    "DepartmentListName":"Dept",
+    "DepartmentCategoryName":"DeptCateg",
+    "EmployeeRequestName":"EmpReq",
+    "SelectStatusLabel":"Select Status",
+    "TextLabel":"text",
+    "SelectUserLabel":"Select User",
+    "ReAssignToLabel":"ReAssign To",
+    "SelectOptionLabel":"Select option"
   }
 });

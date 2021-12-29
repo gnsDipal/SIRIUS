@@ -8,8 +8,8 @@ import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalSer
 import { UserContext } from '../../Main/Main';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
-let spSettingsPanelService:SPDepartmentalServiceData = null;
 const SettingsPanel = (props) => {
+    let spSettingsPanelService:SPDepartmentalServiceData = null;
     const mainContext = useContext(UserContext);
     const [webLink, setWebLink] = useState(''); // link for admin settings
     useEffect(() => {
@@ -26,11 +26,9 @@ const SettingsPanel = (props) => {
         });
     };
 
-    
     const cancel = () =>{
             props.onClosePanel();
-    }
-
+    };
     return (
         <Panel
             headerText="Departmental Request Web Part Settings"
@@ -44,9 +42,8 @@ const SettingsPanel = (props) => {
                     <Link href={webLink} target="_blank" underline> 
                         Link to admin settings
                     </Link> 
-                }               
+                }             
         </Panel>
-    )
-}
-
-export default SettingsPanel
+    );
+};
+export default SettingsPanel;

@@ -9,9 +9,9 @@ import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalSer
 import { UserContext } from '../../Main/Main';
 import { _UserCustomAction } from '@pnp/sp/user-custom-actions/types';
 import SettingsPanel from '../SettingsPanel/SettingsPanel';
-// debugger;
-let spPermissionDataService:SPDepartmentalServiceData = null;
+
 const Navbar = () => {
+    let spPermissionDataService:SPDepartmentalServiceData = null;
     const mainContext = useContext(UserContext);
     //state variable
     const [dispatcherPermit, setDispatcherPermit] = useState<boolean>(false);// check dispatcher permission
@@ -25,13 +25,7 @@ const Navbar = () => {
     //initialization
     const init = async()=>{
       spPermissionDataService = new SPDepartmentalServiceData(mainContext);
-      // await spPermissionDataService.getAdminLoginCheck()
-      // .then(r=>{
-      //   setIsAdminCheck(r);
-      // });
-      // let adminInTeams =  mainContext.sdks.microsoftTeams.legacyPageContext.isSiteAdmin;
-      // alert('adminInTeams = ' + adminInTeams);
-      setIsAdminCheck(mainContext.pageContext.legacyPageContext.isSiteAdmin);
+      setIsAdminCheck(mainContext.webPartContext.pageContext.legacyPageContext.isSiteAdmin);
       await spPermissionDataService.getDispatcherPermissionHandle()
       .then(r=>{
         setDispatcherPermit(r);
@@ -43,10 +37,10 @@ const Navbar = () => {
       await spPermissionDataService.getManagerPermissionHandle()
       .then(r=>{
         setManagerPermit(r);
-      })
-    }
-    const panelOpenHandle=()=>{setIsSettingsPanelOpen(true)}
-    const panelCloseHandle=()=>{setIsSettingsPanelOpen(false)}
+      });
+    };
+    const panelOpenHandle=()=>{setIsSettingsPanelOpen(true)};
+    const panelCloseHandle=()=>{setIsSettingsPanelOpen(false)};
     return (
         <div className={styles.home}>
         {
@@ -56,12 +50,12 @@ const Navbar = () => {
               <div className={styles.msGridColSize10}>
                 <h1>{strings.WelcomeLabel}</h1>
               </div>
-              { (mainContext.sdks.microsoftTeams) && (isAdminCheck) &&
-              <div className={styles.msGridColSize2}>
-                <div className={styles.gearIcon}>
-                    <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> panelOpenHandle()} ></Icon>                  
+              { (mainContext.webPartContext.sdks.microsoftTeams) && (isAdminCheck) &&
+                <div className={styles.msGridColSize2}>
+                  <div className={styles.gearIcon}>
+                      <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> panelOpenHandle()} ></Icon>                  
+                  </div>
                 </div>
-              </div>
               }
             </div>
             <div>
@@ -115,10 +109,9 @@ const Navbar = () => {
             </div>
           </div>
           }
-
         </div>
-    )
-}
-export default Navbar
+    );
+};
+export default Navbar;
 
 

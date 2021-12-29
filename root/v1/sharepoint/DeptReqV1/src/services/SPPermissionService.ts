@@ -3,7 +3,7 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web } from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
-// debugger;
+debugger;
 export default class SPPermissionService{ 
     private webContext = null;
     private webUrl:string = null;
@@ -11,15 +11,14 @@ export default class SPPermissionService{
     private loggedInUserEmail?:string = "";
     private loggedInUserName?:string = "";
     private web = null;
-    constructor(private context) {    
+    constructor(private mainProp) {    
       // Setup Context to PnPjs and MSGraph
-      this.webContext = context;
+      this.webContext = this.mainProp.webPartContext;
       sp.setup({
-        spfxContext: context
-      });
-  
+        spfxContext: this.mainProp.webPartContext
+      }); 
       graph.setup({
-       spfxContext: context
+       spfxContext: this.mainProp.webPartContext
       });
       this.onInit();
     }
@@ -32,22 +31,21 @@ export default class SPPermissionService{
           this.loggedInUserName = this.webContext.pageContext.user.displayName;
           this.web = Web(this.webUrl);
         }
+        /* Check for logged-in user is SharePoint Admin */
         public async loadAdminUserCheck():Promise<boolean>{
             try{          
-            // let result = await this.web.currentUser.IsSiteAdmin();
-            let adminUser = await this.webContext.pageContext.legacyPageContext.isSiteAdmin;
-            console.log('result = ' + adminUser);
-            return await Promise.resolve(adminUser);
-            }catch(error){
-                return await Promise.reject(error);
-            }
+                let adminUser = await this.webContext.pageContext.legacyPageContext.isSiteAdmin;
+                return await Promise.resolve(adminUser);
+                }catch(error){
+                    return await Promise.reject(error);
+                }
         }
         public async loadDispatcherPermissionHandle():Promise<boolean>{
-            let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
+            let result = await this.web.lists.getByTitle(this.mainProp.departmentListName).items.select("GroupName/Title").expand("GroupName").orderBy("Title",false).get();
             let loggedInUserGrps = await this.web.currentUser.groups(); 
             let permissionCheck = await this.checkForDepts(result,loggedInUserGrps);
             return Promise.resolve(permissionCheck);
-        }
+        };
 
         public async checkForDepts(result,loggedInUserGrps):Promise<boolean>{
             let count:number = 0;
@@ -69,11 +67,11 @@ export default class SPPermissionService{
         }
 
         public async loadAssignedPermissionHandle():Promise<boolean>{
-            let result = await this.web.lists.getByTitle('Dept').items.select("*","GroupName/Title","DepartmentGroup/Title","Manager/Title").expand("GroupName","DepartmentGroup","Manager").orderBy("Title",false).get();
+            let result = await this.web.lists.getByTitle(this.mainProp.departmentListName).items.select("DepartmentGroup/Title").expand("DepartmentGroup").orderBy("Title",false).get();
             let loggedInUserGrps = await this.web.currentUser.groups(); 
             let permissionCheck = await this.checkForSupportDepts(result,loggedInUserGrps);
             return Promise.resolve(permissionCheck);
-        }
+        };
         public async checkForSupportDepts(result,loggedInUserGrps):Promise<boolean>{
             let count:number = 0;
             outer_loop: 
@@ -89,12 +87,11 @@ export default class SPPermissionService{
                 return Promise.resolve(true);     
             else
                 return Promise.resolve(false);
-        }
-    
+        };   
         public async loadManagerPermissionHandle():Promise<boolean>{
           try{
             let permissionCheck:boolean = false;
-            let result = await this.web.lists.getByTitle('Dept').items.select("*","Manager/Title").expand("Manager").get();
+            let result = await this.web.lists.getByTitle(this.mainProp.departmentListName).items.select("ManagerId","Manager/Title").expand("Manager").get();
             for(let i=0;i<result.length;++i){
                 if(this.loggedInUserId === result[i].ManagerId){
                     permissionCheck = true;
@@ -105,7 +102,7 @@ export default class SPPermissionService{
           }catch(error){
                 return Promise.reject(error);
           }  
-        }
+        };
         public async checkForManagerDepts(result,loggedInUserGrps):Promise<boolean>{
             let count:number = 0;
             outer_loop: 
@@ -121,5 +118,5 @@ export default class SPPermissionService{
                 return Promise.resolve(true);     
             else
                 return Promise.resolve(false);
-        }
-} //End of main class
+        };
+}; //End of main class

@@ -1,14 +1,13 @@
-import * as React from 'react';
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp } from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
 import { Context } from "@microsoft/teams-js";
-import { SPHttpClient, ISPHttpClientOptions, SPHttpClientResponse } from '@microsoft/sp-http';
+import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 
 export interface spProps {
   context:Context
-}
+};
 export default class spservices {
     private webContext:WebPartContext;
     constructor(private context: WebPartContext) {    
@@ -28,7 +27,7 @@ export default class spservices {
   private async onInit() {
     Logger.write("spServices init()", LogLevel.Info);
     // this.checkLoggedInUserAsAdmin();
-  }
+  };
     checkLoggedInUserAsAdmin() {
       const headers: HeadersInit = new Headers();
       // suppress metadata to minimize the amount of data loaded from SharePoint

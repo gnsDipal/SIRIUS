@@ -54,6 +54,14 @@ declare interface IDepartmentalRequestWebPartStrings {
   SelectTheDepartmentCategoryLabel:string;
   TypeYourIssueLabel:string;
   FileLabel:string;
+  DepartmentListName:string;
+  DepartmentCategoryName:string;
+  EmployeeRequestName:string;
+  SelectStatusLabel:string;
+  TextLabel:string;
+  SelectUserLabel:string;
+  ReAssignToLabel:string;
+  SelectOptionLabel:string;
 }
 
 declare module 'DepartmentalRequestWebPartStrings' {

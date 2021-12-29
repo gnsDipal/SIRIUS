@@ -16,23 +16,13 @@ import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
 import { passUser } from '../../../../../../model/MyRequestedEachPlateData';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
-import * as microsoftTeams from '@microsoft/teams-js';
 
-// debugger;
-let spAssignedServiceData: SPDepartmentalServiceData = null;
-const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 //Main function
 const AssignedTicketsView = () => {
-    // let loc = useLocation();
-    // const urlSearchParams = new URLSearchParams(loc);
-    // const params = Object.fromEntries(urlSearchParams.entries());
-    // const search = useLocation().serach;
-    // const main = new URLSearchParams(search).get('main');
-    // const loc = useLocation();
-    // const locMain = new URLSearchParams(loc).get('main');
+    let spAssignedServiceData: SPDepartmentalServiceData = null;
+    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     const {Inprocess,dept} = useParams();
     const mainContext = useContext(UserContext);
-
 
     //State variables
     const [assignedListData,setAssignedListData] = useState(null);
@@ -60,20 +50,12 @@ const AssignedTicketsView = () => {
       }
     );
     const [ticketProcessNotification, setTicketProcessNotification] = useState<number>(0);
-    
-
+  
     useEffect(() => { 
         init();              
    },[]);
 
    const init = () => {
-    //Initialize Microsoft teams sdk
-    // microsoftTeams.initialize();
-    // console.log('main = ' + main);
-    // alert('main = ' + main);
-    // alert('search = ' + search);
-    // alert('loc = ' + loc);
-    // alert('loc.main = ' + loc.main);
     spAssignedServiceData = new SPDepartmentalServiceData(mainContext);
     spAssignedServiceData.getAssignToListData(Inprocess,dept)
    .then((res)=>{
@@ -82,15 +64,10 @@ const AssignedTicketsView = () => {
        setLoadData(true); //unlock data view
        fetchMsGraphProvider();
    });
-    //  if(mainContext.sdks.microsoftTeams){ 
-    //   mainContext.sdks.microsoftTeams.context.subEntityId = "/assigned";
-    //   alert("mainContext.sdks.microsoftTeams.context.subEntityId = " + mainContext.sdks.microsoftTeams.context.subEntityId);
-    //   alert("mainContext.sdks.microsoftTeams.context.entityId = " + mainContext.sdks.microsoftTeams.context.entityId);
-    //  }
   }
 
   const fetchMsGraphProvider = async () => {
-    setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
+    setMsGraphProvider(await useMsGraphProvider(mainContext.webPartContext.msGraphClientFactory))
   }
 
  function onTextFieldClickHandle(ticketNumber){
@@ -104,14 +81,14 @@ function inputComment(event){
 function loadStatusList(){
 
     setStatusOptions([
-        {key:1, text:'In Process'},
-        {key:2, text:'Completed'},
+        {key:1, text:strings.InProcessLabel},
+        {key:2, text:strings.CompletedLabel},
     ])
   }
 
  function onStatusChangeHandle(selectedStatus,ticketNumber,department,idNumber,authorId){
     console.log(selectedStatus,ticketNumber);
-    if(selectedStatus.text === 'Completed'){
+    if(selectedStatus.text === strings.CompletedLabel){
       this.getEmail(authorId);
       setDeptListDropDown([]);
       setStatusCompletedCheck(2);
@@ -122,7 +99,7 @@ function loadStatusList(){
       })
 
     }
-    if(selectedStatus.text === 'In Process'){
+    if(selectedStatus.text === strings.InProcessLabel){
       spAssignedServiceData.getDeptOptionsByGrpName(department)
       .then(
         data=>{
@@ -162,8 +139,7 @@ async function onUserSelect(userName,selectedName, ticketNumber){
 async function onSubmitDropDownHandle(commentData:string,idRequest:number,assignedToUser,ticketNumberCheck,department){
         if(deleteSelectedTicket === ticketNumberCheck){
           if(assignedToUser.text != ''){
-            setTicketProcessNotification(1)
-            // SetEmailId(AssignedUserEmailId.Email);
+            setTicketProcessNotification(1);
             spAssignedServiceData.addReAssignedToData(assignedToUser,idRequest,commentData,ticketNumberCheck).then(r=>{
               var items = assignedListData.filter(item=> item.dataId !==idRequest);
               _sendReAssignedTeamsMessage(emailId, ticketNumberCheck, department);
@@ -177,9 +153,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
               setStatusCompletedCheck(0);
               setStatusOptions([]);
               setCommentData('');
-              // setAssignedNotification(0);
               setTicketProcessNotification(0);
-              // setAssignedNotification(1);
               setTimeout(()=>{
                 setAssignedNotification(1)
               },6000);
@@ -201,34 +175,21 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             setStatusCompletedCheck(0);
             setStatusOptions([]);
             setCommentData('');
-            setAssignedNotification(0); //Complete it properly
-
+            setAssignedNotification(0);
            })
           }
       } 
   }
-  // &path=${loc.pathname}
-  //  https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f?context=%7B%22subEntityId%22:&path=main,%22channelId%22:19:2cef2dcf-746b-4131-84ad-c31eb521f4d6_5074cd19-ca21-46a0-b3e2-6d882d16c376@unq.gbl.spaces%7D
 
   const _sendReAssignedTeamsMessage = async(ToEmailId: string, ticketNumber:string,department:string)=>{
-    // microsoftTeams.initialize(async() => {
-        if(mainContext.sdks.microsoftTeams) 
+        if(mainContext.webPartContext.sdks.microsoftTeams) 
         {
         let currentUserId = await msGraphProvider.getCurrentUserId(); 
         let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
         let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
-        
-         // const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId":${mainContext.sdks.microsoftTeams.context.subEntityId}&path=main,"channelId":${chatOfUser}}`)
+        mainContext.webPartContext.sdks.microsoftTeams.context.subEntityId = "assigned";
 
-        // microsoftTeams.initialize(() => {
-          // microsoftTeams.getContext((c) => {
-          // c.teamSitePath = 'assigned';
-          // });
-            // if(mainContext.sdks.microsoftTeams){ 
-             mainContext.sdks.microsoftTeams.context.subEntityId = "assigned";
-            // }
-
-          const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.sdks.microsoftTeams.context.entityId}?context={subEntityId:'assigned',teamSitePath:"assigned"},"channelId":${chatOfUser}}`);
+          const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.webPartContext.sdks.microsoftTeams.context.entityId}?context={subEntityId:'assigned',teamSitePath:"assigned"},"channelId":${chatOfUser}}`);
 
           let message =  `
           <div style="border-style:solid; border-width:1px; padding:10px;">
@@ -262,7 +223,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
           let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
           let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-          let url = `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${department}`
+          let url = `${mainContext.webPartContext.pageContext.web.absoluteUrl}#/assigned/In Process/${department}`
           let message =  `
           <div style="border-style:solid; border-width:1px; padding:10px;">
           <div>Departmental Request Application</div>
@@ -280,7 +241,6 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             }
        };
     
-
         await msGraphProvider.sendMessage(chatOfUser, chatMessage)
             .then(
               (result: any[]): void => {
@@ -289,8 +249,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
             }).catch(error => {
               console.log(error);
             });    
-      }
-    // }); 
+      } 
   }
 
   const _sendCompletedStatusTeamsMessage=async(ToEmailId: string,ticketNumber:string)=>{
@@ -299,7 +258,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    let url = `${mainContext.pageContext.web.absoluteUrl}`
+    let url = `${mainContext.webPartContext.pageContext.web.absoluteUrl}`
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
     <div>Departmental Request Application</div>
@@ -308,8 +267,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
         <span>The request ${ticketNumber} you created has been marked as complete.</span>
     </div>
     </div><br />
-    `
-    ;
+    `;
 
     const chatMessage:any = {
       body: {
@@ -342,12 +300,6 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                   ><Icon iconName={strings.AssignLabel} className={styles.iconSize} ></Icon>
                   </TooltipHost>             
                 </div>
-                {/* <div className="ms-Grid-col ms-lg4 ms-sm4">
-                  <TooltipHost
-                     content={strings.AllLabel}
-                  ><Icon iconName={strings.ViewAllLabel} className={styles.iconSize} ></Icon>
-                  </TooltipHost>
-                </div> */}
               </div>
 
       <div className="ms-Grid-row">
@@ -383,7 +335,7 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                     <Stack horizontal styles={stackStyles}>
                      <TextField multiline rows={3}
                       key={index}
-                      type="text"
+                      type={strings.TextLabel}
                       onClick={()=>onTextFieldClickHandle(res.dataId)}
                        defaultValue=""
                        value={
@@ -395,8 +347,8 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                     </td>
                     <td>
                       <Dropdown
-                        placeholder='Select Status'
-                       label={'Status'}
+                        placeholder={strings.SelectStatusLabel}
+                       label={strings.StatusLabel}
                         options={statusOptions}
                          defaultSelectedKey={" "}
                         onClick={()=>loadStatusList()}
@@ -404,8 +356,8 @@ async function onSubmitDropDownHandle(commentData:string,idRequest:number,assign
                       </Dropdown>
                       <Dropdown
                        id={res.ticketNumber + '_dropDown'} 
-                       placeholder='Select User'
-                       label={'ReAssigned To'}
+                       placeholder={strings.SelectUserLabel}
+                       label={strings.ReAssignToLabel}
                        defaultSelectedKey={" "}
                       onClick={(e)=>getUserByDept(res.ticketNumber + '_dropDown',this,res.supportDeptName,res.dataId)} 
                       options={deptListDropDown}

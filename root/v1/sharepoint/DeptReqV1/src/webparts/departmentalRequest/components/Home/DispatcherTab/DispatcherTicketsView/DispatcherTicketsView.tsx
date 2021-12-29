@@ -6,9 +6,9 @@ import {BrowserRouter as Router,Switch,Route,Link, useParams} from "react-router
 import { initializeIcons } from '@fluentui/font-icons-mdl2';
 initializeIcons();
 import { Icon } from '@fluentui/react/lib/Icon';
-import { Dropdown, IDropdown, IDropdownOption, optionProperties, TextField, Tooltip } from 'office-ui-fabric-react';
+import { Dropdown } from 'office-ui-fabric-react';
 import { IStackStyles } from '@fluentui/react/lib/Stack';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import { Logger, LogLevel} from "@pnp/logging";
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
@@ -16,10 +16,11 @@ import * as microsoftTeams from '@microsoft/teams-js';
 import DispatcherTab from '../DispatcherTab';
 import { passUser } from '../../../../../../model/IDispatcher';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
-debugger;
-const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
-let spDispatcherServiceData:SPDepartmentalServiceData = null;
+
+//functional component
 const DispatcherTicketsView = () => {
+    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
+    let spDispatcherServiceData:SPDepartmentalServiceData = null;
     const {dept} = useParams();
     const mainContext = useContext(UserContext);
 
@@ -59,7 +60,7 @@ const DispatcherTicketsView = () => {
        });
       }
       const fetchMsGraphProvider = async () => {
-        setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
+        setMsGraphProvider(await useMsGraphProvider(mainContext.webPartContext.msGraphClientFactory))
       }
 
      const getUserByDept=(control,reAssignTo,department,idNumber)=>{
@@ -82,13 +83,12 @@ const DispatcherTicketsView = () => {
 
       const _sendMessage = async(ToEmailId ,raisedBy, dept) =>
       { 
-        if(mainContext.sdks.microsoftTeams) 
+        if(mainContext.webPartContext.sdks.microsoftTeams) 
         {
           let currentUserId = await msGraphProvider.getCurrentUserId(); 
           let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
-          let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
-          
-          const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}`);
+          let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);          
+          const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}`);
           
           let message =  `
           <div style="border-style:solid; border-width:1px; padding:10px;">
@@ -98,8 +98,7 @@ const DispatcherTicketsView = () => {
             <a href="${url}">A new Request created by ${raisedBy}  has been assigned to you</a>
           </div>
           </div><br />
-          `;
-    
+          `;    
         const chatMessage:any = {
           body: {
               contentType: "html",
@@ -118,12 +117,11 @@ const DispatcherTicketsView = () => {
       }    
         
         else{
-           // let message =`Notification from Departmental Request Application: ${this.props.loggedInUserName} has raised a new Request.`;
            let currentUserId = await msGraphProvider.getCurrentUserId(); 
            let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
            let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-           let url =  `${mainContext.pageContext.web.absoluteUrl}#/assigned/In Process/${dept}`
+           let url =  `${mainContext.webPartContext.pageContext.web.absoluteUrl}#/assigned/In Process/${dept}`
            let message =  `
            <div style="border-style:solid; border-width:1px; padding:10px;">
            <div>Departmental Request Application</div>
@@ -140,8 +138,7 @@ const DispatcherTicketsView = () => {
                  contentType: "html",
                  content: message
              }
-             };
-        
+             };      
            await msGraphProvider.sendMessage(chatOfUser, chatMessage)
            .then(
              (result: any[]): void => {
@@ -150,8 +147,8 @@ const DispatcherTicketsView = () => {
            .catch(error => {
              console.log(error);
            });    
-         }    
-    } 
+         };    
+    }; 
       const onSubmitDropDownHandle = async(newPeoplePicker:any,idRequest:number,assignedToUser,ticketNumberCheck,raisedBy, dept) => {
               if(deleteSelectedTicket === ticketNumberCheck){
               await spDispatcherServiceData.getEmail(assignedToUser.key)
@@ -172,7 +169,7 @@ const DispatcherTicketsView = () => {
               })
              })
             }
-        }
+        };
     return (
         <div className={styles.dispatcherTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -210,7 +207,7 @@ const DispatcherTicketsView = () => {
                            <td>
                             <Dropdown
                              id={res.ticketNumber + '_dropDown'} 
-                             placeholder='Select option'
+                             placeholder={strings.SelectOptionLabel}
                              defaultSelectedKey={" "}
                             onClick={(e)=>getUserByDept(res.ticketNumber + '_dropDown',res.reAssignedTo,res.supportDeptName,res.dataId)} 
                             options={deptListDropDown}
@@ -227,7 +224,7 @@ const DispatcherTicketsView = () => {
                             }
                           </td>
                           <td>
-                             <input multiple type="file" className={styles.dispatcherAttachmentInput}
+                             <input multiple type={strings.FileLabel} className={styles.dispatcherAttachmentInput}
                               key={randomIndex}
                               onChange={(e)=>onDispatcherFileAddition(e.target.files)}
                              />
@@ -254,7 +251,6 @@ const DispatcherTicketsView = () => {
                 <Route exact path="/dispatcher" component={()=><DispatcherTab />}></Route>
             </Switch>      
         </div>
-    )       
-}
-
-export default DispatcherTicketsView
+    );       
+};
+export default DispatcherTicketsView;

@@ -1,47 +1,36 @@
 import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
-import { DefaultButton, PrimaryButton, CompoundButton } from '@fluentui/react/lib/Button';
+import { DefaultButton } from '@fluentui/react/lib/Button';
 import styles from './RaiseRequestTab.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route,Link} from "react-router-dom";
 import { TextField } from '@fluentui/react/lib/TextField';
-import { Stack, IStackProps, IStackStyles } from '@fluentui/react/lib/Stack';
-import {  IStackTokens } from '@fluentui/react';
-import { Dropdown, DropdownMenuItemType, IDropdownStyles, IDropdownOption } from '@fluentui/react/lib/Dropdown';
-import { SPHttpClient, ISPHttpClientOptions, SPHttpClientResponse } from '@microsoft/sp-http';
-import { IconButton } from '@fluentui/react/lib/Button';
-import { Logger, ConsoleListener,FunctionListener, ILogEntry,ILogListener, LogLevel} from "@pnp/logging";
-import AppListener from '../../../../../services/appListener';
-import { sp } from "@pnp/sp";
+import { Stack, IStackStyles } from '@fluentui/react/lib/Stack';
+import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import { Logger, LogLevel} from "@pnp/logging";
 import "@pnp/sp/webs";
 import "@pnp/sp/files";
 import "@pnp/sp/folders";
-import SPDepartmentalService from '../../../../../services/SPDepartmentalService';
 import { UserContext } from '../../Main/Main';
 import Navbar from '../Navbar/Navbar';
 import Home from '../Home';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
-import { IDepartmentList } from '../../../../../model/RaiseRequest';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../services/msGraphProvider';
 
 
-debugger;
-const stackTokens = { childrenGap: 50  };
-const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
-let spRaiseRequestServiceData:SPDepartmentalServiceData = null;
-let deptListCoreInfo = [];
-let departmentOptions: IDropdownOption[] = [];
-const noDataDeptOptions:IDropdownOption[] = [{
-  key:1,
-  text:'No data'
-}
-];
-let staticDeptOptions = [];
+
 //Raise a request component
 const RaiseRequestTab = (props) => {
-    let currentUserId:any; // get current user GUID
+    const stackTokens = { childrenGap: 50  };
+    const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
+    let spRaiseRequestServiceData:SPDepartmentalServiceData = null;
+    const noDataDeptOptions:IDropdownOption[] = [{
+      key:1,
+      text:'No data'
+    }];
+    let staticDeptOptions = [];
     const mainContext = useContext(UserContext);
     const [deptListCoreInfo, setDeptListCoreInfo] = useState(null);
     const [departmentOptions, setDepartmentOptions] = useState([]);
@@ -64,7 +53,6 @@ const RaiseRequestTab = (props) => {
         sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
       }
     );
-    //Component 
     useEffect(() => {
         init();              
    },[]);
@@ -81,24 +69,18 @@ const RaiseRequestTab = (props) => {
         setOptionsUnlock(true);
         fetchMsGraphProvider();
       });
-}
+};
 // ms-graph provider initializer
 const fetchMsGraphProvider = async () => {
-  setMsGraphProvider(await useMsGraphProvider(mainContext.msGraphClientFactory))
-}
+  setMsGraphProvider(await useMsGraphProvider(mainContext.webPartContext.msGraphClientFactory));
+};
 
 // UI event calls dynamic
-const onClickDeptHandle = async ()=>{
-    setDepartmentOptions(staticDeptOptions);
-}
-
 const onChangeDeptHandle = async (choosenDept)=> {
   //set states
   setSelectedDept(choosenDept.text);
   setDataFilledCheck(1);
   setSelectedDeptCategory(selectedDeptCategory);
-  // this.deptCategorySelect();
-  // this.loadSelectedDispatcherGroupPeople(selectedDept.text);
   spRaiseRequestServiceData.getDeptCategorySelect(choosenDept.text)
   .then(res => {
     setDepartmentCategoryOptions(res);
@@ -134,14 +116,14 @@ const onFileAddHandle=async(fileAdd)=>{
 
 const _sendMessage = async(ToEmailId: string, name:string) =>
 { 
-  if(mainContext.sdks.microsoftTeams) 
+  if(mainContext.webPartContext.sdks.microsoftTeams) 
   {
     if(ToEmailId !== ''){
     let currentUserId = await msGraphProvider.getCurrentUserId(); 
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    const url = encodeURI(`https://teams.microsoft.com/l/entity/9c81173a-1b57-4a3c-9b5e-0a97015460f6/${mainContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}&path=dispatcher/tickets`);
+    const url = encodeURI(`https://teams.microsoft.com/l/entity/6bc42c01-5a4f-480e-bd2a-f048e32d1b5f/${mainContext.webPartContext.sdks.microsoftTeams.context.entityId}?context={"subEntityId": null,"channelId":${chatOfUser}}&path=dispatcher/tickets`);
 
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
@@ -169,7 +151,6 @@ const _sendMessage = async(ToEmailId: string, name:string) =>
     });   
   }  
 } 
-
   else
   {
     
@@ -178,7 +159,7 @@ const _sendMessage = async(ToEmailId: string, name:string) =>
     let userIdToSendMessage = await msGraphProvider.getUserId(ToEmailId);
     let chatOfUser = await msGraphProvider.createUsersChat(currentUserId, userIdToSendMessage);
 
-    let url = `${mainContext.pageContext.web.absoluteUrl}#/dispatcher/Pending/${selectedDept}`;
+    let url = `${mainContext.webPartContext.pageContext.web.absoluteUrl}#/dispatcher/Pending/${selectedDept}`;
     let message =  `
     <div style="border-style:solid; border-width:1px; padding:10px;">
     <div>Departmental Request Application</div>
@@ -203,13 +184,13 @@ const _sendMessage = async(ToEmailId: string, name:string) =>
     });    
   }
  }
-}
+};
 
 const _messaging= (dispatcherGroupEmailIds)=>{
   for(let i=0;i<dispatcherGroupEmailIds.length;++i){
     _sendMessage(dispatcherGroupEmailIds[i].eMail, dispatcherGroupEmailIds[i].name );
-  }
-}
+  };
+};
 
 const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,fileAddition)=>{
   if(selectedDept !== ''){
@@ -223,7 +204,7 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
      setToasterNotificationFlag(false);
    })
   }
-}
+};
     return (
         <div className={styles.raiseRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -243,7 +224,6 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                            defaultValue={selectedDept}
                            onChange={(e,selectedDept) => onChangeDeptHandle(selectedDept)}
                            key={randomIndex}
-                          //  styles={{ dropdown: { width:'100%',height:'34px' } }}
                            className={styles.dropdownStyle}
                          />
                     </Stack>
@@ -263,7 +243,6 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                            defaultSelectedKey={" "}
                            onChange={(e,selectedDeptCategory)=>onChangeDeptCategoryHandle(selectedDeptCategory)}
                            key={randomIndex}
-                          //  styles={{ dropdown: { width: '100%' } }}
                          />
                      </Stack>
                 </div>
@@ -271,7 +250,6 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
              <div className="ms-Grid-row">
               <div className="ms-Grid-col ms-lg8 ms-sm8">
                  <TextField label={strings.TypeYourIssueLabel} multiline rows={3}
-                            // value={requestDescription}
                             onChange={(requestDescription)=>onChangeRequestDescriptionHandle(requestDescription)}
                             key={randomIndex}
                          />
@@ -310,7 +288,6 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
               Logger.writeJSON("Raised a new request",LogLevel.Info) 
             }
         </div>
-    )
-}
-
-export default RaiseRequestTab
+    );
+};
+export default RaiseRequestTab;

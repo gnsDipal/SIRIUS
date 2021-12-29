@@ -1,5 +1,4 @@
 import * as React from 'react';
-import * as strings from 'DepartmentalRequestWebPartStrings';
 import {BrowserRouter as Router,Switch,Route,HashRouter} from "react-router-dom";
 import Home from '../Home/Home';
 import Navbar from '../Home/Navbar/Navbar';
@@ -21,31 +20,10 @@ const Main = (props:any) => {
   const [teamContext, setTeamContext] = React.useState(null);
   const [isTeamAccess,setTeamAccess] = React.useState(false);
   const [teamPath, setTeamPath] = React.useState('');
-  React.useEffect(() => {
-     //Initialize Microsoft teams sdk
-  microsoftTeams.initialize(() => {
-    microsoftTeams.getContext((c) => {
-      setTeamContext(c);
-      alert("mainContext.sdks.microsoftTeams.context.subEntityId = " + c.subEntityId);
-      if(c != null) {
-        setTeamAccess(true);
-        if(c.teamSitePath === 'assigned'){
-          setTeamPath('/assigned');
-          alert("Inside setting assinged in teamSitePath");
-        }
-          alert("c.teamSitePath = " + c.teamSitePath);
-      }
-      if(c === null){
-        alert("c.teamSitePath is null = " + c.teamSitePath);
-      }
-    });
-  }); 
-  }, []);
-  let path: string = window.location.href;
     return (
         <div>
             <HashRouter>
-                <UserContext.Provider value={props.webPartContext}>
+                <UserContext.Provider value={...props}>
                 <Switch>
                   <Route exact path="/requested" component={()=><MyRequestTab />}/>
                   <Route exact path="/requested/:myReqStatus/:dept" component={()=><MyRequestTicketsView/>}/>

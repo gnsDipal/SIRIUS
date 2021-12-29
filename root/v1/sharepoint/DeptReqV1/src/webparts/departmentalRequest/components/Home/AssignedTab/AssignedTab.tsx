@@ -3,20 +3,17 @@ import { useEffect, useContext, useState } from 'react';
 import styles from './AssignedTab.module.scss';
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { Icon } from '@fluentui/react/lib/Icon';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link, useParams, useLocation} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route,Link, useParams, useLocation} from "react-router-dom";
 import { UserContext } from '../../Main/Main';
 import AssignedTicketsView from './AssignedTicketsView/AssignedTicketsView';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import AssignedClosedTicketsView from './AssignedClosedTicketsView/AssignedClosedTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-// debugger;
-let myRequestedEachPlateData = [];   
-// const InProcess:string = "In Process";    
-// const Completed:string = "Completed";    
-let spAssignedServiceData: SPDepartmentalServiceData = null;
 
-const AssignedTab = () => {     
-    let loc = useLocation()
+
+const AssignedTab = () => {    
+    let myRequestedEachPlateData = [];       
+    let spAssignedServiceData: SPDepartmentalServiceData = null;
     const {Inprocess,dept,Closed} = useParams();
     const [deptPlate,setDeptPlate] = useState(null);
     const [unlockAssignedData, setUnlockAssignedData] = useState(0); 
@@ -28,9 +25,6 @@ const AssignedTab = () => {
     },[]);
 
     const init = () => {
-      // {(mainContext.sdks.microsoftTeams) &&
-      //   alert("Location" + loc.pathname);
-      //    }
       spAssignedServiceData = new SPDepartmentalServiceData(mainContext);
       spAssignedServiceData.getAssignedViewCountData()
      .then((res)=>{
@@ -46,7 +40,7 @@ const AssignedTab = () => {
          <div className="ms-Grid" dir="ltr"> 
          <div className="ms-Grid-row">
            <div className="ms-Grid-col ms-lg2 ms-md2 ms-sm2">
-               <Link to="/nav"><Icon iconName='Home' className={styles.iconSize}></Icon></Link>
+               <Link to="/nav"><Icon iconName={strings.HomeLabel} className={styles.iconSize}></Icon></Link>
            </div>
            <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                <h2>{strings.AssignedIssuesLabel}</h2>
@@ -87,7 +81,7 @@ const AssignedTab = () => {
             </ul>
          </div>
          </div>
-          )
+          );
          })
         }
         </div>
@@ -100,6 +94,6 @@ const AssignedTab = () => {
                 </Route>
             </Switch>
         </div>
-    )
-}
-export default AssignedTab
+    );
+};
+export default AssignedTab;

@@ -9,8 +9,9 @@ import Home from '../Home'
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-let spManagerServiceData:SPDepartmentalServiceData = undefined
+
 const ManagerTab = (props) => {
+    let spManagerServiceData:SPDepartmentalServiceData = undefined
     const mainContext = useContext(UserContext);
     const {managerStatus,dept} = useParams(); 
     const [managerCountPlate, setManagerCountPlate] = useState([]);
@@ -25,11 +26,11 @@ const ManagerTab = (props) => {
       .then(res=>{
         setManagerCountPlate(res);
         if(res === undefined)
-          setUnlockPlate(1);
+          setUnlockPlate(1);  //If no data is present
         else
-          setUnlockPlate(2);
-      })
-   }
+          setUnlockPlate(2); // If data is present
+      });
+   };
     return (
         <div className={styles.managerTab}>
              <div className="ms-Grid" dir="ltr"> 
@@ -79,20 +80,20 @@ const ManagerTab = (props) => {
                     </ul>
                  </div>
                  </div>
-                  )
+                  );
                  })
-        }
+        };
               </div>
             </div>
             <Switch>
                 <Route exact path="/nav">
                     <div>
-                        <Navbar {...props}/>
-                        <Home {...props}/>
+                        <Navbar/>
+                        <Home/>
                     </div>
                 </Route>
             </Switch>
         </div>
-    )
-}
-export default ManagerTab
+    );
+};
+export default ManagerTab;

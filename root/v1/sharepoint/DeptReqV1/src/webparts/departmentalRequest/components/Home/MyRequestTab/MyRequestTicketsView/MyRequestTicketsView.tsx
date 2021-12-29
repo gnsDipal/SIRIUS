@@ -10,9 +10,9 @@ import {IStackStyles} from '@fluentui/react/lib/Stack';
 import {UserContext} from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
 
-let spMyRequestServiceData: SPDepartmentalServiceData = null;
-const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
 const MyRequestTicketsView = () => {
+    let spMyRequestServiceData: SPDepartmentalServiceData = null;
+    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     const {myReqStatus,dept} = useParams();
     const mainContext = useContext(UserContext);
     //State variables
@@ -25,8 +25,8 @@ const MyRequestTicketsView = () => {
        spMyRequestServiceData.getDeptListInfo(myReqStatus,dept)
        .then(res=>{
            setMyRequestedData(res);
-       })
-   }
+       });
+   };
     return (
         <div className={styles.myRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -91,6 +91,6 @@ const MyRequestTicketsView = () => {
          </div> 
         </div>
       </div>
-    )
-}
-export default MyRequestTicketsView
+    );
+};
+export default MyRequestTicketsView;

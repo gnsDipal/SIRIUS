@@ -3,20 +3,21 @@ import styles from './MyRequestTab.module.scss'
 import * as strings from 'DepartmentalRequestWebPartStrings';
 import { useEffect, useContext, useState } from 'react';
 import { Icon } from '@fluentui/react/lib/Icon';
-import {BrowserRouter as Router,Switch,Route,HashRouter,Link,useLocation,useParams} from "react-router-dom";
+import {BrowserRouter as Router,Switch,Route,Link,useParams} from "react-router-dom";
 import Home from '../Home';
 import Navbar from '../Navbar/Navbar';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import {UserContext} from '../../Main/Main'
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-// debugger;
-let spMyRequestedServiceData:SPDepartmentalServiceData = null;
+
 const MyRequestTab = () => {
+    let spMyRequestedServiceData:SPDepartmentalServiceData = null;
+    /* State variables */
     const mainContext = useContext(UserContext);
     const {myReqStatus,dept} = useParams();
     const [myRequestedPlate, setMyRequestedPlate] = useState([]);
     const [unlockPlate, setUnlockPlate] = useState(0);
-
+  /* Initialization */
     useEffect(() => {  
       init();              
  },[]);
@@ -27,11 +28,11 @@ const MyRequestTab = () => {
     .then(res=>{
       setMyRequestedPlate(res);
       if(res === undefined)
-        setUnlockPlate(1);
+        setUnlockPlate(1); /* If data is not present */
       else
-        setUnlockPlate(2);
-    })
- }
+        setUnlockPlate(2); /* If data is present */
+    });
+ };
     return (
         <div className={styles.myRequestTab}>
             <div className="ms-Grid" dir="ltr"> 
@@ -46,10 +47,10 @@ const MyRequestTab = () => {
               <div>{(unlockPlate === 0) && <Spinner size={SpinnerSize.large} label={strings.LoadingLabel}/>}
               </div>
               <div className="ms-Grid-row ms-lg12 ms-md12 ms-sm12">
-              {(unlockPlate === 1) &&
+              {(unlockPlate === 1) && // If no data present
                     <h2 className={styles.setToCenter}>{strings.NoDataPresentLabel}</h2>
               }
-              { (unlockPlate === 2) &&  
+              { (unlockPlate === 2) &&  // If data is present
                 <h4>{strings.DepartmentBasedCardLabel}</h4> &&
                 myRequestedPlate.map((res,index)=>{
                   return(
@@ -98,6 +99,6 @@ const MyRequestTab = () => {
             </Switch>
          
         </div>
-    )
-}
-export default MyRequestTab
+    );
+};
+export default MyRequestTab;

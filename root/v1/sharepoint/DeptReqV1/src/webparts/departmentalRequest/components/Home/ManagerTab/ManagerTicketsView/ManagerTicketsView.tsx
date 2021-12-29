@@ -10,9 +10,10 @@ import { IStackStyles } from '@fluentui/react/lib/Stack';
 import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
 
-let spManagerServiceData: SPDepartmentalServiceData = null;
-const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
+
 const ManagerTicketsView = () => {
+    let spManagerServiceData: SPDepartmentalServiceData = null;
+    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     const {managerStatus,dept} = useParams();
     const mainContext = useContext(UserContext);  
     //State variables
@@ -28,7 +29,7 @@ const ManagerTicketsView = () => {
         setManagerData(res);
            setUnlockData(true);
        })
-   }
+   };
     return (
         <div className={styles.managerTab}>
               <div className="ms-Grid" dir="ltr"> 
@@ -60,7 +61,7 @@ const ManagerTicketsView = () => {
                     </thead>
                     <tbody>
                       {
-                       managerData.map((res,index)=>{
+                       managerData.map((res)=>{
                        var issuedDate = new Date(res.issueDate).toLocaleDateString();
                           return(
                             <tr>
@@ -94,6 +95,6 @@ const ManagerTicketsView = () => {
              </div> 
         </div>
      </div>
-    )
-}
-export default ManagerTicketsView
+    );
+};
+export default ManagerTicketsView;

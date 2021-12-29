@@ -10,23 +10,18 @@ import Home from '../Home';
 import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalServiceData';
 import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
-let spDispatcherServiceData: SPDepartmentalServiceData = null;
-const OpenRequests:string = "Open Requests";   
-// debugger; 
+
 const DispatcherTab = () => {
+    let spDispatcherServiceData: SPDepartmentalServiceData = null;
+    const OpenRequests:string = "Open Requests"; 
     const mainContext = useContext(UserContext);
     const {open,dept} = useParams();
-
+    //State variables
     const [dispatcherCountData, setDispatcherCountData] = useState(null);
     const [unlockDispatcherCard, setUnlockDispatcherCard] = useState(0);
     useEffect(() => {  
          init();              
     },[]);
-    // useEffect(()=>{
-    //   if (dispatcherCountData.length>0){
-    //     setLoading(0);
-    //   }
-    // },[dispatcherCountData])
 
     const init = () => {
       spDispatcherServiceData = new SPDepartmentalServiceData(mainContext);
@@ -38,15 +33,14 @@ const DispatcherTab = () => {
         else
           setUnlockDispatcherCard(2); // For rendering once the data is set
       })
-    }
+    };
 
-   
     return (
         <div className={styles.dispatcherTab}>
            <div className="ms-Grid" dir="ltr"> 
                 <div className="ms-Grid-row">
                     <div className="ms-Grid-col ms-lg2 ms-md2 ms-sm2">
-                        <Link to="/nav"><Icon iconName='Home' className={styles.iconSize}></Icon></Link>
+                        <Link to="/nav"><Icon iconName={strings.HomeLabel} className={styles.iconSize}></Icon></Link>
                     </div>
                     <div className="ms-Grid-col ms-lg8 ms-md8 ms-sm8">
                         <h2>{strings.DispatcherViewLabel}</h2>
@@ -62,7 +56,7 @@ const DispatcherTab = () => {
                 {   
                   (unlockDispatcherCard === 2) &&
                   <h4>{strings.DepartmentBasedCardLabel}</h4> &&
-                  dispatcherCountData.map((res,index)=>{
+                  dispatcherCountData.map((res)=>{
                     return(
                   <div className="ms-Grid-col ms-lg4 ms-sm12">
                   <div className={`${styles.smallBox} ${styles.setMainBox}`} >
@@ -95,6 +89,6 @@ const DispatcherTab = () => {
                 </Route>
             </Switch>
         </div>
-    )
-}
-export default DispatcherTab
+    );
+};
+export default DispatcherTab;
