@@ -119,11 +119,11 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
     debugger;
     try {
       // Teste Properties
-      if (!this.props.list || !this.props.siteUrl || !this.props.eventStartDate.value || !this.props.eventEndDate.value) return;
+      if (!this.props.calendarListName || !this.props.siteUrl || !this.props.eventStartDate.value || !this.props.eventEndDate.value) return;
 
-      this.userListPermissions = await this.spService.getUserPermissions(this.props.siteUrl, this.props.list);
+      this.userListPermissions = await this.spService.getUserPermissions(this.props.siteUrl, this.props.calendarListName);
       
-      const eventsData: IEventData[] = await this.spService.getEvents(escape(this.props.siteUrl), escape(this.props.masterListName), escape(this.props.list), this.props.eventStartDate.value, this.props.eventEndDate.value);
+      const eventsData: IEventData[] = await this.spService.getEvents(escape(this.props.siteUrl), escape(this.props.masterListName), escape(this.props.calendarListName), this.props.eventStartDate.value, this.props.eventEndDate.value);
 
       this.setState({ eventData: eventsData, hasError: false, errorMessage: "" });
       debugger;
@@ -158,9 +158,9 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
    */
   public async componentDidUpdate(prevProps: ICalendarProps, prevState: ICalendarState) {
 
-    if (!this.props.list || !this.props.siteUrl || !this.props.eventStartDate.value || !this.props.eventEndDate.value) return;
+    if (!this.props.calendarListName || !this.props.siteUrl || !this.props.eventStartDate.value || !this.props.eventEndDate.value) return;
     // Get  Properties change
-    if (prevProps.list !== this.props.list || this.props.eventStartDate.value !== prevProps.eventStartDate.value || this.props.eventEndDate.value !== prevProps.eventEndDate.value) {
+    if (prevProps.calendarListName !== this.props.calendarListName || this.props.eventStartDate.value !== prevProps.eventStartDate.value || this.props.eventEndDate.value !== prevProps.eventEndDate.value) {
       this.setState({ isloading: true });
       await this.loadEvents();
       this.setState({ isloading: false });
@@ -324,7 +324,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
             title={this.props.title}
             updateProperty={this.props.updateProperty} />
           {
-            (!this.props.list || !this.props.eventStartDate.value || !this.props.eventEndDate.value) ?
+            (!this.props.calendarListName || !this.props.eventStartDate.value || !this.props.eventEndDate.value) ?
               <Placeholder iconName='Edit'
                 iconText={strings.WebpartConfigIconText}
                 description={strings.WebpartConfigDescription}
@@ -398,7 +398,6 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
               categoryListName = {this.props.categoryListName}
               masterListName = {this.props.masterListName}
               calendarListName = {this.props.calendarListName}
-              listId={this.props.list}
               filterType={this.props.filterType}
             />
           }

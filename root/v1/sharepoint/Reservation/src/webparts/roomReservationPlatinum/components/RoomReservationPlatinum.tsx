@@ -79,7 +79,6 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
                    categoryListName = {this.props.categoryListName}
                    masterListName = {this.props.masterListName}
                    calendarListName = {this.props.calendarListName}
-                   list = {this.props.calendarListName}
                    filterType = {FilterType.Asset}
                    displayMode = {this.props.displayMode}
                    context ={ this.props.context}

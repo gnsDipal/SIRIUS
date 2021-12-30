@@ -23,17 +23,16 @@
     "groupId": "5c03119e-3074-46fd-976b-c60198311f70", // Other
     "group": { "default": "Other" },
     "title": { "default": "Room-Reservation-Platinum" },
-    "description": { "default": "Fully functional Room Reservation" },
+    "description": { "default": "Fully functional Room Reservation v 1.0" },
     "officeFabricIconFontName": "CalendarWorkWeek",
     "properties": {
       "title": "RoomReservationCalendar",
       "siteUrl": "",
-      "locationListName": "RoomLocation",
-      "areaListName": "RoomArea",
-      "categoryListName": "RoomCategory",
-      "masterListName": "RoomMaster",
-      "calendarListName": "RoomCalendar",
-      "list": "RoomCalendar",
+      "locationListName": "Sirius_RoomReservation_01_RoomLocation",
+      "areaListName": "Sirius_RoomReservation_02_RoomArea",
+      "categoryListName": "Sirius_RoomReservation_03_RoomCategory",
+      "masterListName": "Sirius_RoomReservation_04_RoomMaster",
+      "calendarListName": "Sirius_RoomReservation_05_RoomCalendar",
       "eventStartDate": "",
       "eventEndDate": ""
     }

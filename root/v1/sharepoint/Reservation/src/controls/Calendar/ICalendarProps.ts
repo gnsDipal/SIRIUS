@@ -10,7 +10,6 @@ export interface ICalendarProps {
   categoryListName:string;
   masterListName: string;
   calendarListName:string;
-  list: string;
   displayMode: DisplayMode;
   filterType: FilterType;
   updateProperty: (value: string) => void;

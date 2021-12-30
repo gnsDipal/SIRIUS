@@ -4,7 +4,6 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneDropdown,
   IPropertyPaneDropdownOption,
   PropertyPaneLabel,
   PropertyPaneLink,
@@ -32,7 +31,6 @@ export interface IAssetReservationWebPartProps {
   categoryListName:string;
   masterListName: string;
   calendarListName: string;
-  list: string;
   eventStartDate: IDateTimeFieldValue ;
   eventEndDate: IDateTimeFieldValue;
   errorMessage: string;
@@ -64,7 +62,6 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
         categoryListName: this.properties.categoryListName,
         masterListName: this.properties.masterListName,
         calendarListName:this.properties.calendarListName,
-        list: this.properties.list,
         displayMode: this.displayMode,
         updateProperty: (value: string) => {
           this.properties.title = value;
@@ -86,6 +83,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     return Version.parse('1.0');
   }
 
+  /*
+  *
+  */
   public  async onInit(): Promise<void> {
     this.appListner.setAppLogger();
 
@@ -99,68 +99,21 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     if (!this.properties.eventEndDate){
       this.properties.eventEndDate = { value: moment().add(20,'years').endOf('month').toDate(), displayValue: moment().format('ddd MMM MM YYYY')};
     }
-
-    if(this.properties.siteUrl) {
-      this.properties.locationListName = "AssetLocation";
-      this.properties.areaListName = "AssetArea";
-      this.properties.categoryListName = "AssetCategory";
-      this.properties.masterListName = "AssetMaster";
-      this.properties.calendarListName = "AssetCalendar";
-    }
-
-    // if (this.properties.siteUrl && !this.properties.list) {
-    //  const _lists = await this.loadLists();
-    //  if ( _lists.length > 0 ){
-    //   this.lists = _lists;
-    //   this.properties.list = this.lists[0].key.toString();
-    //  }
-    // }
-    
-    Logger.write("Init() method triggered.", LogLevel.Info);
-    // let logEntry: ILogEntry = {message: "This is for testing", level: LogLevel.Info, data: ""};
-    
-    // this.appListner.log(logEntry);
+   Logger.write("Init() method triggered.", LogLevel.Info);
 
     return Promise.resolve();
   }
 
+  /*
+  *
+  */
   protected async onPropertyPaneConfigurationStart() {
-    try {
-      if (this.properties.siteUrl) {
-        // const _lists = await this.loadLists();
-        // this.lists = _lists;
-        this.isCalendarListAvailable = false;
-        //  await this.loadFields(this.properties.siteUrl);
-        this.context.propertyPane.refresh();
-      } else {
-        this.lists = [];
-        this.properties.list = '';
-        this.isCalendarListAvailable = false;
-        this.context.propertyPane.refresh();
-      }
-    } catch (error) {
-
-    }
+    this.context.propertyPane.refresh();
   }
 
-  // private async loadLists(): Promise<IPropertyPaneDropdownOption[]> {
-  //   const _lists: IPropertyPaneDropdownOption[] = [];
-  //   try {
-  //     // const ensureList = await this.spService.ensureRequiredList(this.properties.siteUrl, this.properties.list);
-  //     const results = await this.spService.getSiteLists(this.properties.siteUrl);
-  //     for (const list of results) {
-  //       _lists.push({ key: list.Id, text: list.Title });
-  //     }
-  //     // push new item value
-  //   } catch (error) {
-  //     this.errorMessage =  `${error.message} -  please check if site url if valid.` ;
-  //     this.context.propertyPane.refresh();
-  //   }
-  //   return _lists;
-  // }
-
-
-
+  /*
+  *
+  */
   private onEventStartDateValidation(date:string){
     if (date && this.properties.eventEndDate.value){
       if (moment(date).isAfter(moment(this.properties.eventEndDate.value))){
@@ -170,6 +123,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     return '';
   }
 
+  /*
+  *
+  */
   private onEventEndDateValidation(date:string){
     if (date && this.properties.eventEndDate.value){
       if (moment(date).isBefore( moment(this.properties.eventStartDate.value))){
@@ -179,46 +135,26 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     return '';
   }
 
-    private onSiteUrlGetErrorMessage(value: string) {
-    let returnValue: string = '';
-    if (value) {
-      returnValue = '';
-    } else {
-      const previousList: string = this.properties.list;
-      const previousSiteUrl: string = this.properties.siteUrl;
-      // reset selected item
-      this.properties.list = undefined;
-      this.properties.siteUrl = undefined;
-      this.lists = [];
-      this.isCalendarListAvailable = true;
-      this.onPropertyPaneFieldChanged('list', previousList, this.properties.list);
-      this.onPropertyPaneFieldChanged('siteUrl', previousSiteUrl, this.properties.siteUrl);
-      this.context.propertyPane.refresh();
+  /*
+  *
+  */
+  private onSiteUrlGetErrorMessage(value: string) {
+  let returnValue: string = '';
+  if (value) {
+    returnValue = '';
+  } else {
+    const previousSiteUrl: string = this.properties.siteUrl;
+    // reset selected item
+    this.properties.siteUrl = undefined;
+    this.isCalendarListAvailable = true;
+    this.context.propertyPane.refresh();
     }
     return returnValue;
   }
 
-  // private validateListName(value: string) {
-  //   if (value === null ||
-  //     value.trim().length === 0) {
-  //       return 'List name could not be blank';
-  //   } 
-  //   try {
-  //     this.spEnsureListsService.isListExistsByListInfo(this.properties.siteUrl, '${escape(value)}').then(res=>{
-  //       if(res) {
-  //         this.isLocationListAvailable = true;
-  //         this.properties.locationListName = value;
-  //       }
-  //       else {
-  //         return `List '${escape(value)}' doesn't exist in the current site`;
-  //       }
-  //     });
-  //   } catch (error) {
-  //     return error.message;
-  //   }
-  //   return '';
-  // }
-
+  /*
+  *
+  */
   protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: string, newValue: string) {
     try {
       // reset any error
@@ -229,13 +165,10 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
       if (propertyPath === 'siteUrl' && newValue) {
         super.onPropertyPaneFieldChanged(propertyPath, oldValue, newValue);
 
-        const _oldValue = this.properties.list;
-        this.onPropertyPaneFieldChanged('list', _oldValue, this.properties.list);
         this.context.propertyPane.refresh();
         // const _lists = await this.loadLists();
         // this.lists = _lists;
         this.isCalendarListAvailable = false;
-        this.properties.list = this.lists.length > 0 ? this.lists[0].key.toString() : undefined;
         this.context.propertyPane.refresh();
         this.render();
       }
@@ -248,6 +181,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ASSETLOCATION 
   // FIELDS - ID, TITLE, ISACTIVE
   private async ensureLocationListWithFields() {
@@ -269,6 +205,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ASSETAREA 
   // FIELDS - ID, TITLE, ISACTIVE
   private async ensureAreaListWithFields() {
@@ -291,6 +230,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
       } else Logger.write("Error while creating the List :" + listInfo.ListName, LogLevel.Info);
   }
 
+  /*
+  *
+  */
   // LIST   - ASSETCATEGORY 
   // FIELDS - ID, TITLE, ISACTIVE, ASSETAREA
   private async ensureCategoryListWithFields() {
@@ -313,6 +255,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ASSETMASTER 
   // FIELDS - ID, TITLE, ISACTIVE, ASSETCATEGORY
   private async ensureMasterListWithFields() { 
@@ -334,6 +279,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ASSETCALENDAR 
   // FIELDS - ID, TITLE, ISACTIVE, ASSETMASTER
   private async ensureCalendarListWithFields() {
@@ -355,6 +303,9 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     }
   }
 
+  /*
+  *
+  */
   private async PerformEnsureLists(oldVal: any) {
     Logger.write("Ensure lists are presents", LogLevel.Info);
     await this.ensureLocationListWithFields();
@@ -364,6 +315,10 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
     await this.ensureCalendarListWithFields();
   }
 
+
+  /*
+  *
+  */
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     // EndDate and Start Date defualt values
 
@@ -386,32 +341,22 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
                 PropertyPaneTextField('locationListName', {
                   label: strings.LocationListName,
                   disabled: this.isLocationListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetLocation",
                 }),
                 PropertyPaneTextField('areaListName', {
                   label: strings.AreaListName,
                   disabled: this.isAreaListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetArea"
                 }),
                 PropertyPaneTextField('categoryListName', {
                   label: strings.CategoryListName,
                   disabled: this.isCategoryListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetCategory"
                 }),
                 PropertyPaneTextField('masterListName', {
                   label: strings.MasterListName,
                   disabled: this.isMasterListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetMaster"
                 }),
                 PropertyPaneTextField('calendarListName', {
                   label: strings.CalendarListName,
                   disabled: this.isCalendarListAvailable,
-                  //o +onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetCalendar"
                 }),
                 PropertyPaneButton('EnsureList',
                  {  

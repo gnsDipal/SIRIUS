@@ -17,6 +17,5 @@ export interface IEventProps {
   categoryListName:string;
   masterListName: string;
   calendarListName:string;
-  listId:string;
   filterType: FilterType;
 }

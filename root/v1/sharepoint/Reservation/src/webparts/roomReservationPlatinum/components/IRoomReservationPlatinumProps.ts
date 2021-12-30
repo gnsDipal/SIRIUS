@@ -5,7 +5,6 @@ import { IDateTimeFieldValue } from '@pnp/spfx-property-controls/lib/PropertyFie
 export interface IRoomReservationPlatinumProps {
   title: string;
   siteUrl: string;
-  list: string;
   locationListName: string;
   areaListName: string;
   categoryListName:string;
