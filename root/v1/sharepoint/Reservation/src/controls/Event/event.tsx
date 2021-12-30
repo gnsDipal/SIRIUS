@@ -1173,8 +1173,8 @@ export class Event extends React.Component<IEventProps, IEventState> {
                 </div>
                 <div>
                   <PeoplePicker
-                    webAbsoluteUrl={this.props.siteUrl}
-                    context={this.props.context}
+                    webAbsoluteUrl={this.props.siteUrl} 
+                    context={this.props.context as any}
                     titleText={strings.AttendeesLabel}
                     principalTypes={[PrincipalType.User]}
                     resolveDelay={1000}

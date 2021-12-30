@@ -23,7 +23,7 @@
     "@pnp/graph": "^2.9.0",
     "@pnp/logging": "^2.9.0",
     "@pnp/spfx-controls-react": "^3.3.0",
-    "@pnp/spfx-property-controls": "^3.2.0",
+    "@pnp/spfx-property-controls": "^3.3.0",
     "@uifabric/fluent-theme": "^7.5.4",
     "cross-env": "^7.0.3",
     "draft-js": "^0.11.7",
