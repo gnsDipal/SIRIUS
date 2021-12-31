@@ -17,7 +17,7 @@ export default class SPBirthdayAnniversaryService{
 
     constructor(private context) {
         //Setup Context to PnPjs and MSGraph
-        this.webContext = context;
+        this.webContext = this.context;
         sp.setup(context);
         this.onInit();
     }

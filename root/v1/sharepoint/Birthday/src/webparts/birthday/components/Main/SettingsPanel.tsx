@@ -274,9 +274,10 @@ const SettingsPanel = (props)=> {
                         <Spinner size={SpinnerSize.large} label="Loading"/>
                     }
                     {   (webURL !== '') &&
-                        <Link href={webURL} target="_blank" underline> 
+                        <div><Link href={webURL} target="_blank" underline> 
                             Go to admin settings
-                        </Link> 
+                        </Link>
+                        <h3>{webURL}</h3></div>
                     }                                 
                 </div>
             </div>
