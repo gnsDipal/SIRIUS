@@ -236,10 +236,10 @@ export class Event extends React.Component<IEventProps, IEventState> {
         this.setState({ isSaving: true });
         switch (panelMode) {
           case IPanelModelEnum.edit:
-            this.spService.updateEvent(eventData, this.props.siteUrl, this.props.listId);
+            this.spService.updateEvent(eventData, this.props.siteUrl, this.props.calendarListName);
             break;
           case IPanelModelEnum.add:
-            this.spService.addEvent(eventData, this.props.siteUrl, this.props.listId);
+            this.spService.addEvent(eventData, this.props.siteUrl, this.props.calendarListName);
             break;
           default:
             break;
@@ -303,16 +303,16 @@ export class Event extends React.Component<IEventProps, IEventState> {
   private async renderEventData(eventId?: number) {
 
     this.setState({ isloading: true });
-    const event: IEventData = !eventId ? this.props.event : await this.spService.getEvent(this.props.siteUrl, this.props.listId, eventId);
+    const event: IEventData = !eventId ? this.props.event : await this.spService.getEvent(this.props.siteUrl, this.props.calendarListName, eventId);
 
     let editorState: EditorState;
     // Load Regional Settings
     const siteRegionalSettings = await this.spService.getSiteRegionalSettingsTimeZone(this.props.siteUrl);
     // chaeck User list Permissions
-    const userListPermissions: IUserPermissions = await this.spService.getUserPermissions(this.props.siteUrl, this.props.listId);
+    const userListPermissions: IUserPermissions = await this.spService.getUserPermissions(this.props.siteUrl, this.props.calendarListName);
     
     // Load Categories
-    this.categoryDropdownOption = await this.spService.getChoiceFieldOptions(this.props.siteUrl, this.props.masterListName, this.props.listId, 'Category');
+    this.categoryDropdownOption = await this.spService.getChoiceFieldOptions(this.props.siteUrl, this.props.masterListName, this.props.calendarListName, 'Category');
     // Edit Mode ?
     if (this.props.panelMode == IPanelModelEnum.edit && event) {
 
@@ -507,7 +507,7 @@ export class Event extends React.Component<IEventProps, IEventState> {
 
       switch (this.props.panelMode) {
         case IPanelModelEnum.edit:
-          await this.spService.deleteEvent(this.state.eventData, this.props.siteUrl, this.props.listId, this.state.recurrenceSeriesEdited);
+          await this.spService.deleteEvent(this.state.eventData, this.props.siteUrl, this.props.calendarListName, this.state.recurrenceSeriesEdited);
           break;
         default:
           break;
@@ -1173,8 +1173,8 @@ export class Event extends React.Component<IEventProps, IEventState> {
                 </div>
                 <div>
                   <PeoplePicker
-                    webAbsoluteUrl={this.props.siteUrl}
-                    context={this.props.context}
+                    webAbsoluteUrl={this.props.siteUrl} 
+                    context={this.props.context as any}
                     titleText={strings.AttendeesLabel}
                     principalTypes={[PrincipalType.User]}
                     resolveDelay={1000}

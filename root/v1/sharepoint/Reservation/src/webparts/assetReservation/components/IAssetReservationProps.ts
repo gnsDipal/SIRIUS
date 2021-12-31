@@ -11,7 +11,6 @@ export interface IAssetReservationProps {
   categoryListName:string;
   masterListName: string;
   calendarListName:string;
-  list: string;
   displayMode: DisplayMode;
   updateProperty: (value: string) => void;
   context: WebPartContext;

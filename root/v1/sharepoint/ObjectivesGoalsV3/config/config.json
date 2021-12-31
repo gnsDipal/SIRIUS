@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "objective-and-goal-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/objectiveAndGoal/ObjectiveAndGoalWebPart.js",
+          "manifest": "./src/webparts/objectiveAndGoal/ObjectiveAndGoalWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "ObjectiveAndGoalWebPartStrings": "lib/webparts/objectiveAndGoal/loc/{locale}.js"
+  }
+}

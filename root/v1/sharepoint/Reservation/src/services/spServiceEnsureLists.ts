@@ -106,7 +106,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetLocation",list.Id, "Title");
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName, list.Id, "Title");
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -126,7 +126,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomLocation",list.Id, "Title");
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName,list.Id, "Title");
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -146,7 +146,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetArea",list.Id, "Title");
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName, list.Id, "Title");
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -166,7 +166,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomArea",list.Id, "Title");
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName,list.Id, "Title");
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);

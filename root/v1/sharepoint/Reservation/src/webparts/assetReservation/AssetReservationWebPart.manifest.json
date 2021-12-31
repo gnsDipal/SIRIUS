@@ -28,12 +28,11 @@
     "properties": {
       "title": "Asset Reservation System",
       "siteUrl": "",
-      "locationListName": "AssetLocation",
-      "areaListName": "AssetArea",
-      "categoryListName": "AssetCategory",
-      "masterListName": "AssetMaster",
-      "calendarListName": "AssetCalendar",
-      "list": "AssetCalendar",
+      "locationListName": "Sirius_AssetReservation_01_AssetLocation",
+      "areaListName": "Sirius_AssetReservation_02_AssetArea",
+      "categoryListName": "Sirius_AssetReservation_03_AssetCategory",
+      "masterListName": "Sirius_AssetReservation_04_AssetMaster",
+      "calendarListName": "Sirius_AssetReservation_05_AssetCalendar",
       "eventStartDate": "",
       "eventEndDate": ""
     }

@@ -69,7 +69,7 @@ export default class AssetReservation extends React.Component<IAssetReservationP
           </div>
         </div>
         <div className="ms-Grid" dir="ltr">
-          <div className="ms-Grid-row">
+          <div className="ms-Grid-row">~
             <div className="ms-Grid-col ms-u-sm12 block">
                 <Calendar 
                    title= {this.props.title}
@@ -79,7 +79,6 @@ export default class AssetReservation extends React.Component<IAssetReservationP
                    categoryListName = {this.props.categoryListName}
                    masterListName = {this.props.masterListName}
                    calendarListName = {this.props.calendarListName}
-                   list = {this.props.calendarListName}
                    filterType = {FilterType.Asset}
                    displayMode = {this.props.displayMode}
                    context ={ this.props.context}

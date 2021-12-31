@@ -4,10 +4,8 @@ import { Version } from '@microsoft/sp-core-library';
 import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField,
-  PropertyPaneDropdown,
   IPropertyPaneDropdownOption,
   PropertyPaneLabel,
-  PropertyPaneLink,
   PropertyPaneButtonType,
   PropertyPaneButton
 } from '@microsoft/sp-property-pane';
@@ -51,7 +49,6 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
   private isMasterListAvailable: boolean = false;
   private isCalendarListAvailable: boolean = false;
 
-  private listsDropdownDisabled: boolean = true;
   private spService: spservices = null;
   private spEnsureListsService: spServiceEnsureLists = null;
   private errorMessage: string;
@@ -72,7 +69,6 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
         categoryListName: this.properties.categoryListName,
         masterListName: this.properties.masterListName,
         calendarListName:this.properties.calendarListName,
-        list: this.properties.list,
         displayMode: this.displayMode,
         updateProperty: (value: string) => {
           this.properties.title = value;
@@ -86,6 +82,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     ReactDom.render(element, this.domElement);
   }
 
+  /*
+  *
+  */
   public  async onInit(): Promise<void> {
     this.appListner.setAppLogger();
     this.spEnsureListsService = new spServiceEnsureLists(this.context);
@@ -97,68 +96,34 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     if (!this.properties.eventEndDate){
       this.properties.eventEndDate = { value: moment().add(20,'years').endOf('month').toDate(), displayValue: moment().format('ddd MMM MM YYYY')};
     }
-    // if (this.properties.siteUrl && !this.properties.list) {
-    //  const _lists = await this.loadLists();
-    //  if ( _lists.length > 0 ){
-    //   this.lists = _lists;
-    //   this.properties.list = this.lists[0].key.toString();
-    //  }
-    // }
-    if(this.properties.siteUrl) {
-      this.properties.locationListName = "RoomLocation";
-      this.properties.areaListName = "RoomArea";
-      this.properties.categoryListName = "RoomBuildingFloor";
-      this.properties.masterListName = "RoomSize";
-      this.properties.calendarListName = "RoomCalendar";
-    }
     Logger.write("Init() method triggered.", LogLevel.Info);
     return Promise.resolve();
   }
 
+  /*
+  *
+  */
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
   }
 
+  /*
+  *
+  */
   protected get dataVersion(): Version {
     return Version.parse('1.0');
   }
 
+  /*
+  *
+  */
   protected async onPropertyPaneConfigurationStart() {
-    try {
-      if (this.properties.siteUrl) {
-        // const _lists = await this.loadLists();
-        // this.lists = _lists;
-        this.listsDropdownDisabled = false;
-        //  await this.loadFields(this.properties.siteUrl);
-        this.context.propertyPane.refresh();
-
-      } else {
-        this.lists = [];
-        this.properties.list = '';
-        this.listsDropdownDisabled = false;
-        this.context.propertyPane.refresh();
-      }
-    } catch (error) {
-
-    }
+    this.context.propertyPane.refresh();
   }
 
-  // private async loadLists(): Promise<IPropertyPaneDropdownOption[]> {
-  //   const _lists: IPropertyPaneDropdownOption[] = [];
-  //   try {
-  //     // const ensureList = await this.spService.ensureRequiredList(this.properties.siteUrl, this.properties.list);
-  //     const results = await this.spService.getSiteLists(this.properties.siteUrl);
-  //     for (const list of results) {
-  //       _lists.push({ key: list.Id, text: list.Title });
-  //     }
-  //     // push new item value
-  //   } catch (error) {
-  //     this.errorMessage =  `${error.message} -  please check if site url if valid.` ;
-  //     this.context.propertyPane.refresh();
-  //   }
-  //   return _lists;
-  // }
-
+  /*
+  *
+  */
   private onEventStartDateValidation(date:string){
     if (date && this.properties.eventEndDate.value){
       if (moment(date).isAfter(moment(this.properties.eventEndDate.value))){
@@ -168,6 +133,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     return '';
   }
 
+  /*
+  *
+  */
   private onEventEndDateValidation(date:string){
     if (date && this.properties.eventEndDate.value){
       if (moment(date).isBefore( moment(this.properties.eventStartDate.value))){
@@ -177,6 +145,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     return '';
   }
 
+  /*
+  *
+  */
   private onSiteUrlGetErrorMessage(value: string) {
     let returnValue: string = '';
     if (value) {
@@ -188,14 +159,15 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
       this.properties.list = undefined;
       this.properties.siteUrl = undefined;
       this.lists = [];
-      this.listsDropdownDisabled = true;
-      this.onPropertyPaneFieldChanged('list', previousList, this.properties.list);
       this.onPropertyPaneFieldChanged('siteUrl', previousSiteUrl, this.properties.siteUrl);
       this.context.propertyPane.refresh();
     }
     return returnValue;
   }
 
+  /*
+  *
+  */
   protected async onPropertyPaneFieldChanged(propertyPath: string, oldValue: string, newValue: string) {
     try {
       // reset any error
@@ -208,10 +180,6 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
         const _oldValue = this.properties.list;
         this.onPropertyPaneFieldChanged('list', _oldValue, this.properties.list);
         this.context.propertyPane.refresh();
-       // const _lists = await this.loadLists();
-        // this.lists = _lists;
-        this.listsDropdownDisabled = false;
-        this.properties.list = this.lists.length > 0 ? this.lists[0].key.toString() : undefined;
         this.context.propertyPane.refresh();
         this.render();
       }
@@ -224,6 +192,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ROOMLOCATION 
   // FIELDS - ID, TITLE, ISACTIVE
   private async ensureLocationListWithFields() {
@@ -245,6 +216,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ROOMAREA 
   // FIELDS - ID, TITLE, ISACTIVE, ROOMLOCATION 
   private async ensureAreaListWithFields() {
@@ -267,6 +241,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
       } else Logger.write("Error while creating the List :" + listInfo.ListName, LogLevel.Info);
   }
 
+  /*
+  *
+  */
   // LIST   - ROOMBUILDINGNUMBER 
   // FIELDS - ID, TITLE, ISACTIVE, ROOMAREA
   private async ensureCategoryListWithFields() {
@@ -289,6 +266,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ROOMSIZE 
   // FIELDS - ID, TITLE, ISACTIVE, ROOMBUILDINGFLOOR
   private async ensureMasterListWithFields() { 
@@ -310,6 +290,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     }
   }
 
+  /*
+  *
+  */
   // LIST   - ASSETCALENDAR 
   // FIELDS - ID, TITLE, ISACTIVE, ASSETMASTER
   private async ensureCalendarListWithFields() {
@@ -331,6 +314,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     }
   }
 
+  /*
+  *
+  */
   private async PerformEnsureLists(oldVal: any) {
     Logger.write("Ensure lists are presents", LogLevel.Info);
     await this.ensureLocationListWithFields();
@@ -340,6 +326,9 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     await this.ensureCalendarListWithFields();
   }
 
+  /*
+  *
+  */
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     // EndDate and Start Date defualt values
 
@@ -361,33 +350,23 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
                 }),
                 PropertyPaneTextField('locationListName', {
                   label: strings.LocationListName,
-                  disabled: this.isLocationListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetLocation",
+                  disabled: this.isLocationListAvailable
                 }),
                 PropertyPaneTextField('areaListName', {
                   label: strings.AreaListName,
-                  disabled: this.isAreaListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "AssetArea"
+                  disabled: this.isAreaListAvailable
                 }),
                 PropertyPaneTextField('categoryListName', {
                   label: strings.CategoryListName,
-                  disabled: this.isCategoryListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "RoomBuildingFloor"
+                  disabled: this.isCategoryListAvailable
                 }),
                 PropertyPaneTextField('masterListName', {
                   label: strings.MasterListName,
-                  disabled: this.isMasterListAvailable,
-                  //onGetErrorMessage: this.validateListName.bind(this),
-                  value: "RoomSize"
+                  disabled: this.isMasterListAvailable
                 }),
                 PropertyPaneTextField('calendarListName', {
                   label: strings.CalendarListName,
-                  disabled: this.isCalendarListAvailable,
-                  //o +onGetErrorMessage: this.validateListName.bind(this),
-                  value: "RoomCalendar"
+                  disabled: this.isCalendarListAvailable
                 }),
                 PropertyPaneButton('EnsureList',
                  {  
