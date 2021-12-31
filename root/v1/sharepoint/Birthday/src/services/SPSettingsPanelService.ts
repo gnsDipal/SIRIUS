@@ -93,12 +93,12 @@ export default class SPSettingsPanelService{
     }
 
     //Get the channel Id required to create the tabs
-    public async getChannelId(teamId):Promise<string>
+    public async getChannelId(teamId: string):Promise<string>
     {
         let webURL:string = '';
         await this.webContext.msGraphClientFactory.getClient()
             .then(async(client: MSGraphClient) => {        
-            await client.api(`teams/${teamId}/channels`).version("beta").get()
+            await client.api(`teams/${teamId}/channels`).version("v1.0").get()
                 .then(async(res)=>{
                     let channelId = await res.value[0].id;
                     webURL = await res.value[0].webUrl;
@@ -115,10 +115,10 @@ export default class SPSettingsPanelService{
         let webURL:string='';
         await this.webContext.msGraphClientFactory.getClient()
             .then(async(client: MSGraphClient) => {        
-            let res = await client.api(`teams/${teamId}/channels`).version("beta").get()
-                //.then(async(res)=>{
+                 await client.api(`teams/${teamId}/channels`).version("v1.0").get()
+                .then(async(res)=>{
                     webURL = await res.value[0].webUrl;
-                //});
+                });
             });
             return await Promise.resolve(webURL);
     }   

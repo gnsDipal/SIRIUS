@@ -21,7 +21,6 @@ const SettingsPanel = (props)=> {
         //create team tab for admin to do the initial level settings
         spPanelSettingsServiceData.createNewTeam()
         .then((res:any) => {
-            alert("Web URL: " + res);
             setWebURL(res);
         });        
         GetUpdatedDataSource();               
@@ -274,10 +273,9 @@ const SettingsPanel = (props)=> {
                         <Spinner size={SpinnerSize.large} label="Loading"/>
                     }
                     {   (webURL !== '') &&
-                        <div><Link href={webURL} target="_blank" underline> 
+                        <Link href={webURL} target="_blank" underline> 
                             Go to admin settings
-                        </Link>
-                        <h3>{webURL}</h3></div>
+                        </Link>                        
                     }                                 
                 </div>
             </div>
