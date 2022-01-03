@@ -102,11 +102,19 @@ export default class spServiceEnsureLists {
     */
     public async ensureAreaListFields(siteUrl: string, listInfo:IListInfo, lookUpList:IListInfo): Promise<boolean> {
         let isFieldCreated :boolean = false;
+        debugger;
         try{
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
+            debugger;
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName, list.Id, "Title");
+            debugger;
+            if(list != null && list.Id != null) {
+                await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetLocation", list.Id, "Title");
+            } else {
+                alert("Lookup list not found");
+            }
+            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -126,7 +134,9 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName,list.Id, "Title");
+            debugger;
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomLocation",list.Id, "Title");
+            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -146,7 +156,9 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName, list.Id, "Title");
+            debugger;
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetArea", list.Id, "Title");
+            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -166,7 +178,9 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            await web.lists.getByTitle(listInfo.ListName).fields.addLookup(lookUpList.ListName,list.Id, "Title");
+            debugger;
+            await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomArea",list.Id, "Title");
+            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -233,10 +247,11 @@ export default class spServiceEnsureLists {
     public async ensureCalendarListFields(siteUrl: string, listInfo:IListInfo): Promise<boolean> {
         let isFieldCreated :boolean = false;
         try{
+            debugger;
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             // TODO: DIPAL - CLEAR the CHOICE FIELD
-            await this.updateCalendarChoiceFieldOptions(siteUrl, listInfo.ListName, 'Choices', []);
+            await this.updateCalendarChoiceFieldOptions(siteUrl, listInfo.ListName, 'Category', []);
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -256,7 +271,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             // TODO: DIPAL - CLEAR ALL CHOICE FIELDS
-            await this.updateCalendarChoiceFieldOptions(siteUrl, listInfo.ListName, 'Choices', []);
+            await this.updateCalendarChoiceFieldOptions(siteUrl, listInfo.ListName, 'Category', []);
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);

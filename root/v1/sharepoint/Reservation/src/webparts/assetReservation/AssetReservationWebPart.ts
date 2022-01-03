@@ -186,6 +186,8 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
   */
   // LIST   - ASSETLOCATION 
   // FIELDS - ID, TITLE, ISACTIVE
+
+  // Get LISTID 
   private async ensureLocationListWithFields() {
     let listInfo: IListInfo = <IListInfo> {};
 
@@ -213,7 +215,7 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
   private async ensureAreaListWithFields() {
     let listInfo: IListInfo = <IListInfo> {};
     let lookUpListInfo: IListInfo = <IListInfo>{};
-
+    debugger;
     listInfo.ListName = this.properties.areaListName;
     listInfo.ListType = 100;
     listInfo.ListDescription = 'Area list to hold asset area information';
@@ -285,6 +287,7 @@ export default class AssetReservationWebPart extends BaseClientSideWebPart<IAsse
   // LIST   - ASSETCALENDAR 
   // FIELDS - ID, TITLE, ISACTIVE, ASSETMASTER
   private async ensureCalendarListWithFields() {
+    debugger;
     let listInfo: IListInfo = <IListInfo>{};
     let lookUpListInfo: IListInfo = <IListInfo>{};
 
