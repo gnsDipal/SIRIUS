@@ -1,3 +1,3 @@
-export interface IBirthdayWebPartProps {
-    dropdown: string;  
-  }
+// export interface IBirthdayWebPartProps {
+//     dropdown: string;  
+//   }
