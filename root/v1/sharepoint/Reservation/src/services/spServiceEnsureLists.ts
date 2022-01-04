@@ -7,6 +7,7 @@ import { Fields, IFields, IFieldAddResult } from "@pnp/sp/fields";
 import { UrlFieldFormatType } from "@pnp/sp/fields/types";
 import { sizeBoolean } from "@microsoft/office-ui-fabric-react-bundle";
 // Class Services
+debugger;
 export default class spServiceEnsureLists {
     constructor(private context: WebPartContext) {
       // Setup Context to PnPjs and MSGraph
@@ -51,10 +52,8 @@ export default class spServiceEnsureLists {
     public async isListExistsByListInfo(siteUrl: string, listName:string): Promise<boolean> {
         let isListPresent: boolean = false;
         try {
-            debugger;
             const web = Web(siteUrl);
             let list:IList = await web.lists.getByTitle(listName);
-            debugger;
             if(list.contentTypes === null) {
                 alert(listName + ' Not found');
             } else {
@@ -102,19 +101,16 @@ export default class spServiceEnsureLists {
     */
     public async ensureAreaListFields(siteUrl: string, listInfo:IListInfo, lookUpList:IListInfo): Promise<boolean> {
         let isFieldCreated :boolean = false;
-        debugger;
         try{
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            debugger;
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            debugger;
             if(list != null && list.Id != null) {
+                alert("list.Id and it is inside if() = " + list.Id);
                 await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetLocation", list.Id, "Title");
             } else {
                 alert("Lookup list not found");
             }
-            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -134,9 +130,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            debugger;
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomLocation",list.Id, "Title");
-            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -156,9 +150,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            debugger;
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetArea", list.Id, "Title");
-            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -178,9 +170,7 @@ export default class spServiceEnsureLists {
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
-            debugger;
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomArea",list.Id, "Title");
-            debugger;
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -247,7 +237,6 @@ export default class spServiceEnsureLists {
     public async ensureCalendarListFields(siteUrl: string, listInfo:IListInfo): Promise<boolean> {
         let isFieldCreated :boolean = false;
         try{
-            debugger;
             const web = Web(siteUrl);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
             // TODO: DIPAL - CLEAR the CHOICE FIELD
