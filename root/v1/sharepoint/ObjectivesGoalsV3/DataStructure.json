@@ -1,0 +1,78 @@
+AppData: {
+	Sectores: {
+		[
+			{
+				Key: 1,
+				Value: Organization,
+				IsSelected: true/false,
+				Data: {
+					[
+						Monthly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+					]	
+				}
+			},
+			{
+				Key: 2,
+				Value: Department,
+				IsSelected: true/false,
+				Data: {
+					[
+						Monthly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+					]	
+				}
+			},
+			{
+				Key: 3,
+				Value: Personal,
+				IsSelected: true/false,
+				Data: {
+					[
+						Monthly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+					]	
+				}
+			},
+		]
+	}
+}
