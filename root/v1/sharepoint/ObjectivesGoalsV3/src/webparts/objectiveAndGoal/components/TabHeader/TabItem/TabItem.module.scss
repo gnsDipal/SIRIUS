@@ -111,7 +111,7 @@
   }
 }
 
-.SetDisplay{
+.TabHeaderSetDisplay{
   display: flex;
   justify-content: space-between;
   margin-bottom: 1px;
@@ -125,7 +125,7 @@
   //float:right;
 }
 
-.SetDisplayTeamsApp{
+.TabHeaderSetDisplayTeamsApp{
   display: flex;
   justify-content: space-between;
   margin-bottom: 1px;
@@ -139,7 +139,7 @@
   //float:right;
 }
 
-.GoalsTabBtn
+.TabHeaderGoalsTabBtn
 { border: 1px solid black;
   //border: 1px solid rgb(239, 135, 0);
   //padding: 18px 40px;
@@ -148,7 +148,7 @@
   width:110%;
 }
 
-.GoalsTabBtnTeamsApp
+.TabHeaderGoalsTabBtnTeamsApp
 { border: 1px solid black;
   //border: 1px solid rgb(239, 135, 0);
   padding: 23px 39px;
@@ -157,20 +157,93 @@
   width:110%;
 }
 
-.GoalsTabs
+.TabHeaderGoalsTabs
 {
   width:33.33%;
 }
 
 @media screen and (max-width : 768px){
-  .SetDisplay{
+  .TabHeaderSetDisplay{
     display: block;
     padding-left:15%;
   }
-  .GoalsTabs {
+  .TabHeaderGoalsTabs {
     width:100%;
   }
+}
 
+.IntervalSetDisplay{
+  display: flex;
+  margin-bottom: 1px;
+  margin-top:0px;
+  flex-wrap: wrap;
+  width:100%
+}
+
+.GoalsTabBtn
+{
+  border: 1px solid rgb(239, 135, 0);
+  padding: 18px 40px;
+  outline: none;
+}
+
+.IntervalButtonDiv{
+  width: 30%;
+  /* border: 1px solid #ddd; */
+  padding: 0;
+  /* background: #8eade6; */
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.IntervalButtons
+{ 
+  border: 1px solid black;
+  width: 100%;
+  outline: 0;
+  border: 1px solid #ddd;
+  padding: 10px;
+  background: #8eade6;  
+  //height: 100px;
+  height: 119px;
+}
+
+.IntervalButtons:hover{
+  background: #8eade6;
+}
+
+.AddGoalButton
+{ 
+  padding-left: 10px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.EditButton
+{
+  margin-left:20px;
+}
+
+.DataDisplay
+{ 
+  border: 1px solid black;
+  //border: 1px solid rgb(239, 135, 0);
+  padding: 10px 10px;
+  outline: none;
+  width:64%;
+  overflow-y: scroll;
+  //height: 80px;
+  height: 100px;
+}
+
+@media screen and (max-width : 768px){
+  .IntervalButtonDiv{
+    width: 100%;
+  }  
+  .DataDisplay{ 
+    width:100%; 
+   }
 }
 
 

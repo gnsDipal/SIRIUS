@@ -7,8 +7,9 @@ const TabHeader = (props) =>{
     console.log("TabHeader",props)
     return(
         <div className={ styles.tabHeader }>
+            <h1>TabHeader (Organization, Department , Personal)</h1>
           <div className={styles.SetDisplay}>
-                <h1>TabHeader (Organization, Department , Personal)</h1>
+                
             </div>                                                                    
         </div> 
     )
