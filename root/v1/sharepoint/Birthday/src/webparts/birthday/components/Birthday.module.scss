@@ -244,3 +244,9 @@
   width: 100%;
   z-index: 9999;
 }
+
+@media screen and (max-width : 767px) {
+  .mobileView {
+    font-size: 15px;
+  }
+}

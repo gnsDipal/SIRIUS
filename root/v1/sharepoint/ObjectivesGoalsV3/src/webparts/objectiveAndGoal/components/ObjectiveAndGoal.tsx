@@ -13,6 +13,9 @@ import thunk from "redux-thunk";
 import { IObjectiveAndGoalState } from './IObjectiveAndGoalState';
 import RootReducer from "../store/reducer/RootReducer";
 import ChildComponent1 from './child/ChildComponent1';
+import TabHeader from './TabHeader/TabHeader';
+import TabItem from './TabHeader/TabItem/TabItem';
+
 export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalProps, IObjectiveAndGoalState> {
   private store: Store<IObjectiveAndGoalState>
 
@@ -31,6 +34,8 @@ export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalP
                 <p className={ styles.subTitle }>Implementation Redux.</p>
                 <p className={ styles.description }>{escape(this.props.description)}</p>               
                 <ChildComponent1 />
+                <TabHeader/>
+                <TabItem/>
               </div>
             </div>
           </div>

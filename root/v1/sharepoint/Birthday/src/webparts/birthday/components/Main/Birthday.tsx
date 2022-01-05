@@ -393,7 +393,7 @@ const Birthday = ()=> {
         <div className={styles.birthday} >
             <div className={ styles.container }>
                 <div className={styles.description}>                        
-                    <h1 style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1> 
+                    <h1 className={styles.mobileView} style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1> 
                     {/* <div onClick={() => window.open('https://www.google.com', '_blank')} className={styles.helpSettings}>
                         <TooltipHost content={strings.helpContent}><Help /></TooltipHost>
                     </div > */}
