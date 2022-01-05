@@ -1,0 +1,124 @@
+{
+  "id": "7d834519-e86f-4d2b-ad52-b9b35dab66f1",
+  "alias": "sp-live-persona-card",
+  "componentType": "Library",
+  "manifestVersion": 2,
+  "version": "0.1.0",
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-live-persona-card",
+    "scriptResources": {
+      "sp-live-persona-card": {
+        "type": "localizedPath",
+        "paths": {
+          "default": "sp-live-persona-card_default.js",
+          "en-US": "sp-live-persona-card_en-us.js",
+          "qps-ploca": "sp-live-persona-card_qps-ploca.js",
+          "qps-ploc": "sp-live-persona-card_qps-ploc.js",
+          "en-GB": "sp-live-persona-card_en-us.js",
+          "en-NZ": "sp-live-persona-card_en-us.js",
+          "en-IE": "sp-live-persona-card_en-us.js",
+          "en-AU": "sp-live-persona-card_en-us.js",
+          "bn": "sp-live-persona-card_en-us.js",
+          "chr": "sp-live-persona-card_en-us.js",
+          "dv": "sp-live-persona-card_en-us.js",
+          "div": "sp-live-persona-card_en-us.js",
+          "en": "sp-live-persona-card_en-us.js",
+          "fil": "sp-live-persona-card_en-us.js",
+          "haw": "sp-live-persona-card_en-us.js",
+          "iu": "sp-live-persona-card_en-us.js",
+          "lo": "sp-live-persona-card_en-us.js",
+          "moh": "sp-live-persona-card_en-us.js",
+          "sq": "sp-live-persona-card_en-us.js",
+          "am": "sp-live-persona-card_en-us.js",
+          "hy": "sp-live-persona-card_en-us.js",
+          "mk": "sp-live-persona-card_en-us.js",
+          "bs": "sp-live-persona-card_en-us.js",
+          "my": "sp-live-persona-card_en-us.js",
+          "dz": "sp-live-persona-card_en-us.js",
+          "en-CY": "sp-live-persona-card_en-us.js",
+          "en-EG": "sp-live-persona-card_en-us.js",
+          "en-IL": "sp-live-persona-card_en-us.js",
+          "en-IS": "sp-live-persona-card_en-us.js",
+          "en-JO": "sp-live-persona-card_en-us.js",
+          "en-KE": "sp-live-persona-card_en-us.js",
+          "en-KW": "sp-live-persona-card_en-us.js",
+          "en-MK": "sp-live-persona-card_en-us.js",
+          "en-MT": "sp-live-persona-card_en-us.js",
+          "en-PK": "sp-live-persona-card_en-us.js",
+          "en-QA": "sp-live-persona-card_en-us.js",
+          "en-SA": "sp-live-persona-card_en-us.js",
+          "en-LK": "sp-live-persona-card_en-us.js",
+          "en-AE": "sp-live-persona-card_en-us.js",
+          "en-VN": "sp-live-persona-card_en-us.js",
+          "is": "sp-live-persona-card_en-us.js",
+          "km": "sp-live-persona-card_en-us.js",
+          "kh": "sp-live-persona-card_en-us.js",
+          "mt": "sp-live-persona-card_en-us.js",
+          "fa": "sp-live-persona-card_en-us.js",
+          "gd": "sp-live-persona-card_en-us.js",
+          "sr-Cyrl-BA": "sp-live-persona-card_en-us.js",
+          "sr-Latn-BA": "sp-live-persona-card_en-us.js",
+          "sd": "sp-live-persona-card_en-us.js",
+          "si": "sp-live-persona-card_en-us.js",
+          "so": "sp-live-persona-card_en-us.js",
+          "ti-ET": "sp-live-persona-card_en-us.js",
+          "uz": "sp-live-persona-card_en-us.js",
+          "en-SG": "sp-live-persona-card_en-us.js",
+          "en-HK": "sp-live-persona-card_en-us.js",
+          "en-MY": "sp-live-persona-card_en-us.js",
+          "en-PH": "sp-live-persona-card_en-us.js",
+          "en-TT": "sp-live-persona-card_en-us.js",
+          "en-AZ": "sp-live-persona-card_en-us.js",
+          "en-BH": "sp-live-persona-card_en-us.js",
+          "en-BN": "sp-live-persona-card_en-us.js",
+          "en-ID": "sp-live-persona-card_en-us.js",
+          "mi": "sp-live-persona-card_en-us.js"
+        },
+        "defaultPath": "sp-live-persona-card_default.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      },
+      "@ms/sp-telemetry": {
+        "type": "component",
+        "id": "8217e442-8ed3-41fd-957d-b112e841286a",
+        "version": "0.19.2"
+      },
+      "@microsoft/sp-loader": {
+        "type": "component",
+        "id": "1c6c9123-7aac-41f3-a376-3caea41ed83f",
+        "version": "1.12.1"
+      },
+      "@microsoft/office-ui-fabric-react-bundle": {
+        "type": "component",
+        "id": "02a01e42-69ab-403d-8a16-acd128661f8e",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "react": {
+        "type": "component",
+        "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+        "version": "16.9.0"
+      },
+      "@microsoft/load-themed-styles": {
+        "type": "component",
+        "id": "229b8d08-79f3-438b-8c21-4613fc877abd",
+        "version": "0.1.2"
+      },
+      "@microsoft/sp-diagnostics": {
+        "type": "component",
+        "id": "78359e4b-07c2-43c6-8d0b-d060b4d577e8",
+        "version": "1.12.1"
+      }
+    }
+  }
+}

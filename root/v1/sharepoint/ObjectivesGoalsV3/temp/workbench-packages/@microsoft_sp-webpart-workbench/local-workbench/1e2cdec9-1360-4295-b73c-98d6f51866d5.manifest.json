@@ -1,0 +1,154 @@
+{
+  "manifestVersion": 2,
+  "id": "1e2cdec9-1360-4295-b73c-98d6f51866d5",
+  "alias": "SPPagesCorePreloads",
+  "componentType": "Library",
+  "version": "0.1.0",
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "http://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-pages-preloads",
+    "scriptResources": {
+      "sp-pages-preloads": {
+        "type": "localizedPath",
+        "paths": {
+          "default": "sp-pages-preloads_default.js",
+          "en-US": "sp-pages-preloads_en-us.js",
+          "qps-ploca": "sp-pages-preloads_qps-ploca.js",
+          "qps-ploc": "sp-pages-preloads_qps-ploc.js",
+          "en-GB": "sp-pages-preloads_en-us.js",
+          "en-NZ": "sp-pages-preloads_en-us.js",
+          "en-IE": "sp-pages-preloads_en-us.js",
+          "en-AU": "sp-pages-preloads_en-us.js",
+          "bn": "sp-pages-preloads_en-us.js",
+          "chr": "sp-pages-preloads_en-us.js",
+          "dv": "sp-pages-preloads_en-us.js",
+          "div": "sp-pages-preloads_en-us.js",
+          "en": "sp-pages-preloads_en-us.js",
+          "fil": "sp-pages-preloads_en-us.js",
+          "haw": "sp-pages-preloads_en-us.js",
+          "iu": "sp-pages-preloads_en-us.js",
+          "lo": "sp-pages-preloads_en-us.js",
+          "moh": "sp-pages-preloads_en-us.js",
+          "sq": "sp-pages-preloads_en-us.js",
+          "am": "sp-pages-preloads_en-us.js",
+          "hy": "sp-pages-preloads_en-us.js",
+          "mk": "sp-pages-preloads_en-us.js",
+          "bs": "sp-pages-preloads_en-us.js",
+          "my": "sp-pages-preloads_en-us.js",
+          "dz": "sp-pages-preloads_en-us.js",
+          "en-CY": "sp-pages-preloads_en-us.js",
+          "en-EG": "sp-pages-preloads_en-us.js",
+          "en-IL": "sp-pages-preloads_en-us.js",
+          "en-IS": "sp-pages-preloads_en-us.js",
+          "en-JO": "sp-pages-preloads_en-us.js",
+          "en-KE": "sp-pages-preloads_en-us.js",
+          "en-KW": "sp-pages-preloads_en-us.js",
+          "en-MK": "sp-pages-preloads_en-us.js",
+          "en-MT": "sp-pages-preloads_en-us.js",
+          "en-PK": "sp-pages-preloads_en-us.js",
+          "en-QA": "sp-pages-preloads_en-us.js",
+          "en-SA": "sp-pages-preloads_en-us.js",
+          "en-LK": "sp-pages-preloads_en-us.js",
+          "en-AE": "sp-pages-preloads_en-us.js",
+          "en-VN": "sp-pages-preloads_en-us.js",
+          "is": "sp-pages-preloads_en-us.js",
+          "km": "sp-pages-preloads_en-us.js",
+          "kh": "sp-pages-preloads_en-us.js",
+          "mt": "sp-pages-preloads_en-us.js",
+          "fa": "sp-pages-preloads_en-us.js",
+          "gd": "sp-pages-preloads_en-us.js",
+          "sr-Cyrl-BA": "sp-pages-preloads_en-us.js",
+          "sr-Latn-BA": "sp-pages-preloads_en-us.js",
+          "sd": "sp-pages-preloads_en-us.js",
+          "si": "sp-pages-preloads_en-us.js",
+          "so": "sp-pages-preloads_en-us.js",
+          "ti-ET": "sp-pages-preloads_en-us.js",
+          "uz": "sp-pages-preloads_en-us.js",
+          "en-SG": "sp-pages-preloads_en-us.js",
+          "en-HK": "sp-pages-preloads_en-us.js",
+          "en-MY": "sp-pages-preloads_en-us.js",
+          "en-PH": "sp-pages-preloads_en-us.js",
+          "en-TT": "sp-pages-preloads_en-us.js",
+          "en-AZ": "sp-pages-preloads_en-us.js",
+          "en-BH": "sp-pages-preloads_en-us.js",
+          "en-BN": "sp-pages-preloads_en-us.js",
+          "en-ID": "sp-pages-preloads_en-us.js",
+          "mi": "sp-pages-preloads_en-us.js"
+        },
+        "defaultPath": "sp-pages-preloads_default.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      },
+      "@ms/sp-telemetry": {
+        "type": "component",
+        "id": "8217e442-8ed3-41fd-957d-b112e841286a",
+        "version": "0.19.2"
+      },
+      "@microsoft/sp-loader": {
+        "type": "component",
+        "id": "1c6c9123-7aac-41f3-a376-3caea41ed83f",
+        "version": "1.12.1"
+      },
+      "@ms/odsp-core-bundle": {
+        "type": "component",
+        "id": "2e09fb9b-13bb-48f2-859f-97d6fff71176",
+        "version": "1.1.13"
+      },
+      "@microsoft/office-ui-fabric-react-bundle": {
+        "type": "component",
+        "id": "02a01e42-69ab-403d-8a16-acd128661f8e",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-lodash-subset": {
+        "type": "component",
+        "id": "73e1dc6c-8441-42cc-ad47-4bd3659f8a3a",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-page-context": {
+        "type": "component",
+        "id": "1c4541f7-5c31-41aa-9fa8-fbc9dc14c0a8",
+        "version": "1.12.1"
+      },
+      "react": {
+        "type": "component",
+        "id": "0d910c1c-13b9-4e1c-9aa4-b008c5e42d7d",
+        "version": "16.9.0"
+      },
+      "@ms/uifabric-styling-bundle": {
+        "type": "component",
+        "id": "17ce0976-e69a-4355-be84-89b69a74717d",
+        "version": "0.1.0"
+      },
+      "@ms/sp-component-utilities": {
+        "type": "component",
+        "id": "8494e7d7-6b99-47b2-a741-59873e42f16f",
+        "version": "11.10.1"
+      },
+      "@microsoft/load-themed-styles": {
+        "type": "component",
+        "id": "229b8d08-79f3-438b-8c21-4613fc877abd",
+        "version": "0.1.2"
+      },
+      "@microsoft/sp-diagnostics": {
+        "type": "component",
+        "id": "78359e4b-07c2-43c6-8d0b-d060b4d577e8",
+        "version": "1.12.1"
+      },
+      "@ms/odsp-utilities-bundle": {
+        "type": "component",
+        "id": "cc2cc925-b5be-41bb-880a-f0f8030c6aff",
+        "version": "5.3.140"
+      }
+    }
+  }
+}

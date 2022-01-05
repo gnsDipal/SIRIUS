@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="SuccessfullyLoadedText" xml:space="preserve">
+    <value>Successfully loaded debug manifests.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text to print to the console when debug manifests are successfully loaded.</comment>
+  </data>
+  <data name="ErrorLoadingText" xml:space="preserve">
+    <value>Failed to load debug manifests: {0}</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] Text to print to the console when debug manifests failed to load. The {0} placeholder is the specific error message.</comment>
+  </data>
+</root>

@@ -1,0 +1,19 @@
+{
+  "id": "229b8d08-79f3-438b-8c21-4613fc877abd",
+  "alias": "SPLoadThemedStyles",
+  "componentType": "Library",
+  "version": "0.1.2",
+  "manifestVersion": 2,
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "http://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-load-themed-styles",
+    "scriptResources": {
+      "sp-load-themed-styles": {
+        "type": "path",
+        "path": "sp-load-themed-styles_none.js"
+      }
+    }
+  }
+}

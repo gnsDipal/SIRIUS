@@ -1,0 +1,100 @@
+{
+  "id": "c07208f0-ea3b-4c1a-9965-ac1b825211a6",
+  "alias": "SPHttp",
+  "componentType": "Library",
+  "version": "1.12.1",
+  "manifestVersion": 2,
+  "preloadComponents": [],
+  "loaderConfig": {
+    "internalModuleBaseUrls": [
+      "https://localhost:4321/dist/"
+    ],
+    "entryModuleId": "sp-http",
+    "scriptResources": {
+      "sp-http": {
+        "type": "localizedPath",
+        "paths": {
+          "default": "sp-http_default.js",
+          "en-US": "sp-http_en-us.js",
+          "qps-ploca": "sp-http_qps-ploca.js",
+          "qps-ploc": "sp-http_qps-ploc.js",
+          "en-GB": "sp-http_en-us.js",
+          "en-NZ": "sp-http_en-us.js",
+          "en-IE": "sp-http_en-us.js",
+          "en-AU": "sp-http_en-us.js",
+          "bn": "sp-http_en-us.js",
+          "chr": "sp-http_en-us.js",
+          "dv": "sp-http_en-us.js",
+          "div": "sp-http_en-us.js",
+          "en": "sp-http_en-us.js",
+          "fil": "sp-http_en-us.js",
+          "haw": "sp-http_en-us.js",
+          "iu": "sp-http_en-us.js",
+          "lo": "sp-http_en-us.js",
+          "moh": "sp-http_en-us.js",
+          "sq": "sp-http_en-us.js",
+          "am": "sp-http_en-us.js",
+          "hy": "sp-http_en-us.js",
+          "mk": "sp-http_en-us.js",
+          "bs": "sp-http_en-us.js",
+          "my": "sp-http_en-us.js",
+          "dz": "sp-http_en-us.js",
+          "en-CY": "sp-http_en-us.js",
+          "en-EG": "sp-http_en-us.js",
+          "en-IL": "sp-http_en-us.js",
+          "en-IS": "sp-http_en-us.js",
+          "en-JO": "sp-http_en-us.js",
+          "en-KE": "sp-http_en-us.js",
+          "en-KW": "sp-http_en-us.js",
+          "en-MK": "sp-http_en-us.js",
+          "en-MT": "sp-http_en-us.js",
+          "en-PK": "sp-http_en-us.js",
+          "en-QA": "sp-http_en-us.js",
+          "en-SA": "sp-http_en-us.js",
+          "en-LK": "sp-http_en-us.js",
+          "en-AE": "sp-http_en-us.js",
+          "en-VN": "sp-http_en-us.js",
+          "is": "sp-http_en-us.js",
+          "km": "sp-http_en-us.js",
+          "kh": "sp-http_en-us.js",
+          "mt": "sp-http_en-us.js",
+          "fa": "sp-http_en-us.js",
+          "gd": "sp-http_en-us.js",
+          "sr-Cyrl-BA": "sp-http_en-us.js",
+          "sr-Latn-BA": "sp-http_en-us.js",
+          "sd": "sp-http_en-us.js",
+          "si": "sp-http_en-us.js",
+          "so": "sp-http_en-us.js",
+          "ti-ET": "sp-http_en-us.js",
+          "uz": "sp-http_en-us.js",
+          "en-SG": "sp-http_en-us.js",
+          "en-HK": "sp-http_en-us.js",
+          "en-MY": "sp-http_en-us.js",
+          "en-PH": "sp-http_en-us.js",
+          "en-TT": "sp-http_en-us.js",
+          "en-AZ": "sp-http_en-us.js",
+          "en-BH": "sp-http_en-us.js",
+          "en-BN": "sp-http_en-us.js",
+          "en-ID": "sp-http_en-us.js",
+          "mi": "sp-http_en-us.js"
+        },
+        "defaultPath": "sp-http_default.js"
+      },
+      "tslib": {
+        "type": "component",
+        "id": "01c4df03-e775-48cb-aa14-171ee5199a15",
+        "version": "1.10.0"
+      },
+      "@microsoft/sp-core-library": {
+        "type": "component",
+        "id": "7263c7d0-1d6a-45ec-8d85-d4d1d234171b",
+        "version": "1.12.1"
+      },
+      "@microsoft/sp-diagnostics": {
+        "type": "component",
+        "id": "78359e4b-07c2-43c6-8d0b-d060b4d577e8",
+        "version": "1.12.1"
+      }
+    }
+  }
+}

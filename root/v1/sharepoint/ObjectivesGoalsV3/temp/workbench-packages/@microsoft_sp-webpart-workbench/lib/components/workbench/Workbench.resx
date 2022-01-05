@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="Office365Title" xml:space="preserve">
+    <value>Office 365</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] "Office 365" text in the fake suite nav SharePoint Workbench.</comment>
+  </data>
+  <data name="SharePointWorkbenchTitle" xml:space="preserve">
+    <value>SharePoint Workbench</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] "SharePoint Workbench" text in the fake suite nav for the SharePoint Workbench.</comment>
+  </data>
+  <data name="ScreenReaderDisplayModeSwitchToEditMode" xml:space="preserve">
+    <value>Switched from preview mode to edit mode.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] What screen reader reads when the Workbench switches to edit mode.</comment>
+  </data>
+  <data name="ScreenReaderDisplayModeSwitchToReadMode" xml:space="preserve">
+    <value>Switched from edit mode to preview mode.</value>
+    <comment>[Tag:ODSP-SPPPLAT-WebPartInfra] What screen reader reads when the Workbench switches from edit mode to read mode.</comment>
+  </data>
+</root>
