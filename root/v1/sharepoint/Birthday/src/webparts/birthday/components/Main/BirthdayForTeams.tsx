@@ -427,7 +427,7 @@ const BirthdayForTeams = ()=> {
       <div className={styles.birthday} >
       <div className={ styles.container }>
         <div className={styles.description}>                        
-            <h1 style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1>
+            <h1 className={styles.mobileView} style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1>
             <div onClick={handleSettingsPanel} className={styles.teamsSettings}>
                 <TooltipHost content={strings.configureContent}><TeamsSettingsIcon /></TooltipHost>
             </div>          

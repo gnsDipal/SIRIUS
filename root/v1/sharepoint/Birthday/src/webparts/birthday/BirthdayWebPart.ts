@@ -56,7 +56,11 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         webPartContext: this.context,       
         dropdown: this.properties.dropdown,
         externalAPI: this.properties.externalAPI,
-        IsTeamsIcon: this.properties.IsTeamsIcon                            
+        IsTeamsIcon: this.properties.IsTeamsIcon,
+        ImagesListName: strings.imagesListName,
+        UsersListName: strings.userDetailsListName,
+        ConfigListName: strings.configurationListName,
+        EmailListName: strings.emailSenderListName                            
       } 
     );     
     ReactDom.render(element, this.domElement);
