@@ -103,8 +103,9 @@ export default class spServiceEnsureLists {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
+            const list = await web.lists.getByTitle(lookUpList.ListName)();
+            // const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             if(list != null && list.Id != null) {
                 alert("list.Id and it is inside if() = " + list.Id);
                 await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetLocation", list.Id, "Title");
@@ -128,9 +129,12 @@ export default class spServiceEnsureLists {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
+            const list = await web.lists.getByTitle(lookUpList.ListName)();
+            if(list.Id){
+                alert("list.Id and it is inside if() = " + list.Id);
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomLocation",list.Id, "Title");
+            }
         } catch (error) {
             listInfo.ListError = error;
             return Promise.reject(error);
@@ -148,8 +152,8 @@ export default class spServiceEnsureLists {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
+            const list = await web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetArea", list.Id, "Title");
         } catch (error) {
             listInfo.ListError = error;
@@ -168,8 +172,8 @@ export default class spServiceEnsureLists {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
+            const list = await web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("RoomArea",list.Id, "Title");
         } catch (error) {
             listInfo.ListError = error;
@@ -190,8 +194,8 @@ export default class spServiceEnsureLists {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
+            const list = await web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("AssetCategory",list.Id, "Title");
             await web.lists.getByTitle(listInfo.ListName).fields.addNumber("Count");
             await web.lists.getByTitle(listInfo.ListName).fields.addUrl("Image", UrlFieldFormatType.Hyperlink);
@@ -215,8 +219,8 @@ export default class spServiceEnsureLists {
         let isFieldCreated :boolean = false;
         try{
             const web = Web(siteUrl);
+            const list = await web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addBoolean("IsActive");
-            const list = await sp.web.lists.getByTitle(lookUpList.ListName)();
             await web.lists.getByTitle(listInfo.ListName).fields.addLookup("BuildingFloor",list.Id, "Title");
             await web.lists.getByTitle(listInfo.ListName).fields.addNumber("Capacity");
             await web.lists.getByTitle(listInfo.ListName).fields.addUrl("Image", UrlFieldFormatType.Hyperlink);
