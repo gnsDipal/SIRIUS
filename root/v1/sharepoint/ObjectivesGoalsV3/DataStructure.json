@@ -1,9 +1,9 @@
 AppData: {
-	Sectores: {
+	Sectors: {
 		[
 			{
-				Key: 1,
-				Value: Organization,
+				Id: 1,
+				Title: Organization,
 				IsSelected: true/false,
 				Data: {
 					[
@@ -26,8 +26,8 @@ AppData: {
 				}
 			},
 			{
-				Key: 2,
-				Value: Department,
+				Id: 2,
+				Title: Department,
 				IsSelected: true/false,
 				Data: {
 					[
@@ -76,3 +76,21 @@ AppData: {
 		]
 	}
 }
+
+-------------------------------------------------------------------------------------------------------------
+SP Lists:
+
+1. Sectors : Id, Title (ex: Org, Personal etc), IsActive (Whether the tab should be shown or not)
+
+2. Intervals : Id, Title ( ex: Monthly, Quarter etc..), IsActive (Whether we need to show interval or not)
+
+3. 
+
+-------------------------------------------------------------------------------------------------------------
+
+Actions:
+
+SetAppData (called in ComponentDidMount) for objectiveGoal web-part
+
+ResetAppDataForSelectedTab (Update the render based on selected Tab among Sectors)
+

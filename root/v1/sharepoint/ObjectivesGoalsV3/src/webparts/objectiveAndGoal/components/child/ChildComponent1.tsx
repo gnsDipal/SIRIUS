@@ -1,6 +1,6 @@
 import * as React from "react";
 import { connect } from "react-redux";
-import { listaction, SetTabHeader, SetTabHeaderSelectedId } from "../../store/action/Action";
+import { listaction } from "../../store/action/Action";
 
 const ChildComponent1 = (props) =>{
     console.log("props in child 1",props)
