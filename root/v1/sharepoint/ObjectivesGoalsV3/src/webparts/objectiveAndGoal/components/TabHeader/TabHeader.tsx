@@ -5,29 +5,30 @@ import { connect } from "react-redux";
 import { SetAppData } from "../../store/action/Action";
 //import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
  debugger;
+
 const TabHeader = (props) =>{
     console.log("TabHeader",props);
     React.useEffect(() => {
-        props.setAppData();
+        props.fetchSectors();
     }, [])
     return(
         <div className={ styles.tabHeader }>
             <h1>TabHeader (Organization, Department , Personal)</h1>
           <div className={styles.SetDisplay}>
                 
-            </div>                                                                    
+            </div>
         </div> 
     )
 };
-const mapStateToProps = (state) =>{
-    return{
-        appDataStruct: state.appData
-    }
-}
+// const mapStateToProps = (state) =>{
+//     return{
+//         appDataStruct: state.appData
+//     }
+// }
 
-const mapDispatcherToProps = (dispatcher) => {
-    return{
-        setAppData: () => dispatcher(SetAppData())
-    }
-}
-export default connect(mapStateToProps,mapDispatcherToProps) (TabHeader)
+// const mapDispatcherToProps = (dispatcher) => {
+//     return{
+//         setAppData: () => dispatcher(SetAppData())
+//     }
+// }
+export default TabHeader;
