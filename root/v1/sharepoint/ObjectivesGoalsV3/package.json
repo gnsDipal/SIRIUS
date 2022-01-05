@@ -21,13 +21,15 @@
     "@microsoft/sp-office-ui-fabric-core": "1.12.1",
     "@microsoft/sp-property-pane": "1.12.1",
     "@microsoft/sp-webpart-base": "1.12.1",
+    "@pnp/sp": "^2.11.0",
     "cross-env": "^7.0.3",
     "office-ui-fabric-react": "7.156.0",
     "react": "16.9.0",
     "react-dom": "16.9.0",
     "react-redux": "^7.2.6",
     "redux": "^4.1.2",
-    "redux-thunk": "^2.4.1"
+    "redux-thunk": "^2.4.1",
+    "spfx-fast-serve": "^3.0.3"
   },
   "devDependencies": {
     "@types/react": "16.9.36",

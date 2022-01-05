@@ -5,23 +5,26 @@ import {
   IPropertyPaneConfiguration,
   PropertyPaneTextField
 } from '@microsoft/sp-property-pane';
-import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
+import { BaseClientSideWebPart, WebPartContext} from '@microsoft/sp-webpart-base';
 
 import * as strings from 'ObjectiveAndGoalWebPartStrings';
 import ObjectiveAndGoal from './components/ObjectiveAndGoal';
 import { IObjectiveAndGoalProps } from './components/IObjectiveAndGoalProps';
+import Home from './components/Home';
 
 export interface IObjectiveAndGoalWebPartProps {
   description: string;
+  webPartContext: WebPartContext;
 }
 
 export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObjectiveAndGoalWebPartProps> {
 
   public render(): void {
-    const element: React.ReactElement<IObjectiveAndGoalProps> = React.createElement(
+    const element: React.ReactElement<IObjectiveAndGoalWebPartProps> = React.createElement(
       ObjectiveAndGoal,
       {
-        description: this.properties.description
+        description: this.properties.description,
+        webPartContext: this.context
       }
     );
 

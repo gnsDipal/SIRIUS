@@ -1,22 +1,13 @@
-import * as React from 'react';
-import { useEffect, useContext, useState } from 'react';
+import { useContext } from 'react';
 import SPService from "../../../../services/SPService";
 import { UserContext } from "../../components/Home";
-import getAppData from './getAppData';
 debugger;
-export const listaction = (items: any) => {
-    return {
-      type: "LOAD_CONTENT",
-      val: items,
-    };
-  };
-
-export const SetAppData = () =>{
+const getAppData = () => {
   const sectors = []; 
   const mainContext = useContext(UserContext);
   let spService: SPService = null;
   spService = new SPService(mainContext);
-  spService.getSectorData()
+  return spService.getSectorData()
   .then(r=>{
        r.map(res=>{
            sectors.push({
@@ -26,10 +17,7 @@ export const SetAppData = () =>{
             data:{}
         });
       });
-  })
-  return{
-    type: "SET_APP_DATA",
-    val:sectors
-  }
-}  
+  });  
+};
 
+export default getAppData

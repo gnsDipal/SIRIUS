@@ -1,7 +1,8 @@
-// import {} from '../action/Action'
+import {SetAppData} from '../action/Action'
+debugger;
 const initialState = {
     objectiveAndGoalData: [],
-    AppData:[]
+    AppData:{}
  }
  
  const RootReducer = (state= initialState, action)=>{
@@ -10,6 +11,12 @@ const initialState = {
              ...state,
              objectiveAndGoalData: action.val,
          };
+     }
+     else if(action.type === "SET_APP_DATA"){
+         return{
+             ...state,
+             AppData: action.val,
+         }
      }
      return state;
  }

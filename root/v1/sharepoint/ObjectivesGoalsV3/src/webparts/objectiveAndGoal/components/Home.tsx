@@ -1,5 +1,8 @@
-// DEFAULT INPORT
+// DEFAULT IMPORT
 import * as React from 'react';
+import { useEffect, useState, useContext } from 'react';
+import { connect } from "react-redux";
+import { SetAppData } from '../store/action/Action';
 import styles from './ObjectiveAndGoal.module.scss';
 import { IObjectiveAndGoalProps } from './IObjectiveAndGoalProps';
 import { escape } from '@microsoft/sp-lodash-subset';
@@ -16,26 +19,21 @@ import ChildComponent1 from './child/ChildComponent1';
 import { Icon } from '@fluentui/react/lib/Icon';
 import TabHeader from './TabHeader/TabHeader';
 import TabItem from './TabHeader/TabItem/TabItem';
-
+import SPService from '../../../services/SPService';
+import Main from './Main';
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
+export const UserContext = React.createContext(null);
+// debugger;
 
-export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalProps, IObjectiveAndGoalState> {
-  private store: Store<IObjectiveAndGoalState>
-
-  public constructor(props: IObjectiveAndGoalProps) {
-    super(props);
-    this.store = createStore(RootReducer, applyMiddleware(thunk));
-  };
-  public render(): React.ReactElement<IObjectiveAndGoalProps> {
+const Home = (props:any) => {
     return (
-      <div className={ styles.objectiveAndGoal }>
-        <Provider store={this.store}>
-          <div className={styles.description}>                        
-              <h1 style={{margin:'0', float:'left'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
-          </div>
-            <TabHeader/>
-        </Provider>
-      </div>
-    );
-  }
-}
+        <div className={styles.objectiveAndGoal}>
+            <UserContext.Provider value={...props}>
+                    <Main/>
+            </UserContext.Provider>
+        </div>
+    )
+};
+
+export default Home;
+
