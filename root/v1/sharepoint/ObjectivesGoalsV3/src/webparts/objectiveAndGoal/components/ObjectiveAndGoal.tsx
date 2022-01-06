@@ -14,8 +14,7 @@ import { IObjectiveAndGoalState } from './IObjectiveAndGoalState';
 import RootReducer from "../store/reducer/RootReducer";
 import ChildComponent1 from './child/ChildComponent1';
 import { Icon } from '@fluentui/react/lib/Icon';
-import TabHeader from './TabHeader/TabHeader';
-import TabItem from './TabHeader/TabItem/TabItem';
+import TabHeader from '../store/containers/TabHeader';
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
 
@@ -30,7 +29,7 @@ export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalP
     return (
       <div className={ styles.objectiveAndGoal }>
         <Provider store={this.store}>
-          <div className={styles.description}>                        
+          <div className={styles.description}>
               <h1 style={{margin:'0', float:'left'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
           </div>
             <TabHeader />

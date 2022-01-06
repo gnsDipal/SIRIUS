@@ -6,12 +6,11 @@ import { connect } from "react-redux";
 import { SetAppData } from "../../store/action/Action";
 import { UserContext } from "../Main";
  debugger;
- const mainContext = useContext(UserContext);
-const TabHeader = (props:any) =>{
+
+const TabHeader = (props) =>{
     console.log("TabHeader",props);
     React.useEffect(() => {
-        props.setAppData();
-        console.log('object');
+        props.fetchSectors();
     }, [])
     return(
         <div className={ styles.tabHeader }>
@@ -20,19 +19,19 @@ const TabHeader = (props:any) =>{
             {/* </UserContext.Provider> */}
           <div className={styles.SetDisplay}>
                 
-            </div>                                                                  
+            </div>
         </div> 
     )
 };
-const mapStateToProps = (state) =>{
-    return{
-        appDataStruct: state.appData
-    }
-}
+// const mapStateToProps = (state) =>{
+//     return{
+//         appDataStruct: state.appData
+//     }
+// }
 
-const mapDispatcherToProps = (dispatcher) => {
-    return{
-        setAppData: () => dispatcher(SetAppData(mainContext))
-    }
-}
-export default connect(mapStateToProps,mapDispatcherToProps) (TabHeader)
+// const mapDispatcherToProps = (dispatcher) => {
+//     return{
+//         setAppData: () => dispatcher(SetAppData())
+//     }
+// }
+export default TabHeader;
