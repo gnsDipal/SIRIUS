@@ -7,15 +7,15 @@ import { connect } from "react-redux";
 
 const TabHeader = (props) =>{
     React.useEffect(() => {
-        props.fetchSectors();
-    }, [])
+        
+    }, [props.sectors])
     return(
         <div className={ styles.tabHeader }>
             {/* <UserContext.Provider value={...props}> */}
                 <h1>TabHeader (Organization, Department , Personal)</h1>
             {/* </UserContext.Provider> */}
           <div className={styles.SetDisplay}>
-                
+                {props.sectors.length}
             </div>
         </div> 
     )
