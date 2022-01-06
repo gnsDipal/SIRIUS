@@ -2,34 +2,32 @@
 import type { Actions, Sector } from '../operations/types';
 
 type State = {
-    AppData: {};
+    AppData: Sector[];
     isSectorFetchStart: boolean;
     isSectorFetchComplete:boolean;
     sectorFetchError:any;
-    SPContext:any;
+    SPContext:{};
 }
 
 const INIT_STATE = {
-    AppData: {},
+    AppData:[],
     isSectorFetchStart:false,
     isSectorFetchComplete:false,
     sectorFetchError:'',
     SPContext: {}
 }
 
-debugger;
- 
  const RootReducer = (state: State = INIT_STATE, action: Actions)=>{     
     switch (action.type) {
         case 'SET_SPCONTEXT':
             return {
                 ...state,
-                SPContext: [...action.payload as any]
+                SPContext: action.payload
             };
         case 'SET_SECTOR_FETCH_START':
             return {
                 ...state,
-                isSectorFetchStart: true
+                 isSectorFetchStart: true
             };
         case 'SET_SECTOR_FETCH_COMPLETE':
             return {
@@ -44,7 +42,7 @@ debugger;
         case 'SET_SECTORS':
             return {
                 ...state,
-                AppData: [...action.payload]
+                AppData: action.payload
             }
         default:
             return state;

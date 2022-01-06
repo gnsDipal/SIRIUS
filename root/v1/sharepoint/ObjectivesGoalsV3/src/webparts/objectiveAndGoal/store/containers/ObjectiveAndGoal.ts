@@ -4,11 +4,11 @@ import ObjectiveAndGoal from '../../components/ObjectiveAndGoal';
 //import setSPContext from '../action/sectors/setSectors';
 //import setSectors from '../action/sectors/setSectors';
 
-const mapStateToProps = ({
-  webPartContext
-  }) => ({
-    webPartContext
-  });
+// const mapStateToProps = ({
+//   webPartContext
+//   }) => ({
+//     webPartContext
+//   });
   
   // const mapDispatchToProps = dispatch => ({
   //   ...bindActionCreators(
@@ -21,6 +21,6 @@ const mapStateToProps = ({
   // });
   
   export default connect(
-    mapStateToProps,
+    null,
     null
   )(ObjectiveAndGoal);

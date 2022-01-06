@@ -36,7 +36,7 @@
 
   export type SetSPContext = {
     type: 'SET_SPCONTEXT',
-    payload: object
+    payload: {}
   };
 
   export type SPContext = {};

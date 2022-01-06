@@ -5,10 +5,7 @@ import { ITabHeaderProps } from './ITabHeaderProps';
 import { connect } from "react-redux";
 // import { SetAppData } from "../../store/action/Action";
 
- debugger;
-
 const TabHeader = (props) =>{
-    console.log("TabHeader",props);
     React.useEffect(() => {
         props.fetchSectors();
     }, [])
