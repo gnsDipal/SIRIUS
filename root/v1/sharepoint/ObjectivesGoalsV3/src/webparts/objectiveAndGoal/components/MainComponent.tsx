@@ -15,17 +15,18 @@ const MainComponent = (props) => {
         console.log("context : " + props.SPContext);
     };
    
-    let component = null;
-    if(JSON.stringify(props.SPContext) !== JSON.stringify({})) {
-        component = <TabHeader />
-    } else {
-        component = null;
-    }
+    // let component = null;
+    // if(JSON.stringify(props.SPContext) !== JSON.stringify({})) {
+    //     component = <TabHeader />
+    // } else {
+    //     component = null;
+    // }
     return (
         
         <div>
             <h1>In Main File</h1>
-            {component}
+            {/* {component} */}
+            <TabHeader />
         </div>
     )
 }
