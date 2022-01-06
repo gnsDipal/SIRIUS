@@ -11,7 +11,7 @@ import SPService from "../../../../../services/SPService";
 // import initialPayloadData from '../../../../../services/initPayload';
 
 import type { Sector } from '../../operations/types';
-
+debugger;
 function fetchSectors() {
     return function CB(dispatch: Function, getStore:any) {
         debugger;
@@ -32,7 +32,7 @@ function fetchSectors() {
         // });
         // dispatch(setSectors(sectors));
         // dispatch(setSectorFetchComplete());
-        debugger;
+        // debugger;
         const mainContext = store.SPContext; //useContext(UserContext);
         if(JSON.stringify(mainContext) !== JSON.stringify({})){
             let spService: SPService = null;
