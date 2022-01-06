@@ -4,9 +4,9 @@ export default class SPService{
     private web = null;
     private webUrl = null;
     private loggedInUserId = null;
-    constructor(private mainProp){
+    constructor(private context){
         debugger;
-      this.webContext = this.mainProp.webPartContext;
+      this.webContext = this.context;
       this.onInit();
     } 
     onInit(){

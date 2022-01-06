@@ -15,53 +15,31 @@ import type { Sector } from '../../operations/types';
 function fetchSectors() {
     return function CB(dispatch: Function, getStore:any) {
         debugger;
+        
         const store = getStore();
         dispatch(setSectorFetchStart());
         let sectors: Sector[] = [];
-        // sectors.push({
-        //     Title: "This is for testing",
-        //     Id: 1,
-        //     IsSelected: false,
-        //     Data: {}
-        // });
-        // sectors.push({
-        //     Title: "This is another testing",
-        //     Id: 2,
-        //     IsSelected: false,
-        //     Data: {}
-        // });
-        // dispatch(setSectors(sectors));
-        // dispatch(setSectorFetchComplete());
         debugger;
-        const mainContext = store.SPContext; //useContext(UserContext);
-        if(JSON.stringify(mainContext) !== JSON.stringify({})){
-            let spService: SPService = null;
-            spService = new SPService(mainContext);
-            return spService.getSectorData()
-            .then(r=>{
-                debugger;
-                r.map(res=>{
-                    sectors.push({
-                    Title: res.Title,
-                    Id: res.ID,
-                    IsSelected: false,
-                    Data: {}
-                });
-                });
-                debugger;
-                dispatch(setSectors(sectors));
-                dispatch(setSectorFetchComplete());
-            }, error => {
-                console.error('onRejected function called: ' + error.message);
-                dispatch(setSectorFetchError(error));
+        const mainContext = store.SPContext; 
+        let spService: SPService = null;
+        spService = new SPService(mainContext);
+        spService.getSectorData()
+        .then(r=>{
+            r.map(res=>{
+                sectors.push({
+                Title: res.Title,
+                Id: res.ID,
+                IsSelected: false,
+                Data: {}
             });
-        } else {
-            // let data = initialPayloadData;
-            // dispatch(setSectors(data));
-            // dispatch(setSectorFetchComplete());
-        }
-
-        // dispatch(setSectorFetchError(error));
+            });
+            debugger;
+            dispatch(setSectors(sectors));
+            dispatch(setSectorFetchComplete());
+        }, error => {
+            console.error('onRejected function called: ' + error.message);
+            dispatch(setSectorFetchError(error));
+        });
     }
 }
 

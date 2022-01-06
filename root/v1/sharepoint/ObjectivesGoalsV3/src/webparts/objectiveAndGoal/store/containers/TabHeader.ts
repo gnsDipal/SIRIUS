@@ -1,22 +1,19 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import TabHeader from '../../components/TabHeader/TabHeader';
-import fetchSectors from '../action/sectors/fetchSectors';
+
 // import setSectors from '../action/sectors/setSectors';
 // import type { Sector } from '../operations/types';
 
 const mapStateToProps = ({
-    AppData,
-    SPContext,
-  }) => ({
-    sectors: AppData.Sectors,
-    SPContext
+    AppData  }) => ({
+    sectors: AppData,
   });
   
   const mapDispatchToProps = dispatch => ({
     ...bindActionCreators(
       {
-        fetchSectors
+        
         // setSectors
       },
       dispatch
@@ -25,5 +22,5 @@ const mapStateToProps = ({
   
   export default connect(
     mapStateToProps,
-    mapDispatchToProps
+    null
   )(TabHeader);
