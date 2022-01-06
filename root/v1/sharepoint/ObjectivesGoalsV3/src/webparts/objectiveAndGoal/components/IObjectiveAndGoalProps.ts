@@ -1,6 +1,9 @@
 import { WebPartContext } from '@microsoft/sp-webpart-base';
+// import type { Sector } from '../store/operations/types';
 
 export interface IObjectiveAndGoalProps {
-  description: string;
   webPartContext:WebPartContext;
+  // Sectors: Sector[]; 
+  // setSPContext(context:WebPartContext): Function;
+  // setSectors(sector: Sector[]): Function;
 }

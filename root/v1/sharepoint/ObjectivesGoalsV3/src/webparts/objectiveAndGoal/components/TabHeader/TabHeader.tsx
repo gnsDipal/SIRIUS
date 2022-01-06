@@ -3,8 +3,8 @@ import { useContext } from "react";
 import styles from './TabHeader.module.scss';
 import { ITabHeaderProps } from './ITabHeaderProps';
 import { connect } from "react-redux";
-import { SetAppData } from "../../store/action/Action";
-import { UserContext } from "../Main";
+// import { SetAppData } from "../../store/action/Action";
+
  debugger;
 
 const TabHeader = (props) =>{
@@ -23,15 +23,5 @@ const TabHeader = (props) =>{
         </div> 
     )
 };
-// const mapStateToProps = (state) =>{
-//     return{
-//         appDataStruct: state.appData
-//     }
-// }
 
-// const mapDispatcherToProps = (dispatcher) => {
-//     return{
-//         setAppData: () => dispatcher(SetAppData())
-//     }
-// }
 export default TabHeader;

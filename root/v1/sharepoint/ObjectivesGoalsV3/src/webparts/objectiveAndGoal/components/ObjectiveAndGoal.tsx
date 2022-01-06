@@ -12,19 +12,24 @@ import thunk from "redux-thunk";
 // APPLICATION IMPORT
 import { IObjectiveAndGoalState } from './IObjectiveAndGoalState';
 import RootReducer from "../store/reducer/RootReducer";
-import ChildComponent1 from './child/ChildComponent1';
 import { Icon } from '@fluentui/react/lib/Icon';
-import TabHeader from '../store/containers/TabHeader';
+import Main from '../store/containers/Main';
+
 
 const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
 
-export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalProps, IObjectiveAndGoalState> {
-  private store: Store<IObjectiveAndGoalState>
+export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalProps> {
+  private store: any; // Store<IObjectiveAndGoalState>
 
   public constructor(props: IObjectiveAndGoalProps) {
     super(props);
     this.store = createStore(RootReducer, applyMiddleware(thunk));
   };
+
+  componentDidMount(): void {
+    // this.props.setSPContext(this.props.webPartContext);
+  }
+
   public render(): React.ReactElement<IObjectiveAndGoalProps> {
     return (
       <div className={ styles.objectiveAndGoal }>
@@ -32,7 +37,7 @@ export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalP
           <div className={styles.description}>
               <h1 style={{margin:'0', float:'left'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
           </div>
-            <TabHeader />
+          <Main {...this.props} />
         </Provider>
       </div>
     );

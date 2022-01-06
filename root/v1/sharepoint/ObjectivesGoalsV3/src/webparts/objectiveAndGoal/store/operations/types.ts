@@ -34,9 +34,17 @@
     Data: {}
   };
 
+  export type SetSPContext = {
+    type: 'SET_SPCONTEXT',
+    payload: object
+  };
+
+  export type SPContext = {};
+
   export type Actions =
   | GetSectors
   | SetSectors
   | SetSectorFetchStart
   | SetSectorFetchComplete
   | SetSectorFetchError
+  | SetSPContext
