@@ -15,44 +15,33 @@ import thunk from "redux-thunk";
 // APPLICATION IMPORT
 import { IObjectiveAndGoalState } from './IObjectiveAndGoalState';
 import RootReducer from "../store/reducer/RootReducer";
-import ChildComponent1 from './child/ChildComponent1';
-import { Icon } from '@fluentui/react/lib/Icon';
 import TabHeader from './TabHeader/TabHeader';
-import TabItem from './TabHeader/TabItem/TabItem';
-import SPService from '../../../services/SPService';
-const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
+import { store } from '../store/mainStore/mainStore';
+// const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
 
-// debugger;
+debugger;
+export const UserContext = React.createContext(null);
 
-const Main = (props) => {
-    let store:Store;
+const Main = (props:any) => {
+    // let store:Store;
     useEffect(() => { 
         init();              
    },[]);
    const init=()=>{
-        store = createStore(RootReducer, applyMiddleware(thunk));
-        props.setAppData();
+        // store = createStore(RootReducer, applyMiddleware(thunk));
         };
    
     return (
         <div className={styles.objectiveAndGoal}>
-                 <Provider store={store}>
-                    <TabHeader/>
-                    <TabItem/>
-                </Provider>
+                 {/* <Provider store={store}> */}
+                    <UserContext.Provider value={...props}>
+                        <TabHeader/>
+                    </UserContext.Provider>
+                {/* </Provider> */}
+                <h1>In Main File</h1>
         </div>
     )
 }
-const mapStateToProps = (state) =>{
-    return{
-        appDataStruct: state.appData
-    }
-}
 
-const mapDispatcherToProps = (dispatcher) => {
-    return{
-        setAppData: () => dispatcher(SetAppData())
-    }
-}
-export default connect(mapStateToProps, mapDispatcherToProps) (Main)
+export default Main
 

@@ -1,5 +1,5 @@
 import { Web } from '@pnp/sp/presets/all';
-import { UserContext } from '../webparts/objectiveAndGoal/components/Home';
+import { UserContext } from '../webparts/objectiveAndGoal/components/Main';
 debugger;
 export default class SPService{
     private webContext = null;

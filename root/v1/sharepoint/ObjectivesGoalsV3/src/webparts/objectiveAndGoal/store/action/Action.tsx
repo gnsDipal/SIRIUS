@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { useEffect, useContext, useState } from 'react';
+import { useContext } from 'react';
 import SPService from "../../../../services/SPService";
-import { UserContext } from "../../components/Home";
+import { UserContext } from '../../components/Main';
 import getAppData from './getAppData';
+// const mainContext = useContext(UserContext);
 debugger;
 export const listaction = (items: any) => {
     return {
@@ -11,9 +11,9 @@ export const listaction = (items: any) => {
     };
   };
 
-export const SetAppData = () =>{
+// const mainContext = useContext(UserContext);
+export const SetAppData = (mainContext) =>{
   const sectors = []; 
-  const mainContext = useContext(UserContext);
   let spService: SPService = null;
   spService = new SPService(mainContext);
   spService.getSectorData()
@@ -26,7 +26,7 @@ export const SetAppData = () =>{
             data:{}
         });
       });
-  })
+  });  
   return{
     type: "SET_APP_DATA",
     val:sectors

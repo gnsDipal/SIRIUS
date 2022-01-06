@@ -2,7 +2,7 @@ import {SetAppData} from '../action/Action'
 debugger;
 const initialState = {
     objectiveAndGoalData: [],
-    AppData:{}
+    AppData:[]
  }
  
  const RootReducer = (state= initialState, action)=>{

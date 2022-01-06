@@ -21,7 +21,7 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
 
   public render(): void {
     const element: React.ReactElement<IObjectiveAndGoalWebPartProps> = React.createElement(
-      ObjectiveAndGoal,
+      Home,
       {
         description: this.properties.description,
         webPartContext: this.context

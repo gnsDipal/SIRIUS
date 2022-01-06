@@ -13,24 +13,22 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
 // APPLICATION IMPORT
-import { IObjectiveAndGoalState } from './IObjectiveAndGoalState';
-import RootReducer from "../store/reducer/RootReducer";
-import ChildComponent1 from './child/ChildComponent1';
 import { Icon } from '@fluentui/react/lib/Icon';
-import TabHeader from './TabHeader/TabHeader';
-import TabItem from './TabHeader/TabItem/TabItem';
-import SPService from '../../../services/SPService';
 import Main from './Main';
-const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
-export const UserContext = React.createContext(null);
-// debugger;
+import { store } from '../store/mainStore/mainStore';
+// const MyObjectivesGoalsIcon = () => <Icon iconName="GroupObject" className = {styles.objectivesGoalsIcon} />;
+// export const UserContext = React.createContext(null);
+debugger;
 
 const Home = (props:any) => {
     return (
         <div className={styles.objectiveAndGoal}>
-            <UserContext.Provider value={...props}>
-                    <Main/>
-            </UserContext.Provider>
+            {/* <UserContext.Provider value={...props}> */}
+                <Provider store={store}>
+                    <Main {...props}/>
+                </Provider>       
+            {/* </UserContext.Provider> */}
+            <h1>In Home file</h1>
         </div>
     )
 };

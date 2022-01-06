@@ -33,7 +33,7 @@ export default class ObjectiveAndGoal extends React.Component<IObjectiveAndGoalP
           <div className={styles.description}>                        
               <h1 style={{margin:'0', float:'left'}}><MyObjectivesGoalsIcon/> Objectives and Goals </h1>
           </div>
-            <TabHeader/>
+            <TabHeader />
         </Provider>
       </div>
     );
