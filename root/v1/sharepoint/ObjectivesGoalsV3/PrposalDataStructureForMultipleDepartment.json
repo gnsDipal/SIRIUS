@@ -1,0 +1,183 @@
+AppData: {
+	Sectors: {
+		[
+			{
+				Id: 1,
+				Title: Organization,
+				IsSelected: true/false,
+				Data: {
+					[
+					    {
+						Id: 1,
+						Title: "Monthly",
+						Data : {
+							[
+								Title: "",
+								Goal: "",
+								Status: %
+							]
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+					]	
+				}
+			},
+			{
+				Id: 2,
+				Title: Department,
+				IsSelected: true/false,
+				Data: {
+					[	//Prposal Information if Multiple Department
+						{
+						Id: 1,
+						Title: "Monthly",
+						DepartmentName : "HR"
+						Data : {
+							[
+								Title: "",
+								Goal: "",
+								Status: %
+							]
+						},
+						{
+						Id: 2,
+						Title: "Monthly",
+						DepartmentName : "IT"
+						Data : {
+							[
+								Title: "",
+								Goal: "",
+								Status: %
+							]
+						},
+						{
+						Id: 3,
+						Title: "Yearly",
+						DepartmentName : "IT"
+						Data : {
+							[
+								Title: "",
+								Goal: "",
+								Status: %
+							]
+						},
+						//Orignal Information
+						Monthly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+					]	
+				}
+			},
+			{
+				Key: 3,
+				Value: Personal,
+				IsSelected: true/false,
+				Data: {
+					[
+						Monthly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+					]	
+				}
+			},
+			{
+				Key: 4,
+				Value: Department,
+				IsSelected: true/false,
+				IntervalData:[{ 
+								SingleDepartment: IT,
+								Data :
+								  [
+									Monthly: {
+										Title: "",
+										Goal: "",
+										Status: %
+									},
+									Queterly: {
+										Title: "",
+										Goal: "",
+										Status: %
+									},
+									Yearly: {
+										Title: "",
+										Goal: "",
+										Status: %
+									},
+								  ]	
+							},
+							{ 
+								SingleDepartment: HR,
+								Data :
+								  [
+									Monthly: {
+										Title: "",
+										Goal: "",
+										Status: %
+									},
+									Queterly: {
+										Title: "",
+										Goal: "",
+										Status: %
+									},
+									Yearly: {
+										Title: "",
+										Goal: "",
+										Status: %
+									},
+								  ]	
+							},
+							]
+			},
+		]
+	}
+}
+
+-------------------------------------------------------------------------------------------------------------
+SP Lists:
+
+1. Sectors : Id, Title (ex: Org, Personal etc), IsActive (Whether the tab should be shown or not)
+
+2. Intervals : Id, Title ( ex: Monthly, Quarter etc..), IsActive (Whether we need to show interval or not)
+
+3. 
+
+-------------------------------------------------------------------------------------------------------------
+
+Actions:
+
+SetAppData (called in ComponentDidMount) for objectiveGoal web-part
+
+ResetAppDataForSelectedTab (Update the render based on selected Tab among Sectors)
+
