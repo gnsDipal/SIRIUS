@@ -1,0 +1,1 @@
+{"version":3,"file":"setSectorFetchComplete.js","sourceRoot":"","sources":["../../../../../../src/webparts/objectiveAndGoal/store/action/sectors/setSectorFetchComplete.ts"],"names":[],"mappings":"AAEA,IAAM,sBAAsB,GAAG,cAA8B,OAAA,CAAC;IAC1D,IAAI,EAAE,2BAA2B;IACjC,OAAO,EAAE,IAAI;CAChB,CAAC,EAH2D,CAG3D,CAAC;AAEH,eAAe,sBAAsB,CAAC"}

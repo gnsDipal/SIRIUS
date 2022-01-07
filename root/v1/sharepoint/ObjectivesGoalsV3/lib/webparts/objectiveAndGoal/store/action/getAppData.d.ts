@@ -1,0 +1,1 @@
+//# sourceMappingURL=getAppData.d.ts.map

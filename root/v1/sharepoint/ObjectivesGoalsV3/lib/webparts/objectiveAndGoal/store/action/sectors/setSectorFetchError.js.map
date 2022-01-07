@@ -1,0 +1,1 @@
+{"version":3,"file":"setSectorFetchError.js","sourceRoot":"","sources":["../../../../../../src/webparts/objectiveAndGoal/store/action/sectors/setSectorFetchError.ts"],"names":[],"mappings":"AAEA,IAAM,mBAAmB,GAAG,UAAC,KAAY,IAA2B,OAAA,CAAC;IACjE,IAAI,EAAE,wBAAwB;IAC9B,OAAO,EAAE,KAAK;CACjB,CAAC,EAHkE,CAGlE,CAAC;AAEH,eAAe,mBAAmB,CAAC"}
