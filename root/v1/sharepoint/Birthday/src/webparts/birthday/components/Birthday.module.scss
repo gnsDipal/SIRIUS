@@ -24,6 +24,11 @@
     font-size: xx-large;
   }
 
+  .addScroll{
+    height: 500px;
+    overflow: auto;
+  }
+
   .column {
     @include ms-Grid-col;
     @include ms-lg10;
@@ -250,3 +255,7 @@
     font-size: 15px;
   }
 }
+
+// #workbenchPageContent .f_a_8474018e {
+//   overflow: hidden!important;
+// }

@@ -24,6 +24,7 @@ const BirthdayForTeams = ()=> {
     const[ colorBirthday,setColorBirthday ] = React.useState<string>("white");
     const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black");    
     const[ isSettingsPanelOpen, setIsSettingsPanelOpen ] = React.useState<boolean>(false);
+    const[ isSiteAdmin, setIsSiteAdmin ] = React.useState<boolean>(false);
     const[ datasource, setDatasource ] = React.useState<string>("Azure");    
     const[ selectedCategory, setSelectedCategory ] = React.useState<IDropdownOption>({key: 'all', text: 'All'});
     const[ IsTeamsIcon, setIsTeamsIcon ] = React.useState<boolean>(false);
@@ -45,6 +46,10 @@ const BirthdayForTeams = ()=> {
 
 
     const init = async() => {
+        spBirthAnniServiceData.checkIfLoggedInUserIsAdmin()
+        .then((res: boolean) => {
+            setIsSiteAdmin(res);
+        });
         await loadSettingsForTeams()
         .then(async(res:any) => {
             if(res.length > 0){
@@ -428,9 +433,11 @@ const BirthdayForTeams = ()=> {
       <div className={ styles.container }>
         <div className={styles.description}>                        
             <h1 className={styles.mobileView} style={{margin:'0', float:'left'}}><MyBirthdayIcon/>{strings.webpartHeading}</h1>
-            <div onClick={handleSettingsPanel} className={styles.teamsSettings}>
-                <TooltipHost content={strings.configureContent}><TeamsSettingsIcon /></TooltipHost>
-            </div>          
+            { isSiteAdmin &&  
+                <div onClick={handleSettingsPanel} className={styles.teamsSettings}>
+                    <TooltipHost content={strings.configureContent}><TeamsSettingsIcon /></TooltipHost>
+                </div>
+            }          
         </div>          
         <br></br>
         <div className={styles.SetDisplay}>                                                             
