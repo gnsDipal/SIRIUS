@@ -1,9 +1,14 @@
 import SPService from "../../../../../services/SPService";
 
+interface interval {
+    Id:number;
+    Title: string;
+    Data: {}
+};
+
 export const getIntervalData = (dispatch: Function, getStore:any) => {
-    debugger;
     const store = getStore();
-    const intervals:string[] =[];
+    const intervals:interval[] = [];
     const mainContext = store.SPContext; 
     let spService: SPService = null;
     spService = new SPService(mainContext);
@@ -11,9 +16,11 @@ export const getIntervalData = (dispatch: Function, getStore:any) => {
         .then(r=>{
             debugger;
             r.map(res=>{
-                intervals.push(
-                    res.Title
-                );
+                intervals.push({
+                    Id: res.Id,
+                    Title: res.Title,
+                    Data: {}
+                });
             });
         return intervals;
     }, error => {
