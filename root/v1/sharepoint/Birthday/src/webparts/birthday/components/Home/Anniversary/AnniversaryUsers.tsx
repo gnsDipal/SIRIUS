@@ -3,6 +3,7 @@ import styles from '../../Birthday.module.scss';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";;
 import { PrimaryButton, Callout, DirectionalHint, TextField, Icon, TooltipHost, Persona, PersonaSize } from "@fluentui/react";
 import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
+import { Pagination } from "@pnp/spfx-controls-react/lib/Pagination"
 import useMsGraphProvider, { IMSGraphInterface } from "../../../../../services/msGraphProvider";
 import InputEmoji from 'react-input-emoji';
 import Carousel from 'react-elastic-carousel';
@@ -137,7 +138,7 @@ const AnniversaryUsers = (props) => {
     };
 
     return (
-        <div>
+        <div className={styles.addScroll}>
         {!props.AUsers &&
             <div>
                 <Placeholder 

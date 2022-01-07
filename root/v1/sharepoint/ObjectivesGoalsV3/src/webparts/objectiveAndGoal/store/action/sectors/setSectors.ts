@@ -1,8 +1,8 @@
 import type { SetSectors, Sector } from '../../operations/types';
 
-const setSectors = (sectors: Sector[]) : SetSectors => ({
+const setSectors = (appData:any) : SetSectors => ({
     type: 'SET_SECTORS',
-    payload: sectors
+    payload: appData
 });
 
 export default setSectors;

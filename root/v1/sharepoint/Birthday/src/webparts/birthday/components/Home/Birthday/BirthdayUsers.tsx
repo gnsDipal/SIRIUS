@@ -1,9 +1,9 @@
 import * as React from 'react';
 import styles from '../../Birthday.module.scss';
-import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { Icon, PrimaryButton, TextField, Callout, DirectionalHint, TooltipHost, Persona, PersonaSize } from '@fluentui/react';
 import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
+import { Pagination } from "@pnp/spfx-controls-react/lib/Pagination";
 import useMsGraphProvider, { IMSGraphInterface } from "../../../../../services/msGraphProvider";
 import Carousel from 'react-elastic-carousel';
 import InputEmoji from 'react-input-emoji';
@@ -136,7 +136,12 @@ const BirthdayUsers = (props) => {
         }
     };
 
+    const getPage = async(page: number) => {
+        console.log('Page:', page);
+    };
+
     return(
+        
         <div>
         {!props.BUsers &&
             <div>

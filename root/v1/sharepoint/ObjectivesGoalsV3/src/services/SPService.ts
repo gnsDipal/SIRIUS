@@ -5,7 +5,6 @@ export default class SPService{
     private webUrl = null;
     private loggedInUserId = null;
     constructor(private context){
-        debugger;
       this.webContext = this.context;
       this.onInit();
     } 

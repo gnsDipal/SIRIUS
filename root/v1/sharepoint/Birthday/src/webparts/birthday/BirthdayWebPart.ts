@@ -29,16 +29,16 @@ export interface IBirthdayWebPartProps {
     filePickerResult: IFilePickerResult;
 }
 
-let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = null;
-let SPListsEnsureService: SPEnsureListService = null;
-
 debugger;
 export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebPartProps> {
 
-  protected async onInit(){
-    SPListsEnsureService = new SPEnsureListService(this.context);
+  private spBirthdayServiceData: SPBirthdayAnniversaryServiceData = null;
+  private SPListsEnsureService: SPEnsureListService = null;
+  
+  public async onInit(){
+    this.SPListsEnsureService = new SPEnsureListService(this.context);
     if(this.context.sdks.microsoftTeams){         
-      await SPListsEnsureService.ensureConfigurationList(strings.configurationListName)
+      await this.SPListsEnsureService.ensureConfigurationList(strings.configurationListName)
       .then((res:string)=> {
           if(res)
             this.createListsUsingPNP();
@@ -64,17 +64,17 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       } 
     );     
     ReactDom.render(element, this.domElement);
-  }
+  }  
 
   private createListsUsingPNP = async() => 
   {
-      await SPListsEnsureService.ensureImageLibrary(strings.imagesListName)
+      await this.SPListsEnsureService.ensureImageLibrary(strings.imagesListName)
       .then(async(res:string) => {
         if(res)
-            await SPListsEnsureService.ensureUserList(strings.userDetailsListName)
+            await this.SPListsEnsureService.ensureUserList(strings.userDetailsListName)
             .then(async(res:string) => {
               if(res)
-                  await SPListsEnsureService.ensureEmailList(strings.emailSenderListName)
+                  await this.SPListsEnsureService.ensureEmailList(strings.emailSenderListName)
                   .then((res:string) => {
                     if(res)
                       console.log("All lists are created.");
@@ -194,7 +194,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
 
   private exportDataToList(UserList: any)
   {
-      spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(this.context);
+      this.spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(this.context);
       for(let i:number = 0; i<UserList.length; ++i){
           if(UserList[i] !== undefined){
               let birthDate = new Date(UserList[i].BirthDate);
@@ -211,7 +211,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
                 'hireDate': hireDateFinal,                           
                 'department': UserList[i].Department          
                 });
-                spBirthdayServiceData.putUserDataToList(requestlistItem);
+                this.spBirthdayServiceData.putUserDataToList(requestlistItem);
           }  
       }
   }
