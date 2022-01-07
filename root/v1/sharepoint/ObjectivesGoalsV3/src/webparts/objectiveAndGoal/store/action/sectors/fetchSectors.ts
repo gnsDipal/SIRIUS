@@ -12,12 +12,15 @@ import SPService from "../../../../../services/SPService";
 
 import type { Sector } from '../../operations/types';
 
+interface AppData {
+    Sectors: Sector[]
+}
+
 function fetchSectors() {
     return function CB(dispatch: Function, getStore:any) {
-        debugger;
-        
         const store = getStore();
         dispatch(setSectorFetchStart());
+        let appData:AppData = {Sectors:[]=[]};
         let sectors: Sector[] = [];
         debugger;
         const mainContext = store.SPContext; 
@@ -33,7 +36,7 @@ function fetchSectors() {
                 Data: {}
             });
             });
-            debugger;
+            appData.Sectors = sectors;
             dispatch(setSectors(sectors));
             dispatch(setSectorFetchComplete());
         }, error => {

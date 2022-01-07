@@ -10,7 +10,6 @@ const [isContextLoaded, setContextLoad] = useState(false);
    },[]);
 
     const init=()=>{
-        debugger;
         props.setSPContext(props.webPartContext);
         setContextLoad(true);
         props.fetchSectors();

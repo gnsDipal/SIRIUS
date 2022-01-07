@@ -3,6 +3,7 @@ import { useContext } from "react";
 import styles from './TabHeader.module.scss';
 import { ITabHeaderProps } from './ITabHeaderProps';
 import { connect } from "react-redux";
+import TabItem from "./TabItem/TabItem";
 // import { SetAppData } from "../../store/action/Action";
 
 const TabHeader = (props) =>{
@@ -15,7 +16,9 @@ const TabHeader = (props) =>{
                 <h1>TabHeader (Organization, Department , Personal)</h1>
             {/* </UserContext.Provider> */}
           <div className={styles.SetDisplay}>
-                {props.sectors.length}
+            {props.sectors.map((t)=>{
+                <TabItem {...t} />
+            })}
             </div>
         </div> 
     )
