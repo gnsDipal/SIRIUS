@@ -1,16 +1,19 @@
 import * as React from "react";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import styles from './TabHeader.module.scss';
 import { ITabHeaderProps } from './ITabHeaderProps';
 import { connect } from "react-redux";
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 import TabItem from "./TabItem/TabItem";
 // import { SetAppData } from "../../store/action/Action";
-
+debugger;
 const TabHeader = (props) =>{
+    const [isSectorAvailable, setIsSectorAvailable] = useState(false);
     React.useEffect(() => {
-        
-    }, [props.sectors])
+        if(props.isSectorFetchComplete){
+            setIsSectorAvailable(true);
+        }
+    }, [props.isSectorFetchComplete])
     return(
         <div className={ styles.tabHeader }>
             {/* <UserContext.Provider value={...props}> */}
@@ -27,12 +30,16 @@ const TabHeader = (props) =>{
                 </div>
             </div>
             {/* </UserContext.Provider> */}
-          {/* <div className={styles.SetDisplay}>
-            {props.sectors.map((t)=>{
+          <div className={styles.TabHeaderSetDisplay}>
+              {isSectorAvailable && 
+                props.sectors.map((t)=>{
+                    <TabItem {...t} />
+                })  
+             }
+            {/* {props.sectors.map((t)=>{
                 <TabItem {...t} />
-            })}
-            </div> */}
-            <TabItem />
+            })} */}
+            </div>
         </div> 
     )
 };
