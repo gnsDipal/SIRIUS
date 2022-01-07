@@ -17,6 +17,11 @@ export default class SPBirthdayAnniversaryServiceData{
 
     private async onInit(){}
 
+    checkIfLoggedInUserIsAdmin():Promise<boolean>
+    {
+        return this.SPBirthdayAnniversaryService.loadLoggedInUserDetails()
+    }
+
     getTeamsSettingData():Promise<{}>
     {
         return this.SPBirthdayAnniversaryService.loadSettingsForTeams();

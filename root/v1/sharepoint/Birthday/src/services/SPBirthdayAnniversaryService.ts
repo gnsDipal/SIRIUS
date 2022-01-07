@@ -6,14 +6,15 @@ import { IAnniversary } from '../Models/IAnniversary';
 
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
-let birthdayUsers: IBirthday[] = [];
+//let birthdayUsers: IBirthday[] = [];
 
 debugger;
 
 export default class SPBirthdayAnniversaryService{
     private webContext = null;
     private webUrl:string = null;
-    private web = null;   
+    private web = null; 
+    private birthdayUsers: IBirthday[] = [];
 
     constructor(private context) {
         //Setup Context to PnPjs and MSGraph
@@ -27,7 +28,7 @@ export default class SPBirthdayAnniversaryService{
         this.web = Web(this.webUrl);      
     }
     
-    public async loadSettingsForTeams():Promise<{}>{        
+    public async loadSettingsForTeams():Promise<{}>{       
         let result = await this.web.lists.getByTitle('ConfigurationSettings').items.select("ID", "Settings", "Key", "ExternalAPI", "IsTeamsIcon").filter(`Key eq 'Birthday'`).get();
         return result;
     }
@@ -63,9 +64,9 @@ export default class SPBirthdayAnniversaryService{
 
     public async loadAzureUserDepartment(azureUserEmail: string):Promise<string>{
         let department;
-        for(let i:number = 0; i<birthdayUsers.length; ++i){
-            if(birthdayUsers[i].email === azureUserEmail)
-                department = birthdayUsers[i].department;
+        for(let i:number = 0; i<this.birthdayUsers.length; ++i){
+            if(this.birthdayUsers[i].email === azureUserEmail)
+                department = this.birthdayUsers[i].department;
         }
         return await Promise.resolve(department);
     }
@@ -80,7 +81,7 @@ export default class SPBirthdayAnniversaryService{
         });
 
         let userphotourl: string = this.loadUserphotoURL();            
-        birthdayUsers = results.RawSearchResults.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
+        this.birthdayUsers = results.RawSearchResults.PrimaryQueryResult.RelevantResults.Table.Rows.map(r => {    
             return{
                 name: this.GetValueFromSearchResult('PreferredName', r.Cells),                    
                 firstName: this.GetValueFromSearchResult('FirstName', r.Cells),
@@ -91,7 +92,7 @@ export default class SPBirthdayAnniversaryService{
                 department:  this.GetValueFromSearchResult('Department', r.Cells)                  
             };
         });        
-        return await Promise.resolve(birthdayUsers);
+        return await Promise.resolve(this.birthdayUsers);
     }
 
     public async loadAnniversaryFromAzure(): Promise<IAnniversary[]>{
@@ -177,5 +178,10 @@ export default class SPBirthdayAnniversaryService{
         .then((response: SPHttpClientResponse): Promise<void> => {  
             return response.json();  
         });        
+    }
+
+    public async loadLoggedInUserDetails(): Promise<boolean> {
+        let IsAdmin: boolean = (await sp.web.currentUser()).IsSiteAdmin; 
+        return IsAdmin;
     }
 }//End of Main function
