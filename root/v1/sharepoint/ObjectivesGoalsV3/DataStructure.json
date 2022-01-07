@@ -7,10 +7,14 @@ AppData: {
 				IsSelected: true/false,
 				Data: {
 					[
-						Monthly: {
-							Title: "",
-							Goal: "",
-							Status: %
+						Id: 1,
+						Title: "Monthly",
+						Data : {
+							[
+								Title: "",
+								Goal: "",
+								Status: %
+							]
 						},
 						Queterly: {
 							Title: "",

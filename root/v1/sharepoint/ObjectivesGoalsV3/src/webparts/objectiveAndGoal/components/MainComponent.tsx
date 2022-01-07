@@ -9,10 +9,11 @@ const [isContextLoaded, setContextLoad] = useState(false);
         init();
    },[]);
 
-    const init=()=>{
+    const init=async()=>{
         props.setSPContext(props.webPartContext);
         setContextLoad(true);
-        props.fetchSectors();
+        await props.fetchSectors();
+        await props.fetchIntervals();
     };
 
     return (

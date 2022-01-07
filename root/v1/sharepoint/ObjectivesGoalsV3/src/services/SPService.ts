@@ -17,4 +17,7 @@ export default class SPService{
         let result = await this.web.lists.getByTitle('Sectors').items.select("Title","ID","IsActive").orderBy("ID",false).get();
        return await Promise.resolve(result);
     }
+    public getIntervalsData() {
+        return this.web.lists.getByTitle('Intervals').items.select("Title", "ID").filter("IsActive eq '1'").orderBy("ID",false).get();
+    }
 }
