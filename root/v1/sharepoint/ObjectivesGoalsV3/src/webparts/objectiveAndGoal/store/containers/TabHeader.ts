@@ -2,8 +2,10 @@ import { connect } from 'react-redux';
 import TabHeader from '../../components/TabHeader/TabHeader';
 
 const mapStateToProps = ({
-    AppData  }) => ({
+    AppData,
+    isSectorFetchComplete  }) => ({
     sectors: AppData.Sectors,
+    isSectorFetchComplete : isSectorFetchComplete
   });
   
   export default connect(

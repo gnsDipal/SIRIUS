@@ -37,7 +37,7 @@ function fetchSectors() {
             });
             });
             appData.Sectors = sectors;
-            dispatch(setSectors(sectors));
+            dispatch(setSectors(appData));
             dispatch(setSectorFetchComplete());
         }, error => {
             console.error('onRejected function called: ' + error.message);
