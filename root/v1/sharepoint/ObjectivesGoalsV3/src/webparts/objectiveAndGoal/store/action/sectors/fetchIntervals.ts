@@ -13,9 +13,9 @@ function fetchIntervals() {
             const appData = store.AppData;
             const appDataDummy = JSON.parse(JSON.stringify(appData));
 debugger;
-            // appDataDummy.Sectors.map((sec, index) => {
-            //     sec.Data = intervalData;
-            // });
+            appDataDummy.Sectors.map((sec, index) => {
+                sec.Data = intervalData;
+            });
             debugger;
             dispatch(setSectors(appDataDummy));
         });
