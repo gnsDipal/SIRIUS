@@ -24,7 +24,7 @@
   };
 
   export type AppData = {
-      sectors: Sector[];
+      Sectors: Sector[];
   };
 
   export type Sector = {

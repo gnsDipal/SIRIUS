@@ -13,6 +13,7 @@ const [isContextLoaded, setContextLoad] = useState(false);
         props.setSPContext(props.webPartContext);
         setContextLoad(true);
         props.fetchSectors();
+        props.fetchIntervals();
     };
 
     return (
