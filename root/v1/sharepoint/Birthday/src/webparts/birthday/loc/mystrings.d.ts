@@ -30,6 +30,7 @@ declare interface IBirthdayWebPartStrings {
   emailSenderListName: string;
   saveText: string;
   cancelText: string;
+  teamName: string;
 }
 
 declare module 'BirthdayWebPartStrings' {

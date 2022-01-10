@@ -32,7 +32,7 @@ const AnniversaryUsers = (props) => {
     const MyMailIcon = () => <Icon iconName="Mail" />;
     const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />; 
     let Images: string[] = [];  //to store anniversary images loaded from library
-    spAnniversaryServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);
+    spAnniversaryServiceData = new SPBirthdayAnniversaryServiceData(props);
     React.useEffect(() => {           
          init();              
     },[]);

@@ -8,10 +8,10 @@ export default class SPBirthdayAnniversaryServiceData{
     private SPBirthdayAnniversaryService: SPBirthdayAnniversaryService = null;
     private SPSettingsPanelService: SPSettingsPanelService = null;
 
-    constructor(private context)
+    constructor(private mainProp)
     {
-        this.SPBirthdayAnniversaryService = new SPBirthdayAnniversaryService(this.context);  
-        this.SPSettingsPanelService = new SPSettingsPanelService(this.context);          
+        this.SPBirthdayAnniversaryService = new SPBirthdayAnniversaryService(this.mainProp);  
+        this.SPSettingsPanelService = new SPSettingsPanelService(this.mainProp);          
         this.onInit();
     }
 

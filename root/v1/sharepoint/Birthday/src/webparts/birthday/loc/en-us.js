@@ -30,6 +30,7 @@ define([], function() {
     imagesListName: "BirthdayAnniversaryImages",
     emailSenderListName: "EmailSender",
     saveText: "Save",
-    cancelText: "Cancel",    
+    cancelText: "Cancel", 
+    teamName: "Birthday/Anniversary Admin"  
   }
 });

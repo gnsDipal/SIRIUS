@@ -6,4 +6,8 @@ export interface IBirthdayProps {
   dropdown: string;  
   externalAPI: string;
   IsTeamsIcon: boolean;
+  ImagesListName: string;
+  UsersListName: string;
+  ConfigListName: string;
+  EmailListName: string;
 }
