@@ -1,64 +1,65 @@
-import { Web, sp, ISearchQuery, SearchResults, ISearchResult } from '@pnp/sp/presets/all';
-import { SPHttpClient, SPHttpClientResponse, HttpClient } from '@microsoft/sp-http';
+import { Web, sp, ISearchQuery, SearchResults } from '@pnp/sp/presets/all';
+import { SPHttpClient, SPHttpClientResponse } from '@microsoft/sp-http';
 import { ICell } from '../Models/IBirthAnniResults';
 import { IBirthday } from '../Models/IBirthday';
 import { IAnniversary } from '../Models/IAnniversary';
 
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
-//let birthdayUsers: IBirthday[] = [];
 
 debugger;
 
 export default class SPBirthdayAnniversaryService{
-    private webContext = null;
+    //private webContext = null;
     private webUrl:string = null;
-    private web = null; 
+    private web = null;
+    private mainProps = null; 
     private birthdayUsers: IBirthday[] = [];
 
-    constructor(private context) {
+    constructor(private mainProp) {
         //Setup Context to PnPjs and MSGraph
-        this.webContext = this.context;
-        sp.setup(context);
+        //this.webContext = this.mainProp.webPartContext;
+        this.mainProps = this.mainProp;
+        sp.setup(this.mainProp.webPartContext);
         this.onInit();
     }
 
     private async onInit() {
-        this.webUrl = this.webContext.pageContext.web.absoluteUrl;
+        this.webUrl = this.mainProps.webPartContext.pageContext.web.absoluteUrl;
         this.web = Web(this.webUrl);      
     }
     
     public async loadSettingsForTeams():Promise<{}>{       
-        let result = await this.web.lists.getByTitle('ConfigurationSettings').items.select("ID", "Settings", "Key", "ExternalAPI", "IsTeamsIcon").filter(`Key eq 'Birthday'`).get();
+        let result = await this.web.lists.getByTitle(`${this.mainProps.ConfigListName}`).items.select("ID", "Settings", "Key", "ExternalAPI", "IsTeamsIcon").filter(`Key eq 'Birthday'`).get();
         return result;
     }
 
     public async loadBirthdayImages():Promise<{}>{
-        let result = await this.web.lists.getByTitle('BirthdayAnniversaryImages').items.select("ID", "Title", "FileLeafRef", "ImageWidth", "ImageHeight", "AuthorId").filter(`Category eq 'Birthday'`).get();
+        let result = await this.web.lists.getByTitle(`${this.mainProps.ImagesListName}`).items.select("ID", "Title", "FileLeafRef", "ImageWidth", "ImageHeight", "AuthorId").filter(`Category eq 'Birthday'`).get();
         return result;
     }
 
     public async loadAnniversaryImages():Promise<{}>{
-        let result = await this.web.lists.getByTitle('BirthdayAnniversaryImages').items.select("ID", "Title", "FileLeafRef", "ImageWidth", "ImageHeight", "AuthorId").filter(`Category eq 'Anniversary'`).get();
+        let result = await this.web.lists.getByTitle(`${this.mainProps.ImagesListName}`).items.select("ID", "Title", "FileLeafRef", "ImageWidth", "ImageHeight", "AuthorId").filter(`Category eq 'Anniversary'`).get();
         return result;
     }
 
     public async loadInternalBirthdayDetails(Month: number):Promise<{}>{ 
-        const resultCAML = await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").getItemsByCAMLQuery({
+        const resultCAML = await sp.web.lists.getByTitle(`${this.mainProps.UsersListName}`).getItemsByCAMLQuery({
             ViewXml: `<View><Query><Where><Eq><FieldRef Name="birthdayMonth" /><Value Type="Number">${Month}</Value></Eq></Where></Query></View>`,
         });      
         return resultCAML;        
     }
 
     public async loadInternalAnniversaryDetails(Month: number):Promise<{}>{
-        const resultCAML = await sp.web.lists.getByTitle("UserBirthAnniversaryDetails").getItemsByCAMLQuery({
+        const resultCAML = await sp.web.lists.getByTitle(`${this.mainProps.UsersListName}`).getItemsByCAMLQuery({
             ViewXml: `<View><Query><Where><Eq><FieldRef Name="hireDayMonth" /><Value Type="Number">${Month}</Value></Eq></Where></Query></View>`,
         });       
         return resultCAML;
     }
 
     public async loadIntUserDepartment(intUserEmail: string):Promise<string>{
-        let result = await this.web.lists.getByTitle('UserBirthAnniversaryDetails').items.select("department").filter(`email eq '${intUserEmail}'`).get();        
+        let result = await this.web.lists.getByTitle(`${this.mainProps.UsersListName}`).items.select("department").filter(`email eq '${intUserEmail}'`).get();        
         return result;
     }
 
@@ -146,7 +147,7 @@ export default class SPBirthdayAnniversaryService{
     }
 
     public async insertUserDataToList(JsonData: string){
-        await this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('UserBirthAnniversaryDetails')/items`, SPHttpClient.configurations.v1,  
+        await this.mainProps.webPartContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('${this.mainProps.UsersListName}')/items`, SPHttpClient.configurations.v1,  
         {  
             headers: {  
                 'Accept': 'application/json;odata=nometadata',  
@@ -166,7 +167,7 @@ export default class SPBirthdayAnniversaryService{
     }
 
     public async insertEmailDataToList(JsonData: string){
-        await this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('EmailSender')/items`, SPHttpClient.configurations.v1,  
+        await this.mainProps.webPartContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('${this.mainProps.EmailListName}')/items`, SPHttpClient.configurations.v1,  
         {  
             headers: {  
                 'Accept': 'application/json;odata=nometadata',  

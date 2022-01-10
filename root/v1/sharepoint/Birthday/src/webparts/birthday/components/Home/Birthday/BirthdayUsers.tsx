@@ -2,13 +2,13 @@ import * as React from 'react';
 import styles from '../../Birthday.module.scss';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 import { Icon, PrimaryButton, TextField, Callout, DirectionalHint, TooltipHost, Persona, PersonaSize } from '@fluentui/react';
-import { Placeholder } from "@pnp/spfx-controls-react/lib/Placeholder";
-import { Pagination } from "@pnp/spfx-controls-react/lib/Pagination";
+import { Placeholder } from '@pnp/spfx-controls-react/lib/Placeholder';
 import useMsGraphProvider, { IMSGraphInterface } from "../../../../../services/msGraphProvider";
 import Carousel from 'react-elastic-carousel';
 import InputEmoji from 'react-input-emoji';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
+//import ReactPaginate from 'react-paginate';
 
 initializeIcons();
 debugger;
@@ -23,6 +23,8 @@ const BirthdayUsers = (props) => {
     const [images, setImages] = React.useState([]);
     const [selectedImage, setSelectedImage] = React.useState<string>("");
     const [message, setMessage] = React.useState<string>("");
+    // const [pageCount, setPageCount] = React.useState<number>(0);
+    // const [itemOffset, setItemOffset] = React.useState<number>(0);
     const [msGraphProvider, setMsGraphProvider] = React.useState<IMSGraphInterface>({
       getCurrentUserId(): Promise<any>{return},
       getUserId(userEmail: string): Promise<any>{return},
@@ -31,11 +33,13 @@ const BirthdayUsers = (props) => {
     });
     const MyMailIcon = () => <Icon iconName="Mail" />;
     const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
-    spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);
+    spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props);
     let Images: string[] = [];  //to store birthday images loaded from library
 
-    React.useEffect(() => {         
-      init();              
+    React.useEffect(() => {
+        // const endOffset = itemOffset + 5;
+        // setPageCount(Math.ceil(props.BUsers.length / 5));     
+        init();              
     },[]);
 
     const init = async() => {           
@@ -136,9 +140,9 @@ const BirthdayUsers = (props) => {
         }
     };
 
-    const getPage = async(page: number) => {
-        console.log('Page:', page);
-    };
+    // const handlePageClick = (event) => {
+    //     console.log('Page:', event.selected);
+    // };
 
     return(
         
@@ -151,6 +155,15 @@ const BirthdayUsers = (props) => {
                     description = ''/>
             </div>
         }
+        {/* <ReactPaginate
+            breakLabel="..."
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={pageCount}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+        /> */}
         {props.BUsers &&      
             <div>      
                 {props.BUsers.map((p, i) => {
@@ -254,7 +267,7 @@ const BirthdayUsers = (props) => {
                             </div>
                             </Callout> 
                             )}                  
-                        </div>
+                        </div>                        
                     );                                                      
                 })}
             </div>

@@ -12,7 +12,7 @@ const SettingsPanel = (props)=> {
     const[ IsTeamsIcon, setIsTeamsIcon ] = React.useState<boolean>(false);
     const[ errorMessage, setErrorMessage ] = React.useState<string>("");
     const[ webURL, setWebURL ] = React.useState<string>("");
-    spPanelSettingsServiceData = new SPBirthdayAnniversaryServiceData(props.webPartContext);
+    spPanelSettingsServiceData = new SPBirthdayAnniversaryServiceData(props);
     React.useEffect(() => {
         init();
     },[]);    

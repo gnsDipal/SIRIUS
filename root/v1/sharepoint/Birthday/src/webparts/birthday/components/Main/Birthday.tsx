@@ -31,7 +31,7 @@ const Birthday = ()=> {
         { key: 'all', text: 'All' },
         { key: 'dept', text: 'Department' } 
     ]; 
-    spBirthAnniServiceData = new SPBirthdayAnniversaryServiceData(mainContext.webPartContext);  
+    spBirthAnniServiceData = new SPBirthdayAnniversaryServiceData(mainContext);  
 
     React.useEffect(() => {
         init();

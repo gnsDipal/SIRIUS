@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { SPHttpClient, SPHttpClientResponse, MSGraphClient } from '@microsoft/sp-http';
+import * as strings from 'BirthdayWebPartStrings';
 
 debugger;
 export default class SPSettingsPanelService{
-    private webContext = null;
+    private mainProps = null;
     private webUrl:string = null;
 
-    constructor(private context) {        
-        this.webContext = this.context;       
+    constructor(private mainProp) {        
+        this.mainProps = this.mainProp;
         this.onInit();
     }
 
     private async onInit() 
     {
-        this.webUrl = this.webContext.pageContext.web.absoluteUrl;        
+        this.webUrl = this.mainProps.webPartContext.pageContext.web.absoluteUrl;        
     }
 
     public async newTeam():Promise<string>
@@ -36,12 +37,12 @@ export default class SPSettingsPanelService{
     public async checkTeamCreatedBefore():Promise<Boolean>
     {
         let teamPresentCheck:Boolean = false;
-        await this.webContext.msGraphClientFactory.getClient()
+        await this.mainProps.webPartContext.msGraphClientFactory.getClient()
             .then(async(client: MSGraphClient) => {        
             await client.api(`me/joinedTeams`).version("beta").get()
                 .then(async(res)=>{
                 for(let i:number =0; i<res.value.length; ++i){
-                if(res.value[i].displayName === "Birthday/Anniversary Admin")
+                if(res.value[i].displayName === strings.teamName)
                     teamPresentCheck = true;
                 }
             });
@@ -55,11 +56,11 @@ export default class SPSettingsPanelService{
         try{
             let body: any = {      
                 "template@odata.bind": "https://graph.microsoft.com/v1.0/teamsTemplates('standard')",
-                "displayName": "Birthday/Anniversary Admin",
+                "displayName": strings.teamName,
                 "description": "The team for admin to do the initial settings for Birthday/Anniversary webpart."       
             };
 
-            await this.webContext.msGraphClientFactory.getClient()
+            await this.mainProps.webPartContext.msGraphClientFactory.getClient()
                 .then(async(client: MSGraphClient) => {        
                 await client.api(`teams`).version("v1.0").post(body)
                     .then(()=>{
@@ -76,12 +77,12 @@ export default class SPSettingsPanelService{
     {
         let teamId = '';
         try{
-            await this.webContext.msGraphClientFactory.getClient()
+            await this.mainProps.webPartContext.msGraphClientFactory.getClient()
                 .then(async(client: MSGraphClient) => {        
                 await client.api(`me/joinedTeams`).version("beta").get()
                     .then((res)=>{
                         for(let i:number =0; i<res.value.length; ++i){
-                            if(res.value[i].displayName === "Birthday/Anniversary Admin")
+                            if(res.value[i].displayName === strings.teamName)
                                 teamId = res.value[i].id;
                         }
                     });
@@ -96,7 +97,7 @@ export default class SPSettingsPanelService{
     public async getChannelId(teamId: string):Promise<string>
     {
         let webURL:string = '';
-        await this.webContext.msGraphClientFactory.getClient()
+        await this.mainProps.webPartContext.msGraphClientFactory.getClient()
             .then(async(client: MSGraphClient) => {        
             await client.api(`teams/${teamId}/channels`).version("v1.0").get()
                 .then(async(res)=>{
@@ -113,7 +114,7 @@ export default class SPSettingsPanelService{
     public async getwebLink(teamId: string):Promise<string>
     {
         let webURL:string='';
-        await this.webContext.msGraphClientFactory.getClient()
+        await this.mainProps.webPartContext.msGraphClientFactory.getClient()
             .then(async(client: MSGraphClient) => {        
                  await client.api(`teams/${teamId}/channels`).version("v1.0").get()
                 .then(async(res)=>{
@@ -126,9 +127,9 @@ export default class SPSettingsPanelService{
     //create the tab for birthday and anniversary images list
     public async createImagesTab(teamId: string, channelId: string)
     {
-        let contentURL = `${this.webUrl}/BirthdayAnniversaryImages/Forms/Thumbnails.aspx`
+        let contentURL = `${this.webUrl}/${this.mainProps.ImagesListName}/Forms/Thumbnails.aspx`
         let body: any = {      
-            "displayName": "BirthdayAnniversaryImages",
+            "displayName": this.mainProps.ImagesListName,
             "teamsAppId": null,
             "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
             "configuration": {
@@ -144,9 +145,9 @@ export default class SPSettingsPanelService{
     //create the tab for birthday and anniversary user list
     public async createUsersTab(teamId: string, channelId: string)
     {
-        let contentURL = `${this.webUrl}/Lists/UserBirthAnniversaryDetails/AllItems.aspx`
+        let contentURL = `${this.webUrl}/Lists/${this.mainProps.UsersListName}/AllItems.aspx`
         let body: any = {      
-        "displayName": "UserBirthAnniversaryDetails",
+        "displayName": this.mainProps.UsersListName,
             "teamsAppId": null,
             "teamsApp@odata.bind": "https://graph.microsoft.com/beta/appCatalogs/teamsApps/2a527703-1f6f-4559-a332-d8a7d288cd88",
             "configuration": {
@@ -161,7 +162,7 @@ export default class SPSettingsPanelService{
 
     public async createTab(teamId: string, channelId: string, body: string)
     {            
-        await this.webContext.msGraphClientFactory.getClient()
+        await this.mainProps.webPartContext.msGraphClientFactory.getClient()
             .then(async(client: MSGraphClient) => {        
             await client.api(`teams/${teamId}/channels/${channelId}/tabs`).version("beta").post(body)
                 .then(()=>{  
@@ -171,7 +172,7 @@ export default class SPSettingsPanelService{
     
     public async updateTeamsConfigurationToList(JsonData: string, ItemID: number)
     {
-        this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('ConfigurationSettings')/items(${ItemID})`, SPHttpClient.configurations.v1,  
+        this.mainProps.webPartContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('${this.mainProps.ConfigListName}')/items(${ItemID})`, SPHttpClient.configurations.v1,  
         {  
             headers: {  
             'Accept': 'application/json;odata=nometadata',  
@@ -195,7 +196,7 @@ export default class SPSettingsPanelService{
 
     public async insertTeamsConfigurationToList(JsonData: string)
     {
-        this.webContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('ConfigurationSettings')/items`, SPHttpClient.configurations.v1,  
+        this.mainProps.webPartContext.spHttpClient.post(`${this.webUrl}/_api/web/lists/getbytitle('${this.mainProps.ConfigListName}')/items`, SPHttpClient.configurations.v1,  
         {  
             headers: {  
             'Accept': 'application/json;odata=nometadata',  

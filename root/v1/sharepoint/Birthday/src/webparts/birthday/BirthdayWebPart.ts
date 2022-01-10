@@ -26,6 +26,10 @@ export interface IBirthdayWebPartProps {
     dropdown: string;
     externalAPI: string;
     IsTeamsIcon: boolean;
+    ImagesListName: string;
+    UsersListName: string;
+    ConfigListName: string;
+    EmailListName: string;
     filePickerResult: IFilePickerResult;
 }
 
@@ -36,9 +40,13 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
   private SPListsEnsureService: SPEnsureListService = null;
   
   public async onInit(){
+    this.properties.ImagesListName = strings.imagesListName;
+    this.properties.ConfigListName = strings.configurationListName;
+    this.properties.EmailListName = strings.emailSenderListName;
+    this.properties.UsersListName = strings.userDetailsListName;
     this.SPListsEnsureService = new SPEnsureListService(this.context);
     if(this.context.sdks.microsoftTeams){         
-      await this.SPListsEnsureService.ensureConfigurationList(strings.configurationListName)
+      await this.SPListsEnsureService.ensureConfigurationList(this.properties.ConfigListName)
       .then((res:string)=> {
           if(res)
             this.createListsUsingPNP();
@@ -57,10 +65,10 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
         dropdown: this.properties.dropdown,
         externalAPI: this.properties.externalAPI,
         IsTeamsIcon: this.properties.IsTeamsIcon,
-        ImagesListName: strings.imagesListName,
-        UsersListName: strings.userDetailsListName,
-        ConfigListName: strings.configurationListName,
-        EmailListName: strings.emailSenderListName                            
+        ImagesListName: this.properties.ImagesListName,
+        UsersListName: this.properties.UsersListName,
+        ConfigListName: this.properties.ConfigListName,
+        EmailListName: this.properties.EmailListName                            
       } 
     );     
     ReactDom.render(element, this.domElement);
@@ -68,13 +76,13 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
 
   private createListsUsingPNP = async() => 
   {
-      await this.SPListsEnsureService.ensureImageLibrary(strings.imagesListName)
+      await this.SPListsEnsureService.ensureImageLibrary(this.properties.ImagesListName)
       .then(async(res:string) => {
         if(res)
-            await this.SPListsEnsureService.ensureUserList(strings.userDetailsListName)
+            await this.SPListsEnsureService.ensureUserList(this.properties.UsersListName)
             .then(async(res:string) => {
               if(res)
-                  await this.SPListsEnsureService.ensureEmailList(strings.emailSenderListName)
+                  await this.SPListsEnsureService.ensureEmailList(this.properties.EmailListName)
                   .then((res:string) => {
                     if(res)
                       console.log("All lists are created.");
@@ -236,7 +244,7 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
       });
 
       uploadControl = PropertyFieldFilePicker('filePicker', {
-        context: this.context,
+        context: this.context as any,
         filePickerResult: this.properties.filePickerResult,
         onPropertyChange: this.UploadCSV.bind(this),
         properties: this.properties,
