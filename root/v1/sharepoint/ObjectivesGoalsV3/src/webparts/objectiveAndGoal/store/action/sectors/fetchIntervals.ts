@@ -1,7 +1,7 @@
 import setSectors from "./setSectors";
 import { getIntervalData } from "./getIntervalData";
 import { AppData, Sector } from "../../operations/types";
-
+debugger;
 function fetchIntervals() {
     return function CB(dispatch: Function, getStore:any) {
         getIntervalData(dispatch, getStore).then(res=>{

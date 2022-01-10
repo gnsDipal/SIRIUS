@@ -20,4 +20,7 @@ export default class SPService{
     public getIntervalsData() {
         return this.web.lists.getByTitle('Intervals').items.select("Title", "ID").filter("IsActive eq '1'").orderBy("ID",false).get();
     }
+    public getGoalsData() {
+        return this.web.lists.getByTitle('AllGoalsData').items.select("*").orderBy("ID",false).get();
+    }
 }

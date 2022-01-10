@@ -84,7 +84,7 @@ SP Lists:
 
 2. Intervals : Id, Title ( ex: Monthly, Quarter etc..), IsActive (Whether we need to show interval or not)
 
-3. Goals : (lookUp)=> sectors, (lookUp)=> intervals
+3. Goals : (lookUp)=> sectors, (lookUp)=> intervals, Title, Goal, Status 
 
 -------------------------------------------------------------------------------------------------------------
 
