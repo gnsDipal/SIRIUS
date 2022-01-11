@@ -41,6 +41,16 @@
 
   export type SPContext = {};
 
+  // export type getOrganizationData = {
+  //   type: 'GET_ORGANIZATION',
+  //   payload: Object[]
+  // };
+
+  // export type SetOrganization = {
+  //   type: 'SET_ORGANIZATION',
+  //   payload: Sector[]
+  // };
+
   export type Actions =
   | GetSectors
   | SetSectors
@@ -48,3 +58,5 @@
   | SetSectorFetchComplete
   | SetSectorFetchError
   | SetSPContext
+  // | getOrganizationData
+  // | SetOrganization

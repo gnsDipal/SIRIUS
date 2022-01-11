@@ -44,6 +44,11 @@ const INIT_STATE = {
                 ...state,
                 AppData: action.payload
             }
+        // case 'SET_ORGANIZATION':
+        //     return {
+        //         ...state,
+        //         Organization: action.payload
+        //     }
         default:
             return state;
     }
