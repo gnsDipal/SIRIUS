@@ -1,9 +1,9 @@
-// import type { setDepartment, Department } from '../../operations/types';
+import type { SetDepartment, Department } from '../../operations/types';
 
-// const setDepartment = (appData:any) : SetDepartment => ({
-//     type: 'SET_Department',
-//    // payload: appData
-//     payload: Department
-// });
+const setDepartment = (appData:any) : SetDepartment => ({
+    type: 'SET_DEPARTMENT',
+    payload: appData
+    // payload: Department
+});
 
-// export default setDepartment;
+export default setDepartment;

@@ -34,6 +34,27 @@
     Data: {}
   };
 
+  export type Organization = {
+    Id:number,
+    Title:string,
+    IsSelected:boolean,
+    Data: {}
+  };
+
+  export type Department = {
+    Id:number,
+    Title:string,
+    IsSelected:boolean,
+    Data: {}
+  };
+
+  export type Personal = {
+    Id:number,
+    Title:string,
+    IsSelected:boolean,
+    Data: {}
+  };
+
   export type SetSPContext = {
     type: 'SET_SPCONTEXT',
     payload: {}
@@ -41,15 +62,37 @@
 
   export type SPContext = {};
 
-  // export type getOrganizationData = {
-  //   type: 'GET_ORGANIZATION',
-  //   payload: Object[]
-  // };
+  export type GetOrganizationData = {
+    type: 'GET_ORGANIZATION',
+    payload: Object[]
+  };
 
-  // export type SetOrganization = {
-  //   type: 'SET_ORGANIZATION',
-  //   payload: Sector[]
-  // };
+  export type SetOrganization = {
+    type: 'SET_ORGANIZATION',
+    //payload: Sector[]
+    payload: Organization[]
+  };
+
+  export type GetDepartmentData = {
+    type: 'GET_DEPARTMENT',
+    payload: Object[]
+  };
+
+  export type SetDepartment = {
+    type: 'SET_DEPARTMENT',
+    payload: Personal[]
+  };
+
+  export type GetPersonalData = {
+    type: 'GET_PERSONAL',
+    payload: Object[]
+  };
+
+  export type SetPersonal = {
+    type: 'SET_PERSONAL',
+    payload: Personal[]
+  };
+
 
   export type Actions =
   | GetSectors
@@ -58,5 +101,10 @@
   | SetSectorFetchComplete
   | SetSectorFetchError
   | SetSPContext
-  // | getOrganizationData
-  // | SetOrganization
+  | GetOrganizationData
+  | SetOrganization
+  | GetDepartmentData
+  | SetDepartment
+  | GetPersonalData
+  | SetPersonal
+ 

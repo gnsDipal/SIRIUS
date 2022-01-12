@@ -1,9 +1,9 @@
-// import type { setOrganization, Organization } from '../../operations/types';
+import type { SetOrganization, Organization } from '../../operations/types';
 
-// const setOrganization = (appData:any) : Sector => ({
-//     type: 'SET_Organization',
-//     //payload: appData
-//     payload: Organization
-// });
+const setOrganization = (appData:any) : SetOrganization => ({
+    type: 'SET_ORGANIZATION',
+    payload: appData
+    //payload: Organization
+});
 
-// export default setOrganization;
+export default setOrganization;
