@@ -90,6 +90,16 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
     this.spEnsureListsService = new spServiceEnsureLists(this.context);
     this.spService = new spservices(this.context);
     this.properties.siteUrl = this.properties.siteUrl ? this.properties.siteUrl : this.context.pageContext.site.absoluteUrl;
+    /* My changes to list names */
+    this.properties.locationListName = strings.SPLocationListName;
+    this.properties.areaListName = strings.SPAreaListName;
+    this.properties.categoryListName = strings.SPCategoryListName;
+    this.properties.masterListName = strings.SPMasterListName;
+    this.properties.calendarListName = strings.SPCalendarListName;
+    /* list names changes end */
+    /* Call service for list creation and checking */
+    this.spEnsureListsService.createAllLists(this.properties.locationListName, this.properties.areaListName, this.properties.categoryListName, this.properties.masterListName, this.properties.calendarListName)
+    /* End of service calls */
     if (!this.properties.eventStartDate){
       this.properties.eventStartDate = { value: moment().subtract(2,'years').startOf('month').toDate(), displayValue: moment().format('ddd MMM MM YYYY')};
     }

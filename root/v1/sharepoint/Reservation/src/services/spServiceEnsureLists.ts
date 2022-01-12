@@ -9,18 +9,22 @@ import { sizeBoolean } from "@microsoft/office-ui-fabric-react-bundle";
 // Class Services
 debugger;
 export default class spServiceEnsureLists {
+    private webContext:any = null;
+    private departmentListId?:string = null;
+    private webUrl:any = null;
     constructor(private context: WebPartContext) {
       // Setup Context to PnPjs and MSGraph
       sp.setup({
         spfxContext: this.context
       });
-
+      this.webContext = this.context
       // Init
       this.onInit();
     }
  
     // OnInit Function
     private async onInit() {
+      this.webUrl = this.webContext.pageContext.web.absoluteUrl;
       Logger.write("spServices init()", LogLevel.Info);
     }
 
@@ -44,6 +48,121 @@ export default class spServiceEnsureLists {
 //     }
 //     return results;
 //   }
+
+/* -------------------------------------------------- */
+
+/* Creation of all the lists one after the other */
+
+public createAllLists(locationListName, areaListName, categoryListName, masterListName, calendarListName){
+    this.createLocationList(locationListName, areaListName, categoryListName, masterListName, calendarListName);
+   
+}
+public async createLocationList(locationListName, areaListName, categoryListName, masterListName, calendarListName){
+    const listEnsureResult = await sp.web.lists.ensure(locationListName, "location details list", 100); 
+  if (listEnsureResult.created){
+    const batch = sp.web.createBatch(); 
+        listEnsureResult.list.fields.inBatch(batch).addBoolean('IsActive');
+        await batch.execute();
+        await sp.web.lists.getByTitle(locationListName).defaultView.fields.add('IsActive');
+        const r = await listEnsureResult.list.select("Id")();
+        this.departmentListId = await r.Id;
+        if(this.departmentListId){
+            this.createAreaList(areaListName,this.departmentListId, categoryListName, masterListName, calendarListName)
+        }
+  }    
+} // end of function
+
+public async createAreaList(areaListName,previousId ,categoryListName, masterListName, calendarListName){
+    const listEnsureResult = await sp.web.lists.ensure(areaListName, "Area details list", 100); 
+    if (listEnsureResult.created){
+        const batch = sp.web.createBatch();
+        listEnsureResult.list.fields.inBatch(batch).addBoolean('IsActive');
+        listEnsureResult.list.fields.inBatch(batch).addLookup("RoomLocation",previousId,"Title");
+        await batch.execute();
+        await sp.web.lists.getByTitle(areaListName).defaultView.fields.add('IsActive');
+        await sp.web.lists.getByTitle(areaListName).defaultView.fields.add('RoomLocation');
+        const r = await listEnsureResult.list.select("Id")();
+        this.departmentListId = await r.Id;
+        if(this.departmentListId){
+            this.createRoombuildingFloorList(categoryListName,this.departmentListId,  masterListName, calendarListName)
+        }
+    }
+} // end of function
+
+public async createRoombuildingFloorList(categoryListName, previousId, masterListName, calendarListName){
+    const listEnsureResult = await sp.web.lists.ensure(categoryListName, "Room building floor details list", 100);
+    if (listEnsureResult.created){
+        const batch = sp.web.createBatch();   
+        listEnsureResult.list.fields.inBatch(batch).addBoolean('IsActive');
+        listEnsureResult.list.fields.inBatch(batch).addLookup("RoomArea",previousId, "Title");
+        await batch.execute();    
+        await sp.web.lists.getByTitle(categoryListName).defaultView.fields.add('IsActive');
+        await sp.web.lists.getByTitle(categoryListName).defaultView.fields.add('RoomArea');
+        const r = await listEnsureResult.list.select("Id")();
+        this.departmentListId = await r.Id;
+        if(this.departmentListId){
+            this.createRoomSizeList(masterListName,this.departmentListId, calendarListName)
+        }
+    }
+} // end of function
+
+    public async createRoomSizeList(masterListName, previousId, calendarListName){
+        const listEnsureResult = await sp.web.lists.ensure(masterListName, "Room building size details list", 100);
+        if (listEnsureResult.created){
+            const batch = sp.web.createBatch();   
+            listEnsureResult.list.fields.inBatch(batch).addBoolean('IsActive');
+            listEnsureResult.list.fields.inBatch(batch).addLookup("BuildingFloor",previousId, "Title");
+            listEnsureResult.list.fields.inBatch(batch).addNumber('Capacity');
+            listEnsureResult.list.fields.inBatch(batch).addUrl('Image',UrlFieldFormatType.Hyperlink);
+            listEnsureResult.list.fields.inBatch(batch).addNumber('Count');
+            listEnsureResult.list.fields.inBatch(batch).addText('HexColor');
+            await batch.execute();    
+            await sp.web.lists.getByTitle(masterListName).defaultView.fields.add('IsActive');
+            await sp.web.lists.getByTitle(masterListName).defaultView.fields.add('BuildingFloor');
+            await sp.web.lists.getByTitle(masterListName).defaultView.fields.add('Capacity');
+            await sp.web.lists.getByTitle(masterListName).defaultView.fields.add('Image');
+            await sp.web.lists.getByTitle(masterListName).defaultView.fields.add('Count');
+            await sp.web.lists.getByTitle(masterListName).defaultView.fields.add('HexColor');
+            const r = await listEnsureResult.list.select("Id")();
+            this.departmentListId = await r.Id;
+            if(this.departmentListId){
+                this.createRoomCalendarListFields(calendarListName);
+            }
+        }
+    }// end of function
+
+    public async createRoomCalendarListFields(calendarListName){
+        const listEnsureResult = await sp.web.lists.ensure(calendarListName, "Room building size details list", 106);
+        if (listEnsureResult.created){
+            const batch = sp.web.createBatch();   
+            listEnsureResult.list.fields.inBatch(batch).addBoolean('IsActive');
+            // listEnsureResult.list.fields.inBatch(batch).getByInternalNameOrTitle('Category').update({})
+            await batch.execute();
+            await sp.web.lists.getByTitle(calendarListName).defaultView.fields.add('IsActive');
+            const r = await listEnsureResult.list.select("Id")();
+            this.departmentListId = await r.Id;
+            if(this.departmentListId){
+                this.createUpdateCalendarChoiceFieldOptions(calendarListName,'Category',[]);
+            }    
+        }
+    } // end of function
+
+   public async createUpdateCalendarChoiceFieldOptions(calendarListName:string,fieldInternalName:string,options:string[]){
+        const web = Web(this.webUrl);
+        await web.lists.getByTitle(calendarListName)
+        .fields
+        .getByInternalNameOrTitle(fieldInternalName)
+        .update({
+          Choices: {
+            results: options
+          }
+        });
+   }
+
+/* End of creation of all lists */
+
+
+/* -------------------------------------------------- */
 
 
     /* 

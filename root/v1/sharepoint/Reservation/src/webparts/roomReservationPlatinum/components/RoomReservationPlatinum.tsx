@@ -6,7 +6,7 @@ import { FilterType } from '../../../controls/Filters/filterType';
 import Filters from '../../../controls/Filters/Filters';
 import FilterImage from '../../../controls/FilterImage/FilterImage';
 import Calendar from '../../../controls/Calendar/Calendar';
-
+debugger;
 export default class RoomReservationPlatinum extends React.Component<IRoomReservationPlatinumProps, IRoomReservationPlatinumState> {
   
   constructor(props:IRoomReservationPlatinumProps, state:IRoomReservationPlatinumState) { 
@@ -16,7 +16,7 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
       locationId: 0,
       areaId:0,
       buildingId: 0,
-      sizeId: 0
+      sizeId: 1
     };
     this.EventKeySelectionHandler = this.EventKeySelectionHandler.bind(this);
   }

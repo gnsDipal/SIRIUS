@@ -41,7 +41,7 @@ export default class FilterImage extends React.Component<IFilterImageProps, IFil
                 <div className="ms-Grid" dir="ltr">
                     <div className="ms-Grid-row">
                         <div className="ms-Grid-col ms-u-sm12 block">
-                            <img src={`${this.state.selectedImage}`} height="100%" width="100%" margin-top="15px"/>;
+                            <img src={`${this.state.selectedImage}`} height="100%" width="100%" margin-top="15px"/>
                         </div>
                     </div>
                 </div>

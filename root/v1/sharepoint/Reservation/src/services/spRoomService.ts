@@ -1,7 +1,7 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { graph } from "@pnp/graph";
 import { sp, Web} from '@pnp/sp/presets/all';
-
+debugger;
 export default class spRoomService {
     constructor(private context: WebPartContext) {
       // Setup Context to PnPjs and MSGraph
@@ -116,6 +116,7 @@ export default class spRoomService {
 
     public async getImageBySelectedMaster(siteUrl:string, listName:string, id?:number) :Promise<string> {
         let imagePath : string = "https://gns11.sharepoint.com/sites/SiriusTeams/My%20Library%2FImageNotFound.png";
+        // let imagePath = 'https://gns11.sharepoint.com/sites/SiriusTeams/RoomPicture/Forms/Thumbnails.aspx?id=%2Fsites%2FSiriusTeams%2FRoomPicture%2FMeetingRoom1%20%281%29%2Ejpg&parent=%2Fsites%2FSiriusTeams%2FRoomPicture'
         try {
           const web = Web(siteUrl);
           const results = await web.lists.getByTitle(listName).items.filter("ID eq " + id)

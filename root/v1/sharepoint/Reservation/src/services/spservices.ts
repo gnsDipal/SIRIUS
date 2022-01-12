@@ -465,11 +465,12 @@ export default class spservices {
    * @returns {Promise<{ key: string, text: string }[]>}
    * @memberof spservices
    */
+  //  "Count" => this is in select column below
    public async getMasterRefFieldOptions(siteUrl: string, listId: string): Promise<IItem[]> {
     try {
       const web = Web(siteUrl);
       return web.lists.getByTitle(listId).items
-        .select("ID", "Title", "Count", "HexColor")
+        .select("ID", "Title","Count", "HexColor")
         .getAll();
     } catch (error) {
       return Promise.reject(error);

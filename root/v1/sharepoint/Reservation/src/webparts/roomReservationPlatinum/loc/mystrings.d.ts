@@ -148,6 +148,11 @@ declare interface IRoomReservationPlatinumWebPartStrings {
   theNthOfMonthFormat: string;
   onTheDayTypeFormat: string;
   ResourceOverlapMessage:string;
+  SPLocationListName:string;
+  SPAreaListName:string;
+  SPCategoryListName:string;
+  SPMasterListName:string;
+  SPCalendarListName:string;
 }
 
 declare module 'RoomReservationPlatinumWebPartStrings' {
