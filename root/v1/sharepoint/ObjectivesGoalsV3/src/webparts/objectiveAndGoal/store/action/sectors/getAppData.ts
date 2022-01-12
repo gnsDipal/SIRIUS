@@ -2,7 +2,7 @@ import setSectorFetchStart from "./setSectorFetchStart";
 import setSectorFetchComplete from "./setSectorFetchComplete";
 import setSectorFetchError from "./setSectorFetchError";
 import SPService from "../../../../../services/SPService";
-import type { AppData, Sector } from '../../operations/types';
+import type { AppData, Sector, Organization, Department, Personal } from '../../operations/types';
 
 export const getAppData = (dispatch: Function, getStore:any) => {
     const store = getStore();
@@ -19,7 +19,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                 Title: res.Title,
                 Id: res.ID,
                 IsSelected: false,
-                Data: {}
+                IntervalData: {}
             });
         });
         appData.Sectors = sectors;

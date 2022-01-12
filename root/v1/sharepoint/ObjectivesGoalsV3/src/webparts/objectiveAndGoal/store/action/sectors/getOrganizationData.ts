@@ -3,6 +3,9 @@ import SPService from "../../../../../services/SPService";
 interface organization {
     Id:number;
     Title: string;
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
     Data: {}
 };
 
@@ -19,6 +22,9 @@ export const getOrganizationData = (dispatch: Function, getStore:any) => {
                 organization.push({
                     Id: res.Id,
                     Title: res.Title,
+                    Goals: res.Goal,
+                    Interval: res.Interval,
+                    StatusPercentage:res.StatusPercentage,
                     Data: {}
                 });
             });

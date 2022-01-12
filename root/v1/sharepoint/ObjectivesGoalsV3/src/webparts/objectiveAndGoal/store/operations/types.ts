@@ -31,13 +31,16 @@
     Id:number,
     Title:string,
     IsSelected:boolean,
-    Data: {}
+    IntervalData: {}
   };
 
   export type Organization = {
     Id:number,
     Title:string,
     IsSelected:boolean,
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
     Data: {}
   };
 
@@ -45,6 +48,10 @@
     Id:number,
     Title:string,
     IsSelected:boolean,
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
+    DepartmentId:number;
     Data: {}
   };
 
@@ -52,6 +59,9 @@
     Id:number,
     Title:string,
     IsSelected:boolean,
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
     Data: {}
   };
 

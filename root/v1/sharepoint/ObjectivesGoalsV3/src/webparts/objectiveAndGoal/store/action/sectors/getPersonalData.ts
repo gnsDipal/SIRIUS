@@ -3,6 +3,9 @@ import SPService from "../../../../../services/SPService";
 interface personal {
     Id:number;
     Title: string;
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
     Data: {}
 };
 
@@ -19,6 +22,9 @@ export const getPersonalData = (dispatch: Function, getStore:any) => {
                 personal.push({
                     Id: res.Id,
                     Title: res.Title,
+                    Goals: res.Goal,
+                    Interval: res.Interval,
+                    StatusPercentage:res.StatusPercentage,
                     Data: {}
                 });
             });
