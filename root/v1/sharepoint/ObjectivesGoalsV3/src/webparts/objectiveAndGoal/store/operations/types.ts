@@ -31,6 +31,37 @@
     Id:number,
     Title:string,
     IsSelected:boolean,
+    IntervalData: {}
+  };
+
+  export type Organization = {
+    Id:number,
+    Title:string,
+    IsSelected:boolean,
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
+    Data: {}
+  };
+
+  export type Department = {
+    Id:number,
+    Title:string,
+    IsSelected:boolean,
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
+    DepartmentId:number;
+    Data: {}
+  };
+
+  export type Personal = {
+    Id:number,
+    Title:string,
+    IsSelected:boolean,
+    Goals: string;
+    Interval: string;
+    StatusPercentage: number;
     Data: {}
   };
 
@@ -41,6 +72,38 @@
 
   export type SPContext = {};
 
+  export type GetOrganizationData = {
+    type: 'GET_ORGANIZATION',
+    payload: Object[]
+  };
+
+  export type SetOrganization = {
+    type: 'SET_ORGANIZATION',
+    //payload: Sector[]
+    payload: Organization[]
+  };
+
+  export type GetDepartmentData = {
+    type: 'GET_DEPARTMENT',
+    payload: Object[]
+  };
+
+  export type SetDepartment = {
+    type: 'SET_DEPARTMENT',
+    payload: Personal[]
+  };
+
+  export type GetPersonalData = {
+    type: 'GET_PERSONAL',
+    payload: Object[]
+  };
+
+  export type SetPersonal = {
+    type: 'SET_PERSONAL',
+    payload: Personal[]
+  };
+
+
   export type Actions =
   | GetSectors
   | SetSectors
@@ -48,3 +111,10 @@
   | SetSectorFetchComplete
   | SetSectorFetchError
   | SetSPContext
+  | GetOrganizationData
+  | SetOrganization
+  | GetDepartmentData
+  | SetDepartment
+  | GetPersonalData
+  | SetPersonal
+ 

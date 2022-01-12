@@ -23,4 +23,20 @@ export default class SPService{
     public getGoalsData() {
         return this.web.lists.getByTitle('AllGoalsData').items.select("*").orderBy("ID",false).get();
     }
+
+    public getOrganizationData() {
+        return this.web.lists.getByTitle('GoalOrganization').items.select("Title","ID","IsActive","Goal","Interval","StatusPercentage").filter("IsActive eq '1'").orderBy("ID",false).get();
+    }
+
+    public getDepartmentData() {
+        return this.web.lists.getByTitle('GoalDepartment').items.select("Title","ID","IsActive","Goal","Interval","StatusPercentage","DepartmentId","Department/Id","Department/Title").expand("Department").filter("IsActive eq '1'").orderBy("ID",false).get();
+    }
+
+    public getDepartmentOptionsData() {
+        return this.web.lists.getByTitle('GoalDepartmentOptions').items.select("Title","ID","Department","Members/Id","Members/Title","DeptAdmin/Id","DeptAdmin/Title").expand("Members","DeptAdmin").orderBy("ID",false).get();
+    }
+
+    public getPersonalData() {
+        return this.web.lists.getByTitle('GoalPersonal').items.select("Title","ID","IsActive","Goal","Interval","StatusPercentage").filter("IsActive eq '1'").orderBy("ID",false).get();
+    }
 }

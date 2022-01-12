@@ -1,0 +1,133 @@
+AppData: {
+	Sectors: {
+		[
+			{
+				Id: 1,
+				Title: Organization,
+				IsSelected: true/false,
+				Data: {
+					[					
+						Monthly: {
+									Title: "",
+									Goal: "",
+									Status: %
+								 },
+						Queterly: {
+									Title: "",
+									Goal: "",
+									Status: %
+								},
+						Yearly: {
+									Title: "",
+									Goal: "",
+									Status: %
+								}
+						       
+							 
+					]	
+				}
+			},
+			{
+				Id: 2,
+				Title: Department,
+				IsSelected: true/false,
+				Data:[ { 
+						DepartmentName: IT,
+						IntervalData :
+								  [
+									Monthly:{
+											Title: "",
+											Goal: "",
+											Status: %
+									        },
+									Queterly:{
+											Title: "",
+											Goal: "",
+											Status: %
+											},
+									Yearly: {
+											Title: "",
+											Goal: "",
+											Status: %
+									        }
+								  ]			
+						},
+					    { 
+						 DepartmentName: HR,
+						 IntervalData :
+								  [
+									Monthly:{
+											Title: "",
+											Goal: "",
+											Status: %
+											},
+									Queterly:{
+											Title: "",
+											Goal: "",
+											Status: %
+											},
+									Yearly: {
+											Title: "",
+											Goal: "",
+											Status: %
+									        }
+								  ]	
+					    }
+					 ]
+				
+			},
+			{
+				Key: 3,
+				Value: Personal,
+				IsSelected: true/false,
+				Data: {
+					[
+						Monthly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Queterly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						},
+						Yearly: {
+							Title: "",
+							Goal: "",
+							Status: %
+						}
+					]	
+				}
+			},
+		]
+	}
+}
+
+----------------------------------------------------------------------------------------------------------------
+SP Lists:
+
+1. Sectors : Id, Title (ex: Org, Personal etc), IsActive (Whether the tab should be shown or not)
+
+2. Intervals : Id, Title ( ex: Monthly, Quarter etc..), IsActive (Whether we need to show interval or not)
+
+Existing SP Lists  : Its contains columns name
+
+1. GoalOrganization : Id, Title, Goal, Interval(Choice Type), StatusPercentage, 
+					Sectors (Choice Type :Organization)
+
+2. GoalDepartment : Id, Title, Goal, Interval(Choice Type), Department (Lookup List :GoalDepartmentOptions ), 
+					StatusPercentage, Sector (Choice Type :Department)
+
+3. GoalPersonal : Id, Title, Goal, Interval(Choice Type), StatusPercentage, Sector(Choice Type :Personal)
+
+4. GoalDepartmentOptions : Id, Title, Department, Members (Type:PeopleAndGroup), DeptAdmin(Type:PeopleAndGroup)
+
+----------------------------------------------------------------------------------------------------------------
+
+Actions:
+
+SetAppData (called in ComponentDidMount) for objectiveGoal web-part
+
+ResetAppDataForSelectedTab (Update the render based on selected Tab among Sectors)
+

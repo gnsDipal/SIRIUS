@@ -14,6 +14,10 @@ const [isContextLoaded, setContextLoad] = useState(false);
         setContextLoad(true);
         await props.fetchSectors();
         await props.fetchIntervals();
+        await props.fetchOrganization();
+        await props.fetchDepartment();
+        await props.fetchPersonal();
+        
     };
 
     return (
