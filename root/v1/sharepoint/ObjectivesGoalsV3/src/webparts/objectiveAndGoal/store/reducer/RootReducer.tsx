@@ -1,5 +1,6 @@
 // import {SetAppData} from '../action/Action'
-import type { Actions, Sector } from '../operations/types';
+import type { Actions } from '../operations/actionTypes';
+import type { Sector } from '../operations/types';
 
 type State = {
     AppData: Sector[];
@@ -44,11 +45,7 @@ const INIT_STATE = {
                 ...state,
                 AppData: action.payload
             }
-        // case 'SET_ORGANIZATION':
-        //     return {
-        //         ...state,
-        //         Organization: action.payload
-        //     }
+       
         default:
             return state;
     }
