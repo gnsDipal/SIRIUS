@@ -3,4 +3,5 @@ export interface IRoomReservationPlatinumState {
   areaId:number;
   buildingId: number;
   sizeId: number;
+  isSettingsPanelOpen:boolean;
 }
