@@ -15,6 +15,8 @@
     "bundle:prod": "cross-env NODE_OPTIONS=--max_old_space_size=8192 gulp bundle --ship"
   },
   "dependencies": {
+    "@fluentui/react": "^8.49.5",
+    "@fluentui/react-icons": "^2.0.153-canary.0",
     "@microsoft/sp-core-library": "1.12.1",
     "@microsoft/sp-lodash-subset": "1.12.1",
     "@microsoft/sp-office-ui-fabric-core": "1.12.1",
@@ -25,6 +27,7 @@
     "@pnp/spfx-controls-react": "^3.3.0",
     "@pnp/spfx-property-controls": "^3.3.0",
     "@uifabric/fluent-theme": "^7.5.4",
+    "@uifabric/icons": "^7.6.2",
     "cross-env": "^7.0.3",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",

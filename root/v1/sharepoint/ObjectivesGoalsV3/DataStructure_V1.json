@@ -6,98 +6,89 @@ AppData: {
 				Title: Organization,
 				IsSelected: true/false,
 				Data: {
-					[					
-						Monthly: {
+						Monthly: [{
 									Title: "",
 									Goal: "",
 									Status: %
-								 },
-						Queterly: {
+								 }],
+						Queterly: [{
 									Title: "",
 									Goal: "",
 									Status: %
-								},
-						Yearly: {
+								}],
+						Yearly: [{
 									Title: "",
 									Goal: "",
 									Status: %
-								}
-						       
+								}]
 							 
-					]	
-				}
+					}
 			},
 			{
 				Id: 2,
 				Title: Department,
 				IsSelected: true/false,
-				Data:[ { 
-						DepartmentName: IT,
-						IntervalData :
-								  [
-									Monthly:{
-											Title: "",
-											Goal: "",
-											Status: %
-									        },
-									Queterly:{
-											Title: "",
-											Goal: "",
-											Status: %
-											},
-									Yearly: {
-											Title: "",
-											Goal: "",
-											Status: %
-									        }
-								  ]			
-						},
-					    { 
+				Data:{ [
+							DepartmentName: IT,
+							DepartmentData : {
+								Monthly:[{
+										Title: "",
+										Goal: "",
+										Status: %
+										}],
+								Queterly:[{
+										Title: "",
+										Goal: "",
+										Status: %
+										}],
+								Yearly: [{
+										Title: "",
+										Goal: "",
+										Status: %
+										}]
+								}
+						]
+						[
 						 DepartmentName: HR,
-						 IntervalData :
-								  [
-									Monthly:{
-											Title: "",
-											Goal: "",
-											Status: %
-											},
-									Queterly:{
-											Title: "",
-											Goal: "",
-											Status: %
-											},
-									Yearly: {
-											Title: "",
-											Goal: "",
-											Status: %
-									        }
-								  ]	
-					    }
-					 ]
-				
+						 DepartmentData : {
+							Monthly:[{
+									Title: "",
+									Goal: "",
+									Status: %
+									}],
+							Queterly:[{
+									Title: "",
+									Goal: "",
+									Status: %
+									}],
+							Yearly: [{
+									Title: "",
+									Goal: "",
+									Status: %
+									}]
+							}
+					 	]
 			},
 			{
 				Key: 3,
 				Value: Personal,
 				IsSelected: true/false,
 				Data: {
-					[
-						Monthly: {
+						Monthly: [{
 							Title: "",
 							Goal: "",
 							Status: %
-						},
-						Queterly: {
+						}],
+						Queterly: [{
 							Title: "",
 							Goal: "",
 							Status: %
-						},
-						Yearly: {
+						}],
+						Yearly: [{
 							Title: "",
 							Goal: "",
 							Status: %
-						}
-					]	
+						}]
 				}
 			},
 		]

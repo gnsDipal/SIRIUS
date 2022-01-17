@@ -6,6 +6,7 @@ import {
   PropertyPaneTextField,
   IPropertyPaneDropdownOption,
   PropertyPaneLabel,
+  PropertyPaneLink,
   PropertyPaneButtonType,
   PropertyPaneButton
 } from '@microsoft/sp-property-pane';
@@ -339,83 +340,147 @@ export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPar
   /*
   *
   */
-  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    // EndDate and Start Date defualt values
+  // protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
+  //   // EndDate and Start Date defualt values
 
+  //   return {
+  //     pages: [
+  //       {
+  //         header: {
+  //           description: strings.PropertyPaneDescription
+  //         },
+  //         groups: [
+  //           {
+  //             groupName: strings.BasicGroupName,
+  //             groupFields: [
+  //               PropertyPaneTextField('siteUrl', {
+  //                 label: strings.SiteUrlFieldLabel,
+  //                 onGetErrorMessage: this.onSiteUrlGetErrorMessage.bind(this),
+  //                 value: this.context.pageContext.site.absoluteUrl,
+  //                 deferredValidationTime: 1200,
+  //               }),
+  //               PropertyPaneTextField('locationListName', {
+  //                 label: strings.LocationListName,
+  //                 disabled: this.isLocationListAvailable
+  //               }),
+  //               PropertyPaneTextField('areaListName', {
+  //                 label: strings.AreaListName,
+  //                 disabled: this.isAreaListAvailable
+  //               }),
+  //               PropertyPaneTextField('categoryListName', {
+  //                 label: strings.CategoryListName,
+  //                 disabled: this.isCategoryListAvailable
+  //               }),
+  //               PropertyPaneTextField('masterListName', {
+  //                 label: strings.MasterListName,
+  //                 disabled: this.isMasterListAvailable
+  //               }),
+  //               PropertyPaneTextField('calendarListName', {
+  //                 label: strings.CalendarListName,
+  //                 disabled: this.isCalendarListAvailable
+  //               }),
+  //               PropertyPaneButton('EnsureList',
+  //                {  
+  //                 text: "EnsureList",
+  //                 buttonType: PropertyPaneButtonType.Normal,
+  //                 onClick: this.PerformEnsureLists.bind(this),
+  //                 disabled: this.isLocationListAvailable && this.isAreaListAvailable && this.isCategoryListAvailable && this.isMasterListAvailable && this.isCalendarListAvailable
+  //                }),
+  //               PropertyPaneLabel('eventStartDate', {
+  //                 text: strings.eventSelectDatesLabel
+  //               }),
+  //               PropertyFieldDateTimePicker('eventStartDate', {
+  //                 label: 'From',
+  //                 initialDate: this.properties.eventStartDate,
+  //                 dateConvention: DateConvention.Date,
+  //                 onPropertyChange: this.onPropertyPaneFieldChanged,
+  //                 properties: this.properties,
+  //                 onGetErrorMessage: this.onEventStartDateValidation,
+  //                 deferredValidationTime: 0,
+  //                 key: 'eventStartDateId'
+  //               }),
+  //               PropertyFieldDateTimePicker('eventEndDate', {
+  //                 label: 'to',
+  //                 initialDate:  this.properties.eventEndDate,
+  //                 dateConvention: DateConvention.Date,
+  //                 onPropertyChange: this.onPropertyPaneFieldChanged,
+  //                 properties: this.properties,
+  //                 onGetErrorMessage:  this.onEventEndDateValidation,
+  //                 deferredValidationTime: 0,
+  //                 key: 'eventEndDateId'
+  //               }),
+  //               PropertyPaneLabel('errorMessage', {
+  //                 text:  this.errorMessage,
+  //               }),
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   };
+  // } // End pf property pane configuration
+
+  /* ----------------------------- */
+
+  protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
       pages: [
         {
           header: {
-            description: strings.PropertyPaneDescription
+            // description: strings.PropertyPaneDescription
+            description: `Reservation admin setup steps:`
+
           },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              // groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('siteUrl', {
-                  label: strings.SiteUrlFieldLabel,
-                  onGetErrorMessage: this.onSiteUrlGetErrorMessage.bind(this),
-                  value: this.context.pageContext.site.absoluteUrl,
-                  deferredValidationTime: 1200,
-                }),
-                PropertyPaneTextField('locationListName', {
-                  label: strings.LocationListName,
-                  disabled: this.isLocationListAvailable
-                }),
-                PropertyPaneTextField('areaListName', {
-                  label: strings.AreaListName,
-                  disabled: this.isAreaListAvailable
-                }),
-                PropertyPaneTextField('categoryListName', {
-                  label: strings.CategoryListName,
-                  disabled: this.isCategoryListAvailable
-                }),
-                PropertyPaneTextField('masterListName', {
-                  label: strings.MasterListName,
-                  disabled: this.isMasterListAvailable
-                }),
-                PropertyPaneTextField('calendarListName', {
-                  label: strings.CalendarListName,
-                  disabled: this.isCalendarListAvailable
-                }),
-                PropertyPaneButton('EnsureList',
-                 {  
-                  text: "EnsureList",
-                  buttonType: PropertyPaneButtonType.Normal,
-                  onClick: this.PerformEnsureLists.bind(this),
-                  disabled: this.isLocationListAvailable && this.isAreaListAvailable && this.isCategoryListAvailable && this.isMasterListAvailable && this.isCalendarListAvailable
-                 }),
-                PropertyPaneLabel('eventStartDate', {
-                  text: strings.eventSelectDatesLabel
-                }),
-                PropertyFieldDateTimePicker('eventStartDate', {
-                  label: 'From',
-                  initialDate: this.properties.eventStartDate,
-                  dateConvention: DateConvention.Date,
-                  onPropertyChange: this.onPropertyPaneFieldChanged,
-                  properties: this.properties,
-                  onGetErrorMessage: this.onEventStartDateValidation,
-                  deferredValidationTime: 0,
-                  key: 'eventStartDateId'
-                }),
-                PropertyFieldDateTimePicker('eventEndDate', {
-                  label: 'to',
-                  initialDate:  this.properties.eventEndDate,
-                  dateConvention: DateConvention.Date,
-                  onPropertyChange: this.onPropertyPaneFieldChanged,
-                  properties: this.properties,
-                  onGetErrorMessage:  this.onEventEndDateValidation,
-                  deferredValidationTime: 0,
-                  key: 'eventEndDateId'
-                }),
-                PropertyPaneLabel('errorMessage', {
-                  text:  this.errorMessage,
-                }),
+              PropertyPaneLabel('label',{
+                text:`Add the location in the Title column and also specify items availability in IsActive column in the list through the link below."`,required:true
+              }),
+              PropertyPaneLink('', {
+                href: `${this.context.pageContext.web.absoluteUrl}/Lists/${this.properties.locationListName}/AllItems.aspx`,
+                text: 'Sirius_RoomReservation_1_RoomLocation List',
+                target: '_blank',
+            }),
+            PropertyPaneLabel('label',{
+              text:`Add the area in the Title column, specify items availability in IsActive column and select the corresponding RoomLocation in the list through the link below.`,required:true
+            }),
+            PropertyPaneLink('', {
+              href: `${this.context.pageContext.web.absoluteUrl}/Lists/${this.properties.areaListName}/AllItems.aspx`,
+              text: 'Sirius_RoomReservation_2_RoomArea List',
+              target: '_blank',
+          }),
+          PropertyPaneLabel('label',{
+            text:`Add the room category (building floor) in the Title column, specify items availability in IsActive column and select the corresponding RoomArea in the list through the link below.`,required:true
+          }),
+          PropertyPaneLink('', {
+            href: `${this.context.pageContext.web.absoluteUrl}/Lists/${this.properties.categoryListName}/AllItems.aspx`,
+            text: 'Sirius_RoomReservation_3_RoomCategory List',
+            target: '_blank',
+        }),
+        PropertyPaneLabel('label',{
+          text:`Add the room name (master room name) in the Title column, specify items availability in IsActive column, select the corresponding building floor, specify capacity, add the image URL, count of room and hex-color to identify the booking in the calendar respectively in the list through the link below.`,required:true
+        }),
+        PropertyPaneLink('', {
+          href: `${this.context.pageContext.web.absoluteUrl}/Lists/${this.properties.masterListName}/AllItems.aspx`,
+          text: 'Sirius_RoomReservation_4_RoomMaster List',
+          target: '_blank',
+      }),
+      PropertyPaneLabel('label',{
+        text:`Calendar data view through the link below.`,required:true
+      }),
+      PropertyPaneLink('', {
+        href: `${this.context.pageContext.web.absoluteUrl}/Lists/${this.properties.calendarListName}/calendar.aspx`,
+        text: 'Sirius_RoomReservation_5_RoomCalender List',
+        target: '_blank',
+    })
               ]
             }
-          ]
+          ]        
         }
       ]
     };
-  }
+  }; // End of PPC
+
 }

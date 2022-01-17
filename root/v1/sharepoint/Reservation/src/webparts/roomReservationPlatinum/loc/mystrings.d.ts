@@ -148,6 +148,8 @@ declare interface IRoomReservationPlatinumWebPartStrings {
   theNthOfMonthFormat: string;
   onTheDayTypeFormat: string;
   ResourceOverlapMessage:string;
+  SettingsLabel:string;
+  LoadingLabel:string;
   SPLocationListName:string;
   SPAreaListName:string;
   SPCategoryListName:string;
