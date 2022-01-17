@@ -10,55 +10,57 @@ debugger;
 const TabHeader = (props) =>{
     {console.log("props =>",props + "props.sectors =>",props.sectors )} 
     const [isSectorAvailable, setIsSectorAvailable] = useState(false);
+    const [sectorSelected, setSectorSelected] = useState("");
+    const[ bgColorSelectedTab, setBgColorSelectedTab ] = React.useState<string>("#04ef00");
+    const[ colorSelectedTab,setColorSelectedTab ] = React.useState<string>("white");
+    const[ bgColorOrganization, setBgColorOrganization ] = React.useState<string>("white");
+    const[ bgColorDepartment, setBgColorDepartment ] = React.useState<string>("white");
+    const[ bgColorPersonal, setBgColorPersonal ] = React.useState<string>("white");
+    const[ colorOrganization,setColorOrganization ] = React.useState<string>("black");
+    const[ colorDepartment, setColorDepartment ] = React.useState<string>("black"); 
+    const[ colorPersonal, setColorPersonal ] = React.useState<string>("black");
+
+    const HeaderTabClicked = async(selectedTabName) => {
+        setSectorSelected(selectedTabName);
+        alert("Header Tab Clicked" + selectedTabName);      
+        setBgColorOrganization("#04ef00");
+        setBgColorDepartment("white");
+        setBgColorPersonal("white");
+        setColorOrganization("white");
+        setColorDepartment("black");
+        setColorPersonal("black");
+       };
+    
     React.useEffect(() => {
         if(props.isSectorFetchComplete){
             setIsSectorAvailable(true);
         }
     }, [props.isSectorFetchComplete])
     return(       
-        <div className={ styles.tabHeader }>
-           
-            {/* <UserContext.Provider value={...props}> */}
-            <h1>TabHeader (Organization, Department , Personal)</h1>           
-           
-            {/* Added TabHeader name Dynamic */} 
-            { (isSectorAvailable) ?
-              // <h1> sectors Data Available and Its length : {props.sectors.length} </h1>              
-              props.sectors.map((t)=>{
-                return(
-                    <div className={styles.TabHeaderSetDisplay}>                         
-                    <div className={styles.TabHeaderGoalsTabs} >                  
-                            <DefaultButton className={styles.TabHeaderGoalsTabBtn} ><h3> {t.Title} </h3></DefaultButton>                                         
+        <div className={ styles.tabHeader }>           
+            {/* <UserContext.Provider value={...props}>  */}    
+            {/* Testing Display Web Part */}
+            { (isSectorAvailable) ?   
+                <div className={styles.TabHeaderSetDisplay}>                         
+                    <div className={styles.TabHeaderGoalsTabs} >                         
+                       { props.sectors.map((t)=>{                
+                    return(                                    
+                           <DefaultButton className={styles.TabHeaderGoalsTabBtn} onClick={()=>HeaderTabClicked(t.Title)} style={{backgroundColor:bgColorOrganization, color:colorOrganization}}  ><h3> {t.Title} </h3></DefaultButton>                                                                                                                
+                           )      
+                      })}
                     </div>
-                    </div>
-                 )
-               })
-            :
-              <div className={styles.TabHeaderSetDisplay}>                                       
-                <div className={styles.TabHeaderGoalsTabs} >
-                    <DefaultButton className={styles.TabHeaderGoalsTabBtn} ><h3> Tab -1 </h3></DefaultButton>                       
-                </div>
-                <div className={styles.TabHeaderGoalsTabs} >
-                    <DefaultButton className={styles.TabHeaderGoalsTabBtn} ><h3> Tab -2 </h3></DefaultButton>                       
-                </div>
-                <div className={styles.TabHeaderGoalsTabs} >
-                    <DefaultButton className={styles.TabHeaderGoalsTabBtn} ><h3> Tab -3 </h3></DefaultButton>                       
-                </div>
-             </div>
-
-            }
+                  </div> 
+               :
+               <div>No Header Found</div>
+            }  
+            
+            {/* TabItem component call */}
+            { (isSectorAvailable) && (sectorSelected) &&                                 
+                <div>               
+                    <TabItem selectedSector = {sectorSelected} {...props} />                                            
+                 </div> 
            
-            {/* </UserContext.Provider> */}
-            <div className={styles.TabHeaderSetDisplay}>
-              {isSectorAvailable && 
-                props.sectors.map((t)=>{
-                    <TabItem {...t} />
-                })  
-             }
-            {/* {props.sectors.map((t)=>{
-                <TabItem {...t} />
-            })} */}
-            </div>
+            }           
         </div> 
     )
 };

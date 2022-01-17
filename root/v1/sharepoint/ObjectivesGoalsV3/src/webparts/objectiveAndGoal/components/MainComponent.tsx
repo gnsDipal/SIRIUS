@@ -13,10 +13,10 @@ const [isContextLoaded, setContextLoad] = useState(false);
         props.setSPContext(props.webPartContext);
         setContextLoad(true);
         await props.fetchSectors();
-        await props.fetchIntervals();
-        await props.fetchOrganization();
-        await props.fetchDepartment();
-        await props.fetchPersonal();
+        //await props.fetchIntervals();
+        //await props.fetchOrganization();
+        //await props.fetchDepartment();
+        //await props.fetchPersonal();
         
     };
 

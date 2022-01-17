@@ -23,6 +23,7 @@
   }
 
   export type DepartmentSectorData = {
+    Title: string,
     DepartmentName: string,
     DepartmentId: number,
     IsSelected: boolean,
