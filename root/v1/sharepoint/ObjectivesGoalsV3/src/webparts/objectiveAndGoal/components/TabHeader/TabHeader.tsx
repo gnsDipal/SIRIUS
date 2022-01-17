@@ -51,7 +51,7 @@ const TabHeader = (props) =>{
                     </div>
                   </div> 
                :
-               <div>No Header Found</div>
+               <div> <h1>No Header Tab Data Found</h1></div>
             }  
             
             {/* TabItem component call */}

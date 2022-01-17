@@ -20,7 +20,7 @@ const TabItem = (props) =>{
          if (sector.Title == props.selectedSector )
          return( 
             <div>
-               <h1>{sector.Title} selected </h1>
+               <h1>{sector.Title} Tab selected </h1>
                { (props.selectedSector !== "Department") ?        
                <div>
                   {/* Monthly Data Display */}
@@ -47,17 +47,17 @@ const TabItem = (props) =>{
                     <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Quarterly Objectives</h3></DefaultButton></div>                                                         
                     <div className={styles.DataDisplay}> 
                         <ul>
-                         {sector.Data.Quartly.map( (QuarterlyObjectives, index)=> {                   
+                           {sector.Data.Quartly.map( (QuarterlyObjectives, index)=> {                   
                            return(                   
                            <li key={QuarterlyObjectives.Id}  >                                                                
-                              <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                            
+                                 <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                            
                                        <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%                                                                
                                           <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
                                        </td></tr>
-                              </table>                                               
+                                 </table>                                               
                            </li>
                            )
-                          })}                                                    
+                           })}                                                                             
                         </ul>
                      </div> 
                   </div> 
@@ -66,17 +66,17 @@ const TabItem = (props) =>{
                      <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Yearly Goals</h3></DefaultButton></div>                                                         
                      <div className={styles.DataDisplay}> 
                         <ul>
-                        {sector.Data.Yearly.map( (YearlyGoals, index)=> {                   
-                           return(                   
-                           <li key={YearlyGoals.Id}  >                                                                
-                              <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
-                                       <tr><td><progress id="file" value={YearlyGoals.StatusPercentage} max="100"> </progress>{YearlyGoals.StatusPercentage}%                                                                
-                                          <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
-                                       </td></tr>
-                              </table>                                               
-                           </li>
-                           )
-                        })}                                                    
+                           {sector.Data.Yearly.map( (YearlyGoals, index)=> {                   
+                              return(                   
+                              <li key={YearlyGoals.Id}  >                                                                
+                                    <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
+                                          <tr><td><progress id="file" value={YearlyGoals.StatusPercentage} max="100"> </progress>{YearlyGoals.StatusPercentage}%                                                                
+                                             <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                          </td></tr>
+                                    </table>                                               
+                              </li>
+                              )
+                              })}                                                                         
                         </ul>
                      </div> 
                   </div> 
@@ -93,7 +93,7 @@ const TabItem = (props) =>{
                      return(   
                         <ul>                         
                            <h3>{Department.DepartmentName}</h3> 
-                           {/* {props.Data.DepartmentData.Monthly.map( (MonthlyTarget, index)=> { 
+                           {Department.DepartmentData.Monthly.map( (MonthlyTarget, index)=> { 
                             return(             
                             <li key={MonthlyTarget.Id}  >                                                                
                                  <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
@@ -103,7 +103,7 @@ const TabItem = (props) =>{
                                  </table>                                               
                             </li>
                             )                            
-                           })}                                                                          */}
+                           })}                                                                         
                         </ul>
                         )
                      })}  
@@ -113,41 +113,49 @@ const TabItem = (props) =>{
                   <div className={styles.IntervalSetDisplay}>   
                      <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Quarterly Objectives</h3></DefaultButton></div>                                                         
                      <div className={styles.DataDisplay}> 
-                     <ul> 
-                     {sector.Data.map( (Department, index)=> {                   
-                        return(    
-                           <h3>{Department.DepartmentName}</h3>               
-                        // <li key={MonthlyTarget.Id}  >                                                                
-                        //       <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
-                        //             <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%                                                                
-                        //                <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
-                        //             </td></tr>
-                        //       </table>                                               
-                        // </li>
-                        )
-                        })}                                                    
-                     </ul>
+                        {sector.Data.map( (Department, index)=> {
+                        return(   
+                           <ul>                         
+                              <h3>{Department.DepartmentName}</h3> 
+                              {Department.DepartmentData.Quartly.map( (QuarterlyObjectives, index)=> { 
+                              return(             
+                              <li key={QuarterlyObjectives.Id}  >                                                                
+                                    <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                            
+                                          <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%                                                                
+                                             <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                          </td></tr>
+                                    </table>                                               
+                              </li>
+                              )                            
+                              })}                                                                         
+                           </ul>
+                           )
+                        })} 
                      </div> 
                   </div> 
                   {/* Yearly Goal Data Display for Department*/}
                   <div className={styles.IntervalSetDisplay}>   
                     <div className={styles.IntervalButtonDiv}><DefaultButton className={styles.IntervalButtons} ><h3>Yearly Goals</h3></DefaultButton></div>                                                         
                     <div className={styles.DataDisplay}> 
-                      <ul> 
-                      {sector.Data.map( (Department, index)=> {                   
-                        return(    
-                           <h3>{Department.DepartmentName}</h3>               
-                        // <li key={MonthlyTarget.Id}  >                                                                
-                        //       <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
-                        //             <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%                                                                
-                        //                <button style={{margin:'20px'}} onClick={EditButtonClicked} > Edit </button>                                 
-                        //             </td></tr>
-                        //       </table>                                               
-                        // </li>
-                        )
-                        })}                                                    
-                      </ul>
-                     </div> 
+                     {sector.Data.map( (Department, index)=> {
+                        return(   
+                           <ul>                         
+                              <h3>{Department.DepartmentName}</h3> 
+                              {Department.DepartmentData.Yearly.map( (YearlyGoals, index)=> { 
+                              return(             
+                              <li key={YearlyGoals.Id}  >                                                                
+                                    <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
+                                          <tr><td><progress id="file" value={YearlyGoals.StatusPercentage} max="100"> </progress>{YearlyGoals.StatusPercentage}%                                                                
+                                             <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                          </td></tr>
+                                    </table>                                               
+                              </li>
+                              )                            
+                              })}                                                                         
+                           </ul>
+                           )
+                        })}    
+                    </div> 
                   </div> 
                   {/* Add Goal Button */}
                   <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton> 
