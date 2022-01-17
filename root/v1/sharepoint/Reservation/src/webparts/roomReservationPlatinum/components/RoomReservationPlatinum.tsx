@@ -49,7 +49,7 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
                 categoryListName={this.props.categoryListName}
                 masterListName={this.props.masterListName}
                 calendarListName={this.props.calendarListName}
-                filterType = {FilterType.Asset}
+                filterType = {FilterType.Room}
                 EventKeySelection={this.EventKeySelectionHandler}
                 />
             </div>
@@ -79,7 +79,7 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
                    categoryListName = {this.props.categoryListName}
                    masterListName = {this.props.masterListName}
                    calendarListName = {this.props.calendarListName}
-                   filterType = {FilterType.Asset}
+                   filterType = {FilterType.Room}
                    displayMode = {this.props.displayMode}
                    context ={ this.props.context}
                    eventStartDate = {this.props.eventStartDate}
