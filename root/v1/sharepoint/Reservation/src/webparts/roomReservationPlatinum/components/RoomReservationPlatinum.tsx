@@ -9,9 +9,11 @@ import Filters from '../../../controls/Filters/Filters';
 import FilterImage from '../../../controls/FilterImage/FilterImage';
 import Calendar from '../../../controls/Calendar/Calendar';
 import SettingsPanel from '../../../controls/SettingsPanel/SettingsPanel';
+import spservices from '../../../services/spservices';
+import { CompoundButton } from 'office-ui-fabric-react';
 debugger;
 export default class RoomReservationPlatinum extends React.Component<IRoomReservationPlatinumProps, IRoomReservationPlatinumState> {
-  
+  private spServiceData:spservices = null;
   constructor(props:IRoomReservationPlatinumProps, state:IRoomReservationPlatinumState) { 
     super(props);
     
@@ -20,12 +22,24 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
       areaId:0,
       buildingId: 0,
       sizeId: 1,
-      isSettingsPanelOpen:false
+      isSettingsPanelOpen:false,
+      isAdmin:false
     };
     this.EventKeySelectionHandler = this.EventKeySelectionHandler.bind(this);
   }
 
-     // Get event once the all drop boxes have been selected. Get keys for all drop down here :)
+  componentDidMount(): void {
+      // if(this.props.context.pageContext.legacyPageContext.isSiteAdmin){
+      //   this.setState({isAdmin:true})
+      // }
+      this.spServiceData = new spservices(this.props.context);
+      this.spServiceData.getLoggedInUserDetails()
+      .then(res=>{
+        this.setState({isAdmin:res})
+      })
+  }
+
+     // Get event once the all drop bo{}xes have been selected. Get keys for all drop down here :)
     private EventKeySelectionHandler(locationId: number, areaId: number, buildingId:number, sizeId:number) {
     this.setState ({
       locationId: locationId,
@@ -46,17 +60,23 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
     this.props.updateProperty(str);
   }
   // dir="ltr"
+  //(this.props.context.sdks.microsoftTeams) && 
+  //  (this.state.isAdmin) && 
   public render(): React.ReactElement<IRoomReservationPlatinumProps> {
     return (
       <div className={ styles.roomReservation }>
         <div className="ms-Grid">
           <div className='ms-Grid-row'>
-            <div className={styles.gearIcon}>
+            <div className='ms-Grid-col'>
+              { (this.props.context.sdks.microsoftTeams) && (this.state.isAdmin) &&
               <div>
-                  <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> this.panelOpenHandle()} ></Icon>                  
+                  {/* <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> this.panelOpenHandle()} ></Icon>                   */}
+                  <CompoundButton className={styles.teamsSettings} onClick={()=> this.panelOpenHandle()} >Config</CompoundButton>
               </div>
+              }
             </div>
           </div>
+          {/* } */}
           <div>
               {
                 (this.state.isSettingsPanelOpen) && 

@@ -1,9 +1,7 @@
 @import '~office-ui-fabric-react/dist/sass/References.scss';
+@import '~office-ui-fabric-react/dist/css/fabric.css';
 
 .roomReservation {
-  :global{
-    @import 'node_modules/office-ui-fabric-react/dist/css/fabric.css';
-  }
   .container {
     max-width: 700px;
     margin: 0px auto;
@@ -42,7 +40,7 @@
 
   .gearIcon{
     @include ms-Grid-col;
-    @include ms-sm2;
+    @include ms-sm12;
     // float: right;
   }
 
@@ -51,6 +49,10 @@
     cursor: pointer;
     float: right;
     // margin-top:11px;
+  }
+
+  .teamsSettings i{
+    font-weight: bold;
   }
 
   .button {

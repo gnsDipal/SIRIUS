@@ -21,8 +21,6 @@ export default class RoomReservationPlatinum extends React.Component<ISettingsPa
         this.spSettingsPanelService = new spServiceSettingsPanel(this.props.context,this.props.locationListName,this.props.areaListName,this.props.categoryListName,this.props.masterListName,this.props.calendarListName);
         this.spSettingsPanelService.newTeam()
         .then((res:any) =>{
-            console.log('res = ' + res);
-            alert("webLink = " + res);
             this.setState({webUrl:res});
         });
     };

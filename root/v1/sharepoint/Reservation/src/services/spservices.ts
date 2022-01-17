@@ -46,6 +46,11 @@ export default class spservices {
     }
   }
 
+  public async getLoggedInUserDetails(): Promise<boolean> {
+    let IsAdmin: boolean = (await sp.web.currentUser()).IsSiteAdmin; 
+    return IsAdmin;
+}
+
   /**
    *
    * @private

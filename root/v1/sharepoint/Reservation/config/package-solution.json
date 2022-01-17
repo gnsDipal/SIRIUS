@@ -5,6 +5,7 @@
     "id": "dd35d1e8-9e9f-4297-a29d-5b69a1eacedd",
     "version": "1.0.0.3",
     "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
     "isDomainIsolated": false,
     "developer": {
       "name": "Dipal Bhavsar",
