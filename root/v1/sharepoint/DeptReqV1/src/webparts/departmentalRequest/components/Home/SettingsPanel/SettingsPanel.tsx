@@ -20,8 +20,6 @@ const SettingsPanel = (props) => {
         spSettingsPanelService = new SPDepartmentalServiceData(mainContext);
         spSettingsPanelService.createTeamTabTest()
         .then((res:any) =>{
-            console.log('res = ' + res);
-            alert("webLink = " + res);
             setWebLink(res);
         });
     };
