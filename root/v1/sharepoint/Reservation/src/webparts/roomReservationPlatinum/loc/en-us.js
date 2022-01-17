@@ -149,11 +149,13 @@ define([], function() {
     theNthOfMonthFormat: "on {0} {1}",
     onTheDayTypeFormat: "on the {0} {1}",
     ResourceOverlapMessage: "Resource is booked for this slot - kindly select another one.",
-    SPLocationListName:'GNS_Test_RL',
-    SPAreaListName:'GNS_Test_RA',
-    SPCategoryListName:'GNS_Test_RC',
-    SPMasterListName:'GNS_Test_RM',
-    SPCalendarListName:'GNS_Test_RCal'
+    SettingsLabel:"Settings",
+    LoadingLabel:"Loading",
+    SPLocationListName:'Sirius_RoomReservation_1_RoomLocation',
+    SPAreaListName:'Sirius_RoomReservation_2_RoomArea',
+    SPCategoryListName:'Sirius_RoomReservation_3_RoomCategory',
+    SPMasterListName:'Sirius_RoomReservation_4_RoomMaster',
+    SPCalendarListName:'Sirius_RoomReservation_5_RoomCalendar'
 
   }
 });
