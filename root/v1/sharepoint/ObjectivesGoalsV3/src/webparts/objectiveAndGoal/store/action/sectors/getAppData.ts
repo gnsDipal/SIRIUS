@@ -52,8 +52,9 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     quartData = d.filter(val=>val.Department[0].Title === y && val.Interval === quarterly);
                     monthData = d.filter(val=>val.Department[0].Title === y && val.Interval === monthly);
                     departmentData.push(
-                        {
+                        {   
                             DepartmentId: yrlData[0].DepartmentId[0],
+                            Title:yrlData[0].Department,
                             DepartmentName: y,
                             IsSelected: false,
                             DepartmentData : {
@@ -66,14 +67,14 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     
                 });
                 appData.Sectors.push({
-                    Id: 1,
+                    Id: 2,
                     Title: "Department",
                     IsSelected:false,
                     Data: departmentData
                 });
             } else if(i == 2) { // for Personal
                 appData.Sectors.push({
-                    Id: 1,
+                    Id: 3,
                     Title: "Personal",
                     IsSelected:false,
                     Data: {
