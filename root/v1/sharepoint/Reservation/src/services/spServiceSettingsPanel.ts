@@ -219,7 +219,7 @@ export default class spServiceSettingsPanel {
       };
          
       public async createTab3(teamId,channelId){
-        let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/Lists/${this.calendarListName}/AllItems.aspx`;
+        let contentURL = `${this.webContext.pageContext.web.absoluteUrl}/Lists/${this.categoryListName}/AllItems.aspx`;
         let body: any = {      
           "displayName": this.categoryListName,
           "teamsAppId": null,
