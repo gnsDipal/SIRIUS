@@ -16,4 +16,8 @@ export interface ICalendarProps {
   context: WebPartContext;
   eventStartDate:  IDateTimeFieldValue;
   eventEndDate: IDateTimeFieldValue;
+  locationId: any;
+  areaId: any;
+  buildingId: any;
+  sizeId: any;
 }
