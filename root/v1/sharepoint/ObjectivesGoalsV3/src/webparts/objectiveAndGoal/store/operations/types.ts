@@ -2,6 +2,10 @@
       Sectors: Sector[];
   };
 
+  // export type UpdateAppData = {
+  //   Sectors: Sector[];
+  //  };
+
   export type Sector = {
     Id:number,
     Title:string,
