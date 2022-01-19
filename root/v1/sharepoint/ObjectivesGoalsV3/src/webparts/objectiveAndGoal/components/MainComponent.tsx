@@ -9,13 +9,19 @@ debugger;
 const MainComponent = (props) => {
     const [isContextLoaded, setContextLoad] = useState(false);
     const [sectorSelectedId, setSectorSelectedId] = useState(0);
+    const [callInit, setCallInit] = useState(0);
+
     useEffect(() => { 
+        if(callInit===0)
         init();
-     },[]);
+        console.log("Main Component sectorSelectedId =>", sectorSelectedId)
+        props.callUpdateAppData(sectorSelectedId);
+     },[sectorSelectedId]);
     const init=async()=>{
         props.setSPContext(props.webPartContext);
         setContextLoad(true);
-        await props.fetchSectors();  
+        await props.fetchSectors(); 
+        setCallInit(1);
     };
     const handleMainSectorTabChange = async(id) => {
         alert("Main Tab Header Id =>"+ id);
