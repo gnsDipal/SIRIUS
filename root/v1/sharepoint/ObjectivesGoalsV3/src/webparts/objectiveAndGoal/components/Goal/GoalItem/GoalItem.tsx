@@ -1,7 +1,7 @@
 import * as React from "react";
 import styles from './GoalItem.module.scss';
 
-debugger;
+// debugger;
 const GoalItem = (props) =>{  
     console.log("GoalItem component contain props ==> ", props + "selectedSectorId => ",props.selectedSectorId);
     // const handleSectorTab = async(e, id) => {    

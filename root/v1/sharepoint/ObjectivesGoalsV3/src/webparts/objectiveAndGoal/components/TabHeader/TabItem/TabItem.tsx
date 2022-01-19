@@ -3,7 +3,7 @@ import styles from './TabItem.module.scss';
 import { ITabItemProps } from './ITabItemProps';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 
-debugger;
+// debugger;
 const TabItem = (props) =>{
    const handleSectorTab = async(e, id) => {    
       props.handleSectorChange(id);

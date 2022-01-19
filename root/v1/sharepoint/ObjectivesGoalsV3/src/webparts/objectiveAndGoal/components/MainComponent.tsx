@@ -11,11 +11,13 @@ const MainComponent = (props) => {
     const [sectorSelectedId, setSectorSelectedId] = useState(0);
     const [callInit, setCallInit] = useState(0);
 
-    useEffect(() => { 
-        if(callInit===0)
-        init();
-        console.log("Main Component sectorSelectedId =>", sectorSelectedId)
-        props.callUpdateAppData(sectorSelectedId);
+    useEffect(() => {
+        const allInit=async()=>{ 
+            if(callInit===0)
+                await init();
+            await handleUpdatingAppData(); 
+        } 
+        allInit();      
      },[sectorSelectedId]);
     const init=async()=>{
         props.setSPContext(props.webPartContext);
@@ -23,6 +25,11 @@ const MainComponent = (props) => {
         await props.fetchSectors(); 
         setCallInit(1);
     };
+    const handleUpdatingAppData = async() =>{
+        console.log("Main Component sectorSelectedId =>", sectorSelectedId)
+        await props.callUpdateAppData(sectorSelectedId);
+    }
+
     const handleMainSectorTabChange = async(id) => {
         alert("Main Tab Header Id =>"+ id);
         console.log("Main Tab Header Id =>", id);

@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 import TabItem from "./TabItem/TabItem";
 // import { SetAppData } from "../../store/action/Action";
-debugger;
+// debugger;
 const TabHeader = (props) =>{   
     const [isSectorAvailable, setIsSectorAvailable] = useState(false); 
          

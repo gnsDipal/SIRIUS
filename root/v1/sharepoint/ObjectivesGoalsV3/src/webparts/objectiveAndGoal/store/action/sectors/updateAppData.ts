@@ -7,9 +7,10 @@ export const updateAppData = (dispatch: Function, getStore:any, selectedId:any) 
     const store = getStore();
     //dispatch(setSectorFetchStart());
     let appData:AppData = {Sectors:[]=[]};
+    // appData=store;
 	let i=selectedId-1;
     
-     appData.Sectors.map((sector, index)=>{
+    appData.Sectors.map((sector, index)=>{
 
             if(index === i) { // for selected Tab         
                 sector[index].IsSelected =true;
@@ -17,7 +18,7 @@ export const updateAppData = (dispatch: Function, getStore:any, selectedId:any) 
                 sector[index].IsSelected =false;
             }  
        });
-       //return await appData
+    //    return appData
        return Promise.resolve(appData);
     
 }

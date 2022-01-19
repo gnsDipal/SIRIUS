@@ -4,7 +4,7 @@ import { useContext, useState } from "react";
 import GoalItem from "./GoalItem/GoalItem";
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 
-debugger;
+// debugger;
 const Goal = (props) =>{  
     console.log("Goal component contain props ==> ", props + "selectedSectorId => ",props.selectedSectorId);
     const [isSelected, setIsSelected] = useState(false); 
