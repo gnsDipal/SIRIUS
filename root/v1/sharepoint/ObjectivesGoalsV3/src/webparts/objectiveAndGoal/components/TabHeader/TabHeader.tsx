@@ -7,60 +7,34 @@ import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 import TabItem from "./TabItem/TabItem";
 // import { SetAppData } from "../../store/action/Action";
 debugger;
-const TabHeader = (props) =>{
-    {console.log("props =>",props + "props.sectors =>",props.sectors )} 
-    const [isSectorAvailable, setIsSectorAvailable] = useState(false);
-    const [sectorSelected, setSectorSelected] = useState("");
-    const[ bgColorSelectedTab, setBgColorSelectedTab ] = React.useState<string>("#04ef00");
-    const[ colorSelectedTab,setColorSelectedTab ] = React.useState<string>("white");
-    const[ bgColorOrganization, setBgColorOrganization ] = React.useState<string>("white");
-    const[ bgColorDepartment, setBgColorDepartment ] = React.useState<string>("white");
-    const[ bgColorPersonal, setBgColorPersonal ] = React.useState<string>("white");
-    const[ colorOrganization,setColorOrganization ] = React.useState<string>("black");
-    const[ colorDepartment, setColorDepartment ] = React.useState<string>("black"); 
-    const[ colorPersonal, setColorPersonal ] = React.useState<string>("black");
-
-    const HeaderTabClicked = async(selectedTabName) => {
-        setSectorSelected(selectedTabName);
-        alert("Header Tab Clicked" + selectedTabName);      
-        setBgColorOrganization("#04ef00");
-        setBgColorDepartment("white");
-        setBgColorPersonal("white");
-        setColorOrganization("white");
-        setColorDepartment("black");
-        setColorPersonal("black");
-       };
-    
+const TabHeader = (props) =>{   
+    const [isSectorAvailable, setIsSectorAvailable] = useState(false); 
+         
     React.useEffect(() => {
         if(props.isSectorFetchComplete){
-            setIsSectorAvailable(true);
+            setIsSectorAvailable(true);            
         }
     }, [props.isSectorFetchComplete])
+
+    const handleSectorTabHeaderChange = async(id) => {       
+        props.handleMainSectorChange(id);
+    };
     return(       
         <div className={ styles.tabHeader }>           
-            {/* <UserContext.Provider value={...props}>  */}    
-            {/* Testing Display Web Part */}
+            {/* <UserContext.Provider value={...props}>  */}               
             { (isSectorAvailable) ?   
                 <div className={styles.TabHeaderSetDisplay}>                         
-                    <div className={styles.TabHeaderGoalsTabs} >                         
-                       { props.sectors.map((t)=>{                
-                    return(                                    
-                           <DefaultButton className={styles.TabHeaderGoalsTabBtn} onClick={()=>HeaderTabClicked(t.Title)} style={{backgroundColor:bgColorOrganization, color:colorOrganization}}  ><h3> {t.Title} </h3></DefaultButton>                                                                                                                
+                    <div className={styles.TabHeaderGoalsTabs} >                                                                           
+                    { props.sectors.map((t)=>{                
+                      return(   
+                          <TabItem handleSectorChange={handleSectorTabHeaderChange} {...t}/>
                            )      
                       })}
                     </div>
                   </div> 
                :
                <div> <h1>No Header Tab Data Found</h1></div>
-            }  
-            
-            {/* TabItem component call */}
-            { (isSectorAvailable) && (sectorSelected) &&                                 
-                <div>               
-                    <TabItem selectedSector = {sectorSelected} {...props} />                                            
-                 </div> 
-           
-            }           
+            }                        
         </div> 
     )
 };
