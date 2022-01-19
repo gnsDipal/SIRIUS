@@ -13,9 +13,9 @@ const MainComponent = (props) => {
 
     useEffect(() => {
         const allInit=async()=>{ 
-            if(callInit===0)
+            if(callInit === 0)
                 await init();
-            await handleUpdatingAppData(); 
+                await handleUpdatingAppData(); 
         } 
         allInit();      
      },[sectorSelectedId]);
