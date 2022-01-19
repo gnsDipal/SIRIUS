@@ -85,6 +85,10 @@ export default class AssetReservation extends React.Component<IAssetReservationP
                    eventStartDate = {this.props.eventStartDate}
                    eventEndDate = {this.props.eventEndDate}
                    updateProperty = {this.updatePropertyHandler}
+                   locationId={this.state.locationId}
+                   areaId={this.state.areaId}
+                   buildingId={this.state.buildingId}
+                   sizeId={this.state.sizeId}
                 />
             </div>
           </div>
