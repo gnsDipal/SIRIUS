@@ -25,9 +25,15 @@ export type SetSectors = {
     payload: string
   };
 
+  export type SetSelectedSector= {
+    type: 'SET_SELECTED_SECTOR',
+    payload: boolean
+  };
+
 export type Actions =
   | SetSPContext
   | SetSectors
   | SetSectorFetchStart
   | SetSectorFetchComplete
   | SetSectorFetchError
+  | SetSelectedSector

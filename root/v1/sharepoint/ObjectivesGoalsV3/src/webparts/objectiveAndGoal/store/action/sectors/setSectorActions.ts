@@ -2,7 +2,8 @@ import type {
     SetSectors,
     SetSectorFetchComplete, 
     SetSectorFetchStart,
-    SetSectorFetchError 
+    SetSectorFetchError,
+    SetSelectedSector
 } from '../../operations/actionTypes';
 
 import type { AppData, Sector } from '../../operations/types';
@@ -25,4 +26,9 @@ export const setSectorFetchStart = () : SetSectorFetchStart => ({
 export const setSectorFetchError = (error:string) : SetSectorFetchError => ({
     type: 'SET_SECTOR_FETCH_ERROR',
     payload: error
+});
+
+export const setSelectedSector = (sectorId: number, isSelected:boolean) : SetSelectedSector => ({
+    type: 'SET_SELECTED_SECTOR',
+    payload: isSelected
 });
