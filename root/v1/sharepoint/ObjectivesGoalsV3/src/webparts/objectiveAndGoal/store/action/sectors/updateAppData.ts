@@ -3,7 +3,7 @@ import type {
 } from '../../operations/types';
 
 debugger;
-export const updateAppData = async(dispatch: Function, getStore:any, selectedId:any) => {
+export const updateAppData = (dispatch: Function, getStore:any, selectedId:any) => {
     const store = getStore();
     //dispatch(setSectorFetchStart());
     let appData:AppData = {Sectors:[]=[]};
@@ -11,12 +11,13 @@ export const updateAppData = async(dispatch: Function, getStore:any, selectedId:
     
       appData.Sectors.map((sector, index)=>{
 
-            if(index == i) { // for selected Tab         
+            if(index === i) { // for selected Tab         
                 sector[index].IsSelected =true;
-            } else if(index!= i) {
+            } else if(index !== i) {
                 sector[index].IsSelected =false;
             }  
        });
-       return await appData
+       //return await appData
+       return Promise.resolve(appData);
     
 }
