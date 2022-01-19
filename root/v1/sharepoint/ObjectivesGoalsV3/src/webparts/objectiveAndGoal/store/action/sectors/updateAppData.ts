@@ -4,12 +4,12 @@ import type {
 
 debugger;
 export const updateAppData = async(dispatch: Function, getStore:any, selectedId:any) => {
-    const store = getStore();
+    const store =  getStore();
     //dispatch(setSectorFetchStart());
     let appData:AppData = {Sectors:[]=[]};
 	let i=selectedId-1;
     
-      appData.Sectors.map((sector, index)=>{
+     appData.Sectors.map((sector, index)=>{
 
             if(index == i) { // for selected Tab         
                 sector[index].IsSelected =true;
@@ -17,6 +17,6 @@ export const updateAppData = async(dispatch: Function, getStore:any, selectedId:
                 sector[index].IsSelected =false;
             }  
        });
-       return await appData
+       return Promise.resolve(appData)
     
 }
