@@ -5,7 +5,7 @@ import { useEffect, useState, useContext } from 'react';
 import TabHeader from '../store/containers/TabHeader';
 import Goal from '../store/containers/Goal';
 import Interval from '../store/containers/Interval'
-
+debugger;
 const MainComponent = (props) => {
     const [isContextLoaded, setContextLoad] = useState(false);
     const [sectorSelectedId, setSectorSelectedId] = useState(0);
