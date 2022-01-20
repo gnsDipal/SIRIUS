@@ -4,11 +4,11 @@ import styles from './MainComponent.module.scss';
 import { useEffect, useState, useContext } from 'react';
 import TabHeader from '../store/containers/TabHeader';
 import Goal from '../store/containers/Goal';
-import Interval from '../store/containers/Interval'
+//import Interval from '../store/containers/Interval'
 debugger;
 const MainComponent = (props) => {
     const [isContextLoaded, setContextLoad] = useState(false);
-    const [sectorSelectedId, setSectorSelectedId] = useState(0);
+    const [sectorSelectedId, setSectorSelectedId] = useState(1);
     const [callInit, setCallInit] = useState(0);
 
     useEffect(() => {

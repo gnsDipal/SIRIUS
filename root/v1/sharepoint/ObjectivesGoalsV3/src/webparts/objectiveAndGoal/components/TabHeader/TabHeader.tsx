@@ -23,14 +23,21 @@ const TabHeader = (props) =>{
         <div className={ styles.tabHeader }>           
             {/* <UserContext.Provider value={...props}>  */}               
             { (isSectorAvailable) ?   
-                <div className={styles.TabHeaderSetDisplay}>                         
-                    <div className={styles.TabHeaderGoalsTabs} >                                                                           
-                    { props.sectors.map((t)=>{                
-                      return(   
-                          <TabItem handleSectorChange={handleSectorTabHeaderChange} {...t}/>
-                           )      
-                      })}
-                    </div>
+                // <div className={styles.TabHeaderSetDisplay}>                         
+                //     <div className={styles.TabHeaderGoalsTabs} >                                                                           
+                //     { props.sectors.map((t)=>{                
+                //       return(   
+                //           <TabItem handleSectorChange={handleSectorTabHeaderChange} {...t}/>
+                //            )      
+                //       })}
+                //     </div>
+                // </div>
+                <div className={styles.TabHeaderSetDisplay} >                                                                           
+                 {props.sectors.map((t)=>{                
+                  return(   
+                      <TabItem handleSectorChange={handleSectorTabHeaderChange} {...t}/>
+                       )      
+                  })}
                 </div>            
                :
                <div> <h1>No Header Tab Data Found</h1></div>

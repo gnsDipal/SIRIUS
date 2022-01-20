@@ -1,13 +1,23 @@
 import * as React from "react";
 import styles from './GoalItem.module.scss';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
+import { useContext, useState } from "react";
+import GoalForm from "../GoalForm/GoalForm";
 
 debugger;
 const GoalItem = (props) =>{  
     console.log("GoalItem component contain props ==> ", props + "selectedSectorId => ",props.selectedSectorId);
-       
-    const EditButtonClicked = async() => {
-        alert("Edit Button Clicked");
+    const [isGoalFormDisplay, setIsGoalFormDisplay] = useState(false);
+    const [isSelEditId, setIsSelEditId] = useState(0);
+    
+    
+    const EditButtonClicked = async(selectedEditId) => {
+        alert("Edit Button Clicked. Id is =>" + selectedEditId);
+        setIsSelEditId(selectedEditId);
+        setIsGoalFormDisplay(true); 
+     };
+    const AddGoalButtonClicked = async(AddGoalButtonName ) => {
+        alert(AddGoalButtonName + " Add Goal Button Clicked");
      };
         
     return( 
@@ -29,7 +39,7 @@ const GoalItem = (props) =>{
                          <li key={MonthlyTarget.Id}  >                                                                
                                <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
                                      <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%                                                                
-                                        <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                        <button style={{margin:'20px'}} onClick={()=>EditButtonClicked(MonthlyTarget.Id)}> Edit </button>                                 
                                      </td></tr>
                                </table>                                               
                          </li>
@@ -48,7 +58,7 @@ const GoalItem = (props) =>{
                            <li key={QuarterlyObjectives.Id}  >                                                                
                                  <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                            
                                        <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%                                                                
-                                          <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                          <button style={{margin:'20px'}} onClick={()=>EditButtonClicked(QuarterlyObjectives.Id)}> Edit </button>                                 
                                        </td></tr>
                                  </table>                                               
                            </li>
@@ -67,7 +77,7 @@ const GoalItem = (props) =>{
                               <li key={YearlyGoals.Id}  >                                                                
                                     <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
                                           <tr><td><progress id="file" value={YearlyGoals.StatusPercentage} max="100"> </progress>{YearlyGoals.StatusPercentage}%                                                                
-                                             <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                             <button style={{margin:'20px'}} onClick={()=>EditButtonClicked(YearlyGoals.Id)}> Edit </button>                                 
                                           </td></tr>
                                     </table>                                               
                               </li>
@@ -76,8 +86,12 @@ const GoalItem = (props) =>{
                         </ul>
                      </div> 
                   </div> 
-                  
-               </div>
+                  {/* Add Goal Button */}                 
+                  <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton> 
+                  { isGoalFormDisplay &&
+                    <GoalForm handleEditButtonId={isSelEditId}{...props}/>
+                 }
+                </div>
             :
                <div>        
                   {/* Monthly Goal Data Display for Department*/}
@@ -93,7 +107,7 @@ const GoalItem = (props) =>{
                             <li key={MonthlyTarget.Id}  >                                                                
                                  <table><tr><td>{MonthlyTarget.Goal}</td></tr>                            
                                        <tr><td><progress id="file" value={MonthlyTarget.StatusPercentage} max="100"> </progress>{MonthlyTarget.StatusPercentage}%                                                                
-                                          <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                          <button style={{margin:'20px'}} onClick={()=>EditButtonClicked(MonthlyTarget.Id)}> Edit </button>                                 
                                        </td></tr>
                                  </table>                                               
                             </li>
@@ -117,7 +131,7 @@ const GoalItem = (props) =>{
                               <li key={QuarterlyObjectives.Id}  >                                                                
                                     <table><tr><td>{QuarterlyObjectives.Goal}</td></tr>                            
                                           <tr><td><progress id="file" value={QuarterlyObjectives.StatusPercentage} max="100"> </progress>{QuarterlyObjectives.StatusPercentage}%                                                                
-                                             <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                             <button style={{margin:'20px'}} onClick={()=>EditButtonClicked(QuarterlyObjectives.Id)}> Edit </button>                                 
                                           </td></tr>
                                     </table>                                               
                               </li>
@@ -141,7 +155,7 @@ const GoalItem = (props) =>{
                               <li key={YearlyGoals.Id}  >                                                                
                                     <table><tr><td>{YearlyGoals.Goal}</td></tr>                            
                                           <tr><td><progress id="file" value={YearlyGoals.StatusPercentage} max="100"> </progress>{YearlyGoals.StatusPercentage}%                                                                
-                                             <button style={{margin:'20px'}} onClick={EditButtonClicked}> Edit </button>                                 
+                                             <button style={{margin:'20px'}} onClick={()=>EditButtonClicked(YearlyGoals.Id)}> Edit </button>                                 
                                           </td></tr>
                                     </table>                                               
                               </li>
@@ -152,7 +166,11 @@ const GoalItem = (props) =>{
                         })}    
                     </div> 
                   </div> 
-                                                               
+                  {/* Add Goal Button */}
+                  <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton>                                              
+                  { isGoalFormDisplay &&
+                    <GoalForm handleEditButtonId={isSelEditId}{...props}/>
+                  }     
                </div>
              }
             </div>

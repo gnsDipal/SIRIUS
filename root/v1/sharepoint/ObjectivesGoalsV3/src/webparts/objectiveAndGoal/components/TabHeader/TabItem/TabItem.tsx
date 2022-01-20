@@ -11,11 +11,13 @@ const TabItem = (props) =>{
    
    return (
       <div className={ styles.tabItem }>                          
-         <div className={styles.TabHeaderSetDisplay}>                         
-            <div className={styles.TabHeaderGoalsTabs} >                    
-             <DefaultButton className={styles.TabHeaderGoalsTabBtn} id={props.Id} title={props.Title} onClick={(e)=>handleSectorTab(e,props.Id )}> {props.Title} </DefaultButton>                                                                                                            
-            </div>
-        </div>
+         {/* <div className={styles.TabHeaderSetDisplay}> */}
+            <div >                                
+             <DefaultButton className={styles.TabHeaderGoalsTabBtn} id={props.Id} title={props.Title} onClick={(e)=>handleSectorTab(e,props.Id )}> {props.Title} </DefaultButton>          
+             </div>
+        {/* </div>  */}
+
+            
       </div>      
    );
  };
