@@ -4,9 +4,9 @@ import { useContext, useState } from "react";
 import GoalItem from "./GoalItem/GoalItem";
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 
-// debugger;
+debugger;
 const Goal = (props) =>{  
-    console.log("Goal component contain props ==> ", props + "selectedSectorId => ",props.selectedSectorId);
+    console.log("Goal component contain props ==> ", props + "Goal Component selectedSectorId => ",props.selectedSectorId);
     const [isSelected, setIsSelected] = useState(false); 
 
     // React.useEffect(() => {
@@ -30,8 +30,7 @@ const Goal = (props) =>{
     };
 
     return( 
-        <div className={styles.goal}>
-        <h1>Goal component : Selected Sector Id {props.selectedSectorId}</h1>                   
+        <div className={styles.goal}>                 
         <GoalItem handleSectorChange={handleSectorTabHeaderChange} {...props}/>
         </div>
      );

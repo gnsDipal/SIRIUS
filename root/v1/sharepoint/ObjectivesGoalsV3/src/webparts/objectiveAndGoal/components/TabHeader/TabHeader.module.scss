@@ -160,6 +160,13 @@
 .TabHeaderGoalsTabs
 {
   width:33.33%;
+  display:flex;
+}
+
+.TabHeaderButton
+{
+  //width:33.33%;
+  display:flex;
 }
 
 @media screen and (max-width : 768px){

@@ -31,7 +31,7 @@ const TabHeader = (props) =>{
                            )      
                       })}
                     </div>
-                  </div> 
+                </div>            
                :
                <div> <h1>No Header Tab Data Found</h1></div>
             }                        

@@ -42,7 +42,7 @@ const MainComponent = (props) => {
             <div>                                       
                 <div>
                     <TabHeader handleMainSectorChange={handleMainSectorTabChange} /> 
-                    <div> <Interval /></div>
+                    {/* <div> <Interval /></div> */}
                     <div> <Goal selectedSectorId = {sectorSelectedId} {...props}/> </div>   
                 </div>             
             </div>                                                     
