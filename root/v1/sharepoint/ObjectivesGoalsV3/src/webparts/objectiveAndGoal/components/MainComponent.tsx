@@ -21,8 +21,8 @@ const MainComponent = (props) => {
      },[sectorSelectedId]);
     const init=async()=>{
         props.setSPContext(props.webPartContext);
-        setContextLoad(true);
         await props.fetchSectors(); 
+        setContextLoad(true);
         setCallInit(1);
     };
     const handleUpdatingAppData = async() =>{
