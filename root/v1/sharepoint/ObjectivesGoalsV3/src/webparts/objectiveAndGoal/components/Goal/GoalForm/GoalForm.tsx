@@ -19,15 +19,15 @@ const GoalForm = (props) =>{
      styles: { root: { width: 300, textAlign: "Left"  } },
      };
 
-    const [isAddGoalFormDisplay, setIsAddGoalFormDisplay] = useState(true);
-
+    const [isEditGoalFormDisplay, setIsEditGoalFormDisplay] = useState(true);
 
     const SaveEditGoalForm = async() => {
-     alert( " Save Edit Goal Form Button Clicked");
+          alert( " Save Edit Goal Form Button Clicked");
+          setIsEditGoalFormDisplay(false); 
      };
     const EditFormCancelButtonClicked = async() => {
           alert("Edit Form Cancel Button Clicked" );
-          setIsAddGoalFormDisplay(false); 
+          setIsEditGoalFormDisplay(false); 
        };
 
      // const getEditFormIdData = async() => {
@@ -81,7 +81,7 @@ const GoalForm = (props) =>{
     
     return (
           <div className={ styles.goalForm }>
-          { isAddGoalFormDisplay &&
+          { isEditGoalFormDisplay &&
             <div className={ styles.FormDisplay }> 
                {/* Form Header information */}
                <div className="ms-Grid" dir="ltr">
@@ -93,8 +93,7 @@ const GoalForm = (props) =>{
                     <Stack horizontal tokens={stackTokens} styles={stackStyles}>
                          <Stack {...columnProps}>                                                                       
                          <TextField label="Title" id="TitleName" disabled
-                         placeholder="EditGoalTitle"
-                         />                        
+                         placeholder="EditGoalTitle"/>                        
                          </Stack>
                     </Stack>
                     </div>
@@ -105,24 +104,20 @@ const GoalForm = (props) =>{
                     <Stack horizontal tokens={stackTokens} styles={stackStyles}>
                          <Stack {...columnProps}>                                                                       
                          <TextField label="Goal" id="GoalsInfo" multiline rows={3} disabled
-                         placeholder="Goal Information for Edit Button"
-                         />                        
+                         placeholder="Goal Information for Edit Button"/>                        
                          </Stack>
                     </Stack>
                     </div>
                </div>
                {/* Interval Field information */}            
                <div className="ms-Grid-row" style={{marginBottom:'20px'}}>
-                    <div className="ms-Grid-col ms-lg8 ms-sm8">                                                            
-                                                                      
+                    <div className="ms-Grid-col ms-lg8 ms-sm8">                                                                                                                                 
                          <Stack horizontal tokens={stackTokens} styles={stackStyles}>
                          <Stack {...columnProps}>
                               <TextField label="Interval" id="Interval" 
-                                   placeholder="Interval name of seleced Id for Edit Button" disabled
-                              />
+                                   placeholder="Interval name of seleced Id for Edit Button" disabled />
                          </Stack>
-                         </Stack>
-                                        
+                         </Stack>                                        
                     </div>
                </div>
                 {/* StatusPercentage Field information */}
@@ -131,8 +126,7 @@ const GoalForm = (props) =>{
                          <Stack horizontal tokens={stackTokens} styles={stackStyles}>
                               <Stack {...columnProps}>                                                                                                                                                         
                                   <TextField label="StatusPercentage" id="StatusPercentage"
-                                        placeholder="Change the status Percentage" 
-                                   />                                                      
+                                        placeholder="Change the status Percentage" />                                                                                        
                               </Stack>
                          </Stack>
                     </div>
