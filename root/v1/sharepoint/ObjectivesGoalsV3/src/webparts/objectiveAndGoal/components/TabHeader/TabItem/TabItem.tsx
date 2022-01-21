@@ -1,4 +1,5 @@
 import * as React from "react";
+//TODO : Remove not required imports
 import styles from './TabItem.module.scss';
 import { ITabItemProps } from './ITabItemProps';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";

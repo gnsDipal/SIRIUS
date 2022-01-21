@@ -8,7 +8,7 @@ debugger;
 const Goal = (props) =>{  
     console.log("Goal component contain props ==> ", props + "Goal Component selectedSectorId => ",props.selectedSectorId);
     const [isSelected, setIsSelected] = useState(false); 
-
+//TODO : Remove unnecessary comments
     // React.useEffect(() => {
     //              props.sectors.map((t)=>{                
     //              return(   

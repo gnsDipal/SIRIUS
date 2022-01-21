@@ -22,7 +22,7 @@ const GoalItem = (props) =>{
         alert(AddGoalButtonName + " Add Goal Button Clicked");
         setIsAddGoalFormDisplay(true);
      };
-        
+//TODO : Change the data display pattern and also change the styles from this file to scss files
     return( 
         <div className={ styles.goalItem }> 
           {/* Interval Data Display  */}
