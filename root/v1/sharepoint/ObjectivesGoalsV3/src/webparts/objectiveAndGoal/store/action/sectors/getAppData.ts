@@ -38,6 +38,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     Id: 1,
                     Title: "Organization",
                     IsSelected:false,
+                    IsEditable:false,
                     Data: {
                         Yearly: yrlData,
                         Quartly: quartData,
@@ -61,6 +62,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                             Title:yrlData[0].Department,
                             DepartmentName: y,
                             IsSelected: false,
+                            IsEditable:false,
                             DepartmentData : {
                                 Yearly: yrlData,
                                 Quartly: quartData,
@@ -74,6 +76,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     Id: 2,
                     Title: "Department",
                     IsSelected:false,
+                    IsEditable:false,
                     Data: departmentData
                 });
             } else if(i == 2) { // for Personal
@@ -81,6 +84,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     Id: 3,
                     Title: "Personal",
                     IsSelected:false,
+                    IsEditable:true,
                     Data: {
                         Yearly: yrlData,
                         Quartly: quartData,
