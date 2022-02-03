@@ -11,7 +11,6 @@ import * as strings from 'BirthdayWebPartStrings';
 import SPBirthdayAnniversaryServiceData from '../../../../services/SPBirthdayAnniversaryServiceData';
 
 initializeIcons();
-debugger;
 const Birthday = ()=> {
     let spBirthAnniServiceData:SPBirthdayAnniversaryServiceData = null;
     const mainContext = React.useContext(UserContext);
@@ -21,7 +20,8 @@ const Birthday = ()=> {
     const[ bgColorBirthday, setBgColorBirthday ] = React.useState<string>("rgb(0,120,212)");
     const[ bgColorAnniversary, setBgColorAnniversary ] = React.useState<string>("white");
     const[ colorBirthday,setColorBirthday ] = React.useState<string>("white");
-    const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black"); 
+    const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black");
+    const[ ifDropdownChanged, setIfDropdownChanged] = React.useState<boolean>(false);
     const[ selectedCategory, setSelectedCategory ] = React.useState<IDropdownOption>({key: 'all', text: 'All'});
 
     const MyBirthdayIcon = () => <Icon iconName="BirthdayCake" className = {styles.birthdayIcon} />;
@@ -386,7 +386,8 @@ const Birthday = ()=> {
     };
 
     const onChangeCategoryHandle = async(Category:IDropdownOption) => {
-        setSelectedCategory({key:Category.key, text:Category.text});        
+        setSelectedCategory({key:Category.key, text:Category.text});
+        setIfDropdownChanged(!ifDropdownChanged);        
     };  
 
     return(
@@ -417,8 +418,8 @@ const Birthday = ()=> {
                 </div>          
                 <div>
                     {
-                        (count === 1) ? <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} /> : 
-                        (count === 2) ? <AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} AUsers={AUsers} /> : <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} /> 
+                        (count === 1) ? <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} ConfigListName={mainContext.ConfigListName} EmailListName={mainContext.EmailListName} IfDropdownChanged={ifDropdownChanged} /> : 
+                        (count === 2) ? <AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} AUsers={AUsers} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} ConfigListName={mainContext.ConfigListName} EmailListName={mainContext.EmailListName} IfDropdownChanged={ifDropdownChanged} /> : <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={mainContext.externalAPI} IsTeamsIcon={mainContext.IsTeamsIcon} dataSource={mainContext.dropdown} BUsers={BUsers} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} ConfigListName={mainContext.ConfigListName} EmailListName={mainContext.EmailListName} IfDropdownChanged={ifDropdownChanged} /> 
                     }             
                 </div>                       
             </div>       

@@ -2,7 +2,6 @@ import * as React from 'react';
 import { SPHttpClient, SPHttpClientResponse, MSGraphClient } from '@microsoft/sp-http';
 import * as strings from 'BirthdayWebPartStrings';
 
-debugger;
 export default class SPSettingsPanelService{
     private mainProps = null;
     private webUrl:string = null;

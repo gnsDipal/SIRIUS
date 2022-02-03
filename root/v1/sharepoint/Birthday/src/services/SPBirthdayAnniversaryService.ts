@@ -7,10 +7,7 @@ import { IAnniversary } from '../Models/IAnniversary';
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
 
-debugger;
-
 export default class SPBirthdayAnniversaryService{
-    //private webContext = null;
     private webUrl:string = null;
     private web = null;
     private mainProps = null; 
@@ -18,7 +15,6 @@ export default class SPBirthdayAnniversaryService{
 
     constructor(private mainProp) {
         //Setup Context to PnPjs and MSGraph
-        //this.webContext = this.mainProp.webPartContext;
         this.mainProps = this.mainProp;
         sp.setup(this.mainProp.webPartContext);
         this.onInit();
