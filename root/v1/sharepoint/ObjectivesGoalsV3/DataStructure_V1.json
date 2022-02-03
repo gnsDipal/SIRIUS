@@ -5,6 +5,7 @@ AppData: {
 				Id: 1,
 				Title: Organization,
 				IsSelected: true/false,
+				IsEditable: true/false,
 				Data: {
 						Monthly: [{
 									Title: "",
@@ -27,9 +28,10 @@ AppData: {
 			{
 				Id: 2,
 				Title: Department,
-				IsSelected: true/false,
+				IsSelected: true/false,				
 				Data:{ [
 							DepartmentName: IT,
+							IsEditable: true/false,
 							DepartmentData : {
 								Monthly:[{
 										Title: "",
@@ -50,6 +52,7 @@ AppData: {
 						]
 						[
 						 DepartmentName: HR,
+						 IsEditable: true/false,
 						 DepartmentData : {
 							Monthly:[{
 									Title: "",
@@ -73,6 +76,7 @@ AppData: {
 				Key: 3,
 				Value: Personal,
 				IsSelected: true/false,
+				IsEditable: true/false,
 				Data: {
 						Monthly: [{
 							Title: "",

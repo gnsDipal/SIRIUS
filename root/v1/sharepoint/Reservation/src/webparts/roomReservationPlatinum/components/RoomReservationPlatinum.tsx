@@ -11,6 +11,8 @@ import Calendar from '../../../controls/Calendar/Calendar';
 import SettingsPanel from '../../../controls/SettingsPanel/SettingsPanel';
 import spservices from '../../../services/spservices';
 import { CompoundButton } from 'office-ui-fabric-react';
+import { initializeIcons } from "@fluentui/font-icons-mdl2";
+initializeIcons();
 debugger;
 export default class RoomReservationPlatinum extends React.Component<IRoomReservationPlatinumProps, IRoomReservationPlatinumState> {
   private spServiceData:spservices = null;
@@ -59,29 +61,20 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
   private updatePropertyHandler(str: string) {
     this.props.updateProperty(str);
   }
-  // dir="ltr"
-  //(this.props.context.sdks.microsoftTeams) && 
-  //  (this.state.isAdmin) && 
-  // const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
-  // <div id={`callout${i}`} onClick={() => onSendTeamsMsgClicked(i, p)} className={styles.persona}>
-  //     <TooltipHost content={strings.sendMessageTooltipContent}><MyTeamsIcon /></TooltipHost>
-  //     </div>
-
+  
   public render(): React.ReactElement<IRoomReservationPlatinumProps> {
     return (
       <div className={ styles.roomReservation }>
         <div className="ms-Grid">
           <div className='ms-Grid-row'>
-            <div className='ms-Grid-col'>
-              {/* { (this.props.context.sdks.microsoftTeams) && (this.state.isAdmin) && */}
-              <div>
-                  <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> this.panelOpenHandle()} ></Icon>                  
-                  <CompoundButton className={styles.teamsSettings} onClick={()=> this.panelOpenHandle()} >Config</CompoundButton>
+            <div className={styles.gearIcon}>
+              { (this.props.context.sdks.microsoftTeams) && (this.state.isAdmin) &&
+              <div >
+                  <Icon className={styles.teamsSettings} iconName={strings.SettingsLabel} onClick={()=> this.panelOpenHandle()} ></Icon>
               </div>
-              {/* } */}
+              }
             </div>
           </div>
-          {/* } */}
           <div>
               {
                 (this.state.isSettingsPanelOpen) && 

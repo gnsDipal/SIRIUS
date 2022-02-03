@@ -1,4 +1,6 @@
 import { Web } from '@pnp/sp/presets/all';
+//import pnp from 'sp-pnp-js';
+
 export default class SPService{
     private webContext = null;
     private web = null;
@@ -13,6 +15,16 @@ export default class SPService{
         this.loggedInUserId = this.webContext.pageContext.legacyPageContext["userId"];
         this.web = Web(this.webUrl);
     }
+
+    // var email=this.context.pageContext.user.email;
+    //     this. getUserId (email);
+
+    // public getUserId(email: string): Promise<number> {
+    //     return pnp.sp.site.rootWeb.ensureUser(email).then(result => {   
+    //     return result.data.Id;      
+    //     });        
+    // }
+
     public async getSectorData():Promise<any>{
         let result = await this.web.lists.getByTitle('Sectors').items.select("Title","ID","IsActive").orderBy("ID",false).get();
        return await Promise.resolve(result);
@@ -38,5 +50,9 @@ export default class SPService{
 
     public getPersonalData() {
         return this.web.lists.getByTitle('GoalPersonal').items.select("Title","ID","IsActive","Goal","Interval","StatusPercentage").filter("IsActive eq '1'").orderBy("ID",false).get();
+    }
+
+    public getOrganizationAdminData() {
+        return this.web.lists.getByTitle('GoalSecurityAddGoal').items.select("Title","ID","Members/Id","Members/Title").expand("Members").orderBy("ID",false).get();
     }
 }

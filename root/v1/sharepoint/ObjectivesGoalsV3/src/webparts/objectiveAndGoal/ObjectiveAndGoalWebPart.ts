@@ -1,9 +1,19 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
+// import {
+//   IPropertyPaneConfiguration,
+//   PropertyPaneTextField
+// } from '@microsoft/sp-property-pane';
 import {
   IPropertyPaneConfiguration,
-  PropertyPaneTextField
+  PropertyPaneTextField,
+  PropertyPaneCheckbox,
+  PropertyPaneLabel,
+  PropertyPaneLink,
+  PropertyPaneSlider,
+  PropertyPaneToggle,
+  PropertyPaneDropdown
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, WebPartContext} from '@microsoft/sp-webpart-base';
 
@@ -49,8 +59,32 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
               groupName: strings.BasicGroupName,
               groupFields: [
                 PropertyPaneTextField('description', {
-                  label: strings.DescriptionFieldLabel
-                })
+                      label: strings.DescriptionFieldLabel
+                   }),               
+                PropertyPaneLabel('label',{
+                      text:`Changes in the "Organization" related Goals`,
+                    }),
+                PropertyPaneLink('', {
+                      href: `${this.context.pageContext.web.absoluteUrl}/Lists/GoalOrganization/AllItems.aspx`,
+                      text: 'GoalOrganization List',
+                      target: '_blank',
+                    }),
+                PropertyPaneLabel('label',{
+                      text:`Changes in the "Department" related Goals`,
+                    }),
+                PropertyPaneLink('', {
+                      href: `${this.context.pageContext.web.absoluteUrl}/Lists/GoalDepartment/AllItems.aspx`,
+                      text: 'GoalDepartment List',
+                      target: '_blank',
+                    }),
+                PropertyPaneLabel('label',{
+                      text:`Changes in the "Personal" related Goals`,
+                    }),
+                PropertyPaneLink('', {
+                      href: `${this.context.pageContext.web.absoluteUrl}/Lists/GoalPersonal/AllItems.aspx`,
+                      text: 'GoalPersonal List',
+                      target: '_blank',
+                    }),  
               ]
             }
           ]

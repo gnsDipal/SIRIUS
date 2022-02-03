@@ -10,6 +10,7 @@
     Id:number,
     Title:string,
     IsSelected:boolean,
+    IsEditable:boolean,
     Data: {}
   };
 
@@ -31,6 +32,7 @@
     DepartmentName: string,
     DepartmentId: number,
     IsSelected: boolean,
+    IsEditable:boolean,
     DepartmentData: SectorData
   }
 

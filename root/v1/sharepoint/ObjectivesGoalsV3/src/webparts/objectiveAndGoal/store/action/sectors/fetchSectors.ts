@@ -2,10 +2,11 @@ import { setSectors } from "./setSectorActions";
 import { getAppData } from "./getAppData";
 import { AppData } from '../../operations/types';
 
-function fetchSectors() {
-    return function CB(dispatch: Function, getStore:any) {
-        getAppData(dispatch, getStore).then(res=>{
-            const appData:AppData = res;
+// debugger;
+ function fetchSectors() {
+    return async function CB(dispatch: Function, getStore:any, ) {
+       await getAppData(dispatch, getStore).then(async(res)=>{
+         const appData:AppData = res;
             dispatch(setSectors(appData));
         });
     }

@@ -10,6 +10,7 @@ import type {
     DepartmentSectorData
 } from '../../operations/types';
 
+debugger;
 export const getAppData = (dispatch: Function, getStore:any) => {
     const store = getStore();
     dispatch(setSectorFetchStart());
@@ -26,14 +27,18 @@ export const getAppData = (dispatch: Function, getStore:any) => {
     const yearly = 'Yearly Goals';
     return Promise.all([orgData, deptData, persData]).then(data=>{
         data.map((d,i)=>{
-            let yrlData = d.filter(val=>val.Interval === yearly);
-            let quartData = d.filter(val=>val.Interval === quarterly);
-            let monthData = d.filter(val=>val.Interval === monthly);
+            let yrlData = d.filter(val=>
+                val.Interval === yearly);
+            let quartData = d.filter(val=>
+                val.Interval === quarterly);
+            let monthData = d.filter(val=>
+                val.Interval === monthly);
             if(i == 0) { // for Orgamization
                 appData.Sectors.push({
                     Id: 1,
                     Title: "Organization",
                     IsSelected:false,
+                    IsEditable:false,
                     Data: {
                         Yearly: yrlData,
                         Quartly: quartData,
@@ -57,6 +62,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                             Title:yrlData[0].Department,
                             DepartmentName: y,
                             IsSelected: false,
+                            IsEditable:false,
                             DepartmentData : {
                                 Yearly: yrlData,
                                 Quartly: quartData,
@@ -70,6 +76,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     Id: 2,
                     Title: "Department",
                     IsSelected:false,
+                    IsEditable:false,
                     Data: departmentData
                 });
             } else if(i == 2) { // for Personal
@@ -77,6 +84,7 @@ export const getAppData = (dispatch: Function, getStore:any) => {
                     Id: 3,
                     Title: "Personal",
                     IsSelected:false,
+                    IsEditable:true,
                     Data: {
                         Yearly: yrlData,
                         Quartly: quartData,
