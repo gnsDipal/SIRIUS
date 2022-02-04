@@ -33,7 +33,6 @@ export interface IBirthdayWebPartProps {
     filePickerResult: IFilePickerResult;
 }
 
-debugger;
 export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebPartProps> {
 
   private spBirthdayServiceData: SPBirthdayAnniversaryServiceData = null;

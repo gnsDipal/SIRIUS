@@ -7,4 +7,9 @@ export interface IBirthdayUsersProps {
     IsTeamsIcon: boolean;
     dataSource: string;
     BUsers: IBirthday[];
+    ImagesListName: string;
+    UsersListName: string;
+    ConfigListName: string;
+    EmailListName: string;
+    IfDropdownChanged: boolean;
 }
