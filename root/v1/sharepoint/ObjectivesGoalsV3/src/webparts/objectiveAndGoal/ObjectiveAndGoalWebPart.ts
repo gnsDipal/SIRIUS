@@ -29,6 +29,8 @@ export interface IObjectiveAndGoalWebPartProps {
 export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObjectiveAndGoalWebPartProps> {
 
   isGoalOrganizationListDisable = false;
+  isGoalDepartmentListDisable = false;
+  isGoalPersonalListDisable = false;
 
   public render(): void {
     const element: React.ReactElement<IObjectiveAndGoalWebPartProps> = React.createElement(
@@ -80,6 +82,7 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
                       href: `${this.context.pageContext.web.absoluteUrl}/Lists/GoalDepartment/AllItems.aspx`,
                       text: 'GoalDepartment List',
                       target: '_blank',
+                      disabled: this.isGoalDepartmentListDisable,
                     }),
                 PropertyPaneLabel('label',{
                       text:`Changes in the "Personal" related Goals`,
@@ -88,6 +91,7 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
                       href: `${this.context.pageContext.web.absoluteUrl}/Lists/GoalPersonal/AllItems.aspx`,
                       text: 'GoalPersonal List',
                       target: '_blank',
+                      disabled: this.isGoalPersonalListDisable,
                     }),  
               ]
             }
