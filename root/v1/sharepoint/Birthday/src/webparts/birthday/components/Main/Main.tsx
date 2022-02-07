@@ -6,7 +6,6 @@ import Birthday from '../Main/Birthday';
 
 export const UserContext = React.createContext(null);
 
-debugger;
 const Main = (props)=> {
     return (
         <div className={styles.birthday}>

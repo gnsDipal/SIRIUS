@@ -1,11 +1,11 @@
 declare interface IRoomReservationPlatinumWebPartStrings {
-  PropertyPaneDescription: string;
-  BasicGroupName: string;
+  // PropertyPaneDescription: string;
+  // BasicGroupName: string;
   DescriptionFieldLabel: string;
   WeeksOnLabel: string;
   PaternLabel: string;
   OcurrencesLabel: string;
-  dateRangeLabel: string;
+  // dateRangeLabel: string;
   weekEndDay: string;
   weekDayLabel: string;
   lastLabel: string;
@@ -71,7 +71,7 @@ declare interface IRoomReservationPlatinumWebPartStrings {
   Feb:string;
   Mar:string;
   Apr:string;
-  May:string,
+  // May:string,
   Jun:string;
   Jul:string;
   Aug:string;

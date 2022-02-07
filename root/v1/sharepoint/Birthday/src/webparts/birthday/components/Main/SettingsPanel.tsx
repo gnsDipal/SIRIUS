@@ -4,7 +4,6 @@ import { Panel, Dropdown, TextField, PrimaryButton, DefaultButton, DialogFooter,
 import SPBirthdayAnniversaryServiceData from '../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
 
-debugger;
 const SettingsPanel = (props)=> {
     let spPanelSettingsServiceData:SPBirthdayAnniversaryServiceData = undefined;
     const[ dropdown, setDropdown ] = React.useState<string>("");

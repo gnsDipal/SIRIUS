@@ -33,7 +33,6 @@ const CategoryOptions: IDropdownOption[] = [
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
 
-debugger;
 export default class Birthday extends React.Component<IBirthdayProps, IBirthdayState> {  
 
   constructor(props: IBirthdayProps){

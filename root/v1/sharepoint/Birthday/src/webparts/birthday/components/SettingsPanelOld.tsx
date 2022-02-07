@@ -23,7 +23,6 @@ let teamExist: boolean = false;
 const headers: HeadersInit = new Headers();
 headers.append("accept", "application/json;odata.metadata=none");
 
-debugger;
 export default class SettingsPanel extends React.Component<ISettingsPanelProps, ISettingsPanelstate> {
  
   public constructor(props: ISettingsPanelProps) {

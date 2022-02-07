@@ -12,7 +12,6 @@ import * as strings from 'BirthdayWebPartStrings';
 import SettingsPanel from './SettingsPanel';
 
 initializeIcons();
-debugger;
 const BirthdayForTeams = ()=> {    
     let spBirthAnniServiceData:SPBirthdayAnniversaryServiceData = null;
     const mainContext = React.useContext(UserContext);
@@ -25,7 +24,8 @@ const BirthdayForTeams = ()=> {
     const[ colorAnniversary, setColorAnniversary ] = React.useState<string>("black");    
     const[ isSettingsPanelOpen, setIsSettingsPanelOpen ] = React.useState<boolean>(false);
     const[ isSiteAdmin, setIsSiteAdmin ] = React.useState<boolean>(false);
-    const[ datasource, setDatasource ] = React.useState<string>("Azure");    
+    const[ datasource, setDatasource ] = React.useState<string>("Azure");  
+    const[ ifDropdownChanged, setIfDropdownChanged] = React.useState<boolean>(false);  
     const[ selectedCategory, setSelectedCategory ] = React.useState<IDropdownOption>({key: 'all', text: 'All'});
     const[ IsTeamsIcon, setIsTeamsIcon ] = React.useState<boolean>(false);
     const[ ExternalAPI, setExternalAPI ] = React.useState<string>("");
@@ -421,7 +421,8 @@ const BirthdayForTeams = ()=> {
     };
 
     const onChangeCategoryHandle = async(Category:IDropdownOption) => {
-        setSelectedCategory({key:Category.key, text:Category.text});       
+        setSelectedCategory({key:Category.key, text:Category.text});
+        setIfDropdownChanged(!ifDropdownChanged);               
     };
 
     const handleSettingsPanel = async() => {
@@ -458,11 +459,11 @@ const BirthdayForTeams = ()=> {
         </div>          
         <div>
             {
-                (count === 1) ? <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} /> : 
-                (count === 2) ? <AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} AUsers={AUsers} /> : <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} /> 
+                (count === 1) ? <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} ConfigListName={mainContext.ConfigListName} EmailListName={mainContext.EmailListName} IfDropdownChanged={ifDropdownChanged} /> : 
+                (count === 2) ? <AnniversaryUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} AUsers={AUsers} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} ConfigListName={mainContext.ConfigListName} EmailListName={mainContext.EmailListName} IfDropdownChanged={ifDropdownChanged} /> : <BirthdayUsers webPartContext={mainContext.webPartContext} externalAPI={ExternalAPI} IsTeamsIcon={IsTeamsIcon} dataSource={datasource} BUsers={BUsers} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} ConfigListName={mainContext.ConfigListName} EmailListName={mainContext.EmailListName} IfDropdownChanged={ifDropdownChanged} /> 
             }
             {isSettingsPanelOpen &&
-                <SettingsPanel webPartContext={mainContext.webPartContext} onClosePanel={() => handleSettingsPanel()} />                                   
+                <SettingsPanel webPartContext={mainContext.webPartContext} ConfigListName={mainContext.ConfigListName} ImagesListName={mainContext.ImagesListName} UsersListName={mainContext.UsersListName} EmailListName={mainContext.EmailListName} onClosePanel={() => handleSettingsPanel()} />                                   
             }
         </div>        
       </div>        

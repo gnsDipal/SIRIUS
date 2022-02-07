@@ -8,10 +8,9 @@ import Carousel from 'react-elastic-carousel';
 import InputEmoji from 'react-input-emoji';
 import SPBirthdayAnniversaryServiceData from '../../../../../services/SPBirthdayAnniversaryServiceData';
 import * as strings from 'BirthdayWebPartStrings';
-//import ReactPaginate from 'react-paginate';
+import { IBirthday } from '../../../../../Models/IBirthday';
 
 initializeIcons();
-debugger;
 const BirthdayUsers = (props) => {
     let spBirthdayServiceData:SPBirthdayAnniversaryServiceData = null;     
     const [showCallOut, setShowCallOut] = React.useState(false);
@@ -23,35 +22,214 @@ const BirthdayUsers = (props) => {
     const [images, setImages] = React.useState([]);
     const [selectedImage, setSelectedImage] = React.useState<string>("");
     const [message, setMessage] = React.useState<string>("");
-    // const [pageCount, setPageCount] = React.useState<number>(0);
-    // const [itemOffset, setItemOffset] = React.useState<number>(0);
+    const [callInit, setCallInit] = React.useState<number>(0);
+    const [currentPage, setCurrentPage] = React.useState<number>(1);
+    const [upperPageBound, setUpperPageBound] = React.useState<number>(3);
+    const [lowerPageBound, setLowerPageBound] = React.useState<number>(0);
+    const [isPrevBtnActive, setIsPrevBtnActive] = React.useState<string>('disabled');
+    const [isNextBtnActive, setIsNextBtnActive] = React.useState<string>('');
+    const [pageBound, setPageBound] = React.useState<number>(3);
+    const [currentRecords, setCurrentRecords] = React.useState<IBirthday[]>([]);
+    const [renderPageNumbers, setRenderPageNumbers] = React.useState<JSX.Element[]>(null);
+    const [pageIncrementBtn, setPageIncrementBtn] = React.useState<JSX.Element>(null);
+    const [pageDecrementBtn, setPageDecrementBtn] = React.useState<JSX.Element>(null);
+    const [renderPrevBtn, setRenderPrevBtn] = React.useState<JSX.Element>(null);
+    const [renderNextBtn, setRenderNextBtn] = React.useState<JSX.Element>(null);
+    const [prevListid, setPrevListid] = React.useState<string>("");
+    const [btnclicked, setBtnclicked] = React.useState<boolean>(false);
     const [msGraphProvider, setMsGraphProvider] = React.useState<IMSGraphInterface>({
       getCurrentUserId(): Promise<any>{return},
       getUserId(userEmail: string): Promise<any>{return},
       createUsersChat(requesterId: string, birthdayPersonId: string): Promise<any>{return},
       sendMessage(chatId: string, chatMessage: string): Promise<any>{return}
     });
+    const LiField = React.useRef(null);
     const MyMailIcon = () => <Icon iconName="Mail" />;
     const MyTeamsIcon = () => <Icon iconName="TeamsLogo" />;
-    spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props);
-    let Images: string[] = [];  //to store birthday images loaded from library
+    const recPerpage: number = 1;    
+    spBirthdayServiceData = new SPBirthdayAnniversaryServiceData(props);  
+
+    React.useEffect(() => {          
+        if(callInit === 0)
+            init();
+        getPaginationDetails();
+        if(prevListid !== "" && btnclicked === true){
+            document.getElementById(prevListid).classList.remove("active_b5e9b0f9");
+        }   
+    },[currentPage,props.BUsers]);  
 
     React.useEffect(() => {
-        // const endOffset = itemOffset + 5;
-        // setPageCount(Math.ceil(props.BUsers.length / 5));     
-        init();              
-    },[]);
+        if(prevListid !== "" && btnclicked === true){            
+            document.getElementById(currentPage.toString()).classList.add("active_b5e9b0f9");
+            setBtnclicked(false);    
+        }  
+    },[renderPageNumbers]);
+
+    React.useEffect(() => {
+        if(currentPage !== 1)
+            document.getElementById(currentPage.toString()).classList.remove("active_b5e9b0f9");
+        setCurrentPage(1);
+        setUpperPageBound(3);
+        setLowerPageBound(0);
+        setPageIncrementBtn(null);
+        setPageDecrementBtn(null);
+        setIsNextBtnActive('');
+        setIsPrevBtnActive('disabled');
+    },[props.IfDropdownChanged]);
 
     const init = async() => {           
         setMsGraphProvider(await useMsGraphProvider(props.webPartContext.msGraphClientFactory));         
         await spBirthdayServiceData.getBirthdayImagesdata()
         .then((res:any)=> {
-            Images = [];
+            let Images: string[] = [];  //to store birthday images loaded from library
             for(let i=0; i<res.length; ++i){
               Images.push(res[i].FileLeafRef);
             }
             setImages(Images);
+            setCallInit(1);
         })       
+    };
+
+    const getPaginationDetails = () => {      
+        const Records: IBirthday[] = props.BUsers;
+        const indexOfLastRec = currentPage * recPerpage;
+        const indexOfFirstRec = indexOfLastRec - recPerpage;
+        let finalRecords = Records.slice(indexOfFirstRec, indexOfLastRec);
+        setCurrentRecords(finalRecords);
+        
+        // Logic for displaying page numbers
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(Records.length / recPerpage); i++) {
+            pageNumbers.push(i);
+        }      
+
+        let finalPageNumbers = pageNumbers.map((number) => {
+            if(number === 1 && currentPage === 1){
+                return(
+                    <li ref={LiField} key={number} className= {styles.active} id={number}><a href='#' id={number} onClick={handlePageClick}>{number}</a></li>
+                )
+            }
+            else if((number < upperPageBound + 1) && number > lowerPageBound){
+                return(
+                    <li key={number} id={number}><a href='#' id={number} onClick={handlePageClick}>{number}</a></li>
+                )
+            }            
+        });        
+        setRenderPageNumbers(finalPageNumbers);
+
+        let pageIncBtn = null;
+        if(pageNumbers.length > upperPageBound){
+            pageIncBtn = <li className=''><a href='#' onClick={btnIncrementClick}> &raquo; </a></li>
+            setPageIncrementBtn(pageIncBtn);
+        }
+        else    
+            setPageIncrementBtn(pageIncBtn);
+
+        let pageDecBtn = null;
+        if(lowerPageBound >= 1){
+            pageDecBtn = <li className=''><a href='#' onClick={btnDecrementClick}> &laquo; </a></li>
+            setPageDecrementBtn(pageDecBtn);
+        }
+        else
+            setPageDecrementBtn(pageDecBtn);
+
+        let rendPrevBtn = null;
+        if(isPrevBtnActive === 'disabled') {
+            rendPrevBtn = <li className={styles.disabled}><span id="btnPrev"> Prev </span></li>
+            setRenderPrevBtn(rendPrevBtn);
+        }
+        else if(isPrevBtnActive !== 'disabled'){
+            rendPrevBtn = <li className=''><a href='#' id="btnPrev" onClick={btnPrevClick}> Prev </a></li>
+            setRenderPrevBtn(rendPrevBtn);
+        }
+        else
+            setRenderPrevBtn(rendPrevBtn); 
+        
+        let rendNextBtn = null;
+        if(isNextBtnActive === 'disabled') {
+            rendNextBtn = <li className={styles.disabled}><span id="btnNext"> Next </span></li>
+            setRenderNextBtn(rendNextBtn);
+        }
+        else if(isNextBtnActive !== 'disabled'){
+            rendNextBtn = <li className=''><a href='#' id="btnNext" onClick={btnNextClick}> Next </a></li>
+            setRenderNextBtn(rendNextBtn);
+        }
+        else
+            setRenderNextBtn(rendNextBtn);     
+    };
+
+    const handlePageClick = (event) => {
+        let listid = Number(event.target.id);        
+        if(currentPage === 1){
+            LiField.current.classList.remove("active_b5e9b0f9");
+            document.getElementById(event.target.id).classList.add("active_b5e9b0f9");
+        }
+        else{
+            document.getElementById(currentPage.toString()).classList.remove("active_b5e9b0f9");
+            document.getElementById(event.target.id).classList.add("active_b5e9b0f9");
+        }       
+        setCurrentPage(listid);       
+        setPrevAndNextBtnClass(listid);
+    };
+
+    const setPrevAndNextBtnClass = (listid: number) => {
+        let totalPage = Math.ceil(props.BUsers.length / recPerpage);
+        setIsNextBtnActive('disabled');
+        setIsPrevBtnActive('disabled');        
+        if(totalPage === listid && totalPage > 1){
+            setIsPrevBtnActive('');
+        }
+        else if(listid === 1 && totalPage > 1){
+            setIsNextBtnActive('');
+        }
+        else if(totalPage > 1){
+            setIsNextBtnActive('');
+            setIsPrevBtnActive('');            
+        }
+    };
+
+    const btnIncrementClick = () => {
+        setBtnclicked(true);
+        setPrevListid(currentPage.toString());
+        setUpperPageBound(upperPageBound + pageBound);
+        setLowerPageBound(lowerPageBound + pageBound);        
+        let listid = upperPageBound + 1;        
+        setCurrentPage(listid);
+        setPrevAndNextBtnClass(listid);
+    };
+
+    const btnDecrementClick = () => {
+        setBtnclicked(true);
+        setPrevListid(currentPage.toString());
+        setUpperPageBound(upperPageBound - pageBound);
+        setLowerPageBound(lowerPageBound - pageBound);      
+        let listid = upperPageBound - pageBound;
+        setCurrentPage(listid);
+        setPrevAndNextBtnClass(listid);
+    };
+
+    const btnPrevClick = () => {
+        setBtnclicked(true);
+        setPrevListid(currentPage.toString());
+        if((currentPage - 1) % pageBound === 0 ){
+            setUpperPageBound(upperPageBound - pageBound);
+            setLowerPageBound(lowerPageBound - pageBound);            
+        }
+        let listid = currentPage - 1;
+        setCurrentPage(listid);
+        setPrevAndNextBtnClass(listid);
+    };
+
+    const btnNextClick = () => {
+        setBtnclicked(true);
+        setPrevListid(currentPage.toString());
+        if((currentPage + 1) > upperPageBound ){
+            setUpperPageBound(upperPageBound + pageBound);
+            setLowerPageBound(lowerPageBound + pageBound);            
+        }
+        let listid = currentPage + 1;
+        setCurrentPage(listid);
+        setPrevAndNextBtnClass(listid);
     };
 
     const onSendEmailClicked = (index, person) => {
@@ -138,14 +316,9 @@ const BirthdayUsers = (props) => {
                 console.log('Error while creating the item: ' + error);
             });
         }
-    };
+    };  
 
-    // const handlePageClick = (event) => {
-    //     console.log('Page:', event.selected);
-    // };
-
-    return(
-        
+    return(        
         <div>
         {!props.BUsers &&
             <div>
@@ -154,19 +327,18 @@ const BirthdayUsers = (props) => {
                     iconText = {strings.noBirthdayText}
                     description = ''/>
             </div>
-        }
-        {/* <ReactPaginate
-            breakLabel="..."
-            nextLabel="next >"
-            onPageChange={handlePageClick}
-            pageRangeDisplayed={5}
-            pageCount={pageCount}
-            previousLabel="< previous"
-            renderOnZeroPageCount={null}
-        /> */}
-        {props.BUsers &&      
-            <div>      
-                {props.BUsers.map((p, i) => {
+        }        
+        {props.BUsers &&
+        <div> 
+            <div id="page-numbers" className={ styles.pagination}>
+                {renderPrevBtn}
+                {pageDecrementBtn}
+                {renderPageNumbers}
+                {pageIncrementBtn}
+                {renderNextBtn}
+            </div>     
+            <div>                                      
+                { currentRecords.map((p, i) => {
                     let finalbirthdate;
                     if(p.birthDate === "" || p.birthDate === undefined)
                         finalbirthdate = p.birthDate;
@@ -269,8 +441,9 @@ const BirthdayUsers = (props) => {
                             )}                  
                         </div>                        
                     );                                                      
-                })}
-            </div>
+                })}                
+            </div>           
+        </div>
         }
     </div>
   );     
