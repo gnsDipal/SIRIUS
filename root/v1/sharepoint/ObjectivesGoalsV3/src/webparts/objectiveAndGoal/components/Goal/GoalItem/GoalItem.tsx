@@ -137,9 +137,9 @@ const GoalItem = (props) =>{
                      </div> 
                   </div> 
                   {/* Add Goal Button */}                 
-                  <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton>                 
+                  {/* <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton>                 
                   { isAddGoalFormDisplay &&  <AddGoalForm {...props}/>
-                  }
+                  } */}
                 </div>
             :
                <div>        
@@ -249,9 +249,9 @@ const GoalItem = (props) =>{
                     </div> 
                   </div> 
                   {/* Add Goal Button */}
-                  <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton>                                                               
+                  {/* <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton>                                                               
                   { isAddGoalFormDisplay &&  <AddGoalForm {...props}/>
-                  }       
+                  }        */}
                </div>
              }
             </div>

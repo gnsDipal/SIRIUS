@@ -28,6 +28,8 @@ export interface IObjectiveAndGoalWebPartProps {
 
 export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObjectiveAndGoalWebPartProps> {
 
+  isGoalOrganizationListDisable = false;
+
   public render(): void {
     const element: React.ReactElement<IObjectiveAndGoalWebPartProps> = React.createElement(
       ObjectiveAndGoal,
@@ -68,7 +70,9 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
                       href: `${this.context.pageContext.web.absoluteUrl}/Lists/GoalOrganization/AllItems.aspx`,
                       text: 'GoalOrganization List',
                       target: '_blank',
+                      disabled: this.isGoalOrganizationListDisable,
                     }),
+                  
                 PropertyPaneLabel('label',{
                       text:`Changes in the "Department" related Goals`,
                     }),
