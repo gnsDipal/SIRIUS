@@ -32,7 +32,7 @@ export default class RoomReservationPlatinum extends React.Component<ISettingsPa
     public render(): React.ReactElement<ISettingsPanelProps> {
         return (
             <Panel
-            headerText="Departmental Request Web Part Settings"
+            headerText="Room Reservation Settings"
             isOpen={true}
             onDismiss={() => this.cancel()}>  
                 {
