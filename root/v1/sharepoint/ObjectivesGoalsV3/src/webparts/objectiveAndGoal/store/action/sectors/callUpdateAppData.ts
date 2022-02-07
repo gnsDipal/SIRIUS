@@ -3,10 +3,11 @@ import { setSectors } from "./setSectorActions";
 import { AppData } from '../../operations/types';
 import { updateAppData } from './updateAppData';
 
-function callUpdateAppData( selectedId) {
-    return function CB(dispatch: Function, getStore:any,selectedId:any ) {      
-        updateAppData(dispatch, getStore, selectedId)
-        .then(res=>{           
+
+debugger;
+function callUpdateAppData(selectedId) {
+    return function CB(dispatch: Function, getStore:any ) {      
+        updateAppData(dispatch, getStore, selectedId).then(res=>{           
             const appData:AppData = res;
             dispatch(setSectors(appData));
         });
