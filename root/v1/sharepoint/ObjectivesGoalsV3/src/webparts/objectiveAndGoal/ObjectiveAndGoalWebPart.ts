@@ -53,7 +53,9 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
   }
 
   private createListsUsingPNP = async() => 
-  {
+  {   await SPListsEnsureService.ensureGoalDepartmentOptionsList(strings.goalDepartmentOptionsListName)
+      .then(async(res:string) => {
+        if(res)
             await SPListsEnsureService.ensureGoalDepartmentList(strings.goalDepartmentListName)
             .then(async(res:string) => {
               if(res)
@@ -71,7 +73,7 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
                       });                     
                   });
             });
-    
+      });   
   } 
 
   protected onDispose(): void {
