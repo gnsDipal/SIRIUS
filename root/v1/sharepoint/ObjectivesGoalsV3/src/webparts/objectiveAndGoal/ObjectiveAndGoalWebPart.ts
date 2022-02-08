@@ -22,25 +22,25 @@ export interface IObjectiveAndGoalWebPartProps {
 }
 
 let SPListsEnsureService: SPEnsureListService = null;
-
+debugger;
 export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObjectiveAndGoalWebPartProps> {
 
   isGoalOrganizationListDisable = false;
   isGoalDepartmentListDisable = false;
   isGoalPersonalListDisable = false;
 
-  // protected async onInit(){
-  //   SPListsEnsureService = new SPEnsureListService(this.context);
-  //   if(this.context.sdks.microsoftTeams){         
-  //     await SPListsEnsureService.ensureGoalDepartmentOptionsList(strings.goalDepartmentOptionsListName)
-  //     .then((res:string)=> {
-  //         if(res)
-  //           this.createListsUsingPNP();
-  //     });            
-  //   }
-  //   else      
-  //     this.createListsUsingPNP();
-  // }
+  protected async onInit(){
+    SPListsEnsureService = new SPEnsureListService(this.context);
+    if(this.context.sdks.microsoftTeams){         
+      await SPListsEnsureService.ensureGoalDepartmentOptionsList(strings.goalDepartmentOptionsListName)
+      .then((res:string)=> {
+          if(res)
+            this.createListsUsingPNP();
+      });            
+    }
+    else      
+      this.createListsUsingPNP();
+  }
 
   public render(): void {
     const element: React.ReactElement<IObjectiveAndGoalWebPartProps> = React.createElement(
@@ -52,27 +52,27 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
     ReactDom.render(element, this.domElement);
   }
 
-  // private createListsUsingPNP = async() => 
-  // {
-  //           await SPListsEnsureService.ensureGoalDepartmentList(strings.goalDepartmentListName)
-  //           .then(async(res:string) => {
-  //             if(res)
-  //                 await SPListsEnsureService.ensureGoalOrganizationList(strings.goalOrganizationListName)
-  //                 .then((res:string) => {
-  //                   if(res)
-  //                     await SPListsEnsureService.ensureGoalSecurityAddGoalList(strings.goalSecurityAddGoalListName)
-  //                     .then((res:string) => {
-  //                       if(res)
-  //                         await SPListsEnsureService.ensureGoalPersonalList(strings.goalPersonalListName)
-  //                         .then((res:string) => {
-  //                           if(res)
-  //                             console.log("All lists are created.");
-  //                         });                         
-  //                     });                     
-  //                 });
-  //           });
+  private createListsUsingPNP = async() => 
+  {
+            await SPListsEnsureService.ensureGoalDepartmentList(strings.goalDepartmentListName)
+            .then(async(res:string) => {
+              if(res)
+                  await SPListsEnsureService.ensureGoalOrganizationList(strings.goalOrganizationListName)
+                  .then(async(res:string) => {
+                    if(res)
+                      await SPListsEnsureService.ensureGoalSecurityAddGoalList(strings.goalSecurityAddGoalListName)
+                      .then(async(res:string) => {
+                        if(res)
+                          await SPListsEnsureService.ensureGoalPersonalList(strings.goalPersonalListName)
+                          .then((res:string) => {
+                            if(res)
+                              console.log("All lists are created.");
+                          });                         
+                      });                     
+                  });
+            });
     
-  // } 
+  } 
 
   protected onDispose(): void {
     ReactDom.unmountComponentAtNode(this.domElement);
