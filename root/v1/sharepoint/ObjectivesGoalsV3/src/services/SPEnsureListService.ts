@@ -17,39 +17,39 @@ export default class SPEnsureListService{
     private async onInit() {}
 
     //create GoalDepartmentOptions list to store the GoalDepartmentOptions related information
-    public async ensureGoalDepartmentOptionsList(GoalDepartmentOptions: string): Promise<string> {
-        const listEnsureResult = await sp.web.lists.ensure("GoalDepartmentOptions12", "It's contain Department Options", 100);
-    if (listEnsureResult.created)    
-    {
-      alert("My GoalDepartmentOptions List is created!");
-      const batch = sp.web.createBatch(); 
-      // Department, Single Line of Text
-      listEnsureResult.list.fields.inBatch(batch).addText("Department");
-      // Members, Person Or Group
-      listEnsureResult.list.fields.inBatch(batch).addUser("Members", FieldUserSelectionMode.PeopleAndGroups);
-      // DeptAdmin, Person Or Group
-      listEnsureResult.list.fields.inBatch(batch).addUser("DeptAdmin", FieldUserSelectionMode.PeopleOnly);
-      await batch.execute();
-      await sp.web.lists.getByTitle("GoalDepartmentOptions12").defaultView.fields.add("Department");    
-      await sp.web.lists.getByTitle("GoalDepartmentOptions12").defaultView.fields.add("Members");
-      await sp.web.lists.getByTitle("GoalDepartmentOptions12").defaultView.fields.add("DeptAdmin");
-    } 
-     else 
-    {
-       alert("My GoalDepartmentOptions List is already existed!");
-     }
-    const r = await listEnsureResult.list.select("Id")();
-    console.log(r.Id);
-    goalDepartmentOptionsListId = await r.Id;
-    if(goalDepartmentOptionsListId){
-      this.ensureGoalDepartmentList(goalDepartmentOptionsListId);
-    }
+    public async ensureGoalDepartmentOptionsList(GoalDeptOptionsListName: string): Promise<string> {
+        const listEnsureResult = await sp.web.lists.ensure(GoalDeptOptionsListName, "It's contain Department Options", 100);
+        if (listEnsureResult.created)    
+        {
+            alert("My GoalDepartmentOptions List is created!");
+            const batch = sp.web.createBatch(); 
+            // Department, Single Line of Text
+            listEnsureResult.list.fields.inBatch(batch).addText("Department");
+            // Members, Person Or Group
+            listEnsureResult.list.fields.inBatch(batch).addUser("Members", FieldUserSelectionMode.PeopleAndGroups);
+            // DeptAdmin, Person Or Group
+            listEnsureResult.list.fields.inBatch(batch).addUser("DeptAdmin", FieldUserSelectionMode.PeopleOnly, {"AllowMultipleValues":true});
+            await batch.execute();
+            await sp.web.lists.getByTitle(GoalDeptOptionsListName).defaultView.fields.add("Department");    
+            await sp.web.lists.getByTitle(GoalDeptOptionsListName).defaultView.fields.add("Members");
+            await sp.web.lists.getByTitle(GoalDeptOptionsListName).defaultView.fields.add("DeptAdmin");
+        } 
+        else 
+        {
+             alert("My GoalDepartmentOptions List is already existed!");
+        }
+        const r = await listEnsureResult.list.select("Id")();
+        console.log(r.Id);
+        goalDepartmentOptionsListId = await r.Id;
+        if(goalDepartmentOptionsListId){
+            this.ensureGoalDepartmentList(goalDepartmentOptionsListId);
+          }
         return Promise.resolve(r.Id);     
     }
 
     //create GoalDepartment list to store the Department related Goals
-    public async ensureGoalDepartmentList(GoalDepartment: string): Promise<string> {
-        const listEnsureResult = await sp.web.lists.ensure("GoalDepartment12", "Goals information related Department", 100);
+    public async ensureGoalDepartmentList(GoalDeptListName: string): Promise<string> {
+        const listEnsureResult = await sp.web.lists.ensure(GoalDeptListName, "Goals information related Department", 100);
         if (listEnsureResult.created)    
         {
           alert("My GoalDepartment List is created!");
@@ -64,10 +64,10 @@ export default class SPEnsureListService{
           listEnsureResult.list.fields.inBatch(batch).addNumber("StatusPercentage");
                         
           await batch.execute();     
-          await sp.web.lists.getByTitle("GoalDepartment12").defaultView.fields.add("Goal");
-          await sp.web.lists.getByTitle("GoalDepartment12").defaultView.fields.add("Interval");  
-          await sp.web.lists.getByTitle("GoalDepartment12").defaultView.fields.add("Department");
-          await sp.web.lists.getByTitle("GoalDepartment12").defaultView.fields.add("StatusPercentage");    
+          await sp.web.lists.getByTitle(GoalDeptListName).defaultView.fields.add("Goal");
+          await sp.web.lists.getByTitle(GoalDeptListName).defaultView.fields.add("Interval");  
+          await sp.web.lists.getByTitle(GoalDeptListName).defaultView.fields.add("Department");
+          await sp.web.lists.getByTitle(GoalDeptListName).defaultView.fields.add("StatusPercentage");    
         } 
          else 
          {
@@ -79,8 +79,8 @@ export default class SPEnsureListService{
     }
 
      //create GoalOrganization list to store the Organization related Goals
-     public async ensureGoalOrganizationList(GoalOrganization: string): Promise<string> {
-        const listEnsureResult = await sp.web.lists.ensure("GoalOrganization12", "Goals information related Organization", 100);   
+     public async ensureGoalOrganizationList(GoalOrgListName: string): Promise<string> {
+        const listEnsureResult = await sp.web.lists.ensure(GoalOrgListName, "Goals information related Organization", 100);   
         if (listEnsureResult.created)    
         {
           alert("My GoalOrganization List is created!");
@@ -93,9 +93,9 @@ export default class SPEnsureListService{
           listEnsureResult.list.fields.inBatch(batch).addNumber("StatusPercentage");
                         
           await batch.execute();     
-          await sp.web.lists.getByTitle("GoalOrganization12").defaultView.fields.add("Goal");
-          await sp.web.lists.getByTitle("GoalOrganization12").defaultView.fields.add("Interval");       
-          await sp.web.lists.getByTitle("GoalOrganization12").defaultView.fields.add("StatusPercentage");  
+          await sp.web.lists.getByTitle(GoalOrgListName).defaultView.fields.add("Goal");
+          await sp.web.lists.getByTitle(GoalOrgListName).defaultView.fields.add("Interval");       
+          await sp.web.lists.getByTitle(GoalOrgListName).defaultView.fields.add("StatusPercentage");  
         } 
          else 
          {
@@ -107,8 +107,8 @@ export default class SPEnsureListService{
     }
 
      //create GoalSecurityAddGoal list to store the Organization related Admin's Group information
-     public async ensureGoalSecurityAddGoalList(GoalSecurityAddGoal: string): Promise<string> {
-        const listEnsureResult = await sp.web.lists.ensure("GoalSecurityAddGoal12","Add Security Group of Organization related Add Goal", 100);
+     public async ensureGoalSecurityAddGoalList(GoalOrgSecurityListName: string): Promise<string> {
+        const listEnsureResult = await sp.web.lists.ensure(GoalOrgSecurityListName,"Add Security Group of Organization related Add Goal", 100);
         if (listEnsureResult.created)    
         {
             alert("My GoalSecurityAddGoal List is created!");
@@ -116,7 +116,7 @@ export default class SPEnsureListService{
             //Members, Person Or Group
             listEnsureResult.list.fields.inBatch(batch).addUser("Members", FieldUserSelectionMode.PeopleAndGroups);     
             await batch.execute();     
-            await sp.web.lists.getByTitle("GoalSecurityAddGoal12").defaultView.fields.add("Members");     
+            await sp.web.lists.getByTitle(GoalOrgSecurityListName).defaultView.fields.add("Members");     
         } 
         else 
         {
@@ -128,8 +128,8 @@ export default class SPEnsureListService{
     }
 
     //create GoalPersonal list to store the Personal related Goals
-    public async ensureGoalPersonalList(GoalPersonal: string): Promise<string> {
-        const listEnsureResult = await sp.web.lists.ensure("GoalPersonal12", "Goals information related Personal", 100);
+    public async ensureGoalPersonalList(GoalPersnlListName: string): Promise<string> {
+        const listEnsureResult = await sp.web.lists.ensure(GoalPersnlListName, "Goals information related Personal", 100);
         if (listEnsureResult.created)    
         {
             alert("My GoalPersonal List is created!");
@@ -144,10 +144,10 @@ export default class SPEnsureListService{
             listEnsureResult.list.fields.inBatch(batch).addNumber("StatusPercentage");
                             
             await batch.execute();     
-            await sp.web.lists.getByTitle("GoalPersonal12").defaultView.fields.add("Goal");
-            await sp.web.lists.getByTitle("GoalPersonal12").defaultView.fields.add("Interval");  
-            await sp.web.lists.getByTitle("GoalPersonal12").defaultView.fields.add("AssignTo");
-            await sp.web.lists.getByTitle("GoalPersonal12").defaultView.fields.add("StatusPercentage");  
+            await sp.web.lists.getByTitle(GoalPersnlListName).defaultView.fields.add("Goal");
+            await sp.web.lists.getByTitle(GoalPersnlListName).defaultView.fields.add("Interval");  
+            await sp.web.lists.getByTitle(GoalPersnlListName).defaultView.fields.add("AssignTo");
+            await sp.web.lists.getByTitle(GoalPersnlListName).defaultView.fields.add("StatusPercentage");  
         } 
         else 
         {
