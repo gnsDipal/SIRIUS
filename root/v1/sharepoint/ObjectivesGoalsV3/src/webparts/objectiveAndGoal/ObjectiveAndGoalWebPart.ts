@@ -88,16 +88,16 @@ export default class ObjectiveAndGoalWebPart extends BaseClientSideWebPart<IObje
     return {
       pages: [
         {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
+          // header: {
+          //   description: strings.PropertyPaneDescription
+          // },
           groups: [
             {
-              groupName: strings.BasicGroupName,
+              // groupName: strings.BasicGroupName,
               groupFields: [
-                PropertyPaneTextField('description', {
-                      label: strings.DescriptionFieldLabel
-                   }),               
+                // PropertyPaneTextField('description', {
+                //       label: strings.DescriptionFieldLabel
+                //    }),               
                 PropertyPaneLabel('label',{
                       text:`Changes in the "Organization" related Goals`,
                     }),

@@ -3,6 +3,7 @@ import styles from './GoalItem.module.scss';
 import { DefaultButton, PrimaryButton } from "@fluentui/react/lib/Button";
 import { useContext, useState } from "react";
 import AddGoalForm from "../GoalForm/AddGoalForm";
+import UpdateGoalStatus from "../GoalItem/UpdateGoalStatus";
 
 debugger;
 const GoalItem = (props) =>{  
@@ -12,6 +13,8 @@ const GoalItem = (props) =>{
     const [updatedStatusPercentage, setUpdatedStatusPercentage] = useState(0);
     const [isProgressBarDisplay, setIsProgressBarDisplay] = useState(true);
     const [isStatusInputDisplay, setIsStatusInputDisplay] = useState(false);
+    const [updatedStatus, setUpdatedStatus] = useState(false);
+    
 
     const onChangeStatusPercentageHandle = async(selectedStatusPercentage:any) => {   
       setUpdatedStatusPercentage(await selectedStatusPercentage.currentTarget.value);
@@ -22,7 +25,8 @@ const GoalItem = (props) =>{
         alert("Edit Button Clicked. SectorId is =>" + sectorId + ", selectedEditId =>" + selectedEditId + ", StatusValue =>" + statusValue );
         setIsSelEditId(selectedEditId);
         setIsProgressBarDisplay(false);
-        setIsStatusInputDisplay(true);       
+        setIsStatusInputDisplay(true);
+        setUpdatedStatus(true);      
      };
 
     const UpdateButtonClicked = async(sectorId, selectedEditId, updatedStatusValue) => {
@@ -252,6 +256,10 @@ const GoalItem = (props) =>{
                   {/* <DefaultButton className={ styles.AddGoalButton} onClick={()=>AddGoalButtonClicked(sector.Title)}><h3>Add {sector.Title} Goal</h3></DefaultButton>                                                               
                   { isAddGoalFormDisplay &&  <AddGoalForm {...props}/>
                   }        */}
+                  
+                  {updatedStatus &&
+                  <UpdateGoalStatus {...props}/>
+                  }
                </div>
              }
             </div>

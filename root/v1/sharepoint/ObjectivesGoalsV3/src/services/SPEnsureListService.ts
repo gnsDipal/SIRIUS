@@ -36,7 +36,7 @@ export default class SPEnsureListService{
         } 
         else 
         {
-             alert("My GoalDepartmentOptions List is already existed!");
+             //alert("My GoalDepartmentOptions List is already existed!");
         }
         const r = await listEnsureResult.list.select("Id")();
         console.log(r.Id);
@@ -71,7 +71,7 @@ export default class SPEnsureListService{
         } 
          else 
          {
-           alert("My GoalDepartment List is already existed!");
+           //alert("My GoalDepartment List is already existed!");
          }
         const r = await listEnsureResult.list.select("Id")();
         console.log(r.Id);
@@ -99,7 +99,7 @@ export default class SPEnsureListService{
         } 
          else 
          {
-           alert("My GoalOrganization List is already existed!");
+           //alert("My GoalOrganization List is already existed!");
          }
         const r = await listEnsureResult.list.select("Id")();
         console.log(r.Id); 
@@ -120,7 +120,7 @@ export default class SPEnsureListService{
         } 
         else 
         {
-            alert("My GoalSecurityAddGoal List is already existed!");
+            //alert("My GoalSecurityAddGoal List is already existed!");
         }
         const r = await listEnsureResult.list.select("Id")();
         console.log(r.Id);
@@ -151,7 +151,7 @@ export default class SPEnsureListService{
         } 
         else 
         {
-            alert("My GoalPersonal List is already existed!");
+            //alert("My GoalPersonal List is already existed!");
         }
         const r = await listEnsureResult.list.select("Id")();
         console.log(r.Id);
