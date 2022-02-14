@@ -146,6 +146,7 @@ define([], function() {
     yearLabel: "year",
     theNthOfMonthFormat: "on {0} {1}",
     onTheDayTypeFormat: "on the {0} {1}",
-    ResourceOverlapMessage: "Resource is booked for this slot - kindly select another one."
+    ResourceOverlapMessage: "Resource is booked for this slot - kindly select another one.",
+    LoadingLabel: "Loading"
   }
 });

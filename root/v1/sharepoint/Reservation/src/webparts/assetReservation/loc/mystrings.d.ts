@@ -146,6 +146,7 @@ declare interface IAssetReservationWebPartStrings {
   theNthOfMonthFormat: string;
   onTheDayTypeFormat: string;
   ResourceOverlapMessage:string;
+  LoadingLabel:string;
 }
 
 declare module 'AssetReservationWebPartStrings' {
