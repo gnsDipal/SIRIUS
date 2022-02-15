@@ -61,7 +61,8 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
   private updatePropertyHandler(str: string) {
     this.props.updateProperty(str);
   }
-  
+  /* Put the below code in above of calendar component call */
+  // {this.state.sizeId <= 0 && <div>Schedule will be loaded according to the selection</div>}
   public render(): React.ReactElement<IRoomReservationPlatinumProps> {
     return (
       <div className={ styles.roomReservation }>
@@ -97,7 +98,7 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
             </div>
             <div className="ms-Grid-col ms-u-sm6 block">
               {this.state.sizeId <= 0 && <div>Image will be loaded for the selected options</div>}
-              {this.state.sizeId > 0 &&
+              { (this.state.sizeId > 0) &&
                 <FilterImage
                   siteUrl= {this.props.siteUrl}
                   context={this.props.context}
@@ -111,8 +112,8 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
         <div className="ms-Grid" dir="ltr">
           <div className="ms-Grid-row">
             <div className="ms-Grid-col ms-u-sm12 block">
-            {this.state.sizeId <= 0 && <div>Schedule will be loaded according to the selection</div>}
-              {this.state.sizeId > 0 &&
+            
+              {/* {this.state.sizeId > 0 && this.state.sizeId && */}
                 <Calendar 
                    title= {this.props.title}
                    siteUrl= {this.props.siteUrl}
@@ -132,7 +133,7 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
                    buildingId={this.state.buildingId}
                    sizeId={this.state.sizeId}
                 />
-              }
+               
             </div>
           </div>
         </div>

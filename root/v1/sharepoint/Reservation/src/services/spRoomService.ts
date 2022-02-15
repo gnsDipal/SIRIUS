@@ -1,7 +1,7 @@
 import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { graph } from "@pnp/graph";
 import { sp, Web} from '@pnp/sp/presets/all';
-debugger;
+// debugger;
 export default class spRoomService {
     constructor(private context: WebPartContext) {
       // Setup Context to PnPjs and MSGraph

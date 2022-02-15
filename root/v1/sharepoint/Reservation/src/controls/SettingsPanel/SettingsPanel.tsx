@@ -7,7 +7,7 @@ import { Panel } from '@fluentui/react/lib/Panel';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 import { Link } from '@fluentui/react/lib/Link';
 
-debugger;
+// debugger;
 export default class RoomReservationPlatinum extends React.Component<ISettingsPanelProps, ISettingsPanelState> {
     public spSettingsPanelService:spServiceSettingsPanel = null;
     constructor(props:ISettingsPanelProps, state:ISettingsPanelState) { 

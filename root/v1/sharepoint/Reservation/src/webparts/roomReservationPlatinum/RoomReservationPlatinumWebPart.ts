@@ -39,7 +39,7 @@ export interface IRoomReservationPlatinumWebPartProps {
   errorMessage: string;
   context:any; 
 }
-debugger;
+// debugger;
 export default class RoomReservationPlatinumWebPart extends BaseClientSideWebPart<IRoomReservationPlatinumWebPartProps> {
   private lists: IPropertyPaneDropdownOption[] = [];
   

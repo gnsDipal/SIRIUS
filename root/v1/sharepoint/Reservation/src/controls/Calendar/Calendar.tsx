@@ -116,7 +116,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
    * @memberof Calendar
    */
   private async loadEvents() {
-    debugger;
+    // debugger;
     try {
       // Teste Properties
       if (!this.props.calendarListName || !this.props.siteUrl || !this.props.eventStartDate.value || !this.props.eventEndDate.value) return;
@@ -126,7 +126,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       const eventsData: IEventData[] = await this.spService.getEvents(escape(this.props.siteUrl), escape(this.props.masterListName), escape(this.props.calendarListName), this.props.eventStartDate.value, this.props.eventEndDate.value);
 
       this.setState({ eventData: eventsData, hasError: false, errorMessage: "" });
-      debugger;
+      // debugger;
     } catch (error) {
       this.setState({ hasError: true, errorMessage: error.message, isloading: false });
     }

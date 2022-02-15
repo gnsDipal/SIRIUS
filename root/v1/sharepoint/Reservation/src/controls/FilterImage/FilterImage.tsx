@@ -4,6 +4,7 @@ import { IFilterImageProps } from './IFilterImageProps';
 import { IFilterImageStates } from './IFilterImageState';
 import spRoomService from '../../services/spRoomService';
 
+debugger;
 export default class FilterImage extends React.Component<IFilterImageProps, IFilterImageStates> {
     private spRoomService: spRoomService = null;
     constructor(props:IFilterImageProps, state:IFilterImageStates) { 
@@ -18,6 +19,11 @@ export default class FilterImage extends React.Component<IFilterImageProps, IFil
 
     public componentDidMount() : void {
         this. _getRoomPhotoByPara(this.props.sizeId);
+    }
+    public componentDidUpdate(prevProps, prevState) : void {
+        if(prevProps.sizeId !== this.props.sizeId) 
+            this. _getRoomPhotoByPara(this.props.sizeId);
+
     }
 
     private _getRoomPhotoByPara(sizeId:number) {
@@ -41,7 +47,9 @@ export default class FilterImage extends React.Component<IFilterImageProps, IFil
                 <div className="ms-Grid" dir="ltr">
                     <div className="ms-Grid-row">
                         <div className="ms-Grid-col ms-u-sm12 block">
+                            {(this.state.selectedImage) &&
                             <img src={`${this.state.selectedImage}`} height="100%" width="100%" margin-top="15px"/>
+                            }
                         </div>
                     </div>
                 </div>

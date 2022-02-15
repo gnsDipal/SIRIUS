@@ -40,6 +40,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
     }
     
     private _getAreaBySelectedId = (obj) => { 
+        // obj.selectedIndex = 0;
         // Reset the data once the Location get changed
         this.setState({
             areas : [],
@@ -122,6 +123,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
             this.state.selectedAreaKey,
             this.state.selectedBuildingKey,
             obj.key
+            // this.state.selectedSizeKey
         );
     }
 
@@ -148,6 +150,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
                         <div className="ms-Grid-col ms-u-sm12 block">
                             <Dropdown
                                 options={this.state.areas}
+                                selectedKey={this.state.selectedAreaKey}
                                 placeholder={ this.props.filterType == FilterType.Asset ? "Select Asset Area" : "Select Room Area" }
                                 onChange={(e, obj)=>this._getBuildingFloorBySelectedId(obj)}
                                 className = {styles.dropDown}
@@ -158,6 +161,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
                         <div className="ms-Grid-col ms-u-sm12 block">
                             <Dropdown
                                 options={this.state.buildings}
+                                selectedKey={this.state.selectedBuildingKey}
                                 placeholder={ this.props.filterType == FilterType.Asset ? "Select Asset Category" : "Select Room BuildingFloor" }
                                 onChange={(e, obj)=>this._getSizeBySelectedId(obj)}
                                 className = {styles.dropDown}
@@ -168,6 +172,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
                         <div className="ms-Grid-col ms-u-sm12 block">
                             <Dropdown
                                 options={this.state.size}
+                                selectedKey={this.state.selectedSizeKey}
                                 placeholder= { this.props.filterType == FilterType.Asset ? "Select Asset" : "Select Room Size" }
                                 onChange={(e, obj)=>this._onChangeRoomSize(e, obj)}
                                 className = {styles.dropDown}

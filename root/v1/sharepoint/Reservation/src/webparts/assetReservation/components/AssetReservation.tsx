@@ -17,7 +17,7 @@ export default class AssetReservation extends React.Component<IAssetReservationP
       locationId: 0,
       areaId:0,
       buildingId: 0,
-      sizeId: 0,
+      sizeId: 1,
     };
     this.EventKeySelectionHandler = this.EventKeySelectionHandler.bind(this);
     Logger.write("AssetReservation class triggered.", LogLevel.Info);
@@ -71,6 +71,7 @@ export default class AssetReservation extends React.Component<IAssetReservationP
         <div className="ms-Grid" dir="ltr">
           <div className="ms-Grid-row">~
             <div className="ms-Grid-col ms-u-sm12 block">
+            {this.state.sizeId > 0 &&
                 <Calendar 
                    title= {this.props.title}
                    siteUrl= {this.props.siteUrl}
@@ -90,6 +91,7 @@ export default class AssetReservation extends React.Component<IAssetReservationP
                    buildingId={this.state.buildingId}
                    sizeId={this.state.sizeId}
                 />
+            }
             </div>
           </div>
         </div>

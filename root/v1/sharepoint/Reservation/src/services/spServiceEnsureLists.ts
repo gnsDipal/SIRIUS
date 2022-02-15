@@ -7,7 +7,7 @@ import { Fields, IFields, IFieldAddResult } from "@pnp/sp/fields";
 import { UrlFieldFormatType } from "@pnp/sp/fields/types";
 import { sizeBoolean } from "@microsoft/office-ui-fabric-react-bundle";
 // Class Services
-debugger;
+// debugger;
 export default class spServiceEnsureLists {
     private webContext:any = null;
     private departmentListId?:string = null;

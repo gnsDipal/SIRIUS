@@ -522,7 +522,7 @@ export default class spservices {
     }
     try {
       const categoryColor = await this.getMasterRefFieldOptions(siteUrl, masterList).then(res=>{
-        debugger;
+        // debugger;
         if(res != null && res.length > 0) {
           let fieldOptions: { category: string, color: string }[] = [];
           for(let index=0;index<res.length; index++) {

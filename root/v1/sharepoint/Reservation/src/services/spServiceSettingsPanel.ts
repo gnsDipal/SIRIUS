@@ -2,7 +2,7 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web, PermissionKind, IItem, IFieldInfo } from '@pnp/sp/presets/all';
 import { Logger, LogLevel} from "@pnp/logging";
 import { MSGraphClient } from '@microsoft/sp-http';
-debugger;
+// debugger;
 // Class Services
 export default class spServiceSettingsPanel {
     private webContext = null;
