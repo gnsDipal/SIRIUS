@@ -296,13 +296,13 @@ export default class BirthdayWebPart extends BaseClientSideWebPart<IBirthdayWebP
               groupName: strings.GroupNameAdmin,
               groupFields: [                               
                 PropertyPaneLink('linkImage', {
-                  href: `${this.context.pageContext.web.absoluteUrl}/BirthdayAnniversaryImages/Forms/Thumbnails.aspx`,
+                  href: `${this.context.pageContext.web.absoluteUrl}/${strings.imagesListName}/Forms/Thumbnails.aspx`,
                   text: strings.LinkTextImage,
                   target: "_blank" 
                 }),
                 
                 PropertyPaneLink('linkUsers', {
-                  href: `${this.context.pageContext.web.absoluteUrl}/Lists/UserBirthAnniversaryDetails/AllItems.aspx`,
+                  href: `${this.context.pageContext.web.absoluteUrl}/Lists/${strings.userDetailsListName}}/AllItems.aspx`,
                   text: strings.LinkTextUsers,
                   target: "_blank" 
                 })

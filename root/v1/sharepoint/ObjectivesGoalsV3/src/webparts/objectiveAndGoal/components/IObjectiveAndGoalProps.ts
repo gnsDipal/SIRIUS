@@ -7,3 +7,7 @@ export interface IObjectiveAndGoalProps {
   // setSPContext(context:WebPartContext): Function;
   // setSectors(sector: Sector[]): Function;
 }
+
+export interface IObjectivesGoalsState { 
+  isSettingsPanelOpen:boolean;
+}
