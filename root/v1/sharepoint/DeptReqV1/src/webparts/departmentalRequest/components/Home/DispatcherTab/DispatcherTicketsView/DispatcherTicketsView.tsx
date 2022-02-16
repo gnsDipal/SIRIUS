@@ -16,13 +16,13 @@ import * as microsoftTeams from '@microsoft/teams-js';
 import DispatcherTab from '../DispatcherTab';
 import { passUser } from '../../../../../../model/IDispatcher';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
-
+// debugger;
 //functional component
 const DispatcherTicketsView = () => {
-    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
-    let spDispatcherServiceData:SPDepartmentalServiceData = null;
-    const {dept} = useParams();
     const mainContext = useContext(UserContext);
+    const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
+    let spDispatcherServiceData:SPDepartmentalServiceData = new SPDepartmentalServiceData(mainContext);
+    const {dept} = useParams();
 
     //state variables
     const [dispatcherDetails, setDispatcherDetails] = useState([]);

@@ -19,19 +19,21 @@ import SPDepartmentalServiceData from '../../../../../services/SPDepartmentalSer
 import { ToastContainer } from 'react-toastify';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../services/msGraphProvider';
 
-
+// debugger;
 
 //Raise a request component
 const RaiseRequestTab = (props) => {
+  const mainContext = useContext(UserContext);
     const stackTokens = { childrenGap: 50  };
     const stackStyles: Partial<IStackStyles> = { root: { width: 650 } };
-    let spRaiseRequestServiceData:SPDepartmentalServiceData = null;
+    let spRaiseRequestServiceData:SPDepartmentalServiceData = new SPDepartmentalServiceData(mainContext);
+    // spRaiseRequestServiceData = new SPDepartmentalServiceData(mainContext);
+
     const noDataDeptOptions:IDropdownOption[] = [{
       key:1,
       text:'No data'
     }];
     let staticDeptOptions = [];
-    const mainContext = useContext(UserContext);
     const [deptListCoreInfo, setDeptListCoreInfo] = useState(null);
     const [departmentOptions, setDepartmentOptions] = useState([]);
     const [selectedDept, setSelectedDept] = useState<string>('');
@@ -76,17 +78,15 @@ const fetchMsGraphProvider = async () => {
 };
 
 // UI event calls dynamic
-const onChangeDeptHandle = async (choosenDept)=> {
+const onChangeDeptHandle = async (choosenDept:any)=> {
   //set states
   setSelectedDept(choosenDept.text);
   setDataFilledCheck(1);
   setSelectedDeptCategory(selectedDeptCategory);
-  spRaiseRequestServiceData.getDeptCategorySelect(choosenDept.text)
-  .then(res => {
+  await spRaiseRequestServiceData.getDeptCategorySelect(choosenDept.text).then((res:any) => {
     setDepartmentCategoryOptions(res);
   });
-  spRaiseRequestServiceData.getSelectedDispatcherGroupPeople(choosenDept.text)
-  .then(res =>{
+  await spRaiseRequestServiceData.getSelectedDispatcherGroupPeople(choosenDept.text).then((res:any) =>{
     setDispatcherGrpUsers(res);
   })
 }
@@ -193,7 +193,7 @@ const _messaging= (dispatcherGroupEmailIds)=>{
 };
 
 const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,fileAddition)=>{
-  if(selectedDept !== ''){
+  if(selectedDept !== '' && issueDescription !== ''){
     _messaging(dispatcherGrpUsers)
    spRaiseRequestServiceData.getEmployeeRequestAdded(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo)
    .then((r)=>{
@@ -220,9 +220,9 @@ const addEmployeeRequest=(issueDescription, selectedDept, selectedDeptCategory,f
                          <Dropdown
                            placeholder={strings.SelectDepartmentLabel}
                            label={strings.SelectTheDepartmentLabel}
-                           options={departmentOptions.length !== 0 ?departmentOptions:noDataDeptOptions}
+                           options={departmentOptions.length !== (0 || null) ?departmentOptions:noDataDeptOptions}
                            defaultValue={selectedDept}
-                           onChange={(e,selectedDept) => onChangeDeptHandle(selectedDept)}
+                           onChange={(e,selectedDept) =>onChangeDeptHandle(selectedDept)}
                            key={randomIndex}
                            className={styles.dropdownStyle}
                          />

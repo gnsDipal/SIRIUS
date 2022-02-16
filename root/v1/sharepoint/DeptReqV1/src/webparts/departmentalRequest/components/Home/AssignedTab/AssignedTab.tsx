@@ -12,13 +12,13 @@ import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
 
 const AssignedTab = () => {    
+    const mainContext = useContext(UserContext);
     let myRequestedEachPlateData = [];       
-    let spAssignedServiceData: SPDepartmentalServiceData = null;
+    let spAssignedServiceData: SPDepartmentalServiceData = new SPDepartmentalServiceData(mainContext);
     const {Inprocess,dept,Closed} = useParams();
     const [deptPlate,setDeptPlate] = useState(null);
     const [unlockAssignedData, setUnlockAssignedData] = useState(0); 
 
-    const mainContext = useContext(UserContext);
     useEffect(() => {
          myRequestedEachPlateData = [];  
          init();              

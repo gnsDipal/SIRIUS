@@ -62,7 +62,7 @@ import SPSettingsPanelService from './SPSettingsPanelService';
         return this.departmentalService.loadDepartmentDetailForPost();
       }
 
-      public getDeptCategorySelect(selectedDept):Promise<IDropdownOption[]>{
+      public getDeptCategorySelect(selectedDept):Promise<IOptionWithKey[]>{
         return this.departmentalService.deptCategorySelect(selectedDept);
       }
 

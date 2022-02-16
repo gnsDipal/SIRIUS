@@ -9,7 +9,7 @@ import { IDropdownOption } from 'office-ui-fabric-react';
 import { IOptionWithKey } from '../model/RaiseRequest';
 import { IDepartmentList } from '../model/RaiseRequest';
 
-
+// debugger;
 export default class SPDepartmentalService{ 
     private uniqueDeptList = [];
     private myRequestedEachPlateData = [];
@@ -68,16 +68,16 @@ export default class SPDepartmentalService{
       return await Promise.resolve(departmentFAQ_deptList);    
      }
 
-     public async deptCategorySelect(selectedDept:any):Promise<IDropdownOption[]>{
+     public async deptCategorySelect(selectedDept:any):Promise<IOptionWithKey[]>{
       let result = await this.web.lists.getByTitle(this.mainProp.departmentCategoryListName).items.select("Title","ID","Department/Title").expand("Department").get();
         const getOptionsBySelectedDept = [];
         for(var i=0;i<result.length;++i){
           if(result[i].Department.Title === selectedDept){
             getOptionsBySelectedDept.push(result[i])
-            break;
+            // break;
           }
         }
-    let departmentCategoryOptions:IDropdownOption[] = getOptionsBySelectedDept.map((r,index) => {
+    let departmentCategoryOptions:IOptionWithKey[] = getOptionsBySelectedDept.map((r,index) => {
       return {
         key:index,
         text:r.Title,

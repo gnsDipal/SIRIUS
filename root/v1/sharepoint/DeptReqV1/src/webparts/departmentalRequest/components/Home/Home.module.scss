@@ -41,10 +41,12 @@
       .msGridRowWithMargin50{
         @include ms-Grid-row;
         margin-top:50px;
+        max-width: 95% !important;
       }
       .msGridRowWithMargin40{
         @include ms-Grid-row;
         margin-top:40px;
+        max-width: 95% !important;
       }
       .msGridColSize2{
         @include ms-Grid-col;
@@ -125,7 +127,7 @@
           transition: transform 450ms;
       }
       .myIssuesButton:hover{
-        transform: scale(1.08);
+        transform: scale(1.04);
       }
       
       .assignedIssuesButton{
@@ -145,7 +147,7 @@
           transition: transform 450ms;
       }
       .assignedIssuesButton:hover{
-        transform: scale(1.08);
+        transform: scale(1.04);
       }
 
       .dispatcherViewButton{
@@ -164,7 +166,7 @@
           transition: transform 450ms;
       }
       .dispatcherViewButton:hover{
-        transform: scale(1.08);
+        transform: scale(1.04);
       }
 
       .topHead{
@@ -223,7 +225,7 @@
           transition: transform 450ms;
       }
       .raisedRequestButton:hover{
-        transform: scale(1.08);
+        transform: scale(1.04);
       }
       .managerViewButton{
         > span{
@@ -239,7 +241,7 @@
         transition: transform 450ms;
     }
     .managerViewButton:hover{
-      transform: scale(1.08);
+      transform: scale(1.04);
     }
     
       .belowButtonsColumsAdjust{

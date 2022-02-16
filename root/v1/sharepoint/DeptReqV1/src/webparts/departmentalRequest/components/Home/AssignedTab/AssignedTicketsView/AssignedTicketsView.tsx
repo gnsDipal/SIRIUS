@@ -16,13 +16,13 @@ import { UserContext } from '../../../Main/Main';
 import SPDepartmentalServiceData from '../../../../../../services/SPDepartmentalServiceData';
 import { passUser } from '../../../../../../model/MyRequestedEachPlateData';
 import useMsGraphProvider, { IMSGraphInterface } from '../../../../../../services/msGraphProvider';
-
+// debugger;
 //Main function
 const AssignedTicketsView = () => {
-    let spAssignedServiceData: SPDepartmentalServiceData = null;
+    const mainContext = useContext(UserContext);
+    let spAssignedServiceData: SPDepartmentalServiceData = new SPDepartmentalServiceData(mainContext);
     const stackStyles: Partial<IStackStyles> = { root: { width: 169 } };
     const {Inprocess,dept} = useParams();
-    const mainContext = useContext(UserContext);
 
     //State variables
     const [assignedListData,setAssignedListData] = useState(null);
@@ -86,10 +86,12 @@ function loadStatusList(){
     ])
   }
 
- function onStatusChangeHandle(selectedStatus,ticketNumber,department,idNumber,authorId){
+  async function onStatusChangeHandle(selectedStatus,ticketNumber,department,idNumber,authorId){
     console.log(selectedStatus,ticketNumber);
     if(selectedStatus.text === strings.CompletedLabel){
-      this.getEmail(authorId);
+      // this.getEmail(authorId);
+      let RaisedUserEmailId:string = await spAssignedServiceData.getEmailId(authorId);
+      setEmailId(RaisedUserEmailId);
       setDeptListDropDown([]);
       setStatusCompletedCheck(2);
       setDeleteSelectedTicket(ticketNumber);

@@ -12,9 +12,9 @@ import DispatcherTicketsView from './DispatcherTicketsView/DispatcherTicketsView
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
 const DispatcherTab = () => {
-    let spDispatcherServiceData: SPDepartmentalServiceData = null;
-    const OpenRequests:string = "Open Requests"; 
     const mainContext = useContext(UserContext);
+    let spDispatcherServiceData: SPDepartmentalServiceData = new SPDepartmentalServiceData(mainContext);
+    const OpenRequests:string = "Open Requests"; 
     const {open,dept} = useParams();
     //State variables
     const [dispatcherCountData, setDispatcherCountData] = useState(null);

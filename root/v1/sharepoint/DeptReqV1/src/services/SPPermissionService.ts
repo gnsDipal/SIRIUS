@@ -3,7 +3,7 @@ import { WebPartContext } from "@microsoft/sp-webpart-base";
 import { sp, Web } from '@pnp/sp/presets/all';
 import { graph } from "@pnp/graph";
 import { Logger, LogLevel} from "@pnp/logging";
-debugger;
+// debugger;
 export default class SPPermissionService{ 
     private webContext = null;
     private webUrl:string = null;
