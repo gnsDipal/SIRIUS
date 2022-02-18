@@ -147,6 +147,16 @@ define([], function() {
     theNthOfMonthFormat: "on {0} {1}",
     onTheDayTypeFormat: "on the {0} {1}",
     ResourceOverlapMessage: "Resource is booked for this slot - kindly select another one.",
-    LoadingLabel: "Loading"
+    LoadingLabel: "Loading",
+    // SPLocationListName:'Sirius_AssetReservation_1_AssetLocation',
+    // SPAreaListName:'Sirius_AssetReservation_2_AssetArea',
+    // SPCategoryListName:'Sirius_AssetReservation_3_AssetCategory',
+    // SPMasterListName:'Sirius_AssetReservation_4_AssetMaster',
+    // SPCalendarListName:'Sirius_AssetReservation_5_AssetCalendar'
+    SPLocationListName:'Sirius__1_AssetLocation',
+    SPAreaListName:'Sirius__2_AssetArea',
+    SPCategoryListName:'Sirius__3_AssetCategory',
+    SPMasterListName:'Sirius__4_AssetMaster',
+    SPCalendarListName:'Sirius__5_AssetCalendar'
   }
 });

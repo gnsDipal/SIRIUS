@@ -6,7 +6,7 @@ import { IFilterStates } from './IFilterState';
 import { FilterType } from './filterType';
 // import  RoomService  from '../../roomService';
 import spRoomService from '../../services/spRoomService';
-
+debugger;
 export default class Filters extends React.Component<IFilterProps, IFilterStates> {
     private spRoomService: spRoomService = null;
     constructor(props:IFilterProps, state:IFilterStates) { 
@@ -42,6 +42,14 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
     private _getAreaBySelectedId = (obj) => { 
         // obj.selectedIndex = 0;
         // Reset the data once the Location get changed
+        let name:string;
+        if(this.props.filterType === 0){
+            name = 'AssetLocation';
+        }
+        if(this.props.filterType === 1){
+            name = 'RoomLocation';
+        }
+
         this.setState({
             areas : [],
             selectedAreaKey : 0,
@@ -51,7 +59,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
             selectedSizeKey : 0,
         });
         // this.props.locationListName
-        this.spRoomService.getAreaBySelectedLocation(this.props.siteUrl, this.props.areaListName,'RoomLocation' , obj.key).then(res=>{
+        this.spRoomService.getAreaBySelectedLocation(this.props.siteUrl, this.props.areaListName,name, obj.key).then(res=>{
             this.setState({
                 selectedLocationKey: obj.key,
                 areas : res
@@ -69,6 +77,13 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
 
     private _getBuildingFloorBySelectedId = (obj) => {
         // Reset the data once the Location get changed
+        let name:string;
+        if(this.props.filterType === 0){
+            name = 'AssetArea';
+        }
+        if(this.props.filterType === 1){
+            name = 'RoomArea';
+        }
         this.setState({
             buildings : [],
             selectedBuildingKey : 0,
@@ -76,7 +91,7 @@ export default class Filters extends React.Component<IFilterProps, IFilterStates
             selectedSizeKey : 0,
         });
         // this.props.areaListName
-        this.spRoomService.getDataBySelectedArea(this.props.siteUrl, this.props.categoryListName,'RoomArea' , obj.key).then(res=>{
+        this.spRoomService.getDataBySelectedArea(this.props.siteUrl, this.props.categoryListName,name , obj.key).then(res=>{
             this.setState({
                 selectedAreaKey: obj.key,
                 buildings : res

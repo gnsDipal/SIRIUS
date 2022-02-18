@@ -147,6 +147,11 @@ declare interface IAssetReservationWebPartStrings {
   onTheDayTypeFormat: string;
   ResourceOverlapMessage:string;
   LoadingLabel:string;
+  SPLocationListName:string;
+  SPAreaListName:string;
+  SPCategoryListName:string;
+  SPMasterListName:string;
+  SPCalendarListName:string;
 }
 
 declare module 'AssetReservationWebPartStrings' {

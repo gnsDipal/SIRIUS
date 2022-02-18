@@ -69,9 +69,8 @@ export default class AssetReservation extends React.Component<IAssetReservationP
           </div>
         </div>
         <div className="ms-Grid" dir="ltr">
-          <div className="ms-Grid-row">~
+          <div className="ms-Grid-row">
             <div className="ms-Grid-col ms-u-sm12 block">
-            {this.state.sizeId > 0 &&
                 <Calendar 
                    title= {this.props.title}
                    siteUrl= {this.props.siteUrl}
@@ -91,7 +90,7 @@ export default class AssetReservation extends React.Component<IAssetReservationP
                    buildingId={this.state.buildingId}
                    sizeId={this.state.sizeId}
                 />
-            }
+  
             </div>
           </div>
         </div>
