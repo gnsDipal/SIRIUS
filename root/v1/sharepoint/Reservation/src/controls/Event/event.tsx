@@ -50,6 +50,8 @@ import { format } from 'react-string-format';
 import { Logger, LogLevel} from "@pnp/logging";
 import { FilterType } from '../Filters/filterType';
 
+debugger;
+
 const DayPickerStrings: IDatePickerStrings = {
   months: [strings.January, strings.February, strings.March, strings.April, strings.May, strings.June, strings.July, strings.August, strings.September, strings.October, strings.November, strings.December],
   shortMonths: [strings.Jan, strings.Feb, strings.Mar, strings.Apr, strings.May, strings.Jun, strings.Jul, strings.Aug, strings.Sep, strings.Oct, strings.Nov, strings.Dez],
@@ -541,9 +543,9 @@ export class Event extends React.Component<IEventProps, IEventState> {
           )
         }
         {
-          (this.state.userPermissions.hasPermissionAdd || this.state.userPermissions.hasPermissionEdit) &&
+          // (this.state.userPermissions.hasPermissionAdd || this.state.userPermissions.hasPermissionEdit) &&
           <PrimaryButton
-            disabled={this.state.disableButton}
+            // disabled={this.state.disableButton}
             onClick={this.onSave}
             style={{ marginBottom: '15px', marginRight: '8px', float: 'right' }}>
             {strings.SaveButtonLabel}
@@ -944,8 +946,8 @@ export class Event extends React.Component<IEventProps, IEventState> {
                     label={strings.EventTitleLabel}
                     value={this.state.eventData ? this.state.eventData.title : ''}
                     onGetErrorMessage={this.onGetErrorMessageTitle}
-                    deferredValidationTime={500}
-                    disabled={this.state.userPermissions.hasPermissionAdd || this.state.userPermissions.hasPermissionEdit ? false : true}
+                    // deferredValidationTime={500}
+                    // disabled={this.state.userPermissions.hasPermissionAdd || this.state.userPermissions.hasPermissionEdit ? false : true}
                   />
 
                 </div>

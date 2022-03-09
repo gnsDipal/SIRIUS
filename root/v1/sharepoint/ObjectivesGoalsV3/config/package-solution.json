@@ -3,7 +3,7 @@
   "solution": {
     "name": "objectives-goals-v-3-client-side-solution",
     "id": "4acd1019-f659-4c36-8b23-5131e88afa15",
-    "version": "1.0.0.0",
+    "version": "1.0.0.1",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
