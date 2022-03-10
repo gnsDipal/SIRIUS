@@ -12,7 +12,7 @@ import { IDepartmentList } from '../model/RaiseRequest';
 // debugger;
 export default class SPDepartmentalService{ 
     private uniqueDeptList = [];
-    private myRequestedEachPlateData = [];
+    private departmentalListName = null;
     private webContext = null;
     private webUrl:string = null;
     private loggedInUserId?:string = null;
@@ -22,6 +22,7 @@ export default class SPDepartmentalService{
     constructor(private mainProp) {    
       // Setup Context to PnPjs and MSGraph
       this.webContext = this.mainProp.webPartContext;
+      this.departmentalListName = this.mainProp.departmentListName;
       sp.setup({
         spfxContext: mainProp
       });
@@ -87,12 +88,16 @@ export default class SPDepartmentalService{
     }
     /* Loading all users belonging to present dispatcher group */
     public async loadSelectedDispatcherGroupPeople(selectedDept):Promise<[]>{
-      let result = await this.web.lists.getByTitle(this.mainProp.employeeRequestListName).items.select("AssignedTo","Author/Title","AttachmentFiles").expand("Author","AttachmentFiles").filter(`Department eq '${selectedDept}' and Status eq 'Pending'`).orderBy("ID",false).get();
-          let dispatcherGroupName = '';
-          if(result.length>0){
-            dispatcherGroupName = result[0].AssignedTo;
-              let res = await this.web.siteGroups.getByName(dispatcherGroupName).users();
-              var groupUsers:[]=res.map((r,index)=>{
+      let result = await this.web.lists.getByTitle(this.departmentalListName).items.select("Title","GroupName/Title").expand("GroupName").orderBy("Title",false).get();
+          let dispatcherGroupName = null;
+          dispatcherGroupName = result.filter(getGrpName);
+          function getGrpName(res){
+            if(res.Title === selectedDept){
+              return res.GroupName.Title;
+            }
+          }
+              let res = await this.web.siteGroups.getByName(dispatcherGroupName[0].GroupName.Title).users();
+              var groupUsers:[]=res.map((r)=>{
                 return{
                   eMail:r.Email,
                   name:r.Title,
@@ -100,7 +105,7 @@ export default class SPDepartmentalService{
                 }
               });
               return Promise.resolve(groupUsers)
-          }
+          // }
     }
 
     public async loadEmployeeRequest(issueDescription, selectedDept, selectedDeptCategory,fileAddition,deptListCoreInfo):Promise<{}>{
