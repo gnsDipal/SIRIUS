@@ -10,7 +10,7 @@ import { IUserPermissions } from '../models/IUserPermissions';
 import parseRecurrentEvent from './parseRecurrentEvent';
 import { result } from "lodash";
 import { Logger, LogLevel} from "@pnp/logging";
-
+debugger;
 // Class Services
 export default class spservices {
   constructor(private context: WebPartContext) {    
@@ -535,8 +535,10 @@ export default class spservices {
         }
       });
 
+      // const results = await web.lists.getByTitle(listId).usingCaching().renderListDataAsStream
+
       const web = Web(siteUrl);
-      const results = await web.lists.getByTitle(listId).usingCaching().renderListDataAsStream(
+      const results = await web.lists.getByTitle(listId).renderListDataAsStream(
         {
           DatesInUtc: true,
           ViewXml: `<View><ViewFields><FieldRef Name='RecurrenceData'/><FieldRef Name='Duration'/><FieldRef Name='Author'/><FieldRef Name='Category'/><FieldRef Name='Description'/><FieldRef Name='ParticipantsPicker'/><FieldRef Name='Geolocation'/><FieldRef Name='ID'/><FieldRef Name='EndDate'/><FieldRef Name='EventDate'/><FieldRef Name='ID'/><FieldRef Name='Location'/><FieldRef Name='Title'/><FieldRef Name='fAllDayEvent'/><FieldRef Name='EventType'/><FieldRef Name='UID' /><FieldRef Name='fRecurrence' /></ViewFields>
@@ -574,7 +576,7 @@ export default class spservices {
               const geo = event.Geolocation.substring(first, last);
               const geolocation = geo.split(' ');
               const CategoryColorValue: any[] = categoryColor.filter((value) => {
-                debugger;
+                // debugger;
                 return value.category == event.Category;
               });
               const isAllDayEvent: boolean = event["fAllDayEvent.value"] === "1";
@@ -618,6 +620,7 @@ export default class spservices {
           if(window.localStorage.getItem("eventResult") === JSON.stringify(results)){
             //No update needed use current savedEvents
             events = JSON.parse(window.localStorage.getItem("calendarEventsWithLocalTime"));
+            console.log('events = ' + events);
           }else{
             //update local storage
             window.localStorage.setItem("eventResult", JSON.stringify(results));

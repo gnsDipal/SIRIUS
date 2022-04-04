@@ -1,5 +1,5 @@
 import { MSGraphClient } from '@microsoft/sp-http';
-debugger;
+// debugger;
 
 // Class Services
 export default class spAssetServiceSettingsPanel {

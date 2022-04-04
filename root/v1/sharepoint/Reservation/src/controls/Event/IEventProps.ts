@@ -18,4 +18,5 @@ export interface IEventProps {
   masterListName: string;
   calendarListName:string;
   filterType: FilterType;
+  // myCalenderRender: Function;
 }

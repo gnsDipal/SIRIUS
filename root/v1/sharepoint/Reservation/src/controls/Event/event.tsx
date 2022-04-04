@@ -153,6 +153,13 @@ export class Event extends React.Component<IEventProps, IEventState> {
   private hidePanel() {
     this.props.onDissmissPanel(false);
   }
+  /* on Edit/Save or create of events: re-render updated calendar */  
+  
+  // private async onEventUpdateCalendarReRender(){
+  //   let randomValue = Math.floor((Math.random() * 100) + 1);
+  //   this.props.myCalenderRender(randomValue);
+  // }
+
   /**
    *  Save Event to a list
    * @private
@@ -231,17 +238,21 @@ export class Event extends React.Component<IEventProps, IEventState> {
         const userInfo: any = await this.spService.getUserByLoginName(user.id, this.props.siteUrl);
         eventData.attendes.push(Number(userInfo.Id));
       }
-      debugger;
+      // debugger;
       // Perform to check in case it overlap
+      // if(panelMode === IPanelModelEnum.add)
       let res = this.isEventOverlap(eventData, this.props.events);
+      
       if(!res) {
         this.setState({ isSaving: true });
         switch (panelMode) {
           case IPanelModelEnum.edit:
             this.spService.updateEvent(eventData, this.props.siteUrl, this.props.calendarListName);
+            // this.onEventUpdateCalendarReRender();
             break;
           case IPanelModelEnum.add:
             this.spService.addEvent(eventData, this.props.siteUrl, this.props.calendarListName);
+            // this.onEventUpdateCalendarReRender();
             break;
           default:
             break;
@@ -258,6 +269,28 @@ export class Event extends React.Component<IEventProps, IEventState> {
 
   private isEventOverlap(eventData: IEventData, events: IEventData[]) {
     let res = false;
+    let startTimeEdit = 0;
+    let endTimeEdit = 0;
+    /* ************ COde to test EDIT of existing events *********** */
+
+    let createdEventPresense = events.filter(checkEventId);
+    function checkEventId(res){
+       return (res.ID === eventData.ID);
+    }
+    if(createdEventPresense.length != 0){
+      let eventStartDate = moment(eventData.EventDate);
+      let eventEndDate = moment(eventData.EndDate);
+      let startDate = moment(createdEventPresense[0].EventDate);
+      let endDate = moment(createdEventPresense[0].EndDate);
+      startTimeEdit = eventStartDate.diff(startDate);
+      endTimeEdit = eventEndDate.diff(endDate);
+      if(startTimeEdit === 0 && endTimeEdit === 0){
+        res = false;
+        return res;
+      }
+    }
+    /* ************ Code ends here ****************** */
+    if(createdEventPresense.length === 0 || startTimeEdit != 0 || endTimeEdit != 0){
     for(let index = 0; index < events.length; index++ ){
       if(eventData.Category === events[index].Category ) {
         // https://momentjs.com/docs/#/query/is-between/
@@ -265,24 +298,25 @@ export class Event extends React.Component<IEventProps, IEventState> {
         let eventEndDate = moment(eventData.EndDate);
         let startDate = moment(events[index].EventDate);
         let endDate = moment(events[index].EndDate);
-        if(eventStartDate.isBetween(startDate, endDate, 'minutes', '[]')) {
+        if(eventStartDate.isBetween(startDate, endDate, 'minutes', '[)')) {
           Logger.write("Event slot is inbetween", LogLevel.Info);
           res = true;
           break;
-        } else if(eventEndDate.isBetween(startDate, endDate, 'minutes', '[]')) {
+        } else if(eventEndDate.isBetween(startDate, endDate, 'minutes', '(]')) {
           Logger.write("Event slot is inbetween", LogLevel.Info);
           res = true;
           break;
-        } else if (startDate.isBetween(eventStartDate, eventEndDate,'minutes', '[]')) {
+        } else if (startDate.isBetween(eventStartDate, eventEndDate,'minutes', '[)')) {
           Logger.write("Event slot is inbetween", LogLevel.Info);
           res = true;
           break;
-        } else if (endDate.isBetween(eventStartDate, eventEndDate,'minutes', '[]')) {
+        } else if (endDate.isBetween(eventStartDate, eventEndDate,'minutes', '(]')) {
           Logger.write("Event slot is inbetween", LogLevel.Info);
           res = true;
           break;
         }
       }
+     }
     }
     return res;
   }
@@ -884,6 +918,12 @@ export class Event extends React.Component<IEventProps, IEventState> {
     //console.log(this.returnedRecurrenceInfo);
   }
 
+  public async onEventTitleChange(titleContent){
+      this.setState({
+        eventData: {...this.state.eventData, title: titleContent }
+      })
+  }
+
 
   /**
    * @returns {React.ReactElement<IEventProps>}
@@ -944,10 +984,11 @@ export class Event extends React.Component<IEventProps, IEventState> {
                 <div style={{ marginTop: 10 }} >
                   <TextField
                     label={strings.EventTitleLabel}
-                    value={this.state.eventData ? this.state.eventData.title : ''}
+                    onChange = {(e,titleContent)=>this.onEventTitleChange(titleContent)}
+                     value={this.state.eventData ? this.state.eventData.title : ''}
                     onGetErrorMessage={this.onGetErrorMessageTitle}
-                    // deferredValidationTime={500}
-                    // disabled={this.state.userPermissions.hasPermissionAdd || this.state.userPermissions.hasPermissionEdit ? false : true}
+                    deferredValidationTime={500}
+                    disabled={this.state.userPermissions.hasPermissionAdd || this.state.userPermissions.hasPermissionEdit ? false : true}
                   />
 
                 </div>

@@ -6,7 +6,7 @@ import { IFilterStates } from './IFilterState';
 import { FilterType } from './filterType';
 // import  RoomService  from '../../roomService';
 import spRoomService from '../../services/spRoomService';
-debugger;
+// debugger;
 export default class Filters extends React.Component<IFilterProps, IFilterStates> {
     private spRoomService: spRoomService = null;
     constructor(props:IFilterProps, state:IFilterStates) { 

@@ -13,7 +13,7 @@ import spservices from '../../../services/spservices';
 import { CompoundButton } from 'office-ui-fabric-react';
 import { initializeIcons } from "@fluentui/font-icons-mdl2";
 initializeIcons();
-debugger;
+// debugger;
 export default class RoomReservationPlatinum extends React.Component<IRoomReservationPlatinumProps, IRoomReservationPlatinumState> {
   private spServiceData:spservices = null;
   constructor(props:IRoomReservationPlatinumProps, state:IRoomReservationPlatinumState) { 
@@ -133,7 +133,7 @@ export default class RoomReservationPlatinum extends React.Component<IRoomReserv
                    buildingId={this.state.buildingId}
                    sizeId={this.state.sizeId}
                 />
-               
+              {/* } */}
             </div>
           </div>
         </div>

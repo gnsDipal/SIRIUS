@@ -4,7 +4,7 @@ import { IFilterImageProps } from './IFilterImageProps';
 import { IFilterImageStates } from './IFilterImageState';
 import spRoomService from '../../services/spRoomService';
 
-debugger;
+// debugger;
 export default class FilterImage extends React.Component<IFilterImageProps, IFilterImageStates> {
     private spRoomService: spRoomService = null;
     constructor(props:IFilterImageProps, state:IFilterImageStates) { 
@@ -27,7 +27,7 @@ export default class FilterImage extends React.Component<IFilterImageProps, IFil
     }
 
     private _getRoomPhotoByPara(sizeId:number) {
-        debugger;
+        // debugger;
         this.spRoomService.getImageBySelectedMaster(this.props.siteUrl, this.props.masterListName, sizeId).then(res=>{
             this.setState({
                 selectedImage : res,

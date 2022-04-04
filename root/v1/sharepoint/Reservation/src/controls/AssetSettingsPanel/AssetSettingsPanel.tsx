@@ -6,7 +6,7 @@ import {IAssetSettingsPanelState} from './IAssetSettingsPanelState';
 import { Panel, Link } from '@fluentui/react/lib';
 import {Spinner,SpinnerSize} from 'office-ui-fabric-react/lib/Spinner';
 
-debugger;
+// debugger;
 export default class AssetReservation extends React.Component<IAssetSettingsPanelProps, IAssetSettingsPanelState> {
     public spAssetSettingsPanelService:spAssetServiceSettingsPanel = null;
     constructor(props:IAssetSettingsPanelProps, state:IAssetSettingsPanelState) { 

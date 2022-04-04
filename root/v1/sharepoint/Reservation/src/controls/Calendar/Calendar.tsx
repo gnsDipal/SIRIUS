@@ -52,7 +52,7 @@ import { IPanelModelEnum } from '../Event/IPanelModeEnum';
 import { IEventData } from '../../models/IEventData';
 import { IUserPermissions } from '../../models/IUserPermissions';
 
-
+debugger;
 //const localizer = BigCalendar.momentLocalizer(moment);
 const localizer = momentLocalizer(moment);
 /**
@@ -73,6 +73,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       isloading: true,
       hasError: false,
       errorMessage: '',
+      calendarUpdate:1,
     };
 
     this.onDismissPanel = this.onDismissPanel.bind(this);
@@ -125,7 +126,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       
       const eventsData: IEventData[] = await this.spService.getEvents(escape(this.props.siteUrl), escape(this.props.masterListName), escape(this.props.calendarListName), this.props.eventStartDate.value, this.props.eventEndDate.value);
 
-      this.setState({ eventData: eventsData, hasError: false, errorMessage: "" });
+      this.setState({ eventData: eventsData, hasError: false, errorMessage: "", calendarUpdate: Math.floor((Math.random() * 100) + 1) });
       // debugger;
     } catch (error) {
       this.setState({ hasError: true, errorMessage: error.message, isloading: false });
@@ -166,6 +167,11 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
       this.setState({ isloading: false });
     }
   }
+
+public shouldComponentUpdate(nextProps: Readonly<ICalendarProps>, nextState: Readonly<ICalendarState>, nextContext: any): boolean {
+  return true;
+}
+
   /**
    * @private
    * @param {*} { event }
@@ -309,6 +315,13 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
     };
   }
 
+  /* MyCalender re-render */
+  public async myCalenderReRender(val:any){
+      this.setState({
+        calendarUpdate: val,
+      })
+  }
+
   /**
    *
    * @returns {React.ReactElement<ICalendarProps>}
@@ -340,9 +353,14 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                 :
                 // show Calendar
                 // Test if is loading Events
+
+                // this.state.calendarUpdate &&
                 <div>
                   {this.state.isloading ? <Spinner size={SpinnerSize.large} label={strings.LoadingEventsLabel} /> :
                     <div className={styles.container}>
+                      { 
+                      this.state.calendarUpdate 
+                        && 
                       <MyCalendar
                         dayPropGetter={this.dayPropGetter}
                         localizer={localizer}
@@ -377,6 +395,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
                           }
                         }
                       />
+                      }
                     </div>
                   }
                 </div>
@@ -399,6 +418,7 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
               masterListName = {this.props.masterListName}
               calendarListName = {this.props.calendarListName}
               filterType={this.props.filterType}
+              // myCalenderRender = {this.myCalenderReRender}
             />
           }
         </div>
