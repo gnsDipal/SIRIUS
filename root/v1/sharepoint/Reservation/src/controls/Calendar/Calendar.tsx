@@ -108,8 +108,11 @@ export default class Calendar extends React.Component<ICalendarProps, ICalendarS
     this.setState({ showDialog: false });
     if (refresh === true) {
       this.setState({ isloading: true });
-      await this.loadEvents();
-      this.setState({ isloading: false });
+      setTimeout(async() => {
+        await this.loadEvents();
+        this.setState({ isloading: false });
+      }, 5000);
+      // await this.loadEvents();
     }
   }
   /**
